@@ -1,0 +1,29 @@
+
+
+
+
+***********************************************************************************************
+```act```do.where.when
+***********************************************************************************************
+```act```do.where.when
+
+
+
+***********************************************************************************************
+```bind key to string.key-bind-string.code.setup
+1. backup keybindgings.json here C:\Users\Greg Focaccio\AppData\Roaming\Code\User
+2. command pallet / keyboard shortcuts / open Keyboard Shortcuts (JSON)
+3. 
+    {
+        "key": "alt+f4",
+        "command": "type",
+        "args": {
+            "text": "```act```what.where.when"
+        }
+    }
+***********************************************************************************************
+
+***********************************************************************************************
+```act```do.where.when
+```rename-untitled-workspace```.code.setup
+1. 
