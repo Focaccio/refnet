@@ -11,7 +11,14 @@
 
 ***********************************************************************************************
 ```bind key to string.key-bind-string.code.setup
+<<<<<<< HEAD
 1. backup keybindgings.json here C:\Users\<NAME>\AppData\Roaming\Code\User
+=======
+1. backup keybindgings.json here 
+C:\Users\Greg Focaccio\AppData\Roaming\Code\User
+Users > <NAME> > Library > Application Support > Code > User > {} keybindings.json
+
+>>>>>>> 4973f46 (mac)
 2. command pallet / keyboard shortcuts / open Keyboard Shortcuts (JSON)
 3. 
     {
