@@ -1,0 +1,11 @@
+***********************************************************************************************
+***********************************************************************************************
+
+
+
+```act```do.where.when
+enable-simple-function-keys.system-settings-keyboard.set-up
+USE F1 F2 as standard function keys - MOVE to ON
+>need to use fn with function keys to adjust brightness, BUT
+benefit is simple use of "f2" in VSCODE bindings
+
