@@ -18,6 +18,8 @@
 C:\Users\Greg Focaccio\AppData\Roaming\Code\User
 Users > <NAME> > Library > Application Support > Code > User > {} keybindings.json
 Users > <NAME> > Library > Application Support > Code > User > {} keybindings.json
+Users > <NAME> > Library > Application Support > Code > User > {} keybindings.json
+
 
 
 >>>>>>> 4973f46 (mac)
