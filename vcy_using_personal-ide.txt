@@ -62,7 +62,7 @@ ctrl+shift + -
 ```act```do.where.when
 
 
-***********************************************************************************************
+
 ```bind key to string.key-bind-string.code.setup
 1. backup keybindgings.json here C:\Users\Greg Focaccio\AppData\Roaming\Code\User
 2. command pallet / keyboard shortcuts / open Keyboard Shortcuts (JSON)
@@ -74,14 +74,13 @@ ctrl+shift + -
             "text": "```act```what.where.when"
         }
     }
-***********************************************************************************************
 
-***********************************************************************************************
+
 ```act```do.where.when
 ```rename-untitled-workspace```.code.setup
 
 
-***********************************************************************************************
+...............................................................................................
 ```act```do.where.when
 ```FOCUS CONTROL```.code.any
 
