@@ -4,8 +4,19 @@ rn50_esx55_vnets_set-up.txt
 
 ```act```do.where.when
 
+===============================================================================================
+```raw - Raw Notes
+===============================================================================================
 
-
+```trunk to external switch with VMs
+Trunk external:
+1. Dedicated host nicX <> VMNIC X
+2. Trunk (dot1q) on switchport connected to nicX
+3. Virtual switch VSW X with VMNIC x as VLAN 4095 - trunk all
+4. Port group PG-VLAN10 vlan id 10 on VSW X
+5. Port group PG-VLAN20 vlan id 20 on VSW X
+6. VM-d10 for vlan 10 add PG-VLAN10
+7. VM-d20 for vlan 20 add PG-VLAN20
 
 
 
