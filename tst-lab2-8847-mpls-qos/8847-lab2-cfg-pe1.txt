@@ -1,0 +1,224 @@
+
+
+
+pe-1#sh run
+Building configuration...
+
+Current configuration : 4524 bytes
+!
+! Last configuration change at 06:10:36 UTC Sun Jul 23 2023
+!
+upgrade fpd auto
+version 15.0
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname pe-1
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 $1$3dG.$i0ZaIBa7R8yUsEgaBqqR6.
+!
+no aaa new-model
+!
+!
+!
+ip source-route
+no ip icmp rate-limit unreachable
+ip cef
+!
+!
+!
+!
+no ip domain lookup
+ip domain name tst.areaf.net
+ip host pe2 86.2.0.2
+no ipv6 cef
+!
+multilink bundle-name authenticated
+mpls traffic-eng tunnels
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+ip tcp synwait-time 5
+ip ssh version 2
+! 
+!
+!
+!
+!
+!
+!
+!
+interface Loopback861
+ ip address 86.1.0.2 255.255.255.255
+ ip ospf 101 area 1
+ !
+!
+interface FastEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+ !
+!         
+interface FastEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ !
+!
+interface FastEthernet1/0
+ ip address 11.0.0.2 255.255.255.0
+ ip ospf network point-to-point
+ ip ospf 101 area 1
+ duplex full
+ mpls traffic-eng tunnels
+ mpls ip
+ !
+!
+interface FastEthernet2/0
+ no ip address
+ duplex full
+ mpls traffic-eng tunnels
+ mpls accounting experimental input
+ mpls accounting experimental output
+ mpls ip
+ no keepalive
+ xconnect 86.2.0.2 16 encapsulation mpls
+ !
+!
+interface FastEthernet3/0
+ no ip address
+ duplex half
+ !
+!
+interface FastEthernet4/0
+ no ip address
+ duplex half
+ !
+!
+router ospf 101
+ router-id 86.1.0.2
+ log-adjacency-changes
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+!
+!
+!         
+no cdp log mismatch duplex
+!
+!
+!
+!
+!
+mpls ldp router-id Loopback861
+!
+control-plane
+ !
+!
+!
+mgcp fax t38 ecm
+mgcp behavior g729-variants static-pt
+!
+!
+!
+gatekeeper
+ shutdown
+!
+alias exec sid show interfaces description
+alias exec crs copy run start
+alias exec wha sh run | i alias
+alias exec siib show ip int brie
+alias exec sir show ip route
+alias exec scn show cdp nei
+alias exec scnd show cdp nei det
+alias exec srs show run | sec 
+alias exec sri show run | i 
+alias exec srint show run int
+alias exec sip show ip protocol
+alias exec srso show run | section ospf
+alias exec sion show ip ospf nei
+alias exec siro show ip route ospf
+alias exec siod show ip ospf database
+alias exec siodd show ip ospf database database
+alias exec siodn show ip ospf database network
+alias exec siodns show ip ospf database network self
+alias exec sios show ip ospf stat
+alias exec siot show ip ospf traffic
+alias exec sioi show ip ospf interface
+alias exec sior show ip ospf rib
+alias exec siord show ip ospf rib detail
+alias exec siori show ip ospf rib | i 
+alias exec sioii show ip ospf interface | include
+alias exec sioto show ip ospf topology
+alias exec sioric show ip ospf rib | i Conn
+alias exec siodr show ip ospf database router 
+alias exec siodri show ip ospf database router | inc 
+alias exec siodra show ip ospf database router adv-router
+alias exec smi show mpls interfaces
+alias exec smid show mpls interfaces detail
+alias exec smln show mpls ldp nei
+alias exec smlb show mpls ldp bindings
+alias exec smld show mpls ldp discovery
+alias exec smldd show mpls ldp discovery detail
+alias exec smlp show mpls ldp parameters
+alias exec smli show mpls ldp igp
+alias exec smlba show mpls ldp backoff
+alias exec smlg show mpls ldp graceful-restart
+alias exec smft show mpls forwarding-table
+alias exec smfi show mpls forward interface 
+alias exec smfd show mpls forward detail
+alias exec smfv show mpls forward vrf 
+alias exec smfn show mpls forward next-hop
+alias exec smfl show mpls forward labels
+alias exec smflsp show mpls forward lsp
+alias exec sml2b show mpls l2transport binding 
+alias exec sml2bl show mpls l2transport binding local-label  
+alias exec sml2bv show mpls l2transport binding remote-label  
+alias exec sml2hwc show mpls l2transport hardware-compat
+alias exec sml2s show mpls l2transport summary
+alias exec sml2v show mpls l2transport vc
+alias exec sml2vde show mpls l2transport vc detail
+alias exec sml2vds show mpls l2transport vc destination
+alias exec sml2vi show mpls l2transport vc interface
+alias exec sirc show ip route connected
+alias exec c conf t
+alias exec sioib show ip ospf interface brie
+alias exec sirr show ip rib route
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ login local
+ stopbits 1
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ exec-timeout 120 0
+ logging synchronous
+ login local
+line vty 5 15
+ exec-timeout 120 0
+ logging synchronous
+ login local
+!
+end
+
+pe-1#  
