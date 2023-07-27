@@ -1,9 +1,12 @@
 
 
 
+https://www.ciscopress.com/articles/article.asp?p=386788&seqNum=2
 
 
 https://www.cisco.com/c/en/us/td/docs/ios/12_2sb/12_2sba/feature/guide/sbpseudo.html
 
 
 
+https://derekcheung.medium.com/end-to-end-network-service-qos-part-1-f6ca39507821
+https://clcnetwork.wordpress.com/2017/02/24/first-blog-post/

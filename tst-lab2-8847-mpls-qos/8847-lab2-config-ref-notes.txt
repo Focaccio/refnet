@@ -1,0 +1,42 @@
+
+
+
+
+
+
+
+
+mpls traffic-eng tunnels
+!
+pseudowire-class RSVP-MPLS
+ encapsulation mpls
+ preferred-path interface Tunnel1
+!
+interface Tunnel1
+ ip unnumbered Loopback0
+ tunnel mode mpls traffic-eng
+ tunnel destination 10.10.100.7
+ tunnel mpls traffic-eng path-option 1 dynamic
+!
+interface FastEthernet1/0
+ description "network link to R7 7750"
+ mtu 1526
+ ip address 10.7.9.9 255.255.255.0
+ ip ospf network point-to-point
+ speed auto
+ duplex auto
+ mpls traffic-eng tunnels
+ ip rsvp signalling hello
+!
+router ospf 1
+ router-id 1.1.1.1
+ auto-cost reference-bandwidth 100000
+ network 10.7.9.0 0.0.0.255 area 0
+ network 10.10.100.9 0.0.0.0 area 0
+ mpls traffic-eng router-id Loopback0
+ mpls traffic-eng area 0
+!
+
+
+
+
