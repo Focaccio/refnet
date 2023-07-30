@@ -1,13 +1,11 @@
-ce-2#
-ce-2#
-ce-2#
-ce-2#
-ce-2#sh run
+C-41#
+C-41#
+C-41#sh run
 Building configuration...
 
-Current configuration : 5412 bytes
+Current configuration : 4360 bytes
 !
-! Last configuration change at 22:13:11 UTC Sun Jul 23 2023
+! Last configuration change at 19:38:20 UTC Sun Jul 30 2023 by lab
 !
 upgrade fpd auto
 version 15.0
@@ -15,7 +13,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 !
-hostname ce-2
+hostname C-41
 !
 boot-start-marker
 boot-end-marker
@@ -34,7 +32,6 @@ ip cef
 !
 no ip domain lookup
 ip domain name tst.areaf.net
-ip host ce1 71.0.0.1
 no ipv6 cef
 !
 multilink bundle-name authenticated
@@ -48,59 +45,26 @@ multilink bundle-name authenticated
 !
 !
 redundancy
+!
 !         
-!
 ip tcp synwait-time 5
-ip ssh source-interface Loopback73
-ip ssh version 2
-!
-class-map match-all CLASS-DEFAULT
-class-map match-all CLASS-VLAN-172
- match vlan  172
-!
-!
-policy-map POLICY-VLAN-172
- class CLASS-VLAN-172
-  set cos 6
-policy-map DEFAULT
- class class-default
-  set cos 6
-!
+ip ssh source-interface Loopback41
 ! 
 !
-crypto isakmp policy 100
- encr aes 256
- authentication pre-share
- group 16 
-crypto isakmp key KEY address 172.16.0.1
-!
-!
-crypto ipsec transform-set TRANSFORM esp-aes esp-sha-hmac 
-!
-crypto ipsec profile TUNNEL-PROTECT
- set transform-set TRANSFORM 
-!
-!
-bridge irb
 !
 !
 !
 !
 !
-interface Loopback73
- ip address 73.0.0.1 255.255.255.0
+!
+interface Loopback41
+ ip address 41.0.0.1 255.255.255.255
  !
 !
 interface Tunnel1
- ip unnumbered FastEthernet2/0.172
- ip tcp adjust-mss 1300
- qos pre-classify
- tunnel source 172.16.0.2
- tunnel mode ipsec ipv4
- tunnel destination 172.16.0.1
- tunnel path-mtu-discovery
- tunnel tos 64
- tunnel protection ipsec profile TUNNEL-PROTECT
+ ip unnumbered FastEthernet4/0
+ tunnel source 172.17.0.41
+ tunnel destination 172.17.0.51
  !
 !
 interface FastEthernet0/0
@@ -122,20 +86,8 @@ interface FastEthernet1/0
 !
 interface FastEthernet2/0
  no ip address
- duplex full
- bridge-group 1
- bridge-group 1 spanning-disabled
+ duplex half
  !
-!
-interface FastEthernet2/0.10
- encapsulation dot1Q 10
- ip address 10.0.0.2 255.255.255.0
- service-policy output DEFAULT
-!
-interface FastEthernet2/0.172
- encapsulation dot1Q 172
- ip address 172.16.0.2 255.255.255.0
- service-policy output DEFAULT
 !
 interface FastEthernet3/0
  no ip address
@@ -143,10 +95,8 @@ interface FastEthernet3/0
  !        
 !
 interface FastEthernet4/0
- no ip address
+ ip address 172.17.0.41 255.255.255.0
  duplex full
- bridge-group 1
- bridge-group 1 spanning-disabled
  !
 !
 ip forward-protocol nd
@@ -154,7 +104,7 @@ no ip http server
 no ip http secure-server
 !
 !
-ip route 71.0.0.0 255.255.255.0 Tunnel1
+ip route 51.0.0.1 255.255.255.255 Tunnel1
 !
 no cdp log mismatch duplex
 !
@@ -165,8 +115,7 @@ no cdp log mismatch duplex
 !
 control-plane
  !
-!
-bridge 1 protocol ieee
+!         
 !
 mgcp fax t38 ecm
 mgcp behavior g729-variants static-pt
@@ -176,10 +125,6 @@ mgcp behavior g729-variants static-pt
 gatekeeper
  shutdown
 !
-alias exec sml2vde show mpls l2transport vc detail
-alias exec sml2vds show mpls l2transport vc destination
-alias exec sml2vi show mpls l2transport vc interface
-alias exec c conf t
 alias exec sid show interfaces description
 alias exec crs copy run start
 alias exec wha sh run | i alias
@@ -234,10 +179,13 @@ alias exec sml2bl show mpls l2transport binding local-label
 alias exec sml2bv show mpls l2transport binding remote-label  
 alias exec sml2hwc show mpls l2transport hardware-compat
 alias exec sml2s show mpls l2transport summary
-alias exec sml2v show mpls l2transpoaliassalias exec whah show run | i host
+alias exec sml2v show mpls l2transport vc
+alias exec sml2vde show mpls l2transport vc detail
+alias exec sml2vds show mpls l2transport vc destination
+alias exec sml2vi show mpls l2transport vc interface
+alias exec whah show run | i host
 alias exec scsa show crypto ipsec sa
 alias exec scsacaps show crypto ipsec sa | i caps
-alias exec whah show run | i host
 !
 line con 0
  exec-timeout 0 0
@@ -259,9 +207,6 @@ line vty 5 15
  logging synchronous
  login local
 !
-end
+end       
 
-ce-2#      
-ce-2#
-ce-2#
-ce-2#
+C-41# 

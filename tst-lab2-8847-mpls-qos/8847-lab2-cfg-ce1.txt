@@ -1,10 +1,12 @@
 ce-1#
+ce-1#
+ce-1#
 ce-1#sh run
 Building configuration...
 
-Current configuration : 5252 bytes
+Current configuration : 5386 bytes
 !
-! Last configuration change at 17:41:14 UTC Sun Jul 23 2023 by lab
+! Last configuration change at 19:39:16 UTC Sun Jul 30 2023 by lab
 !
 upgrade fpd auto
 version 15.0
@@ -79,6 +81,7 @@ crypto ipsec profile TUNNEL-PROTECT
  set transform-set TRANSFORM 
 !
 !
+bridge irb
 !
 !
 !
@@ -120,6 +123,8 @@ interface FastEthernet1/0
 interface FastEthernet2/0
  no ip address
  duplex full
+ bridge-group 1
+ bridge-group 1 spanning-disabled
  !
 !
 interface FastEthernet2/0.10
@@ -139,7 +144,9 @@ interface FastEthernet3/0
 !
 interface FastEthernet4/0
  no ip address
- duplex half
+ duplex full
+ bridge-group 1
+ bridge-group 1 spanning-disabled
  !
 !
 ip forward-protocol nd
@@ -155,10 +162,11 @@ no cdp log mismatch duplex
 !
 !
 !
-!
+!         
 control-plane
  !
 !
+bridge 1 protocol ieee
 !
 mgcp fax t38 ecm
 mgcp behavior g729-variants static-pt
@@ -229,7 +237,7 @@ alias exec sml2vi show mpls l2transport vc interface
 alias exec whah show run | i host
 alias exec scsa show crypto ipsec sa
 alias exec scsacaps show crypto ipsec sa | i caps
-!         
+!
 line con 0
  exec-timeout 0 0
  privilege level 15
@@ -252,4 +260,4 @@ line vty 5 15
 !
 end
 
-ce-1#     
+ce-1#    
