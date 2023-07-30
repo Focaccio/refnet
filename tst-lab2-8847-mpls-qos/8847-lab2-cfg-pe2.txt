@@ -1,14 +1,10 @@
-
-
-
-pe-2#
 pe-2#
 pe-2#sh run
 Building configuration...
 
-Current configuration : 4495 bytes
+Current configuration : 4716 bytes
 !
-! Last configuration change at 06:36:33 UTC Sun Jul 23 2023
+! Last configuration change at 19:40:40 UTC Sun Jul 23 2023
 !
 upgrade fpd auto
 version 15.0
@@ -21,7 +17,6 @@ hostname pe-2
 boot-start-marker
 boot-end-marker
 !
-enable secret 5 $1$3PqY$DWqIISHlA3JAh0aa/0v2p1
 !
 no aaa new-model
 !
@@ -55,6 +50,15 @@ redundancy
 !
 ip tcp synwait-time 5
 ip ssh version 2
+!
+class-map match-all CLASS-INTERFACE-F20
+ match input-interface FastEthernet2/0
+!
+!
+policy-map MAP-INPUT-INTERFACE-F20
+ class CLASS-INTERFACE-F20
+  set mpls experimental 5
+!
 pseudowire-class PW-TOS
  encapsulation mpls
  interworking ethernet
@@ -64,7 +68,7 @@ pseudowire-class PW-TOS
 !
 !
 !
-!
+!         
 !
 !
 interface Loopback862
@@ -101,6 +105,7 @@ interface FastEthernet2/0
  no keepalive
  xconnect 86.1.0.2 16 encapsulation mpls
  !
+ service-policy input MAP-INPUT-INTERFACE-F20
 !
 interface FastEthernet3/0
  no ip address
@@ -119,7 +124,7 @@ router ospf 101
 ip forward-protocol nd
 no ip http server
 no ip http secure-server
-!         
+!
 !
 !
 no cdp log mismatch duplex
@@ -132,7 +137,7 @@ mpls ldp router-id Loopback862
 !
 control-plane
  !
-!
+!         
 !
 mgcp fax t38 ecm
 mgcp behavior g729-variants static-pt
@@ -201,7 +206,7 @@ alias exec sml2vds show mpls l2transport vc destination
 alias exec sml2vi show mpls l2transport vc interface
 alias exec sirc show ip route connected
 alias exec sirr show ip rib route
-!
+!         
 line con 0
  exec-timeout 0 0
  privilege level 15
@@ -224,4 +229,4 @@ line vty 5 15
 !
 end
 
-pe-2# 
+pe-2#       

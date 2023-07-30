@@ -1,10 +1,10 @@
-p-1#
-p-1#sh run
+p-2#
+p-2#sh run
 Building configuration...
 
-Current configuration : 3788 bytes
+Current configuration : 4699 bytes
 !
-! Last configuration change at 03:43:35 UTC Sun Jul 23 2023
+! Last configuration change at 03:37:25 UTC Sun Jul 23 2023 by lab
 !
 upgrade fpd auto
 version 15.0
@@ -12,7 +12,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 !
-hostname p-1
+hostname p-2
 !
 boot-start-marker
 boot-end-marker
@@ -35,7 +35,6 @@ no ipv6 cef
 !
 multilink bundle-name authenticated
 mpls traffic-eng tunnels
-mpls label protocol ldp
 !
 !
 !
@@ -46,14 +45,10 @@ mpls label protocol ldp
 !
 !
 redundancy
-!
+!         
 !
 ip tcp synwait-time 5
 ip ssh version 2
-pseudowire-class PW172
- encapsulation mpls
- interworking ethernet
-!
 ! 
 !
 !
@@ -63,17 +58,17 @@ pseudowire-class PW172
 !
 !
 interface Loopback860
- ip address 86.0.0.1 255.255.255.255
+ ip address 86.0.0.2 255.255.255.255
  ip ospf 101 area 0
  !
 !
-interface Loopback861
- ip address 86.1.0.1 255.255.255.255
- ip ospf 101 area 1
+interface Loopback862
+ ip address 86.2.0.1 255.255.255.255
+ ip ospf 101 area 2
  !
 !
 interface FastEthernet0/0
- ip address 12.0.0.1 255.255.255.0
+ ip address 12.0.0.2 255.255.255.0
  ip ospf network point-to-point
  ip ospf 101 area 0
  duplex full
@@ -89,16 +84,18 @@ interface FastEthernet0/1
  !
 !
 interface FastEthernet1/0
- ip address 11.0.0.1 255.255.255.0
+ ip address 22.0.0.1 255.255.255.0
  ip ospf network point-to-point
- ip ospf 101 area 1
+ ip ospf 101 area 2
  duplex full
  mpls traffic-eng tunnels
  mpls ip
  !
-!
+!         
 interface FastEthernet2/0
- no ip address
+ ip address 202.0.0.1 255.255.255.0
+ ip ospf network point-to-point
+ ip ospf 101 area 2
  duplex half
  !
 !
@@ -113,15 +110,17 @@ interface FastEthernet4/0
  !
 !
 router ospf 101
- router-id 86.0.0.1
+ router-id 86.0.0.2
  log-adjacency-changes
-!
+ network 86.0.0.2 0.0.0.0 area 0
+ network 86.2.0.1 0.0.0.0 area 2
+!         
 ip forward-protocol nd
 no ip http server
 no ip http secure-server
 !
 !
-ip route 86.0.0.2 255.255.255.255 12.0.0.2
+ip route 86.0.0.1 255.255.255.255 12.0.0.1
 !
 no cdp log mismatch duplex
 !
@@ -137,8 +136,8 @@ control-plane
 !
 mgcp fax t38 ecm
 mgcp behavior g729-variants static-pt
-!         
 !
+!         
 !
 gatekeeper
  shutdown
@@ -180,7 +179,25 @@ alias exec smlb show mpls ldp bindings
 alias exec smld show mpls ldp discovery
 alias exec smldd show mpls ldp discovery detail
 alias exec smlp show mpls ldp parameters
-alias exec smalias exec     smfv 
+alias exec smli show mpls ldp igp
+alias exec smlba show mpls ldp backoff
+alias exec smlg show mpls ldp graceful-restart
+alias exec smft show mpls forwarding-table
+alias exec smfi show mpls forward interface 
+alias exec smfd show mpls forward detail
+alias exec smfv show mpls forward vrf 
+alias exec smfn show mpls forward next-hop
+alias exec smfl show mpls forward labels
+alias exec smflsp show mpls forward lsp
+alias exec sml2b show mpls l2transport binding 
+alias exec sml2bl show mpls l2transport binding local-label  
+alias exec sml2bv show mpls l2transport binding remote-label  
+alias exec sml2hwc show mpls l2transport hardware-compat
+alias exec sml2s show mpls l2transport summary
+alias exec sml2v show mpls l2transport vc
+alias exec sml2vde show mpls l2transport vc detail
+alias exec sml2vds show mpls l2transport vc destination
+alias exec sml2vi show mpls l2transport vc interface
 alias exec sioib show ip ospf interface brie
 alias exec sirc show ip route connected
 alias exec sirr show ip rib route
@@ -206,5 +223,5 @@ line vty 5 15
  login local
 !
 end
-          
-p-1#      
+
+p-2#     

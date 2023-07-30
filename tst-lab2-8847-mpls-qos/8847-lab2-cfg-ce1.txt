@@ -1,10 +1,10 @@
-p-1#
-p-1#sh run
+ce-1#
+ce-1#sh run
 Building configuration...
 
-Current configuration : 3788 bytes
+Current configuration : 5252 bytes
 !
-! Last configuration change at 03:43:35 UTC Sun Jul 23 2023
+! Last configuration change at 17:41:14 UTC Sun Jul 23 2023 by lab
 !
 upgrade fpd auto
 version 15.0
@@ -12,7 +12,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 !
-hostname p-1
+hostname ce-1
 !
 boot-start-marker
 boot-end-marker
@@ -31,11 +31,11 @@ ip cef
 !
 no ip domain lookup
 ip domain name tst.areaf.net
+ip host ce2 73.0.0.1
+ip host ce1 71.0.0.1
 no ipv6 cef
 !
 multilink bundle-name authenticated
-mpls traffic-eng tunnels
-mpls label protocol ldp
 !
 !
 !
@@ -49,37 +49,61 @@ redundancy
 !
 !
 ip tcp synwait-time 5
+ip ssh source-interface Loopback71
 ip ssh version 2
-pseudowire-class PW172
- encapsulation mpls
- interworking ethernet
+!
+class-map match-all CLASS-DEFAULT
+class-map match-all CLASS-VLAN-172
+ match vlan  172
+!
+!
+policy-map POLICY-VLAN-172
+ class CLASS-VLAN-172
+  set cos 6
+policy-map DEFAULT
+ class class-default
+  set cos 6
 !
 ! 
 !
+crypto isakmp policy 100
+ encr aes 256
+ authentication pre-share
+ group 16
+crypto isakmp key KEY address 172.16.0.2
+!
+!
+crypto ipsec transform-set TRANSFORM esp-aes esp-sha-hmac 
+!
+crypto ipsec profile TUNNEL-PROTECT
+ set transform-set TRANSFORM 
 !
 !
 !
 !
 !
 !
-interface Loopback860
- ip address 86.0.0.1 255.255.255.255
- ip ospf 101 area 0
+!
+interface Loopback71
+ ip address 71.0.0.1 255.255.255.0
  !
 !
-interface Loopback861
- ip address 86.1.0.1 255.255.255.255
- ip ospf 101 area 1
+interface Tunnel1
+ ip unnumbered FastEthernet2/0.172
+ ip tcp adjust-mss 1300
+ qos pre-classify
+ tunnel source 172.16.0.1
+ tunnel mode ipsec ipv4
+ tunnel destination 172.16.0.2
+ tunnel path-mtu-discovery
+ tunnel tos 64
+ tunnel protection ipsec profile TUNNEL-PROTECT
  !
 !
 interface FastEthernet0/0
- ip address 12.0.0.1 255.255.255.0
- ip ospf network point-to-point
- ip ospf 101 area 0
- duplex full
+ no ip address
+ duplex auto
  speed auto
- mpls traffic-eng tunnels
- mpls ip
  !
 !
 interface FastEthernet0/1
@@ -89,18 +113,24 @@ interface FastEthernet0/1
  !
 !
 interface FastEthernet1/0
- ip address 11.0.0.1 255.255.255.0
- ip ospf network point-to-point
- ip ospf 101 area 1
- duplex full
- mpls traffic-eng tunnels
- mpls ip
+ no ip address
+ duplex half
  !
 !
 interface FastEthernet2/0
  no ip address
- duplex half
+ duplex full
  !
+!
+interface FastEthernet2/0.10
+ encapsulation dot1Q 10
+ ip address 10.0.0.1 255.255.255.0
+ service-policy output DEFAULT
+!
+interface FastEthernet2/0.172
+ encapsulation dot1Q 172
+ ip address 172.16.0.1 255.255.255.0
+ service-policy output DEFAULT
 !
 interface FastEthernet3/0
  no ip address
@@ -112,16 +142,12 @@ interface FastEthernet4/0
  duplex half
  !
 !
-router ospf 101
- router-id 86.0.0.1
- log-adjacency-changes
-!
 ip forward-protocol nd
 no ip http server
 no ip http secure-server
 !
 !
-ip route 86.0.0.2 255.255.255.255 12.0.0.2
+ip route 73.0.0.0 255.255.255.0 Tunnel1
 !
 no cdp log mismatch duplex
 !
@@ -129,7 +155,6 @@ no cdp log mismatch duplex
 !
 !
 !
-mpls ldp router-id Loopback860
 !
 control-plane
  !
@@ -137,7 +162,7 @@ control-plane
 !
 mgcp fax t38 ecm
 mgcp behavior g729-variants static-pt
-!         
+!
 !
 !
 gatekeeper
@@ -148,6 +173,7 @@ alias exec crs copy run start
 alias exec wha sh run | i alias
 alias exec siib show ip int brie
 alias exec sir show ip route
+alias exec sirr show ip rib route
 alias exec scn show cdp nei
 alias exec scnd show cdp nei det
 alias exec srs show run | sec 
@@ -163,6 +189,7 @@ alias exec siodn show ip ospf database network
 alias exec siodns show ip ospf database network self
 alias exec sios show ip ospf stat
 alias exec siot show ip ospf traffic
+alias exec sioib show ip ospf interface brief
 alias exec sioi show ip ospf interface
 alias exec sior show ip ospf rib
 alias exec siord show ip ospf rib detail
@@ -180,11 +207,29 @@ alias exec smlb show mpls ldp bindings
 alias exec smld show mpls ldp discovery
 alias exec smldd show mpls ldp discovery detail
 alias exec smlp show mpls ldp parameters
-alias exec smalias exec     smfv 
-alias exec sioib show ip ospf interface brie
-alias exec sirc show ip route connected
-alias exec sirr show ip rib route
-!
+alias exec smli show mpls ldp igp
+alias exec smlba show mpls ldp backoff
+alias exec smlg show mpls ldp graceful-restart
+alias exec smft show mpls forwarding-table
+alias exec smfi show mpls forward interface 
+alias exec smfd show mpls forward detail
+alias exec smfv show mpls forward vrf 
+alias exec smfn show mpls forward next-hop
+alias exec smfl show mpls forward labels
+alias exec smflsp show mpls forward lsp
+alias exec sml2b show mpls l2transport binding 
+alias exec sml2bl show mpls l2transport binding local-label  
+alias exec sml2bv show mpls l2transport binding remote-label  
+alias exec sml2hwc show mpls l2transport hardware-compat
+alias exec sml2s show mpls l2transport summary
+alias exec sml2v show mpls l2transport vc
+alias exec sml2vde show mpls l2transport vc detail
+alias exec sml2vds show mpls l2transport vc destination
+alias exec sml2vi show mpls l2transport vc interface
+alias exec whah show run | i host
+alias exec scsa show crypto ipsec sa
+alias exec scsacaps show crypto ipsec sa | i caps
+!         
 line con 0
  exec-timeout 0 0
  privilege level 15
@@ -206,5 +251,5 @@ line vty 5 15
  login local
 !
 end
-          
-p-1#      
+
+ce-1#     

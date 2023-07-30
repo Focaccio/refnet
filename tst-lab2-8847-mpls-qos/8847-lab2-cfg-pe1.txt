@@ -1,12 +1,10 @@
-
-
-
+pe-1#
 pe-1#sh run
 Building configuration...
 
-Current configuration : 4524 bytes
+Current configuration : 4745 bytes
 !
-! Last configuration change at 06:10:36 UTC Sun Jul 23 2023
+! Last configuration change at 19:11:03 UTC Sun Jul 23 2023
 !
 upgrade fpd auto
 version 15.0
@@ -19,7 +17,6 @@ hostname pe-1
 boot-start-marker
 boot-end-marker
 !
-enable secret 5 $1$3dG.$i0ZaIBa7R8yUsEgaBqqR6.
 !
 no aaa new-model
 !
@@ -53,6 +50,15 @@ redundancy
 !
 ip tcp synwait-time 5
 ip ssh version 2
+!
+class-map match-all CLASS-INTERFACE-F20
+ match input-interface FastEthernet2/0
+!
+!
+policy-map MAP-INPUT-INTERFACE-F20
+ class CLASS-INTERFACE-F20
+  set mpls experimental 5
+!
 ! 
 !
 !
@@ -71,7 +77,7 @@ interface FastEthernet0/0
  duplex auto
  speed auto
  !
-!         
+!
 interface FastEthernet0/1
  no ip address
  duplex auto
@@ -85,7 +91,7 @@ interface FastEthernet1/0
  duplex full
  mpls traffic-eng tunnels
  mpls ip
- !
+ !        
 !
 interface FastEthernet2/0
  no ip address
@@ -97,6 +103,7 @@ interface FastEthernet2/0
  no keepalive
  xconnect 86.2.0.2 16 encapsulation mpls
  !
+ service-policy input MAP-INPUT-INTERFACE-F20
 !
 interface FastEthernet3/0
  no ip address
@@ -107,7 +114,7 @@ interface FastEthernet4/0
  no ip address
  duplex half
  !
-!
+!         
 router ospf 101
  router-id 86.1.0.2
  log-adjacency-changes
@@ -117,7 +124,7 @@ no ip http server
 no ip http secure-server
 !
 !
-!         
+!
 no cdp log mismatch duplex
 !
 !
@@ -221,4 +228,6 @@ line vty 5 15
 !
 end
 
-pe-1#  
+pe-1# 
+pe-1#
+pe-1#
