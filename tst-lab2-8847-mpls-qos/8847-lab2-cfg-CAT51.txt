@@ -1,12 +1,11 @@
 T-51#
 T-51#
-T-51#
 T-51#sh run
 Building configuration...
 
-Current configuration : 4260 bytes
+Current configuration : 4618 bytes
 !
-! Last configuration change at 19:21:08 UTC Sun Jul 30 2023
+! Last configuration change at 22:21:05 UTC Sun Jul 30 2023 by lab
 !
 upgrade fpd auto
 version 15.0
@@ -49,6 +48,15 @@ redundancy
 !
 !         
 ip tcp synwait-time 5
+!
+class-map match-all CLASS-INGRESS-LO51
+ match input-interface Loopback51
+!
+!
+policy-map POLICY-INGRESS-LO51
+ class CLASS-INGRESS-LO51
+  set dscp ef
+!
 ! 
 !
 !
@@ -60,17 +68,17 @@ ip tcp synwait-time 5
 interface Loopback51
  ip address 51.0.0.1 255.255.255.255
  !
-!
+ service-policy input POLICY-INGRESS-LO51
+!         
 interface Tunnel1
- ip unnumbered FastEthernet4/0
- tunnel source 172.17.0.51
- tunnel destination 172.17.0.41
+ ip unnumbered FastEthernet4/0.192
+ tunnel source 192.168.0.51
+ tunnel destination 192.168.0.41
  !
 !
 interface FastEthernet0/0
- no ip address
- shutdown
- duplex auto
+ ip address 50.0.0.2 255.255.255.0
+ duplex full
  speed auto
  !
 !
@@ -104,11 +112,16 @@ interface FastEthernet4/0
  duplex full
  !
 !
+interface FastEthernet4/0.192
+ encapsulation dot1Q 192
+ ip address 192.168.0.51 255.255.255.0
+!         
 ip forward-protocol nd
 no ip http server
 no ip http secure-server
 !
 !
+ip route 40.0.0.0 255.255.255.0 192.168.0.41
 ip route 41.0.0.1 255.255.255.255 Tunnel1
 !
 no cdp log mismatch duplex
@@ -116,7 +129,7 @@ no cdp log mismatch duplex
 !
 !
 !
-!         
+!
 !
 control-plane
  !
@@ -125,7 +138,7 @@ control-plane
 mgcp fax t38 ecm
 mgcp behavior g729-variants static-pt
 !
-!
+!         
 !
 gatekeeper
  shutdown
@@ -208,7 +221,7 @@ line vty 5 15
  exec-timeout 120 0
  logging synchronous
  login local
-!         
+!
 end
 
-T-51#     
+T-51# 

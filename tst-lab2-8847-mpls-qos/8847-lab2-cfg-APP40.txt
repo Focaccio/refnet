@@ -1,11 +1,11 @@
-ce-2#
-ce-2#
-ce-2#
-ce-2#
-ce-2#sh run
+APP40#
+APP40#
+APP40#sh run
 Building configuration...
 
-Current configuration : 5339 bytes
+Current configuration : 4374 bytes
+!
+! Last configuration change at 12:14:14 UTC Mon Jul 31 2023 by lab
 !
 upgrade fpd auto
 version 15.0
@@ -13,7 +13,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 !
-hostname ce-2
+hostname APP40
 !
 boot-start-marker
 boot-end-marker
@@ -26,13 +26,12 @@ no aaa new-model
 ip source-route
 no ip icmp rate-limit unreachable
 ip cef
-!         
+!
 !
 !
 !
 no ip domain lookup
 ip domain name tst.areaf.net
-ip host ce1 71.0.0.1
 no ipv6 cef
 !
 multilink bundle-name authenticated
@@ -47,62 +46,33 @@ multilink bundle-name authenticated
 !
 redundancy
 !
-!
+!         
 ip tcp synwait-time 5
-ip ssh source-interface Loopback73
-ip ssh version 2
+ip ssh source-interface Loopback41
 !
-class-map match-all CLASS-DEFAULT
-class-map match-all CLASS-VLAN-172
- match vlan  172
+class-map match-all CLASS-INGRESS-LO41
+ match input-interface Loopback41
 !
 !
-policy-map POLICY-VLAN-172
- class CLASS-VLAN-172
-  set cos 6
-policy-map DEFAULT
- class class-default
-  set cos 6
+policy-map POLICY-INGRESS-LO41
+ class CLASS-INGRESS-LO41
+  set dscp ef
 !
 ! 
 !
-crypto isakmp policy 100
- encr aes 256
- authentication pre-share
- group 16
-crypto isakmp key KEY address 172.16.0.1
-!         
-!
-crypto ipsec transform-set TRANSFORM esp-aes esp-sha-hmac 
-!
-crypto ipsec profile TUNNEL-PROTECT
- set transform-set TRANSFORM 
 !
 !
 !
 !
 !
 !
-!
-interface Loopback73
- ip address 73.0.0.1 255.255.255.0
- !
-!
-interface Tunnel1
- ip unnumbered FastEthernet2/0.172
- ip tcp adjust-mss 1300
- qos pre-classify
- tunnel source 172.16.0.2
- tunnel mode ipsec ipv4
- tunnel destination 172.16.0.1
- tunnel path-mtu-discovery
- tunnel tos 64
- tunnel protection ipsec profile TUNNEL-PROTECT
- !
-!
-interface FastEthernet0/0
+interface Loopback41
  no ip address
- duplex auto
+ !
+!         
+interface FastEthernet0/0
+ ip address 40.0.0.1 255.255.255.0
+ duplex full
  speed auto
  !
 !
@@ -119,20 +89,8 @@ interface FastEthernet1/0
 !
 interface FastEthernet2/0
  no ip address
- duplex full
- bridge-group 1
- bridge-group 1 spanning-disabled
+ duplex half
  !
-!
-interface FastEthernet2/0.10
- encapsulation dot1Q 10
- ip address 10.0.0.2 255.255.255.0
- service-policy output DEFAULT
-!
-interface FastEthernet2/0.172
- encapsulation dot1Q 172
- ip address 172.16.0.2 255.255.255.0
- service-policy output DEFAULT
 !
 interface FastEthernet3/0
  no ip address
@@ -141,9 +99,7 @@ interface FastEthernet3/0
 !
 interface FastEthernet4/0
  no ip address
- duplex full
- bridge-group 1
- bridge-group 1 spanning-disabled
+ duplex half
  !
 !
 ip forward-protocol nd
@@ -151,7 +107,7 @@ no ip http server
 no ip http secure-server
 !
 !
-ip route 71.0.0.0 255.255.255.0 Tunnel1
+ip route 50.0.0.0 255.255.255.0 40.0.0.2
 !
 no cdp log mismatch duplex
 !
@@ -159,11 +115,10 @@ no cdp log mismatch duplex
 !
 !
 !
-!
+!         
 control-plane
  !
 !
-bridge 1 protocol ieee
 !
 mgcp fax t38 ecm
 mgcp behavior g729-variants static-pt
@@ -173,10 +128,6 @@ mgcp behavior g729-variants static-pt
 gatekeeper
  shutdown
 !
-alias exec sml2vde show mpls l2transport vc detail
-alias exec sml2vds show mpls l2transport vc destination
-alias exec sml2vi show mpls l2transport vc interface
-alias exec c conf t
 alias exec sid show interfaces description
 alias exec crs copy run start
 alias exec wha sh run | i alias
@@ -231,10 +182,13 @@ alias exec sml2bl show mpls l2transport binding local-label
 alias exec sml2bv show mpls l2transport binding remote-label  
 alias exec sml2hwc show mpls l2transport hardware-compat
 alias exec sml2s show mpls l2transport summary
-alias exec sml2v show mpls l2transpoaliassalias exec whah show run | i host
+alias exec sml2v show mpls l2transport vc
+alias exec sml2vde show mpls l2transport vc detail
+alias exec sml2vds show mpls l2transport vc destination
+alias exec sml2vi show mpls l2transport vc interface
+alias exec whah show run | i host
 alias exec scsa show crypto ipsec sa
 alias exec scsacaps show crypto ipsec sa | i caps
-alias exec whah show run | i host
 !
 line con 0
  exec-timeout 0 0
@@ -255,24 +209,7 @@ line vty 5 15
  exec-timeout 120 0
  logging synchronous
  login local
-!         
+!
 end
 
-ce-2#     
-ce-2#
-ce-2#
-ce-2#sh bridge 1 verbose
-
-Total of 300 station blocks, 297 free
-Codes: P - permanent, S - self
-
-BG Hash      Address      Action  Interface      VC    Age   RX count   TX count
- 1 38/0   ca04.046f.0038 forward  Fa2/0           -      0          1          0
- 1 70/0   ca07.0b7b.0070 forward  Fa2/0           -      1       1037       1035
- 1 70/1   ca08.0b82.0070 forward  FastEthernet4/0 -      0       1037       1034
-
-Flood ports (BG 1)           RX count    TX count
-FastEthernet2/0                    12           5
-FastEthernet4/0                     5          12
-
-ce-2#
+APP40#
