@@ -1,15 +1,11 @@
 C-41#
 C-41#
-C-41#
-C-41#
-C-41#
-C-41#
 C-41#sh run
 Building configuration...
 
-Current configuration : 4908 bytes
+Current configuration : 5324 bytes
 !
-! Last configuration change at 22:27:05 UTC Sun Jul 30 2023 by lab
+! Last configuration change at 23:44:08 UTC Sun Jul 30 2023 by lab
 !
 upgrade fpd auto
 version 15.0
@@ -69,11 +65,23 @@ policy-map POLICY-INGRESS-LO41
 !
 ! 
 !
+crypto isakmp policy 100
+ encr aes 256
+ authentication pre-share
+ group 16
+crypto isakmp key KEY address 192.168.0.51
+!
+!
+crypto ipsec transform-set TRANSFORM esp-aes esp-sha-hmac 
+!
+crypto ipsec profile TUNNEL-PROTECT
+ set transform-set TRANSFORM 
 !
 !
 !
 !
-!         
+!
+!
 !
 interface Loopback41
  ip address 41.0.0.1 255.255.255.255
@@ -82,8 +90,12 @@ interface Loopback41
 !
 interface Tunnel1
  ip unnumbered FastEthernet4/0.192
+ ip tcp adjust-mss 1300
  tunnel source 192.168.0.41
+ tunnel mode ipsec ipv4
  tunnel destination 192.168.0.51
+ tunnel path-mtu-discovery
+ tunnel protection ipsec profile TUNNEL-PROTECT
  !
 !
 interface FastEthernet0/0
@@ -103,7 +115,7 @@ interface FastEthernet1/0
  no ip address
  duplex half
  !
-!
+!         
 interface FastEthernet2/0
  no ip address
  duplex half
@@ -126,9 +138,9 @@ interface FastEthernet4/0.192
 ip forward-protocol nd
 no ip http server
 no ip http secure-server
+!         
 !
-!
-ip route 50.0.0.0 255.255.255.0 192.168.0.51
+ip route 50.0.0.0 255.255.255.0 Tunnel1
 ip route 51.0.0.1 255.255.255.255 Tunnel1
 !
 no cdp log mismatch duplex
@@ -149,7 +161,7 @@ mgcp behavior g729-variants static-pt
 !
 gatekeeper
  shutdown
-!
+!         
 alias exec sid show interfaces description
 alias exec crs copy run start
 alias exec wha sh run | i alias
@@ -209,9 +221,10 @@ alias exec sml2vde show mpls l2transport vc detail
 alias exec sml2vds show mpls l2transport vc destination
 alias exec sml2vi show mpls l2transport vc interface
 alias exec whah show run | i host
-alias exec scsa show crypto ipsec sa
 alias exec scsacaps show crypto ipsec sa | i caps
-!         
+alias exec scsap show crypto ipsec sa | i caps
+alias exec scsa show crypto ipsec sa
+!
 line con 0
  exec-timeout 0 0
  privilege level 15
@@ -234,4 +247,4 @@ line vty 5 15
 !
 end
 
-C-41# 
+C-41#     
