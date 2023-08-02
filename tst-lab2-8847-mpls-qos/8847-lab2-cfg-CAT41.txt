@@ -1,11 +1,15 @@
+-41#
+C-41#
+C-41#
+C-41#
 C-41#
 C-41#
 C-41#sh run
 Building configuration...
 
-Current configuration : 5324 bytes
+Current configuration : 5290 bytes
 !
-! Last configuration change at 23:44:08 UTC Sun Jul 30 2023 by lab
+! Last configuration change at 00:35:14 UTC Mon Jul 31 2023 by lab
 !
 upgrade fpd auto
 version 15.0
@@ -50,8 +54,8 @@ redundancy
 ip tcp synwait-time 5
 ip ssh source-interface Loopback41
 !
-class-map match-all CLASS-INGRESS-LO41
- match input-interface Loopback41
+class-map match-all CLASS-EGRESS-VLAN-192
+ match any 
 class-map match-all CLASS-INGRESS-F00
  match input-interface FastEthernet0/0
 !
@@ -59,9 +63,9 @@ class-map match-all CLASS-INGRESS-F00
 policy-map POLICY-INGRESS-F00
  class CLASS-INGRESS-F00
   set dscp ef
-policy-map POLICY-INGRESS-LO41
- class CLASS-INGRESS-LO41
-  set dscp ef
+policy-map POLICY-EGRESS-VLAN-192
+ class CLASS-EGRESS-VLAN-192
+  set cos 5
 !
 ! 
 !
@@ -86,7 +90,6 @@ crypto ipsec profile TUNNEL-PROTECT
 interface Loopback41
  ip address 41.0.0.1 255.255.255.255
  !
- service-policy input POLICY-INGRESS-LO41
 !
 interface Tunnel1
  ip unnumbered FastEthernet4/0.192
@@ -115,7 +118,7 @@ interface FastEthernet1/0
  no ip address
  duplex half
  !
-!         
+!
 interface FastEthernet2/0
  no ip address
  duplex half
@@ -127,13 +130,14 @@ interface FastEthernet3/0
  !
 !
 interface FastEthernet4/0
- ip address 172.17.0.41 255.255.255.0
+ no ip address
  duplex full
  !
 !
 interface FastEthernet4/0.192
  encapsulation dot1Q 192
  ip address 192.168.0.41 255.255.255.0
+ service-policy output POLICY-EGRESS-VLAN-192
 !
 ip forward-protocol nd
 no ip http server
@@ -247,4 +251,4 @@ line vty 5 15
 !
 end
 
-C-41#     
+C-41#  

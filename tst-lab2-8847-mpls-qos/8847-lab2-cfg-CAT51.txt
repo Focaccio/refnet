@@ -2,13 +2,12 @@ T-51#
 T-51#
 T-51#
 T-51#
-T-51#
 T-51#sh run
 Building configuration...
 
-Current configuration : 5071 bytes
+Current configuration : 5224 bytes
 !
-! Last configuration change at 23:42:39 UTC Sun Jul 30 2023 by lab
+! Last configuration change at 00:36:28 UTC Mon Jul 31 2023 by lab
 !
 upgrade fpd auto
 version 15.0
@@ -52,13 +51,18 @@ redundancy
 !         
 ip tcp synwait-time 5
 !
-class-map match-all CLASS-INGRESS-LO51
- match input-interface Loopback51
+class-map match-all CLASS-EGRESS-VLAN-192
+ match any 
+class-map match-all CLASS-INGRESS-F00
+ match input-interface FastEthernet0/0
 !
 !
-policy-map POLICY-INGRESS-LO51
- class CLASS-INGRESS-LO51
+policy-map POLICY-INGRESS-F00
+ class CLASS-INGRESS-F00
   set dscp ef
+policy-map POLICY-EGRESS-VLAN-192
+ class CLASS-EGRESS-VLAN-192
+  set cos 5
 !
 ! 
 !
@@ -67,7 +71,7 @@ crypto isakmp policy 100
  authentication pre-share
  group 16
 crypto isakmp key KEY address 192.168.0.41
-!
+!         
 !
 crypto ipsec transform-set TRANSFORM esp-aes esp-sha-hmac 
 !
@@ -83,7 +87,6 @@ crypto ipsec profile TUNNEL-PROTECT
 interface Loopback51
  ip address 51.0.0.1 255.255.255.255
  !
- service-policy input POLICY-INGRESS-LO51
 !
 interface Tunnel1
  ip unnumbered FastEthernet4/0.192
@@ -100,6 +103,7 @@ interface FastEthernet0/0
  duplex full
  speed auto
  !
+ service-policy input POLICY-INGRESS-F00
 !
 interface FastEthernet0/1
  no ip address
@@ -113,12 +117,12 @@ interface FastEthernet1/0
  shutdown
  duplex half
  !
-!
+!         
 interface FastEthernet2/0
  no ip address
  shutdown
  duplex half
- !        
+ !
 !
 interface FastEthernet3/0
  no ip address
@@ -127,13 +131,14 @@ interface FastEthernet3/0
  !
 !
 interface FastEthernet4/0
- ip address 172.17.0.51 255.255.255.0
+ no ip address
  duplex full
  !
 !
 interface FastEthernet4/0.192
  encapsulation dot1Q 192
  ip address 192.168.0.51 255.255.255.0
+ service-policy output POLICY-EGRESS-VLAN-192
 !
 ip forward-protocol nd
 no ip http server
@@ -158,7 +163,7 @@ mgcp fax t38 ecm
 mgcp behavior g729-variants static-pt
 !
 !
-!
+!         
 gatekeeper
  shutdown
 !
@@ -245,4 +250,4 @@ line vty 5 15
 !
 end
 
-T-51#     
+T-51#  
