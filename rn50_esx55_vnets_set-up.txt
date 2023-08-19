@@ -4,11 +4,12 @@ rn50_esx55_vnets_set-up.txt
 
 ```act```do.where.when
 
+rm -r /etc/vmware/license.cfg
+
+cp /etc/vmware/.#license.cfg /etc/vmware/license.cfg
 
 
-
-
-
+/etc/init.d/vpxa restart
 
 
 
