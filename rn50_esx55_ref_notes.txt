@@ -7,6 +7,10 @@ rn50_esx55_ref_notes.txt
 ***********************************************************************************************
 ***********************************************************************************************
 ***********************************************************************************************
+esxcli esxcli command list
+
+
+
 ```act```do.where.when
 ```reset eval license```
 ***********************************************************************************************
@@ -48,6 +52,26 @@ cp /etc/vmware/.#license.cfg /etc/vmware/license.cfg
 
 
 /etc/init.d/vpxa restart
+
+
+/etc/vmware # rm -r license.cfg 
+/etc/vmware # cp .#license.cfg license.cfg
+/etc/vmware # cd /etc/init.d
+/etc/init.d # ./vpxa restart
+watchdog-vpxa: Terminating watchdog process with PID 34553
+vpxa stopped.
+/etc/init.d # ./vpxa start
+vpxa is running
+/etc/init.d # time
+BusyBox v1.20.2 (2012-12-11 11:54:28 PST) multi-call binary.
+
+Usage: time [-v] PROG ARGS
+
+Run PROG, display resource usage when it exits
+
+        -v      Verbose
+
+/etc/init.d # 
 
 
 
