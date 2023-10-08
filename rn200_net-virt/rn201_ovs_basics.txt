@@ -1,8 +1,22 @@
+
+
+OVS bridge/taps
+~~~good reference
+https://arthurchiao.art/blog/ovs-deep-dive-6-internal-port/
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+https://youtu.be/Ii7ZjJeZZlM?si=0m3kQ38DyYlIsQeU
+
+
+
 https://youtu.be/CpY3AV1AYM4?si=nam_N3vPsgYwXpsy
 
 https://www.cse.wustl.edu/~jain/cse570-13/m_15oct.htm
 
 https://leftasexercise.com/2020/01/06/virtual-networking-labs-a-short-introduction-to-open-vswitch/
+
+
 
 
 

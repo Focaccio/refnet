@@ -1,3 +1,54 @@
+
+
+
+
+
+    If you wish to install a non-Debian-packaged Python package,
+    create a virtual environment using 
+    
+    python3 -m venv path/to/venv
+    Then use 
+    
+    path/to/venv/bin/python
+     and 
+    
+    path/to/venv/bin/pip
+    
+    Make sure you have python3-full installed
+
+
+
+
+
+
+
+python3 -m venv python-demo-venv1
+
+source python-demo-venv1/bin/activate
+
+
+# Install the Python3 venv package if not already installed
+sudo apt install python3-venv
+
+# Create a new virtual environment
+python3 -m venv myenv
+
+# Activate the virtual environment
+source myenv/bin/activate
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 To create a "Hello, World!" program using IronPython and compile it into an executable (.exe) that can be run on Windows, you can follow these steps:
 
 1. **Install IronPython**:
