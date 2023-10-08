@@ -1,5 +1,82 @@
 
 
+https://arthurchiao.art/blog/play-with-container-network-if/
+https://www.baeldung.com/linux/docker-network-namespace-invisible
+
+https://webdock.io/en/docs/how-guides/docker-guides/how-to-create-and-manage-docker-networks-and-docker-volumes
+
+
+docker inspect -f '{{.State.Pid}}' d12x
+
+
+
+root@d12:/var/run# cd netns/
+root@d12:/var/run/netns# ls -la
+total 0
+drwxr-xr-x  2 root root  40 Oct  7 21:56 .
+drwxr-xr-x 35 root root 900 Oct  7 21:56 ..
+root@d12:/var/run/netns# docker ps
+CONTAINER ID   IMAGE        COMMAND         CREATED          STATUS          PORTS     NAMES
+c3ad4a0718c9   alpine:3.5   "sleep 3600d"   8 minutes ago    Up 8 minutes              ctn-1
+4ce8a3abdf1e   debian       "sh"            25 minutes ago   Up 25 minutes             d12x
+d40a7bcad1c2   fedora       "bash"          36 minutes ago   Up 36 minutes             admiring_germain
+root@d12:/var/run/netns# touch 4ce8a3abdf1e
+root@d12:/var/run/netns# ls -la
+total 0
+drwxr-xr-x  2 root root  60 Oct  7 21:57 .
+drwxr-xr-x 35 root root 900 Oct  7 21:56 ..
+-rw-r--r--  1 root root   0 Oct  7 21:57 4ce8a3abdf1e
+root@d12:/var/run/netns# docker inspect -f '{{.State.Pid}}' d12x
+9407
+root@d12:/var/run/netns# mount -o bind /proc/9407/ns/net /var/run/netns/4ce8a3abdf1e 
+root@d12:/var/run/netns# ip netns ls
+4ce8a3abdf1e (id: 1)
+root@d12:/var/run/netns# ip netns exex 4ce8a3abdf1e ip addr list
+Command "exex" is unknown, try "ip netns help".
+root@d12:/var/run/netns# ip netns exec 4ce8a3abdf1e ip addr list
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+17: eth0@if18: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
+    link/ether 02:42:ac:11:00:03 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 172.17.0.3/16 brd 172.17.255.255 scope global eth0
+       valid_lft forever preferred_lft forever
+root@d12:/var/run/netns# 
+
+
+
+root@d12:~# docker ps
+CONTAINER ID   IMAGE        COMMAND         CREATED          STATUS          PORTS     NAMES
+c3ad4a0718c9   alpine:3.5   "sleep 3600d"   6 seconds ago    Up 5 seconds              ctn-1
+4ce8a3abdf1e   debian       "sh"            17 minutes ago   Up 17 minutes             d12x
+d40a7bcad1c2   fedora       "bash"          28 minutes ago   Up 28 minutes             admiring_germain
+root@d12:~# docker inspect -f '{{.State.Pid}}' ctn-1
+9812
+root@d12:~# ln -s /proc/9812/ns/net /var/run/netns/9812
+ln: failed to create symbolic link '/var/run/netns/9812': No such file or directory
+root@d12:~# ip netns exec 9812 ifconfig
+Cannot open network namespace "9812": No such file or directory
+root@d12:~# ls -la /proc/9812.ns
+ls: cannot access '/proc/9812.ns': No such file or directory
+root@d12:~# ls -la /proc/9812/ns
+total 0
+dr-x--x--x 2 root root 0 Oct  7 21:48 .
+dr-xr-xr-x 9 root root 0 Oct  7 21:48 ..
+lrwxrwxrwx 1 root root 0 Oct  7 21:52 cgroup -> 'cgroup:[4026532897]'
+lrwxrwxrwx 1 root root 0 Oct  7 21:52 ipc -> 'ipc:[4026532836]'
+lrwxrwxrwx 1 root root 0 Oct  7 21:52 mnt -> 'mnt:[4026532834]'
+lrwxrwxrwx 1 root root 0 Oct  7 21:48 net -> 'net:[4026532838]'
+lrwxrwxrwx 1 root root 0 Oct  7 21:52 pid -> 'pid:[4026532837]'
+lrwxrwxrwx 1 root root 0 Oct  7 21:52 pid_for_children -> 'pid:[4026532837]'
+lrwxrwxrwx 1 root root 0 Oct  7 21:52 time -> 'time:[4026531834]'
+lrwxrwxrwx 1 root root 0 Oct  7 21:52 time_for_children -> 'time:[4026531834]'
+lrwxrwxrwx 1 root root 0 Oct  7 21:52 user -> 'user:[4026531837]'
+lrwxrwxrwx 1 root root 0 Oct  7 21:52 uts -> 'uts:[4026532835]'
+root@d12:~# 
+
+
+
 
 
 root@d12:~# docker login -u focaccio
@@ -11,13 +88,39 @@ https://docs.docker.com/engine/reference/commandline/login/#credentials-store
 Login Succeeded
 root@d12:~# 
 
+https://developer.fedoraproject.org/tools/docker/docker-usage.html
+
+Running a container
+Use docker run to run an application inside a container. The following command pulls Fedora image, creates a container from it and runs Bash shell inside it.
+
+$ sudo docker run -it fedora bash
+Other useful options to use with run are for example -d to run a container in background (to daemonize it) or --name to give container a name which you can later use with docker stop/start.
+
+See also Docker run reference.
+
+Other useful commands regarding running containers are for example:
+
+docker ps to list running containers
+docker stop to stop running container and docker start to start stopped container
+docker logs to look inside container
+docker exec to enter running container, like: docker exec -it [container-id] bash
+
+
+docker exec -it d40a7bcad1c2 bash
+
+
+docker exec -it [container-id] bash
+
+
+root@d12:~# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED              STATUS              PORTS     NAMES
+d40a7bcad1c2   fedora    "bash"    About a minute ago   Up About a minute             admiring_germain
+root@d12:~# 
 
 
 
 
-
-
-
+https://docs.docker.com/network/network-tutorial-macvlan/
 
 
 
