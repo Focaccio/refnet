@@ -15,6 +15,10 @@ lldpd
 wget
 screen
 bmon - bandwidth monitor
+tcptrack - Good
+speedometer - Good 
+iptraf
+iptraf-ng - Good
 
 
 
@@ -31,6 +35,12 @@ SPECIALIZED
 ###############################################################################################
 ###############################################################################################
 NTOP
+
+glances - good
+
+checkmk - not reviewed
+
+
 
 
 
