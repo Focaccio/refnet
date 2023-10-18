@@ -1,5 +1,99 @@
 
 
+
+
+
+
+
+
+
+
+
+
+
+~~~act - enter a container by name
+de -it net1x bash
+
+~~~config - run an container and give it an easy name
+04:06root@d12 ~ ? d run --name net1x -d net1:v0
+
+
+
+
+
+
+
+
+15:05root@d12 ~ ? d login -u focaccio
+Password: 
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+15:05root@d12 ~ ?
+
+
+
+
+
+
+~~~duplicate
+docker run -d --name new_container_name image_name
+
+
+
+
+
+
+04:06root@d12 ~ ? d run --name net1x -d net1:v0
+0b8b2efda8262338a246791f89d7e814bd476c33524992a144515eca4286ca05
+04:08root@d12 ~ ? d ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS                          PORTS                                  NAMES
+0b8b2efda826   net1:v0        "/bin/sh /docker/ent…"   6 seconds ago   Up 4 seconds                    80/tcp, 443/tcp, 1180/tcp, 11443/tcp   net1x
+1e06b8dd25af   net1:v0        "/bin/sh /docker/ent…"   2 days ago      Exited (0) About a minute ago                                          quizzical_wescoff
+...
+04:08root@d12 ~ ? de -it net1x
+"docker exec" requires at least 2 arguments.
+See 'docker exec --help'.
+Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+Execute a command in a running container
+04:08root@d12 ~ ? de -it net1x bash
+bash-5.1# 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 https://arthurchiao.art/blog/play-with-container-network-if/
 https://www.baeldung.com/linux/docker-network-namespace-invisible
 
