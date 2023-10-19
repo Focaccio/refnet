@@ -28,10 +28,12 @@ NET - packages
 ...............................................................................................
 ...............................................................................................
 tshark
+tcpdump // tcpdump -D lists all interfaces
 wireshark
 mtr
 htop
 iperf3
+trafgen
 iftop
 lldpd
 wget
@@ -42,6 +44,14 @@ speedometer - Good
 iptraf
 iptraf-ng - Good
 tc (part of iprotue2)
+netcat
+hping3
+nethogs
+
+
+netsniff-ng
+trafgen
+nload
 
 
 ...............................................................................................

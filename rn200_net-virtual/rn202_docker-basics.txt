@@ -14,10 +14,11 @@
 ~~~act - enter a container by name
 de -it net1x bash
 
-~~~config - run an container and give it an easy name
+~~~config - name container set on run
 04:06root@d12 ~ ? d run --name net1x -d net1:v0
 
-
+~~~config - mac address interfaces set on run
+docker run --mac-address 00:00:00:00:00:af -d net1:v0 
 
 
 
