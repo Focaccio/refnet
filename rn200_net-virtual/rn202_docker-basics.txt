@@ -24,7 +24,11 @@ docker run --mac-address 00:00:00:00:00:af -d net1:v0
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Ho to make custom docker images:
-Good ***** https://youtu.be/ZAoK8O9oBGo?si=b_MymNTvVpkchBww *****
+Good ***** 
+https://youtu.be/ZAoK8O9oBGo?si=b_MymNTvVpkchBww
+
+Connecting to local hosts
+https://www.youtube.com/watch?v=NZGu-9KQVsE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
