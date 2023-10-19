@@ -22,7 +22,10 @@ docker run --mac-address 00:00:00:00:00:af -d net1:v0
 
 
 
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Ho to make custom docker images:
+Good ***** https://youtu.be/ZAoK8O9oBGo?si=b_MymNTvVpkchBww *****
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 15:05root@d12 ~ ? d login -u focaccio
