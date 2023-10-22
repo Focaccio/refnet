@@ -4,12 +4,18 @@
 
 
 
+~~~process
+1. MAKE/SSH to DEH1 docker engine host 1 // idea for docker engine hosts...deh1, deh2, deh3, etc.
+2. login to docker hub
+3. do stuff
 
 
 
 
 
-
+~~~act - login docker hub from dehX docker-engine-hostX
+note: get key from docker hub
+#d login -u focaccio
 
 ~~~act - enter a container by name
 de -it net1x bash
@@ -20,6 +26,26 @@ de -it net1x bash
 ~~~config - mac address interfaces set on run
 docker run --mac-address 00:00:00:00:00:af -d net1:v0 
 
+
+
+~~~instruction session1
+
+
+testcontainers/sshd        latest    7a6c74a68a8d   3 years ago     7.8MB
+test-sshd1                 latest    7a6c74a68a8d   3 years ago     7.8MB
+20:25root@d12 / ? 
+
+docker tag 7a6c74a68a8d test-sshd1
+docker run -dit --name test-sshd1 test-sshd1
+
+20:27root@d12 / ? d ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS                    PORTS     NAMES
+d359944b0146   test-sshd1     "/bin/sh"                4 seconds ago   Up 3 seconds                        test-sshd1
+
+
+docker exec -it test-sshd1 sh
+20:28root@d12 / ? docker exec -it test-sshd1 sh
+/ # 
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
