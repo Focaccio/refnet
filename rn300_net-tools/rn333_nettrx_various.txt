@@ -1,0 +1,31 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+```ssh to old devices
+greg@fx1ats:/$ ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 gregf@192.168.100.41
+
+
+ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 192.168.86.7 -llab
+
+ssh -c 3des-cbc your_username@cisco_device_ip_address
+
+ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 -c 3des-cbc 192.168.86.7 -llab
+
+
+
+
+
+
+
+
+
