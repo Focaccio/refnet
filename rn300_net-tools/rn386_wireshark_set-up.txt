@@ -5,6 +5,9 @@
 
 notes on config parameters
 
+1. Create profile101
+2. Begin to edit profile
+...
 
 
 

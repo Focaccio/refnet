@@ -49,7 +49,7 @@ docker exec -it test-sshd1 sh
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Ho to make custom docker images:
+How to make custom docker images:
 Good ***** 
 https://youtu.be/ZAoK8O9oBGo?si=b_MymNTvVpkchBww
 
