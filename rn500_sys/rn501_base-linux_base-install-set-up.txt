@@ -27,6 +27,13 @@ NET - packages
 ...............................................................................................
 ...............................................................................................
 ...............................................................................................
+$$$$$$$$$$$$$$$$$$$$
+ESSSENTIALS
+$$$$$$$$$$$$$$$$$$$$
+conntrack
+
+
+
 tshark
 tcpdump // tcpdump -D lists all interfaces
 wireshark
@@ -142,6 +149,80 @@ checkmk - not reviewed
 
 
 
+
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+Installing visual code on linux / debian 12
+
+apt-get install software-properties-common apt-transport-https wget gpg
+#
+...
+
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+#
+05:35root@d12 ~ ? wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+05:35root@d12 ~ ? 
+
+
+install -D -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/packages.microsoft.gpg
+#
+05:37root@d12 ~ ? install -D -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/packages.microsoft.gpg
+05:37root@d12 ~ ? 
+
+
+sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+# >>>>>>>>>>>>>>> long line....
+05:38root@d12 ~ ? sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+05:39root@d12 ~ ? 
+
+
+
+sudo apt update
+
+
+sudo apt install code
+#
+05:40root@d12 ~ ? apt-get install code
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following packages were automatically installed and are no longer required:
+  libslirp0 linux-image-6.1.0-10-amd64 pigz slirp4netns
+Use 'apt autoremove' to remove them.
+The following NEW packages will be installed:
+  code
+0 upgraded, 1 newly installed, 0 to remove and 4 not upgraded.
+Need to get 95.7 MB of archives.
+After this operation, 386 MB of additional disk space will be used.
+Get:1 https://packages.microsoft.com/repos/code stable/main amd64 code amd64 1.83.1-1696982868 [95.7 MB]
+Fetched 95.7 MB in 11s (8,468 kB/s)                                                                                                                                                                                                        
+Selecting previously unselected package code.
+(Reading database ... 355104 files and directories currently installed.)
+Preparing to unpack .../code_1.83.1-1696982868_amd64.deb ...
+Unpacking code (1.83.1-1696982868) ...
+Setting up code (1.83.1-1696982868) ...
+Processing triggers for gnome-menus (3.36.0-1.1) ...
+Processing triggers for shared-mime-info (2.2-1) ...
+Processing triggers for mailcap (3.70+nmu1) ...
+Processing triggers for desktop-file-utils (0.26-1) ...
+Scanning processes...                                                                                                                                                                                                                       
+Scanning linux images...                                                                                                                                                                                                                    
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+05:40root@d12 ~ ? 
 
 
 
