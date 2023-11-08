@@ -1,5 +1,6 @@
 
 
+https://www.engageinc.com/products/serial-to-ethernet/rs232-over-ip/ip-tube-rs232-cep.html
 
 
 https://www.juniper.net/gb/en/products/routers/ctp-series/ctp-series-circuit-to-packet-platforms-datasheet.html
@@ -13,9 +14,11 @@ https://www.cisco.com/c/en/us/td/docs/ios/vpdn/command/reference/vpd_book.pdf
 
 
 
+https://www.patton.com/catalogs/cat_21-conn-s02-int_conv.pdf
 
 
 
 
+https://www.engageinc.com/downloads/IPTube_User_Guide.pdf
 
 
