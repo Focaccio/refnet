@@ -6,6 +6,20 @@ nomasssystem
 
 
 
+-rw-r--r--  1 root root 1346 Nov 11 10:42 a14.1-ssh-cisco-config-cap.py
+-rw-r--r--  1 root root 1346 Nov 11 10:44 a14.1.var1-ssh-10-0-0-252-config-cap.py
+
+a = acta 
+
+a14 code 
+a14.1 version base 
+A14.1.1 subversions base 
+
+a14.1.1.var1 - variant 1 of subversion
+a14.1.var1 - variant 1 .py name can be different
+
+
+
 
 
 
