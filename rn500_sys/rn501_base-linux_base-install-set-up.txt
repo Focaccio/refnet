@@ -87,6 +87,8 @@ PS1='\A\u@\[\033[1m\]\H\[\033[0m\] \w ? '
 fi
 
 
+systemctl stop NetworkManager.service
+systemctl disable NetworkManager.service
 
 
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
