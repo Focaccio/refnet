@@ -1,0 +1,95 @@
+~~~top.config-pusher
+
+
+set-up
+apt-get install python3-full
+apt-get install python3-pip
+
+
+d12
+set-up
+apt-get install python3-full
+apt install python3 python3-venv
+apt-get install python3-paramiko
+apt-get install python3-netmiko
+
+venv
+mkdir rn440_py3_config-pusher101
+
+
+python3 -m venv -h
+
+python3 -m venv --prompt=my_custom_env my_custom_env
+
+source my_custom_env/bin/activate
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~REAL
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+05:40root@dv186 /rn440_py3_config-pusher101 ? python3 -m venv --prompt=rn440 rn440
+05:44root@dv186 /rn440_py3_config-pusher101 ? source rn440/bin/activate
+(rn440) 05:44root@dv186 /rn440_py3_config-pusher101 ? 
+(rn440) 05:44root@dv186 /rn440_py3_config-pusher101 ? 
+(rn440) 05:44root@dv186 /rn440_py3_config-pusher101 ? 
+
+(rn440) 05:49root@dv186 /rn440_py3_config-pusher101 ? python3 hello.py 
+Hello, World!
+(rn440) 05:50root@dv186 /rn440_py3_config-pusher101 ? 
+
+
+(rn440) 05:57root@dv186 /rn440_py3_config-pusher101 ? pip show
+WARNING: ERROR: Please provide a package name or names.
+(rn440) 05:59root@dv186 /rn440_py3_config-pusher101 ? pip show paramiko
+WARNING: Package(s) not found: paramiko
+(rn440) 05:59root@dv186 /rn440_py3_config-pusher101 ? pip install paramiko
+Collecting paramiko
+  Downloading paramiko-3.3.1-py3-none-any.whl (224 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 224.8/224.8 kB 3.3 MB/s eta 0:00:00
+Collecting bcrypt>=3.2
+  Downloading bcrypt-4.0.1-cp36-abi3-manylinux_2_28_x86_64.whl (593 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 593.7/593.7 kB 10.3 MB/s eta 0:00:00
+Collecting cryptography>=3.3
+  Downloading cryptography-41.0.5-cp37-abi3-manylinux_2_28_x86_64.whl (4.4 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.4/4.4 MB 10.2 MB/s eta 0:00:00
+Collecting pynacl>=1.5
+  Downloading PyNaCl-1.5.0-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl (856 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 856.7/856.7 kB 10.4 MB/s eta 0:00:00
+Collecting cffi>=1.12
+  Downloading cffi-1.16.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (464 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 464.8/464.8 kB 8.8 MB/s eta 0:00:00
+Collecting pycparser
+  Downloading pycparser-2.21-py2.py3-none-any.whl (118 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 118.7/118.7 kB 9.2 MB/s eta 0:00:00
+Installing collected packages: pycparser, bcrypt, cffi, pynacl, cryptography, paramiko
+Successfully installed bcrypt-4.0.1 cffi-1.16.0 cryptography-41.0.5 paramiko-3.3.1 pycparser-2.21 pynacl-1.5.0
+(rn440) 06:00root@dv186 /rn440_py3_config-pusher101 ? 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
