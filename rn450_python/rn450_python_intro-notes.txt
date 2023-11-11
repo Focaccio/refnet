@@ -2,6 +2,26 @@
 
 
 
+>>>>> START <<<<<
+apt-get install python3-setuptools
+apt-get install python3-pip
+pip3 --version
+
+apt -f install
+apt-get update
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     If you wish to install a non-Debian-packaged Python package,
     create a virtual environment using 
