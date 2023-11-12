@@ -19,6 +19,11 @@ a14.1.1.var1 - variant 1 of subversion
 a14.1.var1 - variant 1 .py name can be different
 
 
+a=development
+acta=working "finished code" - re-usable unit
+
+
+
 
 
 
