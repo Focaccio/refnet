@@ -23,10 +23,8 @@ import subprocess
 hostname = 'a.b.c.d'
 username = 'username'
 password = 'password'
-
 # ssh command to net device
 ssh_command = f"ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 -c 3des-cbc {username}@{hostname} 'sh run'"
-
 try:
     # Execute SSH command
     result = subprocess.check_output(ssh_command, shell=True, text=True)
@@ -37,13 +35,12 @@ try:
     # Write sh_run to a local file
     with open('network-config.txt', 'w') as file:
         file.write(sh_run)
-
     print(f"sh-run: {sh_run}")
     print("Data written to network-config.txt")
 except subprocess.CalledProcessError as e:
     print(f"Error: {e}")
 #~~~acta14.omega
-# ###############################################################################################
+# #############################################################################################
 #~~~BY? | NOTES?
 #areaf | aggregated 20231111
 ###############################################################################################
