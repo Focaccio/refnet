@@ -1,5 +1,32 @@
 ###############################################################################################
 #~~~WHA?
+#NAME: acta#
+#WHY: why is it needed
+#WHAT: Action with what [ITEM1]
+#INPUT: input requirments
+#OUTPUT: run output 
+#AUTO: does it need user interaction Yes=No | No=Yes
+###############################################################################################
+#~~~FIT?
+#FIT#: what uses cases has it been successfully tested
+###############################################################################################
+#~~~PRE-CONDITIONS?
+#[ITEM1] what conditions must be in place for the code to function
+#[ITEM1] 
+###############################################################################################
+#~~~VARIABLE-NOTES
+#
+###############################################################################################
+<code>>
+###############################################################################################
+#~~~BY? | NOTES?
+#areaf | aggregated 20231111
+
+
+
+e.g.
+###############################################################################################
+#~~~WHA?
 #NAME: acta14
 #WHY: Get device config to a text .txt file
 #WHAT: Action with "recahable" ip addressed network device [ITEM1]
@@ -11,8 +38,8 @@
 #FIT1: Old cisco devices with diffie-hellman-group1-sha1 key exchange
 ###############################################################################################
 #~~~PRE-CONDITIONS?
-#[ITEM1-PC1] username must be privi 15
-#[ITEM1-PC2] term len 0
+#[ITEM1] username must be privi 15
+#[ITEM1] term len 0
 ###############################################################################################
 #~~~VARIABLE-NOTES
 #
