@@ -1,16 +1,18 @@
 ###############################################################################################
 #~~~WHA?
 #NAME: acta14
-#AUTO: No | Require user input (currently)
+#WHY: Get device config to a text .txt file
+#WHAT: Action with "recahable" ip addressed network device [ITEM1]
 #INPUT: IP address, username, password
-#OUTPUT: cisco config to .txt file 
-##############################################################################################################################################################################################
+#OUTPUT: device config to .txt file 
+#AUTO: No | Require user input (currently)
+###############################################################################################
 #~~~FIT?
-#Old cisco devices with diffie-hellman-group1-sha1 key exchange
+#FIT1: Old cisco devices with diffie-hellman-group1-sha1 key exchange
 ###############################################################################################
 #~~~PRE-CONDITIONS?
-#username must be privi 15
-#term len 0
+#[ITEM1] username must be privi 15
+#[ITEM1] term len 0
 ###############################################################################################
 #~~~VARIABLE-NOTES
 #
@@ -40,5 +42,6 @@ try:
 except subprocess.CalledProcessError as e:
     print(f"Error: {e}")
 ###############################################################################################
-#~~~areaf aggregated 20231111
+#~~~BY? | NOTES?
+#areaf | aggregated 20231111
 ###############################################################################################
