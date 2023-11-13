@@ -68,9 +68,9 @@ def send_commands_to_router(commands, router_ip, username, password):
             ssh_process.terminate()
 
 if __name__ == "__main__":
-    router_ip = "10.0.0.1"
-    username = "lab"
-    password = "lab"
+    router_ip = "a.b.c.d"
+    username = "username"
+    password = "password"
 
     commands_to_send = [
         "conf t",
