@@ -28,9 +28,9 @@ def send_config_to_router(router_ip, username, password, config_file):
         print(error_output)
 
 if __name__ == "__main__":
-    router_ip = "10.0.0.1"
-    username = "lab"
-    password = "lab"
-    config_file = "/rn440_py3_config-pusher101/a28-config-pusher/config.txt"
+    router_ip = "a.b.c.d"
+    username = "nomasssystem"
+    password = "nomasssystem"
+    config_file = "/path/to/config.txt"
 
     send_config_to_router(router_ip, username, password, config_file)
