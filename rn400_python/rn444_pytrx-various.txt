@@ -17,7 +17,32 @@ drwxr-xr-x 5 root root 4096 Nov 11 05:44 ..
 
 
 
-
+||| example
+07:26root@dv186 /rn440_py3_config-pusher101/rn440/bin ? ls -la
+total 80
+drwxr-xr-x 2 root root 4096 Nov 12 14:58 .
+drwxr-xr-x 5 root root 4096 Nov 11 05:44 ..
+-rw-r--r-- 1 root root 2266 Nov 12 14:58 activate
+-rw-r--r-- 1 root root  928 Nov 11 05:44 activate.csh
+-rw-r--r-- 1 root root 2208 Nov 11 05:44 activate.fish
+-rw-r--r-- 1 root root 9033 Nov 11 05:44 Activate.ps1
+-rwxr-xr-x 1 root root  989 Nov 11 06:01 futurize
+-rwxr-xr-x 1 root root  263 Nov 11 06:01 netmiko-cfg
+-rwxr-xr-x 1 root root  264 Nov 11 06:01 netmiko-grep
+-rwxr-xr-x 1 root root  264 Nov 11 06:01 netmiko-show
+-rw-r--r-- 1 root root 2002 Nov 12 14:49 orig_activate
+-rwxr-xr-x 1 root root  993 Nov 11 06:01 pasteurize
+-rwxr-xr-x 1 root root  250 Nov 11 05:44 pip
+-rwxr-xr-x 1 root root  250 Nov 11 05:44 pip3
+-rwxr-xr-x 1 root root  250 Nov 11 05:44 pip3.11
+-rwxr-xr-x 1 root root  249 Nov 11 06:01 pyserial-miniterm
+-rwxr-xr-x 1 root root  251 Nov 11 06:01 pyserial-ports
+lrwxrwxrwx 1 root root    7 Nov 11 05:44 python -> python3
+lrwxrwxrwx 1 root root   16 Nov 11 05:44 python3 -> /usr/bin/python3
+lrwxrwxrwx 1 root root    7 Nov 11 05:44 python3.11 -> python3
+-rwxr-xr-x 1 root root  242 Nov 11 06:01 textfsm
+07:26root@dv186 /rn440_py3_config-pusher101/rn440/bin ? source activate
+(rn440) 07:26root@dv186 /rn440_py3_config-pusher101/rn440/bin ? 
 
 
 
