@@ -1,0 +1,154 @@
+***********************************************************************************************
+***********************************************************************************************
+***********************************************************************************************
+***********************************************************************************************
+rn50_esx55_ref_notes.txt
+***********************************************************************************************
+***********************************************************************************************
+***********************************************************************************************
+***********************************************************************************************
+esxcli          general commands
+vmkfstools      files system tools
+
+
+
+```act```do.where.when
+```reset eval license```
+***********************************************************************************************
+***********************************************************************************************
+
+
+```act```do.where.when
+***********************************************************************************************
+***********************************************************************************************
+```networking```
+
+~ # esxcli network nic list
+Name    PCI Device     Driver  Link  Speed  Duplex  MAC Address         MTU  Description                                          
+------  -------------  ------  ----  -----  ------  -----------------  ----  -----------------------------------------------------
+vmnic0  0000:000:19.0  e1000e  Up      100  Full    00:1c:c0:fa:d4:86  1500  Intel Corporation 82578DC Gigabit Network Connection 
+vmnic1  0000:004:00.0  e1000e  Up      100  Full    00:15:17:d3:26:10  1500  Intel Corporation 82571EB Gigabit Ethernet Controller
+vmnic2  0000:004:00.1  e1000e  Up      100  Full    00:15:17:d3:26:11  1500  Intel Corporation 82571EB Gigabit Ethernet Controller
+vmnic3  0000:005:00.0  e1000e  Up      100  Full    00:15:17:d3:26:12  1500  Intel Corporation 82571EB Gigabit Ethernet Controller
+vmnic4  0000:005:00.1  e1000e  Up      100  Full    00:15:17:d3:26:13  1500  Intel Corporation 82571EB Gigabit Ethernet Controller
+~ # 
+
+
+
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+```esx-ops
+```cloning VMs using vmfstools
+1. consolidate snapshots
+2. mkdir (pwd) copy
+3. use vmkfstools to clone (-i) from source to mkdir destination with new name 
+vmkfstools -i "/vmfs/volumes/64693601-1f3171d2-34bd-001cc0fad486/tst-labs/d12/d12.vmdk" "/vmfs/volumes/64693601-1f3171d2-34bd-001cc0fad486/tst-labs/d12vceh1/d12vceh1.vmdk"
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+```act```do.where.when
+***********************************************************************************************
+***********************************************************************************************
+```reset eval license```
+
+rm -r /etc/vmware/license.cfg
+
+cp /etc/vmware/.#license.cfg /etc/vmware/license.cfg
+
+
+/etc/init.d/vpxa restart
+
+
+/etc/vmware # rm -r license.cfg 
+/etc/vmware # cp .#license.cfg license.cfg
+/etc/vmware # cd /etc/init.d
+/etc/init.d # ./vpxa restart
+watchdog-vpxa: Terminating watchdog process with PID 34553
+vpxa stopped.
+/etc/init.d # ./vpxa start
+vpxa is running
+/etc/init.d # time
+BusyBox v1.20.2 (2012-12-11 11:54:28 PST) multi-call binary.
+
+Usage: time [-v] PROG ARGS
+
+Run PROG, display resource usage when it exits
+
+        -v      Verbose
+
+/etc/init.d # 
+
+
+
+~ # uname -a
+VMkernel localhost.lan 5.5.0 #1 SMP Release build-3248547 Nov 17 2015 21:38:51 x86_64 GNU/Linux
+~ # cd /etc/vmware
+/etc/vmware # ls -la | grep lic
+-r--r--r-T    1 root     root           170 Nov 18  2015 .#license.cfg
+-rw-r--r--    1 root     root           311 Jul 19 21:34 license.cfg
+drwxr-xr-x    1 root     root           512 May 21 00:54 secpolicy
+-rw------T    1 root     root            30 Nov 18  2015 vmware.lic
+/etc/vmware # rm -r license.cfg 
+/etc/vmware # ls -la | grep lic
+-r--r--r-T    1 root     root           170 Nov 18  2015 .#license.cfg
+drwxr-xr-x    1 root     root           512 May 21 00:54 secpolicy
+-rw------T    1 root     root            30 Nov 18  2015 vmware.lic
+/etc/vmware # cp .#license.cfg license.cfg
+/etc/vmware # ls -la | grep lic
+-r--r--r-T    1 root     root           170 Nov 18  2015 .#license.cfg
+-r--r--r-T    1 root     root           170 Aug 19 13:09 license.cfg
+drwxr-xr-x    1 root     root           512 May 21 00:54 secpolicy
+-rw------T    1 root     root            30 Nov 18  2015 vmware.lic
+/etc/vmware # cd /etc/init.d
+/etc/init.d # vpxa restart
+-sh: vpxa: not found
+/etc/init.d # ls -la | grep vp
+-r-xr-xr-x    1 root     root          1097 Nov 18  2015 vprobed
+-r-xr-xr-x    1 root     root          1320 Nov 18  2015 vpxa
+-r-xr-xr-x    1 root     root          1895 Nov 18  2015 vsanvpd
+/etc/init.d # ./vpxa restart
+watchdog-vpxa: Terminating watchdog process with PID 34454
+vpxa stopped.
+/etc/init.d # ./vpxa start
+vpxa is running
+/etc/init.d # 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
