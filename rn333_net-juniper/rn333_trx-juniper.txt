@@ -10,6 +10,10 @@ show system commit
 file list /config 
 
 > operation mode 
+show interfaces 
+show route terse 
+show ethernet-switching interface 
+show vlans
 
 # config mode 
 
@@ -18,13 +22,117 @@ junos requires a commit
 
 
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+interfaces {
+    ge-0/0/0 {
+        description inet;
+        unit 0 {
+            family inet {
+                dhcp-client {
+                    retransmission-attempt 6;
+                    retransmission-interval 4;
+                }
+            }                           
+        }
+    }
+    ge-0/0/1 {
+        unit 0 {
+            family inet {
+                address 172.234.0.9/29;
+                address 172.234.0.25/29;
+            }
+        }
+    }
+    ge-0/0/2 {
+        unit 0 {
+            family ethernet-switching {
+                vlan {
+                    members ip-tst;
+                }
+            }
+        }
+    }
+    ge-0/0/3 {
+        unit 0 {
+            family ethernet-switching {
+                vlan {                  
+                    members vlan-trust;
+                }
+            }
+        }
+    }
+    ge-0/0/4 {
+        unit 0 {
+            family ethernet-switching {
+                vlan {
+                    members fx.surf;
+                }
+            }
+        }
+    }
+    ge-0/0/5 {
+        mac fa:ce:af:f1:01:77;
+        unit 0 {
+            family ethernet-switching {
+                vlan {
+                    members rockhead;
+                }
+            }
+        }                               
+    }
+    ge-0/0/6 {
+        unit 0 {
+            family inet {
+                address 172.234.0.9/29;
+            }
+        }
+    }
+greg@gliderport> show route brief         
 
+inet.0: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
 
+10.2.1.10/32       *[Local/0] 01:47:25
+                      Reject
+10.7.0.1/32        *[Local/0] 01:47:25
+                      Reject
+128.11.0.66/32     *[Local/0] 01:47:24
+                      Reject
+172.16.0.1/32      *[Local/0] 01:47:25
+                      Reject
+172.18.0.1/32      *[Local/0] 01:47:24
+                      Reject
+172.234.0.8/29     *[Direct/0] 00:06:20
+                    > via ge-0/0/1.0
+172.234.0.9/32     *[Local/0] 00:23:06
+                      Local via ge-0/0/1.0
+172.234.0.24/29    *[Direct/0] 00:05:46
+                    > via ge-0/0/1.0
+172.234.0.25/32    *[Local/0] 00:05:46
+                      Local via ge-0/0/1.0
 
+greg@gliderport> 
 
+greg@gliderport> show vlans      
 
+Routing instance        VLAN name             Tag          Interfaces
+default-switch          default               1        
+                                                           ge-0/0/1.0
+default-switch          fx.surf               7        
+                                                           ge-0/0/4.0
+default-switch          ip-tst                505      
+                                                           ge-0/0/2.0
+default-switch          lab10                 10       
+                                                           ge-0/0/7.0
+default-switch          rockhead              1001     
+                                                           ge-0/0/5.0
+default-switch          vlan-trust            500      
+                                                           ge-0/0/3.0
+                                                           ge-0/0/6.0
+
+greg@gliderport> 
 
 
 
