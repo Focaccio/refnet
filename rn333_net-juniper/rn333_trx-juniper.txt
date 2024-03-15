@@ -1,0 +1,189 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+***********************************************************************************************
+***********************************************************************************************
+```act```do.where.when
+```show set commands
+user@name> show configuration | display set
+
+
+
+***********************************************************************************************
+***********************************************************************************************
+OLD gliderport code 
+greg@gliderport> show configuration | display set 
+set version 15.1X49-D45
+set system host-name gliderport
+set system domain-name f1.areaf.net
+set system root-authentication
+set system name-server 8.8.8.8
+set system name-server 8.8.4.4
+set system scripts op file sit.slax
+set system login user name uid 2000
+set system login user name class super-user
+set system login user name authentication
+set system services ssh
+set system services dhcp-local-server group FXSURF-DHCP-GROUP interface irb.7
+set system services dhcp-local-server group IP-TST-DHCP-GROUP interface irb.505
+set system services dhcp-local-server group SOHO-DHCP-GROUP interface irb.500
+set system syslog archive
+set system syslog file interactive-commands interactive-commands error
+set system syslog file all-message any info
+set system max-configurations-on-flash 5
+set system max-configuration-rollbacks 5
+set system license autoupdate url https://ae1.juniper.net/junos/key_retrieval
+set security address-book global address G-XFRR3_172-16-0-151 172.16.0.151/32
+set security address-book global address G-FNXC_172-16-0-188 172.16.0.188/32
+set security address-book global address G-W10F_172-16-0-202 172.16.0.202/32
+set security screen ids-option untrust-screen icmp ping-death
+set security screen ids-option untrust-screen ip source-route-option
+set security screen ids-option untrust-screen ip tear-drop
+set security screen ids-option untrust-screen tcp syn-flood alarm-threshold 1024
+set security screen ids-option untrust-screen tcp syn-flood attack-threshold 200
+set security screen ids-option untrust-screen tcp syn-flood source-threshold 1024
+set security screen ids-option untrust-screen tcp syn-flood destination-threshold 2048
+set security screen ids-option untrust-screen tcp syn-flood timeout 20
+set security screen ids-option untrust-screen tcp land
+set security nat source rule-set trust-to-untrust from zone trust
+set security nat source rule-set trust-to-untrust to zone untrust
+set security nat source rule-set trust-to-untrust rule source-nat-rule match source-address 0.0.0.0/0
+set security nat source rule-set trust-to-untrust rule source-nat-rule then source-nat interface
+set security nat destination pool POOL-TRUST__172-16-0-151_55151 address 172.16.0.151/32
+set security nat destination pool POOL-TRUST__172-16-0-151_55151 address port 55151
+set security nat destination pool POOL-TRUST__172-16-0-188_22 address 172.16.0.188/32
+set security nat destination pool POOL-TRUST__172-16-0-188_22 address port 22
+set security nat destination pool POOL-TRUST__172-16-0-151_5900 address 172.16.0.151/32
+set security nat destination pool POOL-TRUST__172-16-0-151_5900 address port 5900
+set security nat destination pool POOL-TRUST__172-16-0-202_3389 address 172.16.0.202/32
+set security nat destination pool POOL-TRUST__172-16-0-202_3389 address port 3389
+set security nat destination rule-set XLATE-DST__UNTRUST-RULESET from zone untrust
+set security nat destination rule-set XLATE-DST__UNTRUST-RULESET rule 111-55151_172-16-0-151_55151 match destination-address 70.95.123.148/32
+set security nat destination rule-set XLATE-DST__UNTRUST-RULESET rule 111-55151_172-16-0-151_55151 match destination-port 55151
+set security nat destination rule-set XLATE-DST__UNTRUST-RULESET rule 111-55151_172-16-0-151_55151 then destination-nat pool POOL-TRUST__172-16-0-151_55151
+set security nat destination rule-set XLATE-DST__UNTRUST-RULESET rule 222-5900_172-16-0-151_5900 match destination-address 70.95.123.148/32
+set security nat destination rule-set XLATE-DST__UNTRUST-RULESET rule 222-5900_172-16-0-151_5900 match destination-port 5900
+set security nat destination rule-set XLATE-DST__UNTRUST-RULESET rule 222-5900_172-16-0-151_5900 then destination-nat pool POOL-TRUST__172-16-0-151_5900
+set security nat destination rule-set XLATE-DST__UNTRUST-RULESET rule 333-33389_172-16-0-202_3389 match destination-address 70.95.123.148/32
+set security nat destination rule-set XLATE-DST__UNTRUST-RULESET rule 333-33389_172-16-0-202_3389 match destination-port 33389
+set security nat destination rule-set XLATE-DST__UNTRUST-RULESET rule 333-33389_172-16-0-202_3389 then destination-nat pool POOL-TRUST__172-16-0-202_3389
+set security policies from-zone trust to-zone trust policy trust-to-trust match source-address any
+set security policies from-zone trust to-zone trust policy trust-to-trust match destination-address any
+set security policies from-zone trust to-zone trust policy trust-to-trust match application any
+set security policies from-zone trust to-zone trust policy trust-to-trust then permit
+set security policies from-zone trust to-zone untrust policy trust-to-untrust match source-address any
+set security policies from-zone trust to-zone untrust policy trust-to-untrust match destination-address any
+set security policies from-zone trust to-zone untrust policy trust-to-untrust match application any
+set security policies from-zone trust to-zone untrust policy trust-to-untrust then permit
+set security policies from-zone untrust to-zone trust policy POLICY__UNTRUST-to-TRUST_ALLOWED-IP-TST match source-address any
+set security policies from-zone untrust to-zone trust policy POLICY__UNTRUST-to-TRUST_ALLOWED-IP-TST match destination-address G-XFRR3_172-16-0-151
+set security policies from-zone untrust to-zone trust policy POLICY__UNTRUST-to-TRUST_ALLOWED-IP-TST match destination-address G-FNXC_172-16-0-188
+set security policies from-zone untrust to-zone trust policy POLICY__UNTRUST-to-TRUST_ALLOWED-IP-TST match destination-address G-W10F_172-16-0-202
+set security policies from-zone untrust to-zone trust policy POLICY__UNTRUST-to-TRUST_ALLOWED-IP-TST match application any
+set security policies from-zone untrust to-zone trust policy POLICY__UNTRUST-to-TRUST_ALLOWED-IP-TST then permit
+set security zones security-zone trust host-inbound-traffic system-services all
+set security zones security-zone trust host-inbound-traffic system-services dhcp
+set security zones security-zone trust host-inbound-traffic protocols all
+set security zones security-zone trust interfaces irb.500 host-inbound-traffic system-services ssh
+set security zones security-zone trust interfaces irb.500 host-inbound-traffic system-services dhcp
+set security zones security-zone trust interfaces irb.500 host-inbound-traffic system-services all
+set security zones security-zone trust interfaces irb.505 host-inbound-traffic system-services ssh
+set security zones security-zone trust interfaces irb.505 host-inbound-traffic system-services dhcp
+set security zones security-zone trust interfaces irb.505 host-inbound-traffic system-services all
+set security zones security-zone trust interfaces irb.7 host-inbound-traffic system-services ssh
+set security zones security-zone trust interfaces irb.7 host-inbound-traffic system-services dhcp
+set security zones security-zone trust interfaces irb.7 host-inbound-traffic system-services all
+set security zones security-zone trust interfaces irb.1001 host-inbound-traffic system-services ssh
+set security zones security-zone trust interfaces irb.1001 host-inbound-traffic system-services dhcp
+set security zones security-zone trust interfaces irb.1001 host-inbound-traffic system-services all
+set security zones security-zone trust interfaces irb.10 host-inbound-traffic system-services ssh
+set security zones security-zone trust interfaces irb.10 host-inbound-traffic system-services dhcp
+set security zones security-zone trust interfaces irb.10 host-inbound-traffic system-services all
+set security zones security-zone untrust screen untrust-screen
+set security zones security-zone untrust host-inbound-traffic system-services dhcp
+set security zones security-zone untrust host-inbound-traffic system-services all
+set security zones security-zone untrust interfaces ge-0/0/0.0 host-inbound-traffic system-services any-service
+set security zones security-zone untrust interfaces ge-0/0/0.0 host-inbound-traffic protocols all
+set security zones security-zone OUTSIDE-1
+set interfaces ge-0/0/0 description inet
+set interfaces ge-0/0/0 unit 0 family inet dhcp-client retransmission-attempt 6
+set interfaces ge-0/0/0 unit 0 family inet dhcp-client retransmission-interval 4
+set interfaces ge-0/0/1 unit 0 family ethernet-switching
+set interfaces ge-0/0/2 unit 0 family ethernet-switching vlan members ip-tst
+set interfaces ge-0/0/3 unit 0 family ethernet-switching vlan members vlan-trust
+set interfaces ge-0/0/4 unit 0 family ethernet-switching vlan members fx.surf
+set interfaces ge-0/0/5 mac fa:ce:af:f1:01:77
+set interfaces ge-0/0/5 unit 0 family ethernet-switching vlan members rockhead
+set interfaces ge-0/0/6 unit 0 family ethernet-switching vlan members vlan-trust
+set interfaces ge-0/0/7 description lab
+set interfaces ge-0/0/7 unit 0 family ethernet-switching vlan members lab10
+set interfaces irb unit 7 family inet address 10.7.0.1/24
+set interfaces irb unit 10 family inet address 10.2.1.10/24
+set interfaces irb unit 500 family inet address 172.16.0.1/24
+set interfaces irb unit 505 family inet address 172.18.0.1/24
+set interfaces irb unit 1001 family inet address 128.11.0.66/24
+set protocols l2-learning global-mode switching
+set access address-assignment pool FXSURF-DHCP-GROUP family inet network 10.7.0.0/24
+set access address-assignment pool FXSURF-DHCP-GROUP family inet range FXSURF-DHCP-GROUP-RANGE low 10.7.0.230
+set access address-assignment pool FXSURF-DHCP-GROUP family inet range FXSURF-DHCP-GROUP-RANGE high 10.7.0.250
+set access address-assignment pool FXSURF-DHCP-GROUP family inet dhcp-attributes domain-name f1.areaf.net
+set access address-assignment pool FXSURF-DHCP-GROUP family inet dhcp-attributes name-server 8.8.8.8
+set access address-assignment pool FXSURF-DHCP-GROUP family inet dhcp-attributes name-server 1.1.1.1
+set access address-assignment pool FXSURF-DHCP-GROUP family inet dhcp-attributes router 10.7.0.1
+set access address-assignment pool IP-TST-DHCP-GROUP family inet network 172.18.0.0/24
+set access address-assignment pool IP-TST-DHCP-GROUP family inet range IP-TST-DHCP-GROUP-RANGE low 172.18.0.77
+set access address-assignment pool IP-TST-DHCP-GROUP family inet range IP-TST-DHCP-GROUP-RANGE high 172.18.0.87
+set access address-assignment pool IP-TST-DHCP-GROUP family inet dhcp-attributes domain-name f1.areaf.net
+set access address-assignment pool IP-TST-DHCP-GROUP family inet dhcp-attributes name-server 8.8.8.8
+set access address-assignment pool IP-TST-DHCP-GROUP family inet dhcp-attributes name-server 1.1.1.1
+set access address-assignment pool IP-TST-DHCP-GROUP family inet dhcp-attributes router 172.18.0.1
+set access address-assignment pool SOHO-DHCP-GROUP family inet network 172.16.0.0/24
+set access address-assignment pool SOHO-DHCP-GROUP family inet range SOHO-DHCP-GROUP-RANGE low 172.16.0.77
+set access address-assignment pool SOHO-DHCP-GROUP family inet range SOHO-DHCP-GROUP-RANGE high 172.16.0.87
+set access address-assignment pool SOHO-DHCP-GROUP family inet dhcp-attributes domain-name f1.areaf.net
+set access address-assignment pool SOHO-DHCP-GROUP family inet dhcp-attributes name-server 8.8.8.8
+set access address-assignment pool SOHO-DHCP-GROUP family inet dhcp-attributes name-server 1.1.1.1
+set access address-assignment pool SOHO-DHCP-GROUP family inet dhcp-attributes router 172.16.0.1
+set vlans fx.surf vlan-id 7
+set vlans fx.surf l3-interface irb.7
+set vlans ip-tst vlan-id 505
+set vlans ip-tst l3-interface irb.505
+set vlans lab10 vlan-id 10
+set vlans lab10 l3-interface irb.10
+set vlans rockhead description sdn
+set vlans rockhead vlan-id 1001
+set vlans rockhead l3-interface irb.1001
+set vlans vlan-trust vlan-id 500
+set vlans vlan-trust l3-interface irb.500
+
+greg@gliderport> 
+
+
+
+
+
+
+
+
+
