@@ -1,0 +1,57 @@
+***********************************************************************************************
+***********************************************************************************************
+rn50_esx55_vnets_set-up.txt
+
+```act```do.where.when
+
+rm -r /etc/vmware/license.cfg
+
+cp /etc/vmware/.#license.cfg /etc/vmware/license.cfg
+
+
+/etc/init.d/vpxa restart
+
+
+
+~ # uname -a
+VMkernel localhost.lan 5.5.0 #1 SMP Release build-3248547 Nov 17 2015 21:38:51 x86_64 GNU/Linux
+~ # cd /etc/vmware
+/etc/vmware # ls -la | grep lic
+-r--r--r-T    1 root     root           170 Nov 18  2015 .#license.cfg
+-rw-r--r--    1 root     root           311 Jul 19 21:34 license.cfg
+drwxr-xr-x    1 root     root           512 May 21 00:54 secpolicy
+-rw------T    1 root     root            30 Nov 18  2015 vmware.lic
+/etc/vmware # rm -r license.cfg 
+/etc/vmware # ls -la | grep lic
+-r--r--r-T    1 root     root           170 Nov 18  2015 .#license.cfg
+drwxr-xr-x    1 root     root           512 May 21 00:54 secpolicy
+-rw------T    1 root     root            30 Nov 18  2015 vmware.lic
+/etc/vmware # cp .#license.cfg license.cfg
+/etc/vmware # ls -la | grep lic
+-r--r--r-T    1 root     root           170 Nov 18  2015 .#license.cfg
+-r--r--r-T    1 root     root           170 Aug 19 13:09 license.cfg
+drwxr-xr-x    1 root     root           512 May 21 00:54 secpolicy
+-rw------T    1 root     root            30 Nov 18  2015 vmware.lic
+/etc/vmware # cd /etc/init.d
+/etc/init.d # vpxa restart
+-sh: vpxa: not found
+/etc/init.d # ls -la | grep vp
+-r-xr-xr-x    1 root     root          1097 Nov 18  2015 vprobed
+-r-xr-xr-x    1 root     root          1320 Nov 18  2015 vpxa
+-r-xr-xr-x    1 root     root          1895 Nov 18  2015 vsanvpd
+/etc/init.d # ./vpxa restart
+watchdog-vpxa: Terminating watchdog process with PID 34454
+vpxa stopped.
+/etc/init.d # ./vpxa start
+vpxa is running
+/etc/init.d # 
+
+
+
+
+
+
+
+
+
+
