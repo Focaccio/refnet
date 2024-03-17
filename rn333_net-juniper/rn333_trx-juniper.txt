@@ -20,7 +20,12 @@ show vlans
 junos requires a commit
 
 
-
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+greg@gliderport# commit 
+warning: Interfaces are changed from mix mode to route mode. 
+L2 global mode is changed from switching mode to transparent mode. 
+Please use the command request system reboot 
+on current node or all nodes in case of HA cluster!
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
