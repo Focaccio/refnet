@@ -9,6 +9,31 @@ lab-uc-rtr#
 *Mar  4 00:24:13.095: ICMP: echo reply sent, src 172.199.0.1, dst 172.234.0.27
 lab-uc-rtr#
 
+greg@gliderport> ping 172.199.0.44 
+PING 172.199.0.44 (172.199.0.44): 56 data bytes
+64 bytes from 172.199.0.44: icmp_seq=0 ttl=254 time=2.583 ms
+64 bytes from 172.199.0.44: icmp_seq=1 ttl=254 time=2.496 ms
+64 bytes from 172.199.0.44: icmp_seq=2 ttl=254 time=2.709 ms
+^C
+--- 172.199.0.44 ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max/stddev = 2.496/2.596/2.709/0.087 ms
+
+greg@gliderport> 
+greg@gliderport> ping 172.199.0.44 source 172.234.0.25 
+PING 172.199.0.44 (172.199.0.44): 56 data bytes
+64 bytes from 172.199.0.44: icmp_seq=0 ttl=254 time=2.721 ms
+64 bytes from 172.199.0.44: icmp_seq=1 ttl=254 time=3.360 ms
+64 bytes from 172.199.0.44: icmp_seq=2 ttl=254 time=5.149 ms
+64 bytes from 172.199.0.44: icmp_seq=3 ttl=254 time=4.081 ms
+64 bytes from 172.199.0.44: icmp_seq=4 ttl=254 time=2.149 ms
+^C
+--- 172.199.0.44 ping statistics ---
+5 packets transmitted, 5 packets received, 0% packet loss
+round-trip min/avg/max/stddev = 2.149/3.492/5.149/1.050 ms
+
+greg@gliderport> 
+
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
