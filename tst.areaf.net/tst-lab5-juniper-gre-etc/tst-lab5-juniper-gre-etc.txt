@@ -1,50 +1,810 @@
 
 
 
+lab-uc-rtr#
+*Mar  4 00:24:13.079: ICMP: echo reply sent, src 172.199.0.1, dst 172.234.0.27
+*Mar  4 00:24:13.083: ICMP: echo reply sent, src 172.199.0.1, dst 172.234.0.27
+*Mar  4 00:24:13.087: ICMP: echo reply sent, src 172.199.0.1, dst 172.234.0.27
+*Mar  4 00:24:13.091: ICMP: echo reply sent, src 172.199.0.1, dst 172.234.0.27
+*Mar  4 00:24:13.095: ICMP: echo reply sent, src 172.199.0.1, dst 172.234.0.27
+lab-uc-rtr#
 
-set security zones security-zone interfaces gr-0/0/0 host-inbound-traffic system-services any-service
-set security zones security-zone ALL-OPEN-GR000 interfaces gr-0/0/0 host-inbound-traffic protocols all
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+lab-uc-rtr#sh run
 
-set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 policy allow-all match source-address any
-set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 policy allow-all match destination-address any
-set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 policy allow-all match application any
-set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 policy allow-all then permit
+hostname lab-uc-rtr
 
-set security policies from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 policy allow-all match source-address any
-set security policies from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 policy allow-all match destination-address any
-set security policies from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 policy allow-all match application any
-set security policies from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 policy allow-all then permit
+!
+interface Tunnel1
+ ip address 100.100.100.2 255.255.255.0
+ tunnel source 172.61.0.14
+ tunnel destination 172.234.0.9
+!
+interface FastEthernet0/0
+ description WAN-CIRCUIT
+ ip address 172.61.0.14 255.255.255.252
+!
+interface FastEthernet0/1
+ description UC-INSIDE
+ ip address 172.199.0.1 255.255.255.0
+
+ip route 172.234.0.8 255.255.255.248 172.61.0.13
+ip route 172.234.0.24 255.255.255.248 Tunnel1
+
+lab-uc-rtr#
+...............................................................................................
+...............................................................................................
+...............................................................................................
+...............................................................................................
+...............................................................................................
+...............................................................................................
 
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+lab-isp-rtr#
+hostname lab-isp-rtr
+!
+!         
+interface FastEthernet0/0
+ description ISP-ROUTER-USIDE
+ ip address 172.61.0.13 255.255.255.252
+!
+interface FastEthernet0/1
+ description ISP-ROUTER-KSIDE
+ ip address 172.234.0.14 255.255.255.248
+!
+...............................................................................................
+...............................................................................................
+...............................................................................................
+...............................................................................................
+...............................................................................................
+...............................................................................................
+
+greg@gliderport> show configuration | display set 
+set version 15.1X49-D45
+set system host-name gliderport
+set system domain-name tst.areaf.net
+set system root-authentication encrypted-password "$5$sJSbcKQn$95rFKUuqh0u61CBXzXEDuOh0tAdVllSEJbx2goHiuF6"
+set system name-server 8.8.8.8
+set system name-server 8.8.4.4
+set system scripts op file sit.slax
+set system login user greg uid 2000
+set system login user greg class super-user
+set system login user greg authentication encrypted-password "$5$2N30B6xK$U1Ict6uzNf6rhcABtuoLgjdVj.viXGpJgj8MWIhK/qC"
+set system services ssh
+set system services web-management http port 8080
+set system services web-management http interface ge-0/0/5.0
+set system syslog archive
+set system syslog file interactive-commands interactive-commands error
+set system syslog file all-message any info
+set system max-configurations-on-flash 5
 set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GE006 policy allow-all match source-address any
 set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GE006 policy allow-all match destination-address any
 set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GE006 policy allow-all match application any
 set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GE006 policy allow-all then permit
-
-
-
-
-
+set security policies from-zone ALL-OPEN-GE006 to-zone ALL-OPEN-GE001 policy allow-all match source-address any
+set security policies from-zone ALL-OPEN-GE006 to-zone ALL-OPEN-GE001 policy allow-all match destination-address any
+set security policies from-zone ALL-OPEN-GE006 to-zone ALL-OPEN-GE001 policy allow-all match application any
+set security policies from-zone ALL-OPEN-GE006 to-zone ALL-OPEN-GE001 policy allow-all then permit
+set security policies from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 policy allow-all match source-address any
+set security policies from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 policy allow-all match destination-address any
+set security policies from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 policy allow-all match application any
+set security policies from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 policy allow-all then permit
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 policy allow-all match source-address any
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 policy allow-all match destination-address any
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 policy allow-all match application any
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 policy allow-all then permit
+set security zones security-zone ALL-OPEN-GE006 interfaces ge-0/0/6.0 host-inbound-traffic system-services any-service
+set security zones security-zone ALL-OPEN-GE006 interfaces ge-0/0/6.0 host-inbound-traffic protocols all
+set security zones security-zone ALL-OPEN-GE001 interfaces ge-0/0/1.0 host-inbound-traffic system-services any-service
+set security zones security-zone ALL-OPEN-GE001 interfaces ge-0/0/1.0 host-inbound-traffic protocols all
+set security zones security-zone ALL-OPEN-GE005 interfaces ge-0/0/5.0 host-inbound-traffic system-services any-service
+set security zones security-zone ALL-OPEN-GE005 interfaces ge-0/0/5.0 host-inbound-traffic protocols all
+set security zones security-zone ALL-OPEN-GR000 interfaces gr-0/0/0.0 host-inbound-traffic system-services any-service
+set security zones security-zone ALL-OPEN-GR000 interfaces gr-0/0/0.0 host-inbound-traffic protocols all
+set interfaces ge-0/0/0 unit 0 family inet
+set interfaces gr-0/0/0 description GRE-L2L-ROUTE-TUNNEL
+set interfaces gr-0/0/0 unit 0 tunnel source 172.234.0.9
+set interfaces gr-0/0/0 unit 0 tunnel destination 172.61.0.14
+set interfaces gr-0/0/0 unit 0 family inet address 100.100.100.1/24
+set interfaces ge-0/0/1 description LOCAL-K
+set interfaces ge-0/0/1 unit 0 family inet address 172.234.0.25/29
 set interfaces ge-0/0/5 description TST-MGMT
-set interfaces ge-0/0/5 unit 0 family inet address 192.168.86.234
-set security zones security-zone ALL-OPEN-GE005 interfaces ge-0/0/5.0 host-inbound-traffic system-services any-service
-set security zones security-zone ALL-OPEN-GE005 interfaces ge-0/0/5.0 host-inbound-traffic protocols all
+set interfaces ge-0/0/5 unit 0 family inet address 192.168.86.234/24
+set interfaces ge-0/0/6 description EGRESS
+set interfaces ge-0/0/6 unit 0 family inet address 172.234.0.9/29
+set routing-options static route 172.61.0.12/30 next-hop 172.234.0.14
+set routing-options static route 172.61.0.12/30 retain
+set routing-options static route 172.199.0.0/24 next-hop 100.100.100.2
+set routing-options static route 172.199.0.0/24 retain
+
+greg@gliderport> 
+
+greg@gliderport> 
+
+greg@gliderport> show interfaces terse 
+Interface               Admin Link Proto    Local                 Remote
+ge-0/0/0                up    down
+ge-0/0/0.0              up    down inet    
+gr-0/0/0                up    up
+gr-0/0/0.0              up    up   inet     100.100.100.1/24
+ip-0/0/0                up    up
+lsq-0/0/0               up    up
+lt-0/0/0                up    up
+mt-0/0/0                up    up
+sp-0/0/0                up    up
+sp-0/0/0.0              up    up   inet    
+                                   inet6   
+sp-0/0/0.16383          up    up   inet     10.0.0.1            --> 10.0.0.16
+                                            10.0.0.6            --> 0/0
+                                            128.0.0.1           --> 128.0.1.16
+                                            128.0.0.6           --> 0/0
+ge-0/0/1                up    up
+ge-0/0/1.0              up    up   inet     172.234.0.25/29 
+ge-0/0/2                up    down
+ge-0/0/3                up    down
+ge-0/0/4                up    down
+ge-0/0/5                up    up
+ge-0/0/5.0              up    up   inet     192.168.86.234/24
+ge-0/0/6                up    up        
+ge-0/0/6.0              up    up   inet     172.234.0.9/29  
+ge-0/0/7                up    down
+gre                     up    up
+ipip                    up    up
+irb                     up    up
+lo0                     up    up
+lo0.16384               up    up   inet     127.0.0.1           --> 0/0
+lo0.16385               up    up   inet     10.0.0.1            --> 0/0
+                                            10.0.0.16           --> 0/0
+                                            128.0.0.1           --> 0/0
+                                            128.0.0.4           --> 0/0
+                                            128.0.1.16          --> 0/0
+lo0.32768               up    up  
+lsi                     up    up
+mtun                    up    up
+pimd                    up    up
+pime                    up    up
+pp0                     up    up
+ppd0                    up    up
+ppe0                    up    up
+st0                     up    up
+tap                     up    up
+vlan                    up    down      
+vtep                    up    up
+
+greg@gliderport> show interfaces brief 
+Physical interface: ge-0/0/0, Enabled, Physical link is Down
+  Link-level type: Ethernet, MTU: 1514, LAN-PHY mode, Speed: 1000mbps,
+  Loopback: Disabled, Source filtering: Disabled, Flow control: Disabled,
+  Auto-negotiation: Enabled, Remote fault: Online
+  Device flags   : Present Running Down
+  Interface flags: Hardware-Down SNMP-Traps Internal: 0x0
+  Link flags     : None
+
+  Logical interface ge-0/0/0.0 
+    Flags: Device-Down SNMP-Traps 0x0 Encapsulation: ENET2
+    Security: Zone: Null
+    inet
+
+Physical interface: gr-0/0/0, Enabled, Physical link is Up
+  Type: GRE, Link-level type: GRE, MTU: Unlimited, Speed: 800mbps
+  Link flags     : Scheduler Keepalives DTE
+  Device flags   : Present Running
+  Interface flags: Point-To-Point
+
+  Logical interface gr-0/0/0.0 
+    Flags: Up Point-To-Point SNMP-Traps 0x0
+    IP-Header 172.61.0.14:172.234.0.9:47:df:64:0000000000000000
+    Encapsulation: GRE-NULL
+    Gre keepalives configured: Off, Gre keepalives adjacency state: down
+    Security: Zone: ALL-OPEN-GR000
+    Allowed host-inbound traffic : any-service bfd bgp dvmrp igmp ldp msdp nhrp
+    ospf pgm pim rip router-discovery rsvp sap vrrp
+    inet  100.100.100.1/24
+
+Physical interface: ip-0/0/0, Enabled, Physical link is Up
+  Type: IPIP, Link-level type: IP-over-IP, MTU: Unlimited, Speed: 800mbps
+  Link flags     : Scheduler Keepalives DTE
+  Device flags   : Present Running
+
+Physical interface: lsq-0/0/0, Enabled, Physical link is Up
+  Link-level type: LinkService, MTU: 1504
+  Device flags   : Present Running
+  Interface flags: Point-To-Point SNMP-Traps Internal: 0x0
+
+Physical interface: lt-0/0/0, Enabled, Physical link is Up
+  Type: Logical-tunnel, Link-level type: Logical-tunnel, MTU: Unlimited,
+  Clocking: Unspecified, Speed: 800mbps
+  Device flags   : Present Running
+  Interface flags: Point-To-Point SNMP-Traps Internal: 0x0
+
+Physical interface: mt-0/0/0, Enabled, Physical link is Up
+  Type: Multicast-GRE, Link-level type: GRE, MTU: Unlimited, Speed: 800mbps
+  Link flags     : Keepalives DTE
+  Device flags   : Present Running
+  Interface flags: SNMP-Traps
+
+Physical interface: sp-0/0/0, Enabled, Physical link is Up
+  Type: Adaptive-Services, Link-level type: Adaptive-Services, MTU: 9192,
+  Clocking: Unspecified, Speed: 800mbps
+  Device flags   : Present Running
+  Interface flags: Point-To-Point SNMP-Traps Internal: 0x0
+
+  Logical interface sp-0/0/0.0 
+    Flags: Up Point-To-Point SNMP-Traps Encapsulation: Adaptive-Services
+    Security: Zone: Null
+    inet
+    inet6
+
+  Logical interface sp-0/0/0.16383 
+    Flags: Up Point-To-Point SNMP-Traps Encapsulation: Adaptive-Services
+    Security: Zone: Null
+    inet  10.0.0.1         --> 10.0.0.16
+          10.0.0.6         --> 0/0
+          128.0.0.1        --> 128.0.1.16
+          128.0.0.6        --> 0/0      
+
+Physical interface: ge-0/0/1, Enabled, Physical link is Up
+  Link-level type: Ethernet, MTU: 1514, LAN-PHY mode, Speed: 100mbps,
+  Loopback: Disabled, Source filtering: Disabled, Flow control: Disabled,
+  Auto-negotiation: Enabled, Remote fault: Online
+  Device flags   : Present Running
+  Interface flags: SNMP-Traps Internal: 0x0
+  Link flags     : None
+
+  Logical interface ge-0/0/1.0 
+    Flags: Up SNMP-Traps 0x0 Encapsulation: ENET2
+    Security: Zone: ALL-OPEN-GE001
+    Allowed host-inbound traffic : any-service bfd bgp dvmrp igmp ldp msdp nhrp
+    ospf pgm pim rip router-discovery rsvp sap vrrp
+    inet  172.234.0.25/29 
+
+Physical interface: ge-0/0/2, Enabled, Physical link is Down
+  Link-level type: Ethernet, MTU: 1514, LAN-PHY mode, Speed: 1000mbps,
+  Loopback: Disabled, Source filtering: Disabled, Flow control: Disabled,
+  Auto-negotiation: Enabled, Remote fault: Online
+  Device flags   : Present Running Down
+  Interface flags: Hardware-Down SNMP-Traps Internal: 0x0
+  Link flags     : None                 
+
+Physical interface: ge-0/0/3, Enabled, Physical link is Down
+  Link-level type: Ethernet, MTU: 1514, LAN-PHY mode, Speed: 1000mbps,
+  Loopback: Disabled, Source filtering: Disabled, Flow control: Disabled,
+  Auto-negotiation: Enabled, Remote fault: Online
+  Device flags   : Present Running Down
+  Interface flags: Hardware-Down SNMP-Traps Internal: 0x0
+  Link flags     : None
+
+Physical interface: ge-0/0/4, Enabled, Physical link is Down
+  Link-level type: Ethernet, MTU: 1514, LAN-PHY mode, Speed: 1000mbps,
+  Loopback: Disabled, Source filtering: Disabled, Flow control: Disabled,
+  Auto-negotiation: Enabled, Remote fault: Online
+  Device flags   : Present Running Down
+  Interface flags: Hardware-Down SNMP-Traps Internal: 0x0
+  Link flags     : None
+
+Physical interface: ge-0/0/5, Enabled, Physical link is Up
+  Link-level type: Ethernet, MTU: 1514, LAN-PHY mode, Speed: 100mbps,
+  Loopback: Disabled, Source filtering: Disabled, Flow control: Disabled,
+  Auto-negotiation: Enabled, Remote fault: Online
+  Device flags   : Present Running
+  Interface flags: SNMP-Traps Internal: 0x0
+  Link flags     : None
+
+  Logical interface ge-0/0/5.0 
+    Flags: Up SNMP-Traps 0x0 Encapsulation: ENET2
+    Security: Zone: ALL-OPEN-GE005
+    Allowed host-inbound traffic : any-service bfd bgp dvmrp igmp ldp msdp nhrp
+    ospf pgm pim rip router-discovery rsvp sap vrrp
+    inet  192.168.86.234/24
+
+Physical interface: ge-0/0/6, Enabled, Physical link is Up
+  Link-level type: Ethernet, MTU: 1514, LAN-PHY mode, Speed: 100mbps,
+  Loopback: Disabled, Source filtering: Disabled, Flow control: Disabled,
+  Auto-negotiation: Enabled, Remote fault: Online
+  Device flags   : Present Running
+  Interface flags: SNMP-Traps Internal: 0x0
+  Link flags     : None
+
+  Logical interface ge-0/0/6.0 
+    Flags: Up SNMP-Traps 0x0 Encapsulation: ENET2
+    Security: Zone: ALL-OPEN-GE006
+    Allowed host-inbound traffic : any-service bfd bgp dvmrp igmp ldp msdp nhrp
+    ospf pgm pim rip router-discovery rsvp sap vrrp
+    inet  172.234.0.9/29                
+
+Physical interface: ge-0/0/7, Enabled, Physical link is Down
+  Link-level type: Ethernet, MTU: 1514, LAN-PHY mode, Speed: 1000mbps,
+  Loopback: Disabled, Source filtering: Disabled, Flow control: Disabled,
+  Auto-negotiation: Enabled, Remote fault: Online
+  Device flags   : Present Running Down
+  Interface flags: Hardware-Down SNMP-Traps Internal: 0x0
+  Link flags     : None
+
+Physical interface: gre, Enabled, Physical link is Up
+  Type: GRE, Link-level type: GRE, MTU: Unlimited, Speed: Unlimited
+  Link flags     : Keepalives DTE
+  Device flags   : Present Running
+  Interface flags: Point-To-Point SNMP-Traps
+
+Physical interface: ipip, Enabled, Physical link is Up
+  Type: IPIP, Link-level type: IP-over-IP, MTU: Unlimited, Speed: Unlimited
+  Link flags     : Keepalives DTE
+  Device flags   : Present Running
+  Interface flags: SNMP-Traps
+
+Physical interface: irb, Enabled, Physical link is Up
+  Type: Ethernet, Link-level type: Ethernet, MTU: 1514, Clocking: Unspecified,
+  Speed: Unspecified
+  Device flags   : Present Running
+  Interface flags: SNMP-Traps
+
+Physical interface: lo0, Enabled, Physical link is Up
+  Type: Loopback, Link-level type: Unspecified, MTU: Unlimited,
+  Clocking: Unspecified, Speed: Unspecified
+  Device flags   : Present Running Loopback
+  Interface flags: SNMP-Traps
+
+  Logical interface lo0.16384 
+    Flags: Down SNMP-Traps Encapsulation: Unspecified
+    Security: Zone: Null
+    inet  127.0.0.1        --> 0/0
+
+  Logical interface lo0.16385 
+    Flags: Down SNMP-Traps Encapsulation: Unspecified
+    Security: Zone: Null
+    inet  10.0.0.1         --> 0/0
+          10.0.0.16        --> 0/0
+          128.0.0.1        --> 0/0
+          128.0.0.4        --> 0/0
+          128.0.1.16       --> 0/0      
+
+  Logical interface lo0.32768 
+    Flags: Down Encapsulation: Unspecified
+    Security: Zone: Null
+
+Physical interface: lsi, Enabled, Physical link is Up
+  Type: Software-Pseudo, Link-level type: LSI, MTU: Unlimited,
+  Clocking: Unspecified, Speed: Unlimited
+  Device flags   : Present Running
+
+Physical interface: mtun, Enabled, Physical link is Up
+  Type: Multicast-GRE, Link-level type: GRE, MTU: Unlimited, Speed: Unlimited
+  Link flags     : Keepalives DTE
+  Device flags   : Present Running
+  Interface flags: SNMP-Traps
+
+Physical interface: pimd, Enabled, Physical link is Up
+  Type: PIMD, Link-level type: PIM-Decapsulator, MTU: Unlimited,
+  Speed: Unlimited
+  Device flags   : Present Running
+
+Physical interface: pime, Enabled, Physical link is Up
+  Type: PIME, Link-level type: PIM-Encapsulator, MTU: Unlimited,
+  Speed: Unlimited
+  Device flags   : Present Running
+
+Physical interface: pp0, Enabled, Physical link is Up
+  Type: PPPoE, Link-level type: PPPoE, MTU: 1532, Speed: Unspecified
+  Device flags   : Present Running
+  Interface flags: Point-To-Point SNMP-Traps
+
+Physical interface: ppd0, Enabled, Physical link is Up
+  Type: PIMD, Link-level type: PIM-Decapsulator, MTU: Unlimited, Speed: 800mbps
+  Device flags   : Present Running
+  Interface flags: SNMP-Traps
+
+Physical interface: ppe0, Enabled, Physical link is Up
+  Type: PIME, Link-level type: PIM-Encapsulator, MTU: Unlimited, Speed: 800mbps
+  Device flags   : Present Running
+  Interface flags: SNMP-Traps
+
+Physical interface: st0, Enabled, Physical link is Up
+  Type: Secure-Tunnel, Link-level type: Secure-Tunnel, MTU: 9192,
+  Speed: Unspecified
+  Device flags   : Present Running
+  Interface flags: Point-To-Point       
+
+Physical interface: tap, Enabled, Physical link is Up
+  Type: Software-Pseudo, Link-level type: Interface-Specific, MTU: Unlimited,
+  Clocking: Unspecified, Speed: Unlimited
+  Device flags   : Present Running
+  Interface flags: SNMP-Traps
+
+Physical interface: vlan, Enabled, Physical link is Down
+  Type: VLAN, Link-level type: VLAN, MTU: 1518, Clocking: Unspecified,
+  Speed: 2000mbps
+  Device flags   : Present Running Down
+  Interface flags: Hardware-Down
+
+Physical interface: vtep, Enabled, Physical link is Up
+  Type: Software-Pseudo, Link-level type: VxLAN-Tunnel-Endpoint, MTU: 1600,
+  Clocking: Unspecified, Speed: Unlimited
+  Device flags   : Present Running
+  Interface flags: SNMP-Traps
+
+greg@gliderport> 
+
+greg@gliderport> 
+
+greg@gliderport> 
+
+greg@gliderport> show route b
+                             ^
+'b' is ambiguous.
+Possible completions:
+  <destination>        IP address and optional prefix length of destination
+  best                 Show longest matching route
+  brief                Display brief output
+greg@gliderport> show route brief 
+
+inet.0: 10 destinations, 10 routes (10 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+100.100.100.0/24   *[Direct/0] 05:33:49
+                    > via gr-0/0/0.0
+100.100.100.1/32   *[Local/0] 05:33:49
+                      Local via gr-0/0/0.0
+172.61.0.12/30     *[Static/5] 09:14:43
+                    > to 172.234.0.14 via ge-0/0/6.0
+172.199.0.0/24     *[Static/5] 00:12:32
+                    > to 100.100.100.2 via gr-0/0/0.0
+172.234.0.8/29     *[Direct/0] 09:14:43
+                    > via ge-0/0/6.0
+172.234.0.9/32     *[Local/0] 09:14:49
+                      Local via ge-0/0/6.0
+172.234.0.24/29    *[Direct/0] 07:49:58
+                    > via ge-0/0/1.0
+172.234.0.25/32    *[Local/0] 09:14:49
+                      Local via ge-0/0/1.0
+192.168.86.0/24    *[Direct/0] 09:14:44
+                    > via ge-0/0/5.0
+192.168.86.234/32  *[Local/0] 09:14:49
+                      Local via ge-0/0/5.0
+
+greg@gliderport> show route terse 
+
+inet.0: 10 destinations, 10 routes (10 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+A V Destination        P Prf   Metric 1   Metric 2  Next hop        AS path
+* ? 100.100.100.0/24   D   0                       >gr-0/0/0.0  
+* ? 100.100.100.1/32   L   0                        Local
+* ? 172.61.0.12/30     S   5                       >172.234.0.14
+* ? 172.199.0.0/24     S   5                       >100.100.100.2
+* ? 172.234.0.8/29     D   0                       >ge-0/0/6.0  
+* ? 172.234.0.9/32     L   0                        Local
+* ? 172.234.0.24/29    D   0                       >ge-0/0/1.0  
+* ? 172.234.0.25/32    L   0                        Local
+* ? 192.168.86.0/24    D   0                       >ge-0/0/5.0  
+* ? 192.168.86.234/32  L   0                        Local
+
+greg@gliderport> 
+
+greg@gliderport> 
+
+greg@gliderport> show gr
+                        ^
+syntax error.
+greg@gliderport> show in   
+                        ^
+'in' is ambiguous.
+Possible completions:
+  ingress-replication  Show Ingress-Replication tunnel information
+  interfaces           Show interface information
+greg@gliderport> show in    
+                        ^
+'in' is ambiguous.
+Possible completions:
+  ingress-replication  Show Ingress-Replication tunnel information
+  interfaces           Show interface information
+greg@gliderport> show interfaces g
+                                  ^
+'g' is ambiguous.
+Possible completions:
+  <interface-name>     Name of physical or logical interface
+  ge-0/0/0             
+  ge-0/0/0.0           
+  gr-0/0/0             
+  gr-0/0/0.0           
+  ge-0/0/1             
+  ge-0/0/1.0           
+  ge-0/0/2             
+  ge-0/0/3             
+  ge-0/0/4             
+  ge-0/0/5             
+  ge-0/0/5.0           
+  ge-0/0/6             
+  ge-0/0/6.0           
+  ge-0/0/7             
+  gre                  
+greg@gliderport> show interfaces gr  
+                                   ^
+'gr' is ambiguous.
+Possible completions:
+  <interface-name>     Name of physical or logical interface
+  gr-0/0/0             
+  gr-0/0/0.0           
+  gre                  
+greg@gliderport> show interfaces gre  
+Physical interface: gre    , Enabled, Physical link is Up
+  Interface index: 10, SNMP ifIndex: 8
+  Type: GRE, Link-level type: GRE, MTU: Unlimited, Speed: Unlimited
+  Link flags     : Keepalives DTE
+  Device flags   : Present Running
+  Interface flags: Point-To-Point SNMP-Traps
+    Input packets : 0
+    Output packets: 0
+
+greg@gliderport> show interfaces gr-0/0/0 
+Physical interface: gr-0/0/0, Enabled, Physical link is Up
+  Interface index: 144, SNMP ifIndex: 519
+  Description: GRE-L2L-ROUTE-TUNNEL
+  Type: GRE, Link-level type: GRE, MTU: Unlimited, Speed: 800mbps
+  Link flags     : Scheduler Keepalives DTE
+  Device flags   : Present Running
+  Interface flags: Point-To-Point
+  Input rate     : 0 bps (0 pps)
+  Output rate    : 0 bps (0 pps)
+
+  Logical interface gr-0/0/0.0 (Index 76) (SNMP ifIndex 532)
+    Flags: Up Point-To-Point SNMP-Traps 0x0
+    IP-Header 172.61.0.14:172.234.0.9:47:df:64:0000000000000000
+    Encapsulation: GRE-NULL
+    Copy-tos-to-outer-ip-header: Off
+    Gre keepalives configured: Off, Gre keepalives adjacency state: down
+    Input packets : 128
+    Output packets: 158
+    Security: Zone: ALL-OPEN-GR000
+    Allowed host-inbound traffic : any-service bfd bgp dvmrp igmp ldp msdp nhrp
+    ospf pgm pim rip router-discovery rsvp sap vrrp
+    Protocol inet, MTU: 1476
+      Flags: Sendbcast-pkt-to-re
+      Addresses, Flags: Is-Preferred Is-Primary
+        Destination: 100.100.100/24, Local: 100.100.100.1,
+        Broadcast: 100.100.100.255
+
+greg@gliderport> show interfaces gr-0/0/0.0  
+  Logical interface gr-0/0/0.0 (Index 76) (SNMP ifIndex 532)
+    Flags: Up Point-To-Point SNMP-Traps 0x0
+    IP-Header 172.61.0.14:172.234.0.9:47:df:64:0000000000000000
+    Encapsulation: GRE-NULL
+    Gre keepalives configured: Off, Gre keepalives adjacency state: down
+    Input packets : 128
+    Output packets: 158
+    Security: Zone: ALL-OPEN-GR000
+    Allowed host-inbound traffic : any-service bfd bgp dvmrp igmp ldp msdp nhrp
+    ospf pgm pim rip router-discovery rsvp sap vrrp
+    Protocol inet, MTU: 1476
+      Flags: Sendbcast-pkt-to-re
+      Addresses, Flags: Is-Preferred Is-Primary
+        Destination: 100.100.100/24, Local: 100.100.100.1,
+        Broadcast: 100.100.100.255
+
+greg@gliderport> 
 
 
-set routing-options static route 172.61.0.12/30 next-hop 172.234.0.14 retain
+greg@gliderport> show configuration 
+## Last commit: 2024-03-18 03:33:43 UTC by greg
+version 15.1X49-D45;
+system {
+    host-name gliderport;
+    domain-name tst.areaf.net;
+    root-authentication {
+        encrypted-password "$5$sJSbcKQn$95rFKUuqh0u61CBXzXEDuOh0tAdVllSEJbx2goHiuF6"; ## SECRET-DATA
+    }
+    name-server {
+        8.8.8.8;
+        8.8.4.4;
+    }
+    scripts {
+        op {
+            file sit.slax;
+        }
+    }
+    login {
+        user greg {
+            uid 2000;
+            class super-user;
+            authentication {
+                encrypted-password "$5$2N30B6xK$U1Ict6uzNf6rhcABtuoLgjdVj.viXGpJgj8MWIhK/qC"; ## SECRET-DATA
+            }
+        }
+    }
+    services {
+        ssh;
+        web-management {
+            http {
+                port 8080;
+                interface ge-0/0/5.0;
+            }
+        }
+    }
+    syslog {
+        archive;
+        file interactive-commands {
+            interactive-commands error;
+        }
+        file all-message {
+            any info;
+        }
+    }
+    max-configurations-on-flash 5;      
+}
+security {
+    policies {
+        from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GE006 {
+            policy allow-all {
+                match {
+                    source-address any;
+                    destination-address any;
+                    application any;
+                }
+                then {
+                    permit;
+                }
+            }
+        }
+        from-zone ALL-OPEN-GE006 to-zone ALL-OPEN-GE001 {
+            policy allow-all {
+                match {
+                    source-address any;
+                    destination-address any;
+                    application any;
+                }
+                then {                  
+                    permit;
+                }
+            }
+        }
+        from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 {
+            policy allow-all {
+                match {
+                    source-address any;
+                    destination-address any;
+                    application any;
+                }
+                then {
+                    permit;
+                }
+            }
+        }
+        from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 {
+            policy allow-all {
+                match {
+                    source-address any;
+                    destination-address any;
+                    application any;
+                }                       
+                then {
+                    permit;
+                }
+            }
+        }
+    }
+    zones {
+        security-zone ALL-OPEN-GE006 {
+            interfaces {
+                ge-0/0/6.0 {
+                    host-inbound-traffic {
+                        system-services {
+                            any-service;
+                        }
+                        protocols {
+                            all;
+                        }
+                    }
+                }
+            }
+        }
+        security-zone ALL-OPEN-GE001 {
+            interfaces {                
+                ge-0/0/1.0 {
+                    host-inbound-traffic {
+                        system-services {
+                            any-service;
+                        }
+                        protocols {
+                            all;
+                        }
+                    }
+                }
+            }
+        }
+        security-zone ALL-OPEN-GE005 {
+            interfaces {
+                ge-0/0/5.0 {
+                    host-inbound-traffic {
+                        system-services {
+                            any-service;
+                        }
+                        protocols {
+                            all;
+                        }
+                    }                   
+                }
+            }
+        }
+        security-zone ALL-OPEN-GR000 {
+            interfaces {
+                gr-0/0/0.0 {
+                    host-inbound-traffic {
+                        system-services {
+                            any-service;
+                        }
+                        protocols {
+                            all;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+interfaces {
+    ge-0/0/0 {
+        unit 0 {
+            family inet;                
+        }
+    }
+    gr-0/0/0 {
+        description GRE-L2L-ROUTE-TUNNEL;
+        unit 0 {
+            tunnel {
+                source 172.234.0.9;
+                destination 172.61.0.14;
+            }
+            family inet {
+                address 100.100.100.1/24;
+            }
+        }
+    }
+    ge-0/0/1 {
+        description LOCAL-K;
+        unit 0 {
+            family inet {
+                address 172.234.0.25/29;
+            }
+        }
+    }
+    ge-0/0/5 {                          
+        description TST-MGMT;
+        unit 0 {
+            family inet {
+                address 192.168.86.234/24;
+            }
+        }
+    }
+    ge-0/0/6 {
+        description EGRESS;
+        unit 0 {
+            family inet {
+                address 172.234.0.9/29;
+            }
+        }
+    }
+}
+routing-options {
+    static {
+        route 172.61.0.12/30 {
+            next-hop 172.234.0.14;
+            retain;
+        }
+        route 172.199.0.0/24 {          
+            next-hop 100.100.100.2;
+            retain;
+        }
+    }
+}
 
-set security zones security-zone ALL-OPEN-GE005 interfaces ge-0/0/5.0 host-inbound-traffic system-services any-service
-set security zones security-zone ALL-OPEN-GE005 interfaces ge-0/0/5.0 host-inbound-traffic protocols all
-
-
-set interfaces gr-0/0/0 unit 0 tunnel source <source-interface>
-set interfaces gr-0/0/0 unit 0 tunnel destination <destination-ip>
-set interfaces gr-0/0/0 unit 0 family inet address <tunnel-local-ip>/<subnet-mask>
-set interfaces gr-0/0/0 unit 0 family mpls
-
-
-
+greg@gliderport> 
 
 
 
