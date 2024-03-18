@@ -2,24 +2,46 @@
 
 
 
+set security zones security-zone interfaces gr-0/0/0 host-inbound-traffic system-services any-service
+set security zones security-zone ALL-OPEN-GR000 interfaces gr-0/0/0 host-inbound-traffic protocols all
+
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 policy allow-all match source-address any
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 policy allow-all match destination-address any
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 policy allow-all match application any
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 policy allow-all then permit
+
+set security policies from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 policy allow-all match source-address any
+set security policies from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 policy allow-all match destination-address any
+set security policies from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 policy allow-all match application any
+set security policies from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 policy allow-all then permit
+
+
+
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GE006 policy allow-all match source-address any
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GE006 policy allow-all match destination-address any
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GE006 policy allow-all match application any
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GE006 policy allow-all then permit
 
 
 
 
 
+set interfaces ge-0/0/5 description TST-MGMT
+set interfaces ge-0/0/5 unit 0 family inet address 192.168.86.234
+set security zones security-zone ALL-OPEN-GE005 interfaces ge-0/0/5.0 host-inbound-traffic system-services any-service
+set security zones security-zone ALL-OPEN-GE005 interfaces ge-0/0/5.0 host-inbound-traffic protocols all
 
 
+set routing-options static route 172.61.0.12/30 next-hop 172.234.0.14 retain
+
+set security zones security-zone ALL-OPEN-GE005 interfaces ge-0/0/5.0 host-inbound-traffic system-services any-service
+set security zones security-zone ALL-OPEN-GE005 interfaces ge-0/0/5.0 host-inbound-traffic protocols all
 
 
-
-
-
-
-
-
-
-
-
+set interfaces gr-0/0/0 unit 0 tunnel source <source-interface>
+set interfaces gr-0/0/0 unit 0 tunnel destination <destination-ip>
+set interfaces gr-0/0/0 unit 0 family inet address <tunnel-local-ip>/<subnet-mask>
+set interfaces gr-0/0/0 unit 0 family mpls
 
 
 

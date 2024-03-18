@@ -2,8 +2,7 @@
 
 
 
-
-
+greg@gliderport> show configuration | display set
 
 show system commit
 
@@ -15,10 +14,52 @@ show route terse
 show ethernet-switching interface 
 show vlans
 
+sh file list 
+/var: This directory contains variable data files. It includes logs, temporary files, and other runtime information.
+/var/log: Log files are stored here. These files can provide valuable information for troubleshooting and monitoring system events.
+/var/tmp: Temporary files are stored here. These files are typically created by applications or system processes and are meant to be temporary.
+/var/db: This directory contains various databases used by the system and applications.
+/var/run: Runtime information about running processes is stored here. This directory may contain process IDs (PIDs) and other runtime information.
+/config: This directory contains configuration files. It's where the active configuration is stored. You may also find rollback configurations here.
+/config/juniper.conf: This is the main configuration file for Junos OS.
+/config/backup: Backup configurations may be stored here.
+/packages/sets: This directory contains software packages (Junos images) that can be installed on the device.
+/var/home: This directory contains the home directories for users.
+/usr: This directory contains user programs and utilities.
+/etc: This directory typically contains system-wide configuration files.
+
+greg@gliderport> file list 
+
+/cf/var/home/greg/:
+.ssh/
+dev-cfg-tst-lab5-20240317A.txt
+
+greg@gliderport> 
+
+
 # config mode 
 
-junos requires a commit
+```rollback uncommited changes (with errors or not)
+greg@gliderport> configure 
+Entering configuration mode
+The configuration has been changed but not committed
 
+[edit]
+greg@gliderport# rollback 0 
+load complete
+
+[edit]
+greg@gliderport# commit 
+commit complete
+
+[edit]
+greg@gliderport# 
+
+junos requires a commit
+set security zones security-zone ALL-OPEN-GE001 interfaces ge-0/0/0.0 host-inbound-traffic system-services any-service
+set security zones security-zone ALL-OPEN-GE001 interfaces ge-0/0/0.0 host-inbound-traffic protocols all
+set security zones security-zone ALL-OPEN-GE006 interfaces ge-0/0/6.0 host-inbound-traffic system-services any-service
+set security zones security-zone ALL-OPEN-GE006 interfaces ge-0/0/6.0 host-inbound-traffic protocols all
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 greg@gliderport# commit 
