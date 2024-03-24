@@ -1,5 +1,56 @@
 
 
+ge-0/0/1.0              up    up   inet     172.234.0.25/29 
+ge-0/0/2                up    down
+ge-0/0/2.0              up    down eth-switch
+ge-0/0/3                up    down
+ge-0/0/3.0              up    down eth-switch
+ge-0/0/4                up    down
+ge-0/0/5                up    up        
+ge-0/0/5.0              up    up   inet     192.168.86.234/24
+ge-0/0/6                up    up
+ge-0/0/6.0              up    up   inet     172.234.0.9/29  
+ge-0/0/7                up    down
+gre                     up    up
+ipip                    up    up
+irb                     up    up
+irb.1                   up    down inet     172.236.0.25/29 
+
+
+
+adding irb
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 lab-uc-rtr#
 *Mar  4 00:24:13.079: ICMP: echo reply sent, src 172.199.0.1, dst 172.234.0.27

@@ -2,19 +2,53 @@
 
 
 
-greg@gliderport> show configuration | display set
+greg@gliderport> 
 
-show system commit
 
 file list /config 
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+> operation mode
 
-> operation mode 
+_______________________________________________
+FUNCTIONAL
+_______________________________________________
+show configuration | display set
+
 show interfaces 
 show route terse 
 show ethernet-switching interface 
 show vlans
 
+
+_______________________________________________
+SYSTEM
+_______________________________________________
+show system commit
 sh file list 
+
+
+!!!
+When changing from route only to mixed route and switch, JUNOS needs reboot...
+```
+"
+greg@gliderport# commit 
+warning: Interfaces are changed from route mode to mix mode. Please use the command request system reboot on current node or all nodes in case of HA cluster!
+commit complete
+
+[edit]
+greg@gliderport# 
+"
+```
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
 /var: This directory contains variable data files. It includes logs, temporary files, and other runtime information.
 /var/log: Log files are stored here. These files can provide valuable information for troubleshooting and monitoring system events.
 /var/tmp: Temporary files are stored here. These files are typically created by applications or system processes and are meant to be temporary.
@@ -69,6 +103,43 @@ Please use the command request system reboot
 on current node or all nodes in case of HA cluster!
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INSIGHTS / DIFFERENCES
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+You can configure the same subnet on multiple interfaces.
+Only the oldest will show the IP address in sh int ter
+When the older is removed the new will show the IP address
+
+greg@gliderport> show interfaces terse 
+ge-0/0/1                up    down
+ge-0/0/1.0              up    down inet     172.234.0.25/29 
+irb.0                   up    up   inet    
+greg@gliderport> 
+greg@gliderport> configure 
+Entering configuration mode
+[edit]
+greg@gliderport# delete interfaces ge-0/0/1 unit 0 family inet address 172.   
+[edit]
+greg@gliderport# commit 
+commit complete
+[edit]
+greg@gliderport# exit 
+Exiting configuration mode
+greg@gliderport> show interfaces terse 
+Interface               Admin Link Proto    Local                 Remote
+ge-0/0/1                up    down
+ge-0/0/1.0              up    down inet    
+irb.0                   up    up   inet     172.234.0.25/29 
+
 
 
 interfaces {
