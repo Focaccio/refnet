@@ -1,0 +1,85 @@
+
+
+
+
+greg@gliderport> show configuration | display set 
+set version 15.1X49-D45
+set system host-name gliderport
+set system domain-name tst.areaf.net
+set system root-authentication encrypted-password "$5$sJSbcKQn$95rFKUuqh0u61CBXzXEDuOh0tAdVllSEJbx2goHiuF6"
+set system name-server 8.8.8.8
+set system name-server 8.8.4.4
+set system scripts op file sit.slax
+set system login user greg uid 2000
+set system login user greg class super-user
+set system login user greg authentication encrypted-password "$5$2N30B6xK$U1Ict6uzNf6rhcABtuoLgjdVj.viXGpJgj8MWIhK/qC"
+set system services ssh
+set system services web-management http port 8080
+set system services web-management http interface ge-0/0/5.0
+set system syslog archive
+set system syslog file interactive-commands interactive-commands error
+set system syslog file all-message any info
+set system max-configurations-on-flash 5
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GE006 policy allow-all match source-address any
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GE006 policy allow-all match destination-address any
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GE006 policy allow-all match application any
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GE006 policy allow-all then permit
+set security policies from-zone ALL-OPEN-GE006 to-zone ALL-OPEN-GE001 policy allow-all match source-address any
+set security policies from-zone ALL-OPEN-GE006 to-zone ALL-OPEN-GE001 policy allow-all match destination-address any
+set security policies from-zone ALL-OPEN-GE006 to-zone ALL-OPEN-GE001 policy allow-all match application any
+set security policies from-zone ALL-OPEN-GE006 to-zone ALL-OPEN-GE001 policy allow-all then permit
+set security policies from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 policy allow-all match source-address any
+set security policies from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 policy allow-all match destination-address any
+set security policies from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 policy allow-all match application any
+set security policies from-zone ALL-OPEN-GR000 to-zone ALL-OPEN-GE001 policy allow-all then permit
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 policy allow-all match source-address any
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 policy allow-all match destination-address any
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 policy allow-all match application any
+set security policies from-zone ALL-OPEN-GE001 to-zone ALL-OPEN-GR000 policy allow-all then permit
+set security policies from-zone ALL-OPEN-IRB-DOT-0 to-zone ALL-OPEN-IRB-DOT-0 policy allow-all match source-address any
+set security policies from-zone ALL-OPEN-IRB-DOT-0 to-zone ALL-OPEN-IRB-DOT-0 policy allow-all match destination-address any
+set security policies from-zone ALL-OPEN-IRB-DOT-0 to-zone ALL-OPEN-IRB-DOT-0 policy allow-all match application any
+set security policies from-zone ALL-OPEN-IRB-DOT-0 to-zone ALL-OPEN-IRB-DOT-0 policy allow-all then permit
+set security policies default-policy permit-all
+set security zones security-zone ALL-OPEN-GE006 interfaces ge-0/0/6.0 host-inbound-traffic system-services any-service
+set security zones security-zone ALL-OPEN-GE006 interfaces ge-0/0/6.0 host-inbound-traffic protocols all
+set security zones security-zone ALL-OPEN-GE001 interfaces ge-0/0/1.0 host-inbound-traffic system-services any-service
+set security zones security-zone ALL-OPEN-GE001 interfaces ge-0/0/1.0 host-inbound-traffic protocols all
+set security zones security-zone ALL-OPEN-GE005 interfaces ge-0/0/5.0 host-inbound-traffic system-services any-service
+set security zones security-zone ALL-OPEN-GE005 interfaces ge-0/0/5.0 host-inbound-traffic protocols all
+set security zones security-zone ALL-OPEN-GR000 interfaces gr-0/0/0.0 host-inbound-traffic system-services any-service
+set security zones security-zone ALL-OPEN-GR000 interfaces gr-0/0/0.0 host-inbound-traffic protocols all
+set security zones security-zone ALL-OPEN-IRB-DOT-0 interfaces irb.0 host-inbound-traffic system-services any-service
+set security zones security-zone ALL-OPEN-IRB-DOT-0 interfaces irb.0 host-inbound-traffic protocols all
+set security zones security-zone ALL-OPEN-GE002 interfaces ge-0/0/2.0 host-inbound-traffic system-services any-service
+set security zones security-zone ALL-OPEN-GE002 interfaces ge-0/0/2.0 host-inbound-traffic protocols all
+set security zones security-zone ALL-OPEN-GE003 interfaces ge-0/0/3.0 host-inbound-traffic system-services any-service
+set security zones security-zone ALL-OPEN-GE003 interfaces ge-0/0/3.0 host-inbound-traffic protocols all
+set interfaces ge-0/0/0 unit 0 family inet
+set interfaces gr-0/0/0 description GRE-L2L-ROUTE-TUNNEL
+set interfaces gr-0/0/0 unit 0 tunnel source 172.234.0.9
+set interfaces gr-0/0/0 unit 0 tunnel destination 172.61.0.14
+set interfaces gr-0/0/0 unit 0 family inet address 100.100.100.1/24
+set interfaces ge-0/0/1 description LOCAL-K
+set interfaces ge-0/0/1 unit 0 family inet
+set interfaces ge-0/0/2 unit 0 family ethernet-switching interface-mode access
+set interfaces ge-0/0/2 unit 0 family ethernet-switching vlan members VLAN1
+set interfaces ge-0/0/3 unit 0 family ethernet-switching interface-mode access
+set interfaces ge-0/0/3 unit 0 family ethernet-switching vlan members VLAN1
+set interfaces ge-0/0/5 description TST-MGMT
+set interfaces ge-0/0/5 unit 0 family inet address 192.168.86.234/24
+set interfaces ge-0/0/6 description EGRESS
+set interfaces ge-0/0/6 unit 0 family inet address 172.234.0.9/29
+set interfaces irb unit 0 family inet address 172.234.0.25/29
+set routing-options static route 172.61.0.12/30 next-hop 172.234.0.14
+set routing-options static route 172.61.0.12/30 retain
+set routing-options static route 172.199.0.0/24 next-hop 100.100.100.2
+set routing-options static route 172.199.0.0/24 retain
+set protocols l2-learning global-mac-limit
+set vlans VLAN1 vlan-id 1
+set vlans VLAN1 l3-interface irb.0
+
+greg@gliderport> 
+
+
+
