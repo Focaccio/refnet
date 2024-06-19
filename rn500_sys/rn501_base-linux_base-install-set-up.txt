@@ -6,6 +6,11 @@
 ...............................................................................................
 ALIASES - in .bashrc
 
+alias siib='./siib.sh'
+alias so='source .bashrc'
+alias wha='more .bashrc | grep alias'
+alias aa='vi .bashrc'
+alias cdr='cd /root' 
 
 
 
