@@ -12,6 +12,11 @@ alias wha='more .bashrc | grep alias'
 alias aa='vi .bashrc'
 alias cdr='cd /root' 
 
+hostname
+
+hostnamectl set-hostname server1
+vi /etc/hosts
+hostnamectl
 
 
 ...............................................................................................

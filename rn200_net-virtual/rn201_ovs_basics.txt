@@ -28,13 +28,17 @@ sudo systemctl enable openvswitch-switch
 sudo systemctl status openvswitch-switch
 
 
+20240617
+29  apt-get install openvswitch-switch
+30  apt-get install openvswitch-switch-dpdk  
+31  apt-get install openvswitch-common
+
+
+SHOW commands
 
 
 
-
-
-
-
+ovs-vsctl add-br
 
 
 
