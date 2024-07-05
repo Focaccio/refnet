@@ -1,0 +1,128 @@
+
+
+
+
+
+**********************************************************************************************
+**********************************************************************************************
+VLAN TRUNNKING
+**********************************************************************************************
+**********************************************************************************************
+Trunking from Linux to Physical switch Port-Channel
+
+
+Linux Packages
+
+apt-get install ifenslave
+apt-get install bridge-utils 
+apt-get install vlan 
+
+apt-get install openvswitch-switch
+apt-get install openvswitch-switch-dpdk 
+apt-get install openvswitch-common 
+apt-get install openvswitch-doc 
+apt-get install openvswitch-test
+ apt-get install openvswitch-testcontroller 
+
+ENABLE kernel modules
+sudo modprobe bonding
+sudo modprobe bridge
+
+14:19root@d122b ~ ? modprobe bonding 
+14:19root@d122b ~ ? modprobe bridge
+14:19root@d122b ~ ? modinfo
+modinfo: ERROR: missing module or filename.
+14:19root@d122b ~ ? modinfo bridge
+filename:       /lib/modules/6.1.0-13-arm64/kernel/net/bridge/bridge.ko
+alias:          rtnl-link-bridge
+version:        2.3
+license:        GPL
+srcversion:     04749906C88E7C4C0107A8F
+depends:        llc,stp
+intree:         Y
+name:           bridge
+vermagic:       6.1.0-13-arm64 SMP mod_unload modversions aarch64
+sig_id:         PKCS#7
+signer:         Debian Secure Boot CA
+sig_key:        32:A0:28:7F:84:1A:03:6F:A3:93:C1:E0:65:C4:3A:E6:B2:42:26:43
+sig_hashalgo:   sha256
+signature:      50:AD:45:F6:C9:F9:EB:E4:65:2C:27:D9:82:D3:A7:99:C4:8A:1B:57:
+                45:7E:1D:49:19:75:75:C4:35:31:59:25:2E:26:99:DD:B0:9D:9A:72:
+                DC:7B:25:08:9A:40:99:6F:AA:2A:FC:61:71:0C:64:49:06:EF:93:C5:
+                3A:8E:EF:45:D7:3B:5D:CE:28:2D:50:F8:09:36:42:53:49:2D:B7:6B:
+                80:4A:5C:4C:46:FB:A7:2D:7B:58:0A:FC:07:1A:A4:81:86:74:C5:6C:
+                93:4B:76:07:10:56:5A:C8:07:E1:AE:B8:61:99:9E:8F:72:87:E5:68:
+                15:8A:56:E1:73:B1:14:2B:86:DD:82:A1:A0:97:FC:A9:34:AB:1E:C5:
+                58:A1:50:1E:F3:B0:9E:C8:E0:FE:B4:A1:4E:D1:FC:40:A4:1B:48:7C:
+                DD:2E:EC:B7:44:44:33:2F:24:9C:FA:DE:C2:E5:7A:3D:65:F6:9D:C2:
+                6F:25:2A:6D:4B:03:2F:FD:54:FA:C5:2A:92:81:C2:FE:A1:B8:91:36:
+                A7:B9:F3:76:25:C5:89:86:84:BA:B2:69:E0:BB:C3:70:04:45:D0:21:
+                8D:CD:EA:0E:EF:58:BF:EC:DC:CA:FD:99:1A:05:E2:9D:75:36:60:A9:
+                95:3D:63:34:4F:A3:80:BE:E8:EE:9A:EB:CD:EB:2A:A5
+14:19root@d122b ~ ? modinfo bonding 
+filename:       /lib/modules/6.1.0-13-arm64/kernel/drivers/net/bonding/bonding.ko
+author:         Thomas Davis, tadavis@lbl.gov and many others
+description:    Ethernet Channel Bonding Driver
+license:        GPL
+alias:          rtnl-link-bond
+depends:        tls
+intree:         Y
+name:           bonding
+vermagic:       6.1.0-13-arm64 SMP mod_unload modversions aarch64
+sig_id:         PKCS#7
+signer:         Debian Secure Boot CA
+sig_key:        32:A0:28:7F:84:1A:03:6F:A3:93:C1:E0:65:C4:3A:E6:B2:42:26:43
+sig_hashalgo:   sha256
+signature:      16:8E:9E:65:98:17:A5:90:1A:FA:8B:ED:85:74:DF:CE:BF:22:65:D3:
+                15:E9:E0:37:C1:6A:7A:20:EF:F2:13:E9:89:A3:B7:C3:E2:CA:7E:73:
+                52:5C:B1:AC:05:D3:67:F3:4B:F8:1F:2A:F5:F7:F1:C5:B1:04:C0:4F:
+                B8:BC:9F:0D:66:36:61:F7:D5:9F:E6:BC:40:9D:55:57:1D:FE:0D:BB:
+                95:74:3B:21:7B:0C:39:E1:05:BD:F0:3E:41:D7:E6:41:08:96:8F:C2:
+                B2:5A:B9:F3:A6:34:C8:F6:9A:0C:86:6D:A2:08:5B:49:BB:33:9E:B8:
+                85:C6:1C:17:89:2F:F0:7D:B1:41:67:10:68:1F:5F:B9:5D:9C:EB:6D:
+                DA:DC:D8:F4:5E:D4:EA:94:59:77:0B:A3:12:EF:08:5B:48:34:4D:1E:
+                7E:70:6E:4F:D0:EA:95:6B:63:6B:ED:22:94:FA:F4:89:DB:15:91:70:
+                EB:BA:59:E3:99:32:74:AA:FE:0B:DA:50:AC:45:81:EE:6E:90:76:C6:
+                5F:3E:9C:20:B6:3F:1F:4C:69:56:9B:9F:82:60:46:04:61:25:23:6A:
+                50:C3:88:49:EF:F4:93:F2:84:40:1C:A8:EC:80:B2:82:38:13:2A:A0:
+                90:2E:C2:C6:98:BE:16:6D:00:38:81:06:AF:56:84:75
+parm:           max_bonds:Max number of bonded devices (int)
+parm:           tx_queues:Max number of transmit queues (default = 16) (int)
+parm:           num_grat_arp:Number of peer notifications to send on failover event (alias of num_unsol_na) (int)
+parm:           num_unsol_na:Number of peer notifications to send on failover event (alias of num_grat_arp) (int)
+parm:           miimon:Link check interval in milliseconds (int)
+parm:           updelay:Delay before considering link up, in milliseconds (int)
+parm:           downdelay:Delay before considering link down, in milliseconds (int)
+parm:           use_carrier:Use netif_carrier_ok (vs MII ioctls) in miimon; 0 for off, 1 for on (default) (int)
+parm:           mode:Mode of operation; 0 for balance-rr, 1 for active-backup, 2 for balance-xor, 3 for broadcast, 4 for 802.3ad, 5 for balance-tlb, 6 for balance-alb (charp)
+parm:           primary:Primary network device to use (charp)
+parm:           primary_reselect:Reselect primary slave once it comes up; 0 for always (default), 1 for only if speed of primary is better, 2 for only on active slave failure (charp)
+parm:           lacp_rate:LACPDU tx rate to request from 802.3ad partner; 0 for slow, 1 for fast (charp)
+parm:           ad_select:802.3ad aggregation selection logic; 0 for stable (default), 1 for bandwidth, 2 for count (charp)
+parm:           min_links:Minimum number of available links before turning on carrier (int)
+parm:           xmit_hash_policy:balance-alb, balance-tlb, balance-xor, 802.3ad hashing method; 0 for layer 2 (default), 1 for layer 3+4, 2 for layer 2+3, 3 for encap layer 2+3, 4 for encap layer 3+4, 5 for vlan+srcmac (charp)
+parm:           arp_interval:arp interval in milliseconds (int)
+parm:           arp_ip_target:arp targets in n.n.n.n form (array of charp)
+parm:           arp_validate:validate src/dst of ARP probes; 0 for none (default), 1 for active, 2 for backup, 3 for all (charp)
+parm:           arp_all_targets:fail on any/all arp targets timeout; 0 for any (default), 1 for all (charp)
+parm:           fail_over_mac:For active-backup, do not set all slaves to the same MAC; 0 for none (default), 1 for active, 2 for follow (charp)
+parm:           all_slaves_active:Keep all frames received on an interface by setting active flag for all slaves; 0 for never (default), 1 for always. (int)
+parm:           resend_igmp:Number of IGMP membership reports to send on link failure (int)
+parm:           packets_per_slave:Packets to send per slave in balance-rr mode; 0 for a random slave, 1 packet per slave (default), >1 packets per slave. (int)
+parm:           lp_interval:The number of seconds between instances where the bonding driver sends learning packets to each slaves peer switch. The default is 1. (uint)
+14:19root@d122b ~ ? 
+
+ **********************************************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
