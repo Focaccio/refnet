@@ -1,6 +1,47 @@
 abcdefg
 
 
+FRESH
+apt-get install ifenslave
+apt-get install bridge-utils 
+apt-get install vlan 
+
+REBOOT
+sudo modprobe bonding
+sudo modprobe bridge
+
+
+ip link add bond0 type bond
+ip link set bond0 type bond mode 802.3ad
+
+ip link set enxe8ea6a128a0c master bond0
+ip link set enxe8ea6a128a0d master bond0
+
+
+
+
+
+apt-get install openvswitch-switch
+apt-get install openvswitch-switch-dpdk 
+apt-get install openvswitch-common 
+apt-get install openvswitch-doc 
+apt-get install openvswitch-test
+ apt-get install openvswitch-testcontroller 
+
+ENABLE kernel modules
+sudo modprobe bonding
+sudo modprobe bridge
+
+
+
+
+
+
+
+
+
+
+
 https://brezular.com/2011/12/04/openvswitch-playing-with-bonding-on-openvswitch/
 
 root@Switch1:~# ovs-vsctl add-br br0
