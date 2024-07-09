@@ -1,5 +1,28 @@
 
 
+Open the 
+
+/etc/selinux/config
+
+
+SELINUX=disabled option: # This file controls the state of SELinux on the system. # ...
+
+Save the change, and restart your system:
+
+
+
+sudo systemctl stop NetworkManager
+
+sudo systemctl disable NetworkManager
+
+
+etc/resolv.conf 
+
+
+
+sudo systemctl restart NetworkManager.service
+
+
 
 
 
