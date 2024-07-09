@@ -1,4 +1,47 @@
 
+NEW 
+
+Editing the OVS config directly since NICs changed
+
+```
+systemctl stop openvswitch-switch
+cd /etc/openvswitch
+/var/lib/openvswitch/
+conf.db 
+
+19:12root@d122b /var/lib/openvswitch ? find / -name "*.sock" | grep openvswitch
+/run/openvswitch/db.sock
+19:13root@d122b /var/lib/openvswitch ? 
+
+19:15root@d122b /run/openvswitch ? ls -la
+total 12
+drwxr-xr-x  2 root root 220 Jul  7 19:12 .
+drwxr-xr-x 32 root root 820 Jul  7 18:50 ..
+srwxr-x---  1 root root   0 Jul  7 19:12 db.sock
+srwxr-x---  1 root root   0 Jul  7 19:12 ovs-br0.mgmt
+srwxr-x---  1 root root   0 Jul  7 19:12 ovs-br0.snoop
+srwxr-x---  1 root root   0 Jul  7 19:12 ovsdb-server.7447.ctl
+-rw-r--r--  1 root root   5 Jul  7 19:12 ovsdb-server.pid
+srwxr-x---  1 root root   0 Jul  5 19:12 ovs-testcontroller.985.ctl
+-rw-r--r--  1 root root   4 Jul  5 19:12 ovs-testcontroller.pid
+srwxr-x---  1 root root   0 Jul  7 19:12 ovs-vswitchd.7497.ctl
+-rw-r--r--  1 root root   5 Jul  7 19:12 ovs-vswitchd.pid
+19:15root@d122b /run/openvswitch ? 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 OVS bridge/taps
 ~~~good reference

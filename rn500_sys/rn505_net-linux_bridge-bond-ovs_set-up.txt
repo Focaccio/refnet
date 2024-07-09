@@ -10,6 +10,9 @@ REBOOT
 sudo modprobe bonding
 sudo modprobe bridge
 
+ethtool -s enxe8ea6a128a0c speed 100 duplex full autoneg off
+ethtool -s enxe8ea6a128a0d speed 100 duplex full autoneg off
+
 
 ip link add bond0 type bond
 ip link set bond0 type bond mode 802.3ad
