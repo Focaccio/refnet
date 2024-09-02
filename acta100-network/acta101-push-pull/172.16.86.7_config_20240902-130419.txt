@@ -17,7 +17,7 @@ boot-end-marker
 !
 !
 !
-username lab privilege 15 secret 5 $1$/vJM$pwLxI28kzcnWDMZ/WP9hi0
+<MANUAL omit username>
 no aaa new-model
 system mtu routing 1500
 vtp domain tst.areaf.net
