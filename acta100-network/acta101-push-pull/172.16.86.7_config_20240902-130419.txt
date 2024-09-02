@@ -1,0 +1,401 @@
+Building configuration...
+Current configuration : 8641 bytes
+!
+! Last configuration change at 18:42:11 UTC Mon Sep 2 2024 by lab
+! NVRAM config last updated at 18:30:05 UTC Mon Sep 2 2024 by lab
+!
+version 15.0
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname tst-lan-sw1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username lab privilege 15 secret 5 $1$/vJM$pwLxI28kzcnWDMZ/WP9hi0
+no aaa new-model
+system mtu routing 1500
+vtp domain tst.areaf.net
+vtp mode off
+ip routing
+no ip domain-lookup
+ip domain-name tst.areaf.net
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-2426602112
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2426602112
+ revocation-check none
+ rsakeypair TP-self-signed-2426602112
+!
+!
+crypto pki certificate chain TP-self-signed-2426602112
+ certificate self-signed 01
+  3082022B 30820194 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 32343236 36303231 3132301E 170D3933 30333031 30303031 
+  30325A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D32 34323636 
+  30323131 3230819F 300D0609 2A864886 F70D0101 01050003 818D0030 81890281 
+  8100D7A4 424FBA22 D6F7AFFB C75055B3 484ACE07 430BFDAB 8DD3F4B9 F405003A 
+  07804DF9 CC4E05F2 66177A0A E2E88175 440153B2 BB6C6A1C 95A5A4BA 911317AE 
+  6786FE4E 96F275B6 F422D14D E6205847 1FDA2DE3 95B6B17A F0E48A94 089F987D 
+  47290B9C C4043EDB 529C0A00 694B2D6A 7D9205E8 76D74C16 2C19AEFE A45C0A4B 
+  E0470203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 301F0603 
+  551D2304 18301680 1448B2C8 32B9AF36 F1962713 32BE86F0 EC6F0A76 7E301D06 
+  03551D0E 04160414 48B2C832 B9AF36F1 96271332 BE86F0EC 6F0A767E 300D0609 
+  2A864886 F70D0101 05050003 81810086 D45FE266 AFB50C0A 2C8468F8 936B0910 
+  197D1792 AB265057 20C0B63F 73A61586 497A88BD 1AD72FA4 819351CC 2E94F3E0 
+  CC839C81 794FB224 F3425ECC 22EB5867 31D78C05 8DAC6986 1F19A408 D1FE3F6D 
+  026C9980 85E5378F FAB0E76B E75AB60A 8B547F5D C39A5822 99D465F7 86DE6C59 
+  2CE28132 B966CBB2 8D9D0046 607F27
+  	quit
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+no spanning-tree vlan 18
+spanning-tree vlan 7 priority 8192
+!
+vlan internal allocation policy ascending
+!
+vlan 2
+ name TEST-2
+!
+vlan 7
+ name V007_LOCAL_TST
+!
+vlan 10
+ name VLAN-10
+!
+vlan 12
+ name VLAN-12
+!
+vlan 18
+ name 198-18-0-0
+!
+vlan 19
+ name 198-19-0-0
+!
+vlan 41
+ name C1-41
+!
+vlan 51
+ name 51-C-UPLINK
+!
+vlan 52
+ name 52-T-UPLINK
+!
+vlan 60
+ name 60-CLOUD
+!
+vlan 86
+ name rockhead
+!
+vlan 88
+ name VLAN-88
+!
+vlan 100
+ name PVLAN-100-PRIMARY
+  private-vlan primary
+!
+vlan 101
+ name V101-TEST
+!
+vlan 198
+ name TEST198
+!
+vlan 234
+ name TEST-VLAN234
+!
+vlan 511
+ name C1-SITE-192-168-51-x
+lldp run
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 18,19
+ shutdown
+!
+interface Port-channel2
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 18,19
+ switchport mode trunk
+!
+interface Port-channel18
+ switchport access vlan 18
+ switchport mode access
+!
+interface FastEthernet0/1
+ description V7-TST
+ switchport access vlan 7
+ switchport mode access
+ spanning-tree portfast
+!
+interface FastEthernet0/2
+ description VMNIC2-V7-TST
+ switchport access vlan 7
+ switchport mode access
+!
+interface FastEthernet0/3
+ description V7-TST-LAN
+ switchport access vlan 7
+ switchport mode access
+ spanning-tree portfast
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+ description VLAN 7
+ switchport access vlan 7
+ switchport mode access
+!
+interface FastEthernet0/6
+ description ISOLATED-88
+ switchport access vlan 88
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast
+!
+interface FastEthernet0/7
+ description V86-rockhead-automation
+ switchport access vlan 86
+ switchport mode access
+ spanning-tree portfast
+!
+interface FastEthernet0/8
+ description V86-rockhead-automation
+ switchport access vlan 86
+ switchport mode access
+ spanning-tree portfast
+!
+interface FastEthernet0/9
+ description lab DL CFW VLAN-10
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast
+!
+interface FastEthernet0/10
+ description lab UL SW2 VLAN-10
+ switchport access vlan 10
+ switchport mode access
+!
+interface FastEthernet0/11
+ description lab DL TFW VLAN-12
+ switchport access vlan 12
+ switchport mode access
+!
+interface FastEthernet0/12
+ description lab UL SW2 VLAN-12
+ switchport access vlan 12
+ switchport mode access
+!
+interface FastEthernet0/13
+ description PO-18
+ switchport access vlan 18
+ switchport mode access
+ channel-group 18 mode active
+!
+interface FastEthernet0/14
+ description PO-18
+ switchport access vlan 18
+ switchport mode access
+ channel-group 18 mode active
+!
+interface FastEthernet0/15
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 18,19
+ switchport mode trunk
+ channel-group 2 mode active
+!
+interface FastEthernet0/16
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 18,19
+ switchport mode trunk
+ channel-group 2 mode active
+!
+interface FastEthernet0/17
+ switchport access vlan 18
+ switchport mode access
+!
+interface FastEthernet0/18
+ description 9188-BOND
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 18,19
+ shutdown
+ channel-protocol lacp
+ channel-group 1 mode active
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+ description 327 TST
+ switchport access vlan 7
+ switchport mode access
+ spanning-tree portfast
+!
+interface FastEthernet0/21
+ description esx_vmnic1_V7
+ switchport access vlan 7
+ switchport mode access
+ spanning-tree portfast
+!
+interface FastEthernet0/22
+ description XWAVE
+ switchport access vlan 7
+ switchport mode access
+ spanning-tree portfast
+!
+interface FastEthernet0/23
+ description V007_LOCAL_TST
+ switchport access vlan 7
+ switchport mode access
+ spanning-tree portfast
+!
+interface FastEthernet0/24
+ description V007_LOCAL_TST
+ switchport access vlan 7
+ switchport mode access
+ spanning-tree portfast
+!
+interface GigabitEthernet0/1
+ description TST-V7
+ switchport access vlan 7
+ switchport mode access
+ speed 1000
+ spanning-tree portfast
+!
+interface GigabitEthernet0/2
+ description TST-LAN7
+ switchport access vlan 7
+ switchport mode access
+ spanning-tree portfast
+!
+interface Vlan1
+ no ip address
+!
+interface Vlan2
+ description TEST-2_10-2-0-0_16
+ ip address 10.2.0.1 255.255.0.0
+!
+interface Vlan7
+ description V007_LOCAL_TST
+ ip address 192.168.86.7 255.255.255.0
+!
+interface Vlan10
+ description VLAN-10
+ ip address 10.0.0.251 255.255.255.0
+!
+interface Vlan12
+ description VLAN--12
+ ip address 12.0.0.251 255.255.255.0
+!
+interface Vlan18
+ ip address 198.18.0.1 255.255.255.0
+!
+interface Vlan19
+ ip address 198.19.0.1 255.255.255.0
+!
+interface Vlan86
+ description VLAN86-ROCKHEAD-AUTOMATION
+ ip address 172.16.86.7 255.255.255.0
+!
+interface Vlan101
+ no ip address
+!
+interface Vlan234
+ description TEST-VLAN234
+ ip address 172.234.0.27 255.255.255.248
+!
+interface Vlan511
+ ip address 192.168.51.2 255.255.255.0
+!
+ip http server
+ip http secure-server
+!
+!
+ip route 0.0.0.0 0.0.0.0 192.168.86.1
+!
+!
+!
+snmp-server community public RO
+snmp-server host 192.168.86.25 public 
+!
+vstack
+alias exec sis show int status
+alias exec sic show int status | i connected
+alias exec sidu show int des | i up
+alias exec wha sh run | i alias
+alias exec crs copy ru st
+alias exec siib show ip int brie
+alias exec sir show ip route
+alias exec sid show int des
+alias exec sri show run | i
+alias exec sirs show ip route static
+alias exec srs show run | sec
+alias exec srsacl show run | sec access-list
+alias exec srint show run int
+alias exec sacl show access-list
+alias exec rate1 sh int tu1 | i rate
+alias exec rate10 sh int tu10 | i rate
+alias exec sion show ip ospf nei
+alias exec siod show ip ospf database
+alias exec siob show ip ospf brief
+alias exec sio show ip ospf 
+alias exec scsecsa show crypto ipsec sa
+alias exec sckmpsa show crypto isakmp sa
+alias exec sip show ip pro
+alias exec siro show ip route ospf
+alias exec srso show run | sec ospf
+alias exec sioib show ip ospf int brie
+alias exec cliop clear ip ospf pro
+alias exec sit sho int tru
+alias exec sisi show int status | i 
+alias exec sw2 ssh -l lab 10.0.0.252
+alias exec ses show ether sum
+!
+line con 0
+ exec-timeout 0 0
+ login local
+line vty 0 4
+ logging synchronous
+ login local
+ transport input all
+ transport output all
+line vty 5 15
+ logging synchronous
+ login local
+ transport input all
+ transport output all
+!
+!
+monitor session 1 source interface Po18
+monitor session 1 destination interface Fa0/19
+ntp server 132.239.254.49 prefer source Vlan7
+end

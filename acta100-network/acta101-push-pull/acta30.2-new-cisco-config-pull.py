@@ -3,7 +3,7 @@ import subprocess
 import getpass
 
 # variables
-hostname = "172.16.86.7172.16.86.7_config_20240902-125456.txt"
+hostname = "172.16.86.7"
 username = 'lab'
 password = getpass.getpass("Enter password: ")  # Prompt for password securely
 
