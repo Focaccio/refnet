@@ -2,7 +2,7 @@
 
 
 
-
+Set-ExecutionPolicy Unrestricted
 
 netstat -bao -p udp
 
