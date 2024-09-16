@@ -1,0 +1,11 @@
+
+
+
+
+
+
+netstat -bao -p udp
+
+taskkill /F /PID #
+
+Get-Process | findstr 1050
