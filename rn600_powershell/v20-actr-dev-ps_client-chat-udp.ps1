@@ -1,4 +1,14 @@
-# ... existing code ...
+# UDP Chat Client
+
+# Prompt for server IP and port
+$serverIP = Read-Host "Enter the server IP address"
+$port = Read-Host "Enter the UDP port number"
+
+# Create UDP client
+$udpClient = New-Object System.Net.Sockets.UdpClient
+
+# Connect to the server
+$udpClient.Connect($serverIP, $port)
 
 Write-Host "Connected to server at $serverIP`:$port"
 Write-Host "Type your messages and press Enter to send. Type 'exit' to quit."
@@ -36,4 +46,6 @@ while ($true) {
     $lineNumber++
 }
 
-# ... existing code ...
+# Close the UDP client
+$udpClient.Close()
+Write-Host "Disconnected from server."
