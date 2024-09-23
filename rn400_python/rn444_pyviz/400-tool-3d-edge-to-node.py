@@ -2,13 +2,29 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import os
 
-def create_nodes_csv(edges_csv_path='edges.csv', nodes_csv_path='nodes.csv', visualize=True):
+def create_nodes_csv(edges_csv_path, visualize=True):
+    # Extract the directory and filename from the edges_csv_path
+    directory = os.path.dirname(edges_csv_path)
+    nodes_csv_path = os.path.join(directory, 'nodes.csv')
+    
     # Read the edges CSV
     edges_df = pd.read_csv(edges_csv_path)
     
+    # Check column names
+    columns = edges_df.columns.tolist()
+    if 'source' not in columns or 'destination' not in columns:
+        print("Warning: 'source' or 'destination' columns not found.")
+        print("Available columns:", columns)
+        source_col = input("Enter the name of the source column: ")
+        dest_col = input("Enter the name of the destination column: ")
+    else:
+        source_col = 'source'
+        dest_col = 'destination'
+    
     # Extract unique IP addresses
-    all_ips = pd.concat([edges_df['source'], edges_df['destination']]).unique()
+    all_ips = pd.concat([edges_df[source_col], edges_df[dest_col]]).unique()
     
     # Create a layout for the nodes in 3D space
     num_nodes = len(all_ips)
@@ -49,8 +65,12 @@ def create_nodes_csv(edges_csv_path='edges.csv', nodes_csv_path='nodes.csv', vis
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
         ax.set_zlabel('Z')
-        plt.savefig('node_layout_3d.png')
-        print("3D Visualization saved as node_layout_3d.png")
+        visualization_path = os.path.join(directory, 'node_layout_3d.png')
+        plt.savefig(visualization_path)
+        print(f"3D Visualization saved as {visualization_path}")
+
+# Ask for the location of the edges file
+edges_file_path = input("Please enter the full path to the edges CSV file: ")
 
 # Usage
-create_nodes_csv()
+create_nodes_csv(edges_file_path)
