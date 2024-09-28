@@ -1,6 +1,28 @@
 
 
 
+run with specific interface not any (too much)
+tshark -i any -p -b filesize:102400 -b files:5 \
+-T fields \
+-e frame.time \
+-e eth.addr \
+-e ethertype \
+-e ip.src \
+-e ip.dst \
+-e ip.proto \
+-e tcp.srcport \
+-e tcp.dstport \
+-e udp.srcport \
+-e udp.dstport \
+-e frame.len \
+-e tcp.seq \
+-E header=y -E separator=, -E quote=d -E occurrence=f \
+-w /Users/path/rolling-pcap.pcap
+
+Run same command with no pcap file save and WATCH
+watch <then the above> refreshes every 2 sec
+
+
 
 
 tshark -o "conf.file:/path/to/your/init.conf"
