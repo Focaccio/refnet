@@ -1,0 +1,51 @@
+
+
+
+
+
+tshark -o "conf.file:/path/to/your/init.conf"
+
+
+
+12:06 greg@xcfit16.local /Users/f16/0fmil ? cat init.conf 
+# Capture interface (replace eth0 with your desired interface)
+-i any
+
+# Ring buffer settings
+# Adjust filesize (in KB) and number of files as needed
+-b filesize:10240
+-b files:5
+
+# Output format
+-T fields
+
+# Fields to capture
+-e frame.time
+-e eth.src
+-e eth.dst
+-e eth.type
+-e ip.src
+-e ip.dst
+-e ip.proto
+-e tcp.srcport
+-e tcp.dstport
+-e udp.srcport
+-e udp.dstport
+-e frame.len
+-e tcp.seq
+
+# Output formatting
+-E header=y
+-E separator=,
+-E quote=d
+-E occurrence=f
+
+# Output file (adjust path as needed)
+-w /Users/f16/0fmil/rollingf16cap.pcap
+
+# Capture filter to include only IPv4 traffic (optional, remove if not needed)
+-f "ip"
+
+# Display filter to ensure we only output packets with the fields we're interested in
+# This helps reduce noise in the output
+-Y "eth.src and eth.dst and eth.type and ip.src and ip.dst and ip.proto and (tcp.srcport or udp.srcport) and (tcp.dstport or udp.dstport)"
