@@ -1,0 +1,6 @@
+
+
+
+suricata -c /path/to/suricata.yaml -S /path/to/signature-file.rules -r /path/to/your/file.pcap -l /path/to/output/directory --runmode autofp -v
+
+

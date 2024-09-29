@@ -20,7 +20,7 @@ tshark -i any -p -b filesize:102400 -b files:5 \
 -w /Users/path/rolling-pcap.pcap
 
 Run same command with no pcap file save and WATCH
-watch tshark -i en0 -p \
+sudo watch tshark -i en0 -p \
 -T fields \
 -e frame.time \
 -e eth.addr \
