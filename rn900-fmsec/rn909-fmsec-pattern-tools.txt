@@ -4,3 +4,110 @@
 suricata -c /path/to/suricata.yaml -S /path/to/signature-file.rules -r /path/to/your/file.pcap -l /path/to/output/directory --runmode autofp -v
 
 
+/opt/homebrew/etc/suricata/suricata.yaml
+
+/opt/homebrew/etc/suricata/rules/
+
+find /usr/local/etc/suricata -name "suricata.yaml"
+find /usr/local/etc/suricata -name "*.rules"
+
+
+suricata -c /path/to/suricata.yaml  -l /path/to/output/directory --runmode autofp -v
+
+
+
+# EveBox Installation Guide for Debian 12 on ARM64 (6.1.0-13-arm64)
+
+## Prerequisites
+- Debian 12 (Bookworm) system running on ARM64 architecture
+- Root or sudo access
+- Suricata installed and configured
+
+## Installation Steps
+
+1. Update your system:
+   ```
+   sudo apt update && sudo apt upgrade -y
+   ```
+
+2. Install dependencies:
+   ```
+   sudo apt install wget -y
+   ```
+
+3. Download the latest EveBox ARM64 release:
+   ```
+   wget https://github.com/jasonish/evebox/releases/download/0.17.2/evebox-0.17.2-linux-arm64.tar.gz
+   ```
+   Note: Check the [EveBox releases page](https://github.com/jasonish/evebox/releases) for the latest version and update the URL accordingly.
+
+4. Extract the archive:
+   ```
+   tar -xzvf evebox-0.17.2-linux-arm64.tar.gz
+   ```
+
+5. Move the EveBox binary to a suitable location:
+   ```
+   sudo mv evebox-0.17.2-linux-arm64/evebox /usr/local/bin/
+   ```
+
+6. Create a configuration file:
+   ```
+   sudo mkdir -p /etc/evebox
+   sudo nano /etc/evebox/evebox.yaml
+   ```
+
+7. Add the following content to the configuration file:
+   ```yaml
+   data-directory: /var/lib/evebox
+   input:
+     - eve-file:
+         filename: /var/log/suricata/eve.json
+   ```
+   Note: Adjust the paths if your Suricata log location is different.
+
+8. Create the data directory:
+   ```
+   sudo mkdir -p /var/lib/evebox
+   sudo chown www-data:www-data /var/lib/evebox
+   ```
+
+9. Create a systemd service file for EveBox:
+   ```
+   sudo nano /etc/systemd/system/evebox.service
+   ```
+
+10. Add the following content to the service file:
+    ```
+    [Unit]
+    Description=EveBox
+    After=network.target
+
+    [Service]
+    ExecStart=/usr/local/bin/evebox -c /etc/evebox/evebox.yaml
+    Restart=always
+    User=www-data
+
+    [Install]
+    WantedBy=multi-user.target
+    ```
+
+11. Reload systemd, enable and start the EveBox service:
+    ```
+    sudo systemctl daemon-reload
+    sudo systemctl enable evebox
+    sudo systemctl start evebox
+    ```
+
+## Accessing EveBox
+
+Access the web interface by opening a browser and navigating to:
+```
+http://your_server_ip:5636
+```
+
+## Additional Notes
+- Ensure Suricata is configured to output EVE JSON logs.
+- You may need to adjust firewall settings to allow incoming connections on port 5636.
+- For added security, consider setting up a reverse proxy with HTTPS.
+- Monitor system performance, as ARM-based systems might have different performance characteristics compared to x86-64 systems.
