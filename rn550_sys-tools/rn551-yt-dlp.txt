@@ -1,0 +1,23 @@
+# yt-dlp Useful Commands
+
+## Single video
+
+Please replace [video URL] with the URL of the video you wish to download. It should look something like this: [https://youtu.be/m5JwiNSIHxY](https://youtu.be/m5JwiNSIHxY%60)
+
+Please replace LANG with the [two letter language code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) for your language. 
+
+**Video only:** `yt-dlp [video URL]`
+
+**Video and subtitles:** `yt-dlp --sub-langs LANG --write-subs [video URL]`
+
+**Audio only (as an mp3):** `yt-dlp -f ba [video URL] -o '%(title)s.mp3'`
+
+## Playlist
+
+Please replace [playlist URL] with the URL of the playlist you wish to download. It should look something like this: https://www.youtube.com/playlist?list=PLn4GkF3M9WXeadMYCiXV1GxscnkQ94eqp
+
+Please replace LANG with the [two letter language code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) for your language. 
+
+**All playlist videos:** `yt-dlp --yes-playlist [playlist URL]`
+
+**All playlist videos with subtitles:** `yt-dlp --yes-playlist --sub-langs LANG --write-subs [playlist URL]`
