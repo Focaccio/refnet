@@ -1,0 +1,19 @@
+ken moini
+# Create a cluster, redundancy_factor=1 basically means single-node
+cluster -s "192.168.42.57" --redundancy_factor=1 create
+
+# Give your cluster a name
+ncli cluster edit-params new-name="MyCluster"
+
+# Get rid of Google auto-set nameservers maybe if you need
+ncli cluster remove-from-name-servers servers="8.8.8.8,8.8.4.4"
+
+# Set your actual name servers
+ncli cluster add-to-name-servers servers="192.168.42.9,192.168.42.10"
+
+# Set some parameters
+ncli cluster set-external-ip-address external-ip-address="192.168.42.58"
+ncli cluster edit-params external-data-services-ip-address="192.168.42.59"
+
+# Start the cluster in case it is not already started after creation
+cluster start
