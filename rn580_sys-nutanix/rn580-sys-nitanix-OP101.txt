@@ -1,0 +1,1045 @@
+ken moini
+https://kenmoini.com/post/2021/10/deploying-nutanix-ahv-ce/
+===============================================================================================
+===============================================================================================
+
+
+# Create a cluster, redundancy_factor=1 basically means single-node
+cluster -s "a.b.c.d" --redundancy_factor=1 create
+
+# Give your cluster a name
+ncli cluster edit-params new-name="MyCluster"
+
+# Get rid of Google auto-set nameservers maybe if you need
+ncli cluster remove-from-name-servers servers="8.8.8.8,8.8.4.4"
+
+# Set your actual name servers
+ncli cluster add-to-name-servers servers="a.b.c.d,a.b.c.d"
+
+# Set some parameters
+ncli cluster set-external-ip-address external-ip-address="a.b.c.d"
+ncli cluster edit-params external-data-services-ip-address="a.b.c.d"
+
+# Start the cluster in case it is not already started after creation
+cluster start
+
+***********************************************************************************************
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+# Create a cluster, redundancy_factor=1 basically means single-node
+cluster -s "192.168.86.71" --redundancy_factor=1 create
+#SUCESS
+
+# Give your cluster a name
+ncli cluster edit-params new-name="demeter1"
+#SUCCESS
+
+
+# Get rid of Google auto-set nameservers maybe if you need
+ncli cluster remove-from-name-servers servers="8.8.8.8,8.8.4.4"
+#SUCCESS
+
+# Set your actual name servers
+ncli cluster add-to-name-servers servers="192.168.86.1,192.168.86.238"
+#SUCCESS
+
+
+# Set some parameters
+ncli cluster set-external-ip-address external-ip-address="192.168.86.72"
+ncli cluster edit-params external-data-services-ip-address="192.168.86.73"
+#SUCCESS
+
+
+# Start the cluster in case it is not already started after creation
+cluster start
+
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+***********************************************************************************************
+
+# Create a cluster, redundancy_factor=1 basically means single-node
+cluster -s "192.168.42.57" --redundancy_factor=1 create
+
+# Give your cluster a name
+ncli cluster edit-params new-name="MyCluster"
+
+# Get rid of Google auto-set nameservers maybe if you need
+ncli cluster remove-from-name-servers servers="8.8.8.8,8.8.4.4"
+
+# Set your actual name servers
+ncli cluster add-to-name-servers servers="192.168.42.9,192.168.42.10"
+
+# Set some parameters
+ncli cluster set-external-ip-address external-ip-address="192.168.42.58"
+ncli cluster edit-params external-data-services-ip-address="192.168.42.59"
+
+# Start the cluster in case it is not already started after creation
+cluster start
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+NCC (Nutanix Cluster Check) is a diagnostic and validation tool for Nutanix clusters. It performs health checks and validates configurations.
+Key aspects of NCC:
+
+Main Functions:
+
+
+Cluster health checks
+Pre/post-upgrade checks
+Configuration validation
+Hardware compatibility checks
+Performance analysis
+Log collection and analysis
+
+
+Common Commands:
+
+bashCopyncc health_checks run        # Run all health checks
+ncc --help                  # Show help menu
+ncc --version              # Show NCC version
+ncc --list-categories      # List check categories
+ncc --list-groups          # List check groups
+ncc checkall              # Run all available checks
+ncc collector            # Collect diagnostic data
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ netstat -tunap
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:2160            0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:3025            0.0.0.0:*               LISTEN      113400/zookeeper_mo 
+tcp        0      0 0.0.0.0:9877            0.0.0.0:*               LISTEN      113400/zookeeper_mo 
+tcp        0      0 127.0.0.1:9462          0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:9880            0.0.0.0:*               LISTEN      136357/mantle       
+tcp        0      0 0.0.0.0:2040            0.0.0.0:*               LISTEN      128939/cassandra_mo 
+tcp        0      0 0.0.0.0:2073            0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:2009            0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:2041            0.0.0.0:*               LISTEN      135675/dynamic_ring 
+tcp        0      0 127.0.0.1:9465          0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:2074            0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:2010            0.0.0.0:*               LISTEN      142408/curator      
+tcp        0      0 127.0.0.1:9466          0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:2011            0.0.0.0:*               LISTEN      142408/curator      
+tcp        0      0 127.0.0.1:9500          0.0.0.0:*               LISTEN      160310/python3.9    
+tcp        0      0 0.0.0.0:3260            0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:2012            0.0.0.0:*               LISTEN      139522/chronos_node 
+tcp        0      0 0.0.0.0:2300            0.0.0.0:*               LISTEN      136744/vip_monitor  
+tcp        0      0 0.0.0.0:2045            0.0.0.0:*               LISTEN      182152/fluent-bit   
+tcp        0      0 0.0.0.0:2525            0.0.0.0:*               LISTEN      175898/ssh          
+tcp        0      0 0.0.0.0:9501            0.0.0.0:*               LISTEN      160310/python3.9    
+tcp        0      0 0.0.0.0:3261            0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:445             0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:2110            0.0.0.0:*               LISTEN      8693/python3.9      
+tcp        0      0 0.0.0.0:2014            0.0.0.0:*               LISTEN      142120/alert_manage 
+tcp        0      0 0.0.0.0:2016            0.0.0.0:*               LISTEN      135841/pithos       
+tcp        0      0 127.0.0.1:9472          0.0.0.0:*               LISTEN      -                   
+tcp        0      0 127.0.0.1:8801          0.0.0.0:*               LISTEN      162997/security_ser 
+tcp        0      0 0.0.0.0:2049            0.0.0.0:*               LISTEN      -                   
+tcp        0      0 127.0.0.1:9441          0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:2019            0.0.0.0:*               LISTEN      140394/prism_monito 
+tcp        0      0 0.0.0.0:9444            0.0.0.0:*               LISTEN      186880/mercury      
+tcp        0      0 0.0.0.0:8740            0.0.0.0:*               LISTEN      145512/castor       
+tcp        0      0 0.0.0.0:2020            0.0.0.0:*               LISTEN      138523/cerebro      
+tcp        0      0 0.0.0.0:3205            0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:5062            0.0.0.0:*               LISTEN      182048/counters_col 
+tcp        0      0 0.0.0.0:9350            0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:9351            0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:2025            0.0.0.0:*               LISTEN      142331/arithmos     
+tcp        0      0 0.0.0.0:2027            0.0.0.0:*               LISTEN      135940/insights_ser 
+tcp        0      0 0.0.0.0:2220            0.0.0.0:*               LISTEN      161235/polaris      
+tcp        0      0 0.0.0.0:2348            0.0.0.0:*               LISTEN      137712/insights_upl 
+tcp        0      0 0.0.0.0:2028            0.0.0.0:*               LISTEN      137708/insights_rec 
+tcp        0      0 0.0.0.0:2029            0.0.0.0:*               LISTEN      137710/insights_upl 
+tcp        0      0 0.0.0.0:2222            0.0.0.0:*               LISTEN      148088/python3.9    
+tcp        0      0 192.168.86.71:53518     192.168.86.71:9876      ESTABLISHED 154393/python3.9    
+tcp        0      0 192.168.86.71:42938     192.168.86.71:9876      ESTABLISHED 163679/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:38784         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:48034         127.0.0.1:2027          ESTABLISHED 182031/insights_col 
+tcp        0      0 192.168.86.71:2025      192.168.86.71:49830     ESTABLISHED 142331/arithmos     
+tcp        0      0 127.0.0.1:39158         127.0.0.1:2027          ESTABLISHED -                   
+tcp        0      0 192.168.86.71:33250     192.168.86.71:9876      ESTABLISHED 142408/curator      
+tcp        0      0 127.0.0.1:44932         127.0.0.1:2009          ESTABLISHED -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:35622         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:59306         127.0.0.1:2042          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:51224         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:34526         ESTABLISHED 135940/insights_ser 
+tcp        1      0 192.168.86.71:36910     192.168.86.71:3025      CLOSE_WAIT  8693/python3.9      
+tcp        0      0 192.168.86.71:37802     192.168.86.71:9876      TIME_WAIT   -                   
+tcp        0   5336 192.168.86.71:22        192.168.86.237:53833    ESTABLISHED 111621/sshd: nutani 
+tcp        0      0 127.0.0.1:32940         127.0.0.1:2016          ESTABLISHED 146689/python3.9    
+tcp        0      0 127.0.0.1:47532         127.0.0.1:2020          ESTABLISHED 137992/cerebro      
+tcp        0      0 192.168.86.71:38694     192.168.86.71:9876      ESTABLISHED 8693/python3.9      
+tcp        1      0 192.168.86.71:36900     192.168.86.71:3025      CLOSE_WAIT  8693/python3.9      
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41196         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:34462         127.0.0.1:2027          ESTABLISHED 148088/python3.9    
+tcp        0      0 192.168.86.71:53478     192.168.86.71:9876      ESTABLISHED 8693/python3.9      
+tcp        0      0 192.168.86.71:43004     192.168.86.71:9876      ESTABLISHED 186880/mercury      
+tcp        0      0 192.168.86.71:53756     192.168.86.71:9876      ESTABLISHED -                   
+tcp        0      0 127.0.0.1:36250         127.0.0.1:2042          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:39012         127.0.0.1:2027          ESTABLISHED -                   
+tcp        0      0 127.0.0.1:50612         127.0.0.1:2027          ESTABLISHED 146689/python3.9    
+tcp        0      0 127.0.0.1:44054         127.0.0.1:9500          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:37564     192.168.86.71:9876      TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:34528         127.0.0.1:2027          ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:36788         127.0.0.1:2027          ESTABLISHED 180970/python3.9    
+tcp        0      0 127.0.0.1:52338         127.0.0.1:2027          ESTABLISHED 155309/python3.9    
+tcp        0      0 127.0.0.1:52474         127.0.0.1:2042          ESTABLISHED 142120/alert_manage 
+tcp        0      0 127.0.0.1:2016          127.0.0.1:44016         ESTABLISHED 135841/pithos       
+tcp        0      0 127.0.0.1:2025          127.0.0.1:50600         ESTABLISHED 142331/arithmos     
+tcp        0      0 127.0.0.1:56658         127.0.0.1:2009          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41206         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:42192         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:57948     192.168.86.71:2025      ESTABLISHED 138523/cerebro      
+tcp        0      0 192.168.86.71:48482     192.168.86.71:2090      ESTABLISHED 155309/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:34486         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:43068     192.168.86.71:2037      TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:2025      192.168.86.71:55820     TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:47204         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:52394         127.0.0.1:2042          ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41202         TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:56552     192.168.86.70:22        ESTABLISHED 172014/ssh: /home/n 
+tcp        0      0 127.0.0.1:50688         127.0.0.1:9161          ESTABLISHED 142408/curator      
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41114         TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:33892     192.168.86.71:2090      ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:2016          127.0.0.1:32940         ESTABLISHED 135841/pithos       
+tcp        0      0 192.168.86.71:2025      192.168.86.71:57948     ESTABLISHED 142331/arithmos     
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41282         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:56872         127.0.0.1:2016          ESTABLISHED 154393/python3.9    
+tcp        0      0 127.0.0.1:2019          127.0.0.1:42440         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2025          127.0.0.1:57870         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:56560         127.0.0.1:2027          ESTABLISHED 160514/python3.9    
+tcp        0      0 127.0.0.1:37796         127.0.0.1:9161          ESTABLISHED 135841/pithos       
+tcp        0      0 127.0.0.1:37804         127.0.0.1:9161          ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:35330     192.168.86.71:2100      TIME_WAIT   -                   
+tcp       32      0 192.168.86.71:43182     192.168.86.70:7030      CLOSE_WAIT  148088/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:39020         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:43108     192.168.86.71:22        TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:58508     192.168.86.71:9876      ESTABLISHED -                   
+tcp        0      0 127.0.0.1:44746         127.0.0.1:2042          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:33206     192.168.86.71:9876      ESTABLISHED 139522/chronos_node 
+tcp        0      0 192.168.86.71:2025      192.168.86.71:50000     TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:50612         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:56694         127.0.0.1:2042          ESTABLISHED 141152/transporter  
+tcp        0      0 192.168.86.71:48660     192.168.86.71:9876      ESTABLISHED 161235/polaris      
+tcp        0      0 127.0.0.1:2019          127.0.0.1:60426         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:42362         127.0.0.1:2042          ESTABLISHED 166716/narsil       
+tcp        0      0 127.0.0.1:2027          127.0.0.1:34470         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:42992     192.168.86.71:9876      ESTABLISHED 186880/mercury      
+tcp        0      0 192.168.5.254:3261      192.168.5.1:44500       ESTABLISHED -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:33890         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:2025          127.0.0.1:57858         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:56648         127.0.0.1:2027          ESTABLISHED 160310/python3.9    
+tcp        0      0 127.0.0.1:37912         127.0.0.1:2016          ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:55406         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:2027          127.0.0.1:54088         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:38746         127.0.0.1:2027          ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:38382         127.0.0.1:2016          ESTABLISHED -                   
+tcp        0      0 127.0.0.1:52466         127.0.0.1:2042          ESTABLISHED 8693/python3.9      
+tcp        0      0 192.168.86.71:56874     192.168.86.71:9876      ESTABLISHED 168493/logbayd      
+tcp        0      0 127.0.0.1:58170         127.0.0.1:9080          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:34176         127.0.0.1:9161          ESTABLISHED -                   
+tcp        0      0 127.0.0.1:35616         127.0.0.1:2027          ESTABLISHED 155309/python3.9    
+tcp        0      0 127.0.0.1:47204         127.0.0.1:2027          ESTABLISHED 142120/alert_manage 
+tcp        0      0 127.0.0.1:2027          127.0.0.1:56544         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:33900         127.0.0.1:2027          ESTABLISHED 142408/curator      
+tcp        0      0 127.0.0.1:58606         127.0.0.1:2027          ESTABLISHED 137939/go_ergon     
+tcp        0      0 192.168.86.71:48640     192.168.86.71:9876      ESTABLISHED 155309/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:34398         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:47924         127.0.0.1:9468          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:47162     192.168.86.71:2020      ESTABLISHED -                   
+tcp        0      0 127.0.0.1:2029          127.0.0.1:53734         ESTABLISHED 137710/insights_upl 
+tcp        0      0 192.168.86.71:43090     192.168.86.71:22        TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:59298         127.0.0.1:2042          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41240         TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:2014      192.168.86.71:53318     TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:34486         127.0.0.1:2027          ESTABLISHED 148088/python3.9    
+tcp        0      0 192.168.86.71:48594     192.168.86.71:9876      ESTABLISHED 154920/python3.9    
+tcp        0      0 127.0.0.1:2019          127.0.0.1:38866         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:41508         127.0.0.1:2027          ESTABLISHED 136357/mantle       
+tcp        0      0 192.168.86.71:37810     192.168.86.71:9876      TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2009          127.0.0.1:44932         ESTABLISHED -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:34426         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:52574         127.0.0.1:2042          ESTABLISHED 142331/arithmos     
+tcp        0      0 192.168.86.71:34562     192.168.86.71:7521      TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:48614     192.168.86.71:9876      ESTABLISHED 155309/python3.9    
+tcp        0      0 192.168.86.71:2025      192.168.86.71:43346     ESTABLISHED 142331/arithmos     
+tcp        0      0 192.168.86.71:52744     192.168.86.71:2090      ESTABLISHED 180970/python3.9    
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41180         TIME_WAIT   -                   
+tcp        0      0 192.168.5.254:33957     192.168.5.1:22          ESTABLISHED 126065/ssh: /home/n 
+tcp        0      0 127.0.0.1:2027          127.0.0.1:39158         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:2019          127.0.0.1:49998         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:41440         127.0.0.1:9161          ESTABLISHED 148088/python3.9    
+tcp        0      0 192.168.86.71:33156     192.168.86.71:9876      ESTABLISHED 137939/go_ergon     
+tcp        0      0 127.0.0.1:59564         127.0.0.1:2007          ESTABLISHED 8693/python3.9      
+tcp        0      0 127.0.0.1:49458         127.0.0.1:2042          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:60344     192.168.86.71:9876      ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:2027      192.168.86.71:57344     ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:2027          127.0.0.1:39044         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:54130     192.168.86.71:2090      ESTABLISHED 146689/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:56588         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:35026         127.0.0.1:2027          ESTABLISHED 186880/mercury      
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41598         ESTABLISHED 142331/arithmos     
+tcp        0      0 127.0.0.1:2027          127.0.0.1:55400         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:52492         127.0.0.1:2042          ESTABLISHED 135675/dynamic_ring 
+tcp        0      0 127.0.0.1:2019          127.0.0.1:44588         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:34504         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:39884     192.168.86.71:9876      ESTABLISHED 125805/python3.9    
+tcp        0      0 127.0.0.1:51254         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:33890         127.0.0.1:2027          ESTABLISHED 142408/curator      
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41150         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:33042         127.0.0.1:2090          ESTABLISHED 160514/python3.9    
+tcp        0      0 127.0.0.1:55302         127.0.0.1:2009          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:42176         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:50618         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:2016          127.0.0.1:45258         ESTABLISHED 135841/pithos       
+tcp        0      0 127.0.0.1:2027          127.0.0.1:39154         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:2027      192.168.86.71:48512     ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:48004     192.168.86.71:9876      ESTABLISHED 8693/python3.9      
+tcp        0      0 127.0.0.1:2019          127.0.0.1:50002         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2049          127.0.0.1:43692         ESTABLISHED -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:35734         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:2025          127.0.0.1:34552         TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:9444      192.168.86.71:53458     ESTABLISHED 186880/mercury      
+tcp        0      0 127.0.0.1:44016         127.0.0.1:2016          ESTABLISHED 161235/polaris      
+tcp        0      0 127.0.0.1:51480         127.0.0.1:2090          ESTABLISHED 142606/python3.9    
+tcp        0      0 192.168.86.71:53372     192.168.86.71:2025      ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:35600         127.0.0.1:2027          ESTABLISHED 155309/python3.9    
+tcp        0      0 127.0.0.1:52534         127.0.0.1:2042          ESTABLISHED 146689/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:36788         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:36358     192.168.86.71:2100      TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41256         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:35616         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:42420         127.0.0.1:2042          ESTABLISHED 160310/python3.9    
+tcp        0      0 192.168.86.71:53514     192.168.86.71:9876      ESTABLISHED 154393/python3.9    
+tcp        0      0 192.168.86.71:33146     192.168.86.71:9876      ESTABLISHED 137712/insights_upl 
+tcp        0      0 127.0.0.1:2027          127.0.0.1:60262         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:2016          127.0.0.1:38568         ESTABLISHED 135841/pithos       
+tcp        0      0 127.0.0.1:2027          127.0.0.1:39144         ESTABLISHED 135940/insights_ser 
+tcp        1      0 127.0.0.1:50850         127.0.0.1:2027          CLOSE_WAIT  168585/python3.9    
+tcp        0      0 192.168.86.71:36326     192.168.86.71:2100      TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2025          127.0.0.1:43974         TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:45390     192.168.86.71:9876      ESTABLISHED 8693/python3.9      
+tcp        0      0 127.0.0.1:60574         127.0.0.1:2016          ESTABLISHED 142408/curator      
+tcp        0      0 192.168.86.71:49936     192.168.86.71:9876      ESTABLISHED 8693/python3.9      
+tcp        0      0 192.168.86.71:48688     192.168.86.71:9876      ESTABLISHED 160310/python3.9    
+tcp        0      0 127.0.0.1:2016          127.0.0.1:37912         ESTABLISHED 135841/pithos       
+tcp        0      0 127.0.0.1:2025          127.0.0.1:34564         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:33342         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:42328         127.0.0.1:2042          ESTABLISHED 168476/cfs          
+tcp        0      0 127.0.0.1:42128         127.0.0.1:2027          ESTABLISHED 142120/alert_manage 
+tcp        0      0 127.0.0.1:2027          127.0.0.1:39026         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:57344     192.168.86.71:2027      ESTABLISHED 145512/castor       
+tcp        0      0 127.0.0.1:38568         127.0.0.1:2016          ESTABLISHED 135828/pithos       
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41218         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2016          127.0.0.1:38394         ESTABLISHED 135841/pithos       
+tcp        0      0 192.168.5.254:42119     192.168.5.1:22          ESTABLISHED 112382/ssh: /home/n 
+tcp        0      0 127.0.0.1:2009          127.0.0.1:33696         ESTABLISHED -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:39666         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:56670         127.0.0.1:2042          ESTABLISHED 142606/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:35010         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:2025      192.168.86.71:50022     TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:54078         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:42650         127.0.0.1:9161          ESTABLISHED 142331/arithmos     
+tcp        0      0 192.168.86.71:2049      192.168.86.71:38458     ESTABLISHED -                   
+tcp        0      0 127.0.0.1:37090         127.0.0.1:9444          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:52460         127.0.0.1:2042          ESTABLISHED 162164/python3.9    
+tcp        0      0 192.168.86.71:43018     192.168.86.71:9876      ESTABLISHED 186880/mercury      
+tcp        0      0 127.0.0.1:51182         127.0.0.1:9880          ESTABLISHED 136351/mantle       
+tcp        0      0 127.0.0.1:56660         127.0.0.1:2009          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:48600     192.168.86.71:9876      ESTABLISHED 155309/python3.9    
+tcp        0      0 127.0.0.1:39666         127.0.0.1:2027          ESTABLISHED 168571/atlc         
+tcp        0      0 127.0.0.1:2016          127.0.0.1:45322         ESTABLISHED 135841/pithos       
+tcp        0      0 192.168.86.71:45868     192.146.154.88:8443     ESTABLISHED 175898/ssh          
+tcp        0      0 192.168.86.71:39812     192.168.86.71:9876      ESTABLISHED 125245/python3.9    
+tcp        0      0 192.168.86.71:2025      192.168.86.71:50012     TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:35506     192.168.86.71:9876      ESTABLISHED 159453/service_prox 
+tcp        0      0 192.168.86.71:50820     192.168.86.71:2090      ESTABLISHED 160514/python3.9    
+tcp        0      0 192.168.86.71:53960     192.168.86.71:9876      ESTABLISHED 8693/python3.9      
+tcp        0      0 127.0.0.1:2016          127.0.0.1:60574         ESTABLISHED 135841/pithos       
+tcp        0      0 127.0.0.1:2027          127.0.0.1:50932         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:41598         127.0.0.1:2025          ESTABLISHED 148088/python3.9    
+tcp        0      0 192.168.86.71:2025      192.168.86.71:55834     TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:33696         127.0.0.1:2009          ESTABLISHED -                   
+tcp        0      0 127.0.0.1:57926         127.0.0.1:5000          ESTABLISHED 168493/logbayd      
+tcp        0      0 192.168.5.254:35741     192.168.5.1:22          ESTABLISHED 211818/ssh: /home/n 
+tcp        0      0 127.0.0.1:43234         127.0.0.1:2016          ESTABLISHED 148088/python3.9    
+tcp        0      0 192.168.86.71:2025      192.168.86.71:55850     TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:56632         127.0.0.1:2027          ESTABLISHED 160310/python3.9    
+tcp        0      0 192.168.86.71:2009      192.168.86.71:47496     ESTABLISHED -                   
+tcp        0      0 192.168.86.71:47974     192.168.86.71:9876      ESTABLISHED 8693/python3.9      
+tcp        0      0 127.0.0.1:54206         127.0.0.1:9462          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:43086     192.168.86.71:22        TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2025          127.0.0.1:53784         ESTABLISHED 142331/arithmos     
+tcp        0      0 127.0.0.1:49124         127.0.0.1:2034          ESTABLISHED 166716/narsil       
+tcp        0      0 192.168.86.71:33636     192.168.86.71:9876      ESTABLISHED 142120/alert_manage 
+tcp        0      0 127.0.0.1:38784         127.0.0.1:2027          ESTABLISHED 137939/go_ergon     
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41272         TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:2009      192.168.86.71:45526     ESTABLISHED -                   
+tcp        0      0 192.168.86.71:57118     192.168.86.71:9876      TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:50932         127.0.0.1:2027          ESTABLISHED 168585/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:39012         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:33898     192.168.86.71:2090      ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41622         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:41572         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:2025      192.168.86.71:53374     ESTABLISHED 142331/arithmos     
+tcp        0      0 127.0.0.1:2027          127.0.0.1:35738         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:38068     192.168.86.71:2100      TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:57490         127.0.0.1:2016          ESTABLISHED 136357/mantle       
+tcp        0      0 127.0.0.1:42392         127.0.0.1:2042          ESTABLISHED 137939/go_ergon     
+tcp        0      0 127.0.0.1:52410         127.0.0.1:2042          ESTABLISHED 138523/cerebro      
+tcp        0      0 127.0.0.1:49562         127.0.0.1:2025          ESTABLISHED 138523/cerebro      
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41102         ESTABLISHED 142331/arithmos     
+tcp        0      0 127.0.0.1:34398         127.0.0.1:2027          ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:34462         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:38394         127.0.0.1:2016          ESTABLISHED 138523/cerebro      
+tcp        0      0 127.0.0.1:49432         127.0.0.1:2090          ESTABLISHED 168585/python3.9    
+tcp        0      0 192.168.86.71:53458     192.168.86.71:9444      ESTABLISHED -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:34512         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:39026         127.0.0.1:2027          ESTABLISHED 137710/insights_upl 
+tcp        0      0 127.0.0.1:51248         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:35622         127.0.0.1:2027          ESTABLISHED 155309/python3.9    
+tcp        0      0 127.0.0.1:49430         127.0.0.1:2090          ESTABLISHED 168585/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:35588         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:46384     192.168.86.71:9876      ESTABLISHED 146696/nutanix_gues 
+tcp        0      0 192.168.86.71:53374     192.168.86.71:2025      ESTABLISHED 145512/castor       
+tcp        0      0 127.0.0.1:2025          127.0.0.1:53528         ESTABLISHED 142331/arithmos     
+tcp        0      0 192.168.86.71:58928     192.168.86.71:2100      ESTABLISHED 8693/python3.9      
+tcp        0      0 192.168.86.71:2014      192.168.86.71:58926     TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:33682     192.168.86.71:9876      ESTABLISHED 142331/arithmos     
+tcp        0      0 127.0.0.1:2016          127.0.0.1:42532         ESTABLISHED 135841/pithos       
+tcp        0      0 127.0.0.1:50246         127.0.0.1:2090          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:34076         127.0.0.1:9161          ESTABLISHED -                   
+tcp        0      0 192.168.86.71:50232     192.168.86.70:22        ESTABLISHED 123011/ssh: /home/n 
+tcp        0      0 127.0.0.1:2016          127.0.0.1:38382         ESTABLISHED 135841/pithos       
+tcp        0      0 192.168.86.71:46336     192.168.86.71:9876      ESTABLISHED 145512/castor       
+tcp        0      0 127.0.0.1:39042         127.0.0.1:2027          ESTABLISHED 137712/insights_upl 
+tcp        0      0 192.168.86.73:55528     192.168.86.73:2010      TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:49882     192.168.86.71:9876      ESTABLISHED 8693/python3.9      
+tcp        0      0 127.0.0.1:50618         127.0.0.1:2027          ESTABLISHED 146689/python3.9    
+tcp        0      0 192.168.86.71:58046     192.168.86.71:2027      ESTABLISHED 142408/curator      
+tcp        0      0 127.0.0.1:50942         127.0.0.1:2027          ESTABLISHED 168585/python3.9    
+tcp        0      0 127.0.0.1:39044         127.0.0.1:2027          ESTABLISHED 137712/insights_upl 
+tcp        0      0 192.168.86.71:54946     192.168.86.71:9876      ESTABLISHED 182048/counters_col 
+tcp        0      0 127.0.0.1:51570         127.0.0.1:2090          ESTABLISHED 166716/narsil       
+tcp        0      0 192.168.86.71:33604     192.168.86.71:9876      ESTABLISHED 140394/prism_monito 
+tcp        0      0 127.0.0.1:42124         127.0.0.1:2027          ESTABLISHED 142120/alert_manage 
+tcp        0      0 192.168.86.71:33244     192.168.86.71:9876      ESTABLISHED 8693/python3.9      
+tcp        0      0 127.0.0.1:39144         127.0.0.1:2027          ESTABLISHED 138523/cerebro      
+tcp        0      0 127.0.0.1:35738         127.0.0.1:2027          ESTABLISHED 162164/python3.9    
+tcp        0      0 192.168.86.71:38032     192.168.86.71:2100      TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:52458         127.0.0.1:2042          ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:56544         127.0.0.1:2027          ESTABLISHED 160514/python3.9    
+tcp        0      0 127.0.0.1:50692         127.0.0.1:9161          ESTABLISHED 142331/arithmos     
+tcp        0      0 127.0.0.1:2027          127.0.0.1:42128         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:51232         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:42238         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:55656     192.168.86.71:9876      ESTABLISHED 162164/python3.9    
+tcp        0      0 192.168.86.71:36342     192.168.86.71:2100      TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:47496     192.168.86.71:2009      ESTABLISHED 160514/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:41508         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:52506         127.0.0.1:2042          ESTABLISHED 160514/python3.9    
+tcp        0      0 127.0.0.1:2025          127.0.0.1:34548         TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:2025      192.168.86.71:55840     TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:46392     192.168.86.71:9876      ESTABLISHED -                   
+tcp        0      0 127.0.0.1:2016          127.0.0.1:43248         ESTABLISHED 135841/pithos       
+tcp        0      0 192.168.86.71:33258     192.168.86.71:9876      ESTABLISHED 142572/service_prox 
+tcp        0      0 127.0.0.1:54074         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:49464         127.0.0.1:2042          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:54352         127.0.0.1:2009          TIME_WAIT   -                   
+tcp        1      0 192.168.86.71:50346     192.168.86.71:3025      CLOSE_WAIT  8693/python3.9      
+tcp        0      0 127.0.0.1:35010         127.0.0.1:2027          ESTABLISHED 186880/mercury      
+tcp        0      0 127.0.0.1:52564         127.0.0.1:2042          ESTABLISHED 137712/insights_upl 
+tcp        0      0 127.0.0.1:2027          127.0.0.1:52338         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:34512         127.0.0.1:2027          ESTABLISHED 148088/python3.9    
+tcp        0      0 192.168.86.71:33618     192.168.86.71:9876      ESTABLISHED 141152/transporter  
+tcp        0      0 127.0.0.1:39154         127.0.0.1:2027          ESTABLISHED 138523/cerebro      
+tcp        0      0 127.0.0.1:9880          127.0.0.1:51182         ESTABLISHED 136357/mantle       
+tcp        0      0 127.0.0.1:2160          127.0.0.1:57052         ESTABLISHED -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:46628         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:51220         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2016          127.0.0.1:56872         ESTABLISHED 135841/pithos       
+tcp        0      0 192.168.86.71:54914     192.168.86.71:9876      ESTABLISHED 182054/command_coll 
+tcp        0      0 127.0.0.1:52552         127.0.0.1:2042          ESTABLISHED 137710/insights_upl 
+tcp        0      0 192.168.86.71:39834     192.168.86.71:9876      ESTABLISHED -                   
+tcp        0      0 192.168.86.71:38036     192.168.86.71:2100      TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:8740          127.0.0.1:57222         ESTABLISHED 145512/castor       
+tcp        0      0 127.0.0.1:2016          127.0.0.1:57490         ESTABLISHED 135841/pithos       
+tcp        0      0 192.168.86.71:2049      192.168.86.71:41738     ESTABLISHED -                   
+tcp        0      0 192.168.86.71:60020     192.168.86.71:9876      ESTABLISHED 136357/mantle       
+tcp        0      0 127.0.0.1:34470         127.0.0.1:2027          ESTABLISHED 148088/python3.9    
+tcp        0      0 192.168.86.71:56194     192.168.86.71:9876      ESTABLISHED 142408/curator      
+tcp        0      0 127.0.0.1:2016          127.0.0.1:38582         ESTABLISHED 135841/pithos       
+tcp        0      0 192.168.86.71:44238     192.168.86.71:9161      ESTABLISHED 128939/cassandra_mo 
+tcp        0      0 127.0.0.1:46410         127.0.0.1:9470          ESTABLISHED -                   
+tcp        0      0 127.0.0.1:55400         127.0.0.1:2027          ESTABLISHED 155499/minerva_cvm_ 
+tcp        0      0 127.0.0.1:42206         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 192.168.5.254:46321     192.168.5.1:22          ESTABLISHED 181964/ssh: /home/n 
+tcp        0      0 127.0.0.1:35734         127.0.0.1:2027          ESTABLISHED 162164/python3.9    
+tcp        0      0 192.168.86.71:2020      192.168.86.71:47162     ESTABLISHED 138523/cerebro      
+tcp        0      0 127.0.0.1:52498         127.0.0.1:2042          ESTABLISHED 135841/pithos       
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41128         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:42404         127.0.0.1:2042          ESTABLISHED 142408/curator      
+tcp        0      0 192.168.86.71:43196     192.168.86.70:7030      ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:45784         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:35102         127.0.0.1:9876          ESTABLISHED 113400/zookeeper_mo 
+tcp        0      0 192.168.86.71:48472     192.168.86.71:2090      ESTABLISHED 154920/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:35026         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:36316     192.168.86.71:2100      TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:8740          127.0.0.1:35882         ESTABLISHED 145512/castor       
+tcp        0      0 192.168.86.71:50808     192.168.86.71:2090      ESTABLISHED 160514/python3.9    
+tcp        0      0 127.0.0.1:35604         127.0.0.1:2042          ESTABLISHED 160514/python3.9    
+tcp        0      0 192.168.86.71:50538     192.168.86.71:9876      ESTABLISHED 168585/python3.9    
+tcp        0      0 192.168.86.71:2025      192.168.86.71:55866     TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41224         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:42142         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:56706     192.168.86.71:9876      ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:36802         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:55630     192.168.86.71:9876      ESTABLISHED 162129/service_prox 
+tcp        0      0 127.0.0.1:50156         127.0.0.1:2090          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:33086     192.168.86.71:9876      ESTABLISHED -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:56648         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:37470     192.168.86.71:2030      TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2020          127.0.0.1:44452         ESTABLISHED 138523/cerebro      
+tcp        0      0 127.0.0.1:43558         127.0.0.1:2049          ESTABLISHED 182048/counters_col 
+tcp        0      0 127.0.0.1:2025          127.0.0.1:39094         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2220          127.0.0.1:38986         ESTABLISHED 161235/polaris      
+tcp        0      0 127.0.0.1:50806         127.0.0.1:2100          ESTABLISHED 160514/python3.9    
+tcp        0      0 127.0.0.1:2025          127.0.0.1:39104         TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:48692     192.168.86.71:9876      ESTABLISHED 160310/python3.9    
+tcp        0      0 192.168.86.71:43346     192.168.86.71:2025      ESTABLISHED -                   
+tcp        0      0 192.168.86.71:56820     192.168.86.71:9876      ESTABLISHED 168476/cfs          
+tcp        0      0 127.0.0.1:2027          127.0.0.1:34414         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:60232     192.168.86.71:2090      ESTABLISHED 8693/python3.9      
+tcp        0      0 127.0.0.1:2027          127.0.0.1:56632         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:59046         127.0.0.1:2049          ESTABLISHED -                   
+tcp        0      0 192.168.5.254:41815     192.168.5.1:22          ESTABLISHED 8990/ssh            
+tcp        0      0 192.168.5.2:33062       192.168.5.1:22          ESTABLISHED 182054/command_coll 
+tcp        0      0 127.0.0.1:53894         127.0.0.1:2010          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:56192     192.168.86.71:9876      ESTABLISHED 142408/curator      
+tcp        0      0 127.0.0.1:57646         127.0.0.1:9500          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:60262         127.0.0.1:2027          ESTABLISHED 137939/go_ergon     
+tcp        0      0 127.0.0.1:50600         127.0.0.1:2025          ESTABLISHED 160514/python3.9    
+tcp        0      0 127.0.0.1:55556         127.0.0.1:9161          ESTABLISHED 142408/curator      
+tcp        0      0 127.0.0.1:2025          127.0.0.1:57384         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:44744         127.0.0.1:2042          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:42124         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:35076         127.0.0.1:2036          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:2049      192.168.86.71:40184     ESTABLISHED -                   
+tcp        0      0 192.168.86.71:33212     192.168.86.71:9876      ESTABLISHED 142408/curator      
+tcp        0      0 127.0.0.1:2027          127.0.0.1:52354         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:52536         127.0.0.1:2042          ESTABLISHED 137708/insights_rec 
+tcp        0      0 192.168.86.71:35324     192.168.86.71:2100      TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:60294     192.168.86.71:9876      ESTABLISHED 135841/pithos       
+tcp        0      0 192.168.86.71:2025      192.168.86.71:55808     TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:38582         127.0.0.1:2016          ESTABLISHED 142331/arithmos     
+tcp        0      0 127.0.0.1:2025          127.0.0.1:34566         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:35600         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:50258     192.168.86.71:2090      ESTABLISHED 8693/python3.9      
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41112         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2019          127.0.0.1:44596         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:53734         127.0.0.1:2029          ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:50590         127.0.0.1:2090          ESTABLISHED 154393/python3.9    
+tcp        0      0 192.168.86.71:2025      192.168.86.71:55810     TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:42214         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:60032     192.168.86.71:9876      ESTABLISHED 136744/vip_monitor  
+tcp        0      0 127.0.0.1:42664         127.0.0.1:9161          ESTABLISHED 142331/arithmos     
+tcp        0      0 192.168.86.71:33306     192.168.86.71:2100      ESTABLISHED 154393/python3.9    
+tcp        0      0 192.168.86.71:33272     192.168.86.71:9876      ESTABLISHED 142606/python3.9    
+tcp        0      0 192.168.86.71:53392     192.168.86.71:9876      ESTABLISHED 168585/python3.9    
+tcp        0      0 127.0.0.1:34100         127.0.0.1:9161          ESTABLISHED 125245/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:39042         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:39030         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:2027      192.168.86.71:58046     ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:39020         127.0.0.1:2027          ESTABLISHED -                   
+tcp        0      0 192.168.86.71:57102     192.168.86.71:9876      TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:43692         127.0.0.1:2049          ESTABLISHED 128939/cassandra_mo 
+tcp        0      0 192.168.86.71:54900     192.168.86.71:9876      ESTABLISHED 182045/zeus_collect 
+tcp        0      0 127.0.0.1:36252         127.0.0.1:2042          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:58624         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:34504         127.0.0.1:2027          ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:43914         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:34528         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:34526         127.0.0.1:2027          ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:42532         127.0.0.1:2016          ESTABLISHED 160514/python3.9    
+tcp        0      0 127.0.0.1:36302         127.0.0.1:2090          ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:57222         127.0.0.1:8740          ESTABLISHED 148088/python3.9    
+tcp        0      0 192.168.86.71:42922     192.168.86.71:2090      ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:50740         127.0.0.1:2010          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:52422         127.0.0.1:2042          ESTABLISHED -                   
+tcp        0      0 127.0.0.1:53694         127.0.0.1:2042          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2049          127.0.0.1:59046         ESTABLISHED -                   
+tcp        0      0 192.168.86.71:43120     192.168.86.71:22        TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:41738     192.168.86.71:2049      ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:49702         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:2027          127.0.0.1:42086         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:41818     192.168.86.70:22        ESTABLISHED 148767/ssh          
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41310         TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:60274     192.168.86.71:9876      ESTABLISHED 135675/dynamic_ring 
+tcp        0      0 127.0.0.1:50866         127.0.0.1:2027          ESTABLISHED 168585/python3.9    
+tcp        0      0 127.0.0.1:42142         127.0.0.1:2027          ESTABLISHED 142120/alert_manage 
+tcp        0      0 127.0.0.1:2025          127.0.0.1:43988         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:43072         127.0.0.1:9161          ESTABLISHED 142408/curator      
+tcp        0      0 192.168.86.71:2025      192.168.86.71:50038     TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:53118     192.168.86.71:9876      ESTABLISHED 166716/narsil       
+tcp        0      0 127.0.0.1:32784         127.0.0.1:2010          ESTABLISHED 139693/curator      
+tcp        0      0 192.168.86.71:41828     192.168.86.70:22        ESTABLISHED 149146/ssh          
+tcp        0      0 127.0.0.1:57052         127.0.0.1:2160          ESTABLISHED -                   
+tcp        0      0 192.168.86.71:38024     192.168.86.71:9876      ESTABLISHED 8693/python3.9      
+tcp        0      0 127.0.0.1:57452         127.0.0.1:2025          ESTABLISHED 160514/python3.9    
+tcp        0      0 192.168.86.71:54880     192.168.86.71:9876      ESTABLISHED 182050/gflags_colle 
+tcp        0      0 192.168.86.71:48512     192.168.86.71:2027      ESTABLISHED -                   
+tcp        0      0 127.0.0.1:38986         127.0.0.1:2220          ESTABLISHED 161026/polaris      
+tcp        0      0 127.0.0.1:56708         127.0.0.1:2042          ESTABLISHED 155309/python3.9    
+tcp        0      0 127.0.0.1:2049          127.0.0.1:43558         ESTABLISHED -                   
+tcp        0      0 192.168.5.254:40517     192.168.5.1:22          ESTABLISHED 8987/ssh            
+tcp        0      0 127.0.0.1:59290         127.0.0.1:2042          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:49474         127.0.0.1:2042          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:41670     192.168.86.71:80        TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2019          127.0.0.1:49344         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:42228         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:41802     192.168.86.70:22        ESTABLISHED 148684/ssh          
+tcp        0      0 127.0.0.1:2027          127.0.0.1:42274         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:56792     192.168.86.71:2030      ESTABLISHED 160514/python3.9    
+tcp        0      0 192.168.86.71:37560     192.168.86.71:9876      TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:56588         127.0.0.1:2027          ESTABLISHED 160310/python3.9    
+tcp        0      0 127.0.0.1:42258         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:56898     192.168.86.71:9876      ESTABLISHED 168571/atlc         
+tcp        0      0 127.0.0.1:2027          127.0.0.1:56578         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:2027          127.0.0.1:38746         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:54340         127.0.0.1:2036          ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:34426         127.0.0.1:2027          ESTABLISHED 148088/python3.9    
+tcp        0      0 192.168.86.72:40112     192.168.86.72:80        TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:42112         127.0.0.1:2027          ESTABLISHED 142120/alert_manage 
+tcp        0      0 127.0.0.1:42086         127.0.0.1:2027          ESTABLISHED 142120/alert_manage 
+tcp        0      0 192.168.86.71:53502     192.168.86.71:9876      ESTABLISHED 154899/service_prox 
+tcp        0      0 192.168.86.71:43096     192.168.86.71:22        TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2025          127.0.0.1:57890         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:46636         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2016          127.0.0.1:44028         ESTABLISHED 135841/pithos       
+tcp        0      0 192.168.86.71:48646     192.168.86.71:9876      ESTABLISHED 160514/python3.9    
+tcp        0      0 192.168.86.71:54886     192.168.86.71:9876      ESTABLISHED 182043/arithmos_col 
+tcp        0      0 127.0.0.1:2027          127.0.0.1:50866         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:53698         127.0.0.1:2042          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2019          127.0.0.1:55520         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:35588         127.0.0.1:2027          ESTABLISHED 155309/python3.9    
+tcp        0      0 127.0.0.1:52354         127.0.0.1:2027          ESTABLISHED 155309/python3.9    
+tcp        0      0 127.0.0.1:34488         127.0.0.1:2027          ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:34488         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:50602         127.0.0.1:2090          ESTABLISHED 154393/python3.9    
+tcp        0      0 127.0.0.1:43248         127.0.0.1:2016          ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41136         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2019          127.0.0.1:60432         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:52360         127.0.0.1:2027          ESTABLISHED 168585/python3.9    
+tcp        0      0 127.0.0.1:41102         127.0.0.1:2025          ESTABLISHED 168476/cfs          
+tcp        0      0 127.0.0.1:2010          127.0.0.1:32784         ESTABLISHED 142408/curator      
+tcp        0      0 192.168.86.71:2025      192.168.86.71:53372     ESTABLISHED 142331/arithmos     
+tcp        0      0 192.168.86.71:41842     192.168.86.70:22        ESTABLISHED 149227/ssh          
+tcp        0      0 127.0.0.1:42250         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 192.168.5.254:55143     192.168.5.1:22          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:36874         127.0.0.1:2042          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:56560         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:57106     192.168.86.71:9876      TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:34082         127.0.0.1:9161          ESTABLISHED 125245/python3.9    
+tcp        0      0 127.0.0.1:52488         127.0.0.1:2042          ESTABLISHED -                   
+tcp        0      0 127.0.0.1:58624         127.0.0.1:2027          ESTABLISHED 163679/python3.9    
+tcp        0      0 127.0.0.1:34414         127.0.0.1:2027          ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:39516         127.0.0.1:2010          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:50942         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:2027          127.0.0.1:48034         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:52450         127.0.0.1:2042          ESTABLISHED 136357/mantle       
+tcp        0      0 192.168.86.71:46418     192.168.86.71:9876      ESTABLISHED 146689/python3.9    
+tcp        0      0 127.0.0.1:49702         127.0.0.1:2027          ESTABLISHED 137939/go_ergon     
+tcp        0      0 192.168.86.71:54932     192.168.86.71:9876      ESTABLISHED 182031/insights_col 
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41298         TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:33630     192.168.86.71:9876      ESTABLISHED 141152/transporter  
+tcp        0      0 192.168.86.71:53722     192.168.86.71:9876      ESTABLISHED 128939/cassandra_mo 
+tcp        0      0 127.0.0.1:33342         127.0.0.1:2027          ESTABLISHED 160310/python3.9    
+tcp        0      0 127.0.0.1:53784         127.0.0.1:2025          ESTABLISHED -                   
+tcp        0      0 127.0.0.1:34090         127.0.0.1:9161          ESTABLISHED 125245/python3.9    
+tcp        0      0 127.0.0.1:52508         127.0.0.1:2042          ESTABLISHED 161235/polaris      
+tcp        0      0 127.0.0.1:2025          127.0.0.1:49562         ESTABLISHED 142331/arithmos     
+tcp        0      0 127.0.0.1:34110         127.0.0.1:9161          ESTABLISHED 125245/python3.9    
+tcp        0      0 192.168.86.71:53500     192.168.86.71:9876      ESTABLISHED 180903/service_prox 
+tcp        0      0 127.0.0.1:51214         127.0.0.1:2027          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:60164         127.0.0.1:2090          ESTABLISHED 163679/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:50600         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:45526     192.168.86.71:2009      ESTABLISHED 142408/curator      
+tcp        0      0 127.0.0.1:45784         127.0.0.1:2027          ESTABLISHED 154393/python3.9    
+tcp        0      0 192.168.86.71:53516     192.168.86.71:9876      ESTABLISHED 180970/python3.9    
+tcp        0      0 127.0.0.1:2020          127.0.0.1:47532         ESTABLISHED 138523/cerebro      
+tcp        0      0 192.168.86.71:43550     192.168.86.71:9876      ESTABLISHED 154920/python3.9    
+tcp        0      0 192.168.86.71:40184     192.168.86.71:2049      ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:52360         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:56222     192.168.86.71:9876      ESTABLISHED 145142/service_prox 
+tcp        0      0 127.0.0.1:42622         127.0.0.1:9161          ESTABLISHED 142120/alert_manage 
+tcp        0      0 127.0.0.1:2019          127.0.0.1:42454         ESTABLISHED 140394/prism_monito 
+tcp        0      0 127.0.0.1:2027          127.0.0.1:42112         ESTABLISHED 135940/insights_ser 
+tcp        0      0 192.168.86.71:2025      192.168.86.71:50026     TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:55674     192.168.86.71:9876      ESTABLISHED 162997/security_ser 
+tcp        0      0 127.0.0.1:54614         127.0.0.1:9080          TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:55690     192.168.86.71:9876      ESTABLISHED 163621/service_prox 
+tcp        0      0 192.168.86.71:37760     192.168.86.71:9876      TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:52438         127.0.0.1:2042          ESTABLISHED 168585/python3.9    
+tcp        0      0 127.0.0.1:2025          127.0.0.1:57452         ESTABLISHED 142331/arithmos     
+tcp        0      0 192.168.86.71:47696     192.168.86.71:2030      ESTABLISHED 180970/python3.9    
+tcp        0      0 127.0.0.1:53528         127.0.0.1:2025          ESTABLISHED 180970/python3.9    
+tcp        0      0 192.168.86.71:55732     192.168.86.70:22        ESTABLISHED 149876/ssh          
+tcp        0      0 127.0.0.1:45322         127.0.0.1:2016          ESTABLISHED -                   
+tcp        0      0 192.168.86.71:53398     192.168.86.71:9876      ESTABLISHED 160310/python3.9    
+tcp        0      0 127.0.0.1:36802         127.0.0.1:2027          ESTABLISHED 180970/python3.9    
+tcp        0      0 192.168.86.71:33134     192.168.86.71:9876      ESTABLISHED 137710/insights_upl 
+tcp        0      0 127.0.0.1:2025          127.0.0.1:57874         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:50574         127.0.0.1:2090          ESTABLISHED 154393/python3.9    
+tcp        0      0 127.0.0.1:44028         127.0.0.1:2016          ESTABLISHED 160514/python3.9    
+tcp        0      0 127.0.0.1:39302         127.0.0.1:2042          ESTABLISHED 182152/fluent-bit   
+tcp        0      0 127.0.0.1:2027          127.0.0.1:33900         ESTABLISHED 135940/insights_ser 
+tcp        0      0 127.0.0.1:56578         127.0.0.1:2027          ESTABLISHED 137939/go_ergon     
+tcp        0      0 127.0.0.1:2019          127.0.0.1:49340         TIME_WAIT   -                   
+tcp        0      0 192.168.86.71:49830     192.168.86.71:2025      ESTABLISHED 142408/curator      
+tcp        0      0 192.168.86.71:33176     192.168.86.71:9876      ESTABLISHED 138523/cerebro      
+tcp        0      0 192.168.86.71:38052     192.168.86.71:2100      TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:36864         127.0.0.1:2042          TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:49342         127.0.0.1:9161          ESTABLISHED 182048/counters_col 
+tcp        0      0 192.168.86.71:38458     192.168.86.71:2049      ESTABLISHED 148088/python3.9    
+tcp        0      0 127.0.0.1:42620         127.0.0.1:9161          ESTABLISHED 135841/pithos       
+tcp        0      0 127.0.0.1:55406         127.0.0.1:2027          ESTABLISHED 155499/minerva_cvm_ 
+tcp        0      0 127.0.0.1:50600         127.0.0.1:2027          ESTABLISHED 146689/python3.9    
+tcp        0      0 127.0.0.1:45258         127.0.0.1:2016          ESTABLISHED 145512/castor       
+tcp        0      0 127.0.0.1:34400         127.0.0.1:9161          ESTABLISHED 142120/alert_manage 
+tcp        0      0 127.0.0.1:35882         127.0.0.1:8740          ESTABLISHED 145187/castor       
+tcp        0      0 127.0.0.1:2025          127.0.0.1:41166         TIME_WAIT   -                   
+tcp        0      0 127.0.0.1:2016          127.0.0.1:43234         ESTABLISHED 135841/pithos       
+tcp        0      0 127.0.0.1:44452         127.0.0.1:2020          ESTABLISHED 154393/python3.9    
+tcp        0      0 127.0.0.1:2027          127.0.0.1:58606         ESTABLISHED 135940/insights_ser 
+tcp6       0      0 :::111                  :::*                    LISTEN      -                   
+tcp6       0      0 :::14319                :::*                    LISTEN      161235/polaris      
+tcp6       0      0 127.0.0.1:8080          :::*                    LISTEN      129395/java         
+tcp6       0      0 127.0.0.1:8081          :::*                    LISTEN      129395/java         
+tcp6       0      0 :::2034                 :::*                    LISTEN      180970/python3.9    
+tcp6       0      0 :::8050                 :::*                    LISTEN      159583/java         
+tcp6       0      0 :::2099                 :::*                    LISTEN      -                   
+tcp6       0      0 :::2036                 :::*                    LISTEN      166716/narsil       
+tcp6       0      0 :::9876                 :::*                    LISTEN      113427/java         
+tcp6       0      0 :::2100                 :::*                    LISTEN      8693/python3.9      
+tcp6       0      0 :::9300                 :::*                    LISTEN      186880/mercury      
+tcp6       0      0 :::9461                 :::*                    LISTEN      154920/python3.9    
+tcp6       0      0 :::2037                 :::*                    LISTEN      146689/python3.9    
+tcp6       0      0 :::2038                 :::*                    LISTEN      160514/python3.9    
+tcp6       0      0 :::22                   :::*                    LISTEN      -                   
+tcp6       0      0 :::2007                 :::*                    LISTEN      142606/python3.9    
+tcp6       0      0 :::9463                 :::*                    LISTEN      -                   
+tcp6       0      0 :::36631                :::*                    LISTEN      113427/java         
+tcp6       0      0 :::2103                 :::*                    LISTEN      -                   
+tcp6       0      0 127.0.0.1:9080          :::*                    LISTEN      141914/java         
+tcp6       0      0 127.0.0.1:8888          :::*                    LISTEN      141914/java         
+tcp6       0      0 192.168.86.71:7000      :::*                    LISTEN      129395/java         
+tcp6       0      0 :::9464                 :::*                    LISTEN      -                   
+tcp6       0      0 127.0.0.1:9081          :::*                    LISTEN      141914/java         
+tcp6       0      0 :::9881                 :::*                    LISTEN      136357/mantle       
+tcp6       0      0 :::2042                 :::*                    LISTEN      168476/cfs          
+tcp6       0      0 :::2106                 :::*                    LISTEN      8693/python3.9      
+tcp6       0      0 :::9468                 :::*                    LISTEN      -                   
+tcp6       0      0 :::2525                 :::*                    LISTEN      175898/ssh          
+tcp6       0      0 :::7517                 :::*                    LISTEN      155499/minerva_cvm_ 
+tcp6       0      0 :::9470                 :::*                    LISTEN      -                   
+tcp6       0      0 :::2303                 :::*                    LISTEN      136024/java         
+tcp6       0      0 :::2080                 :::*                    LISTEN      162164/python3.9    
+tcp6       0      0 :::9440                 :::*                    LISTEN      -                   
+tcp6       0      0 :::7521                 :::*                    LISTEN      155499/minerva_cvm_ 
+tcp6       0      0 :::2051                 :::*                    LISTEN      163679/python3.9    
+tcp6       0      0 :::5989                 :::*                    LISTEN      -                   
+tcp6       0      0 :::9447                 :::*                    LISTEN      155309/python3.9    
+tcp6       0      0 :::14119                :::*                    LISTEN      138523/cerebro      
+tcp6       0      0 :::5000                 :::*                    LISTEN      168493/logbayd      
+tcp6       0      0 :::2121                 :::*                    LISTEN      166716/narsil       
+tcp6       0      0 :::9161                 :::*                    LISTEN      129395/java         
+tcp6       0      0 :::2090                 :::*                    LISTEN      137939/go_ergon     
+tcp6       0      0 :::2700                 :::*                    LISTEN      168585/python3.9    
+tcp6       0      0 :::2092                 :::*                    LISTEN      137939/go_ergon     
+tcp6       0      0 :::7501                 :::*                    LISTEN      154393/python3.9    
+tcp6       0      0 :::2030                 :::*                    LISTEN      148088/python3.9    
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:53518     ESTABLISHED 113427/java         
+tcp6       0      0 ::1:54950               ::1:2099                ESTABLISHED 8693/python3.9      
+tcp6       0      0 ::1:51756               ::1:2100                ESTABLISHED 8693/python3.9      
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:53514     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:39302         ESTABLISHED 168476/cfs          
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52450         ESTABLISHED 168476/cfs          
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:53722     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52466         ESTABLISHED 168476/cfs          
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:53478     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:56820     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2036          127.0.0.1:54340         ESTABLISHED 166716/narsil       
+tcp6       0      0 192.168.86.71:37878     192.168.86.71:14319     ESTABLISHED 138523/cerebro      
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33636     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:35506     ESTABLISHED 113427/java         
+tcp6       0      0 ::1:55270               ::1:2100                ESTABLISHED 8693/python3.9      
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:55556         ESTABLISHED 129395/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52474         ESTABLISHED 168476/cfs          
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:54900     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:46628         127.0.0.1:2027          ESTABLISHED 141914/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33146     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:56142     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:39834     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:34090         ESTABLISHED 129395/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33630     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:56694         ESTABLISHED 168476/cfs          
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:34100         ESTABLISHED 129395/java         
+tcp6       0      0 192.168.86.71:2100      192.168.86.71:33306     ESTABLISHED 8693/python3.9      
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:60274     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:34110         ESTABLISHED 129395/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:56670         ESTABLISHED 168476/cfs          
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33286     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:42922     192.168.86.71:9876      ESTABLISHED 141914/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:60294     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:49936     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52506         ESTABLISHED 168476/cfs          
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:48640     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2090          127.0.0.1:36302         ESTABLISHED 137939/go_ergon     
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52394         ESTABLISHED 168476/cfs          
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:48004     ESTABLISHED 113427/java         
+tcp6       0      0 ::1:2100                ::1:53932               ESTABLISHED 8693/python3.9      
+tcp6       0      0 192.168.86.71:2090      192.168.86.71:50820     ESTABLISHED 137939/go_ergon     
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52422         ESTABLISHED 168476/cfs          
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:42992     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33176     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:2090      192.168.86.71:60232     ESTABLISHED 137939/go_ergon     
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:34082         ESTABLISHED 129395/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:60020     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:56142     192.168.86.71:9876      ESTABLISHED 141914/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:46418     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:55528         127.0.0.1:2019          TIME_WAIT   -                   
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:34076         ESTABLISHED 129395/java         
+tcp6       0      0 127.0.0.1:53208         127.0.0.1:2027          TIME_WAIT   -                   
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33604     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:41440         ESTABLISHED 129395/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:54886     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:2090      192.168.86.71:50258     ESTABLISHED 137939/go_ergon     
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:56706     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:60032     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33244     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2090          127.0.0.1:49430         ESTABLISHED 137939/go_ergon     
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:56192     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52410         ESTABLISHED 168476/cfs          
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:47974     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:60028     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:49414         127.0.0.1:8080          TIME_WAIT   -                   
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52488         ESTABLISHED 168476/cfs          
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33272     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:60028     192.168.86.71:9876      ESTABLISHED 136024/java         
+tcp6       0      0 ::1:2100                ::1:55270               ESTABLISHED 8693/python3.9      
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:55690     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33258     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52574         ESTABLISHED 168476/cfs          
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:42362         ESTABLISHED 168476/cfs          
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:43072         ESTABLISHED 129395/java         
+tcp6       0      0 127.0.0.1:2100          127.0.0.1:50806         ESTABLISHED 8693/python3.9      
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:56194     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:2090      192.168.86.71:48472     ESTABLISHED 137939/go_ergon     
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52536         ESTABLISHED 168476/cfs          
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:42404         ESTABLISHED 168476/cfs          
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52564         ESTABLISHED 168476/cfs          
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:45390     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:5000          127.0.0.1:57926         ESTABLISHED 168493/logbayd      
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:34400         ESTABLISHED 129395/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33206     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:43004     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:44794         TIME_WAIT   -                   
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33618     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:42938     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33156     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:49412         127.0.0.1:8080          TIME_WAIT   -                   
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:42328         ESTABLISHED 168476/cfs          
+tcp6       0      0 127.0.0.1:54088         127.0.0.1:2027          ESTABLISHED 141914/java         
+tcp6       0      0 ::1:53932               ::1:2100                ESTABLISHED 8693/python3.9      
+tcp6       0      0 127.0.0.1:9470          127.0.0.1:46410         ESTABLISHED -                   
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33086     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:58508     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:53502     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:53398     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:2090      192.168.86.71:48482     ESTABLISHED 137939/go_ergon     
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52438         ESTABLISHED 168476/cfs          
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:48614     ESTABLISHED 113427/java         
+tcp6       0      0 ::1:37434               ::1:2100                ESTABLISHED 8693/python3.9      
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:56898     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9161      192.168.86.71:44238     ESTABLISHED 129395/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:42922     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52508         ESTABLISHED 168476/cfs          
+tcp6       0      0 127.0.0.1:41576         127.0.0.1:2027          TIME_WAIT   -                   
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:48688     ESTABLISHED 113427/java         
+tcp6       0      0 ::1:2099                ::1:50560               ESTABLISHED -                   
+tcp6       0      0 127.0.0.1:2090          127.0.0.1:33042         ESTABLISHED 137939/go_ergon     
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:53516     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:9876          127.0.0.1:48976         TIME_WAIT   -                   
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33134     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:2090      192.168.86.71:42922     ESTABLISHED 137939/go_ergon     
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:50538     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:37796         ESTABLISHED 129395/java         
+tcp6       0      0 127.0.0.1:2090          127.0.0.1:50590         ESTABLISHED 137939/go_ergon     
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:53118     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52458         ESTABLISHED 168476/cfs          
+tcp6       0      0 ::1:2100                ::1:37434               ESTABLISHED 8693/python3.9      
+tcp6       0      0 ::1:2099                ::1:54950               ESTABLISHED -                   
+tcp6       0      0 192.168.86.71:2030      192.168.86.71:47696     ESTABLISHED 148088/python3.9    
+tcp6       0      0 ::1:41596               ::1:2700                TIME_WAIT   -                   
+tcp6       0      0 127.0.0.1:51198         127.0.0.1:2027          TIME_WAIT   -                   
+tcp6       0      0 192.168.86.71:2090      192.168.86.71:33898     ESTABLISHED 137939/go_ergon     
+tcp6       0      0 192.168.86.71:9881      192.168.86.71:38836     ESTABLISHED 136357/mantle       
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:39812     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:39884     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:60038     192.168.86.71:9876      ESTABLISHED 136024/java         
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:37804         ESTABLISHED 129395/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52492         ESTABLISHED 168476/cfs          
+tcp6       0      0 192.168.86.71:2090      192.168.86.71:52744     ESTABLISHED 137939/go_ergon     
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:60038     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:56874     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:49882     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:55630     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:2100      192.168.86.71:58928     ESTABLISHED 8693/python3.9      
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:46392     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:43898         127.0.0.1:2027          TIME_WAIT   -                   
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:34176         ESTABLISHED 129395/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33682     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:50692         ESTABLISHED 129395/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52460         ESTABLISHED 168476/cfs          
+tcp6       0      0 127.0.0.1:2090          127.0.0.1:51570         ESTABLISHED 137939/go_ergon     
+tcp6       0      0 192.168.86.71:38836     192.168.86.71:9881      ESTABLISHED 136357/mantle       
+tcp6       0      0 ::1:47462               ::1:2700                TIME_WAIT   -                   
+tcp6       0      0 127.0.0.1:2090          127.0.0.1:50574         ESTABLISHED 137939/go_ergon     
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:42622         ESTABLISHED 129395/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:46384     ESTABLISHED 113427/java         
+tcp6       0      0 ::1:2103                ::1:37318               ESTABLISHED -                   
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:38694     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:58590         127.0.0.1:9081          ESTABLISHED 141914/java         
+tcp6       0      0 192.168.86.71:34704     192.168.86.71:9876      ESTABLISHED 141914/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:54946     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:54880     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:38024     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:55674     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:42454         127.0.0.1:2019          ESTABLISHED 141914/java         
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:49342         ESTABLISHED 129395/java         
+tcp6       0      0 192.168.86.71:2090      192.168.86.71:54130     ESTABLISHED 137939/go_ergon     
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:42664         ESTABLISHED 129395/java         
+tcp6       0      0 127.0.0.1:51182         127.0.0.1:9876          TIME_WAIT   -                   
+tcp6       0      0 127.0.0.1:2090          127.0.0.1:60164         ESTABLISHED 137939/go_ergon     
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:42392         ESTABLISHED 168476/cfs          
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:42420         ESTABLISHED 168476/cfs          
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:56222     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33212     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:2090      192.168.86.71:50808     ESTABLISHED 137939/go_ergon     
+tcp6       0      0 ::1:50560               ::1:2099                ESTABLISHED 8693/python3.9      
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:48600     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:56708         ESTABLISHED 168476/cfs          
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:48660     ESTABLISHED 113427/java         
+tcp6       0      0 ::1:53776               ::1:2100                TIME_WAIT   -                   
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:34704     ESTABLISHED 113427/java         
+tcp6       0      0 ::1:2100                ::1:51756               ESTABLISHED 8693/python3.9      
+tcp6       0      0 192.168.86.71:34740     192.168.86.71:9876      ESTABLISHED 141914/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:49476         TIME_WAIT   -                   
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33250     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:33286     192.168.86.71:9876      ESTABLISHED 141914/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:60344     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:43550     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:35604         ESTABLISHED 168476/cfs          
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52498         ESTABLISHED 168476/cfs          
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52534         ESTABLISHED 168476/cfs          
+tcp6       0      0 ::1:37318               ::1:2103                ESTABLISHED 8693/python3.9      
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:53392     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:9876          127.0.0.1:35102         ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:47634         127.0.0.1:2027          TIME_WAIT   -                   
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:42620         ESTABLISHED 129395/java         
+tcp6       0      0 192.168.86.71:2090      192.168.86.71:33892     ESTABLISHED 137939/go_ergon     
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:54932     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2090          127.0.0.1:49432         ESTABLISHED 137939/go_ergon     
+tcp6       0      0 192.168.86.71:34726     192.168.86.71:9876      ESTABLISHED 141914/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:53500     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:54914     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:33278     192.168.86.71:9876      ESTABLISHED 141914/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:48692     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:34740     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:46336     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:42650         ESTABLISHED 129395/java         
+tcp6       0      0 127.0.0.1:2034          127.0.0.1:49124         ESTABLISHED 180970/python3.9    
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:33278     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:53960     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:14319     192.168.86.71:37878     ESTABLISHED 161235/polaris      
+tcp6       0      0 127.0.0.1:45854         127.0.0.1:2027          TIME_WAIT   -                   
+tcp6       0      0 127.0.0.1:9161          127.0.0.1:50688         ESTABLISHED 129395/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:43018     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:34726     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2090          127.0.0.1:50602         ESTABLISHED 137939/go_ergon     
+tcp6       0      0 127.0.0.1:42274         127.0.0.1:2027          ESTABLISHED 141914/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:55656     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2090          127.0.0.1:51480         ESTABLISHED 137939/go_ergon     
+tcp6       0      0 192.168.86.71:2030      192.168.86.71:56792     ESTABLISHED 148088/python3.9    
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:48594     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:9081          127.0.0.1:58590         ESTABLISHED 141914/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:48646     ESTABLISHED 113427/java         
+tcp6       0      0 192.168.86.71:9876      192.168.86.71:53756     ESTABLISHED 113427/java         
+tcp6       0      0 127.0.0.1:2042          127.0.0.1:52552         ESTABLISHED 168476/cfs          
+tcp6       0      0 127.0.0.1:2007          127.0.0.1:59564         ESTABLISHED 142606/python3.9    
+tcp6       0      0 127.0.0.1:9081          127.0.0.1:48378         TIME_WAIT   -                   
+udp        0      0 0.0.0.0:111             0.0.0.0:*                           -                   
+udp        0      0 0.0.0.0:123             0.0.0.0:*                           -                   
+udp        0      0 0.0.0.0:4789            0.0.0.0:*                           148088/python3.9    
+udp6       0      0 :::111                  :::*                                -                   
+udp6       0      0 :::123                  :::*                                -                   
+udp6       0      0 :::54594                :::*                                141914/java         
+udp6       0      0 :::13000                :::*                                8693/python3.9      
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

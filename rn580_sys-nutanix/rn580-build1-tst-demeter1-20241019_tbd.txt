@@ -1,0 +1,151 @@
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ ncli cluster edit-params new-name="demeter1"
+
+    Cluster Id                : 000624d1-1a26-783f-55fd-a0369f8df220::6196284818797228576
+    Cluster Uuid              : 000624d1-1a26-783f-55fd-a0369f8df220
+    Cluster Name              : demeter1
+    Cluster Version           : 6.8.1
+    Cluster Full Version      : el8.5-release-fraser-6.8.1-stable-a8aad732dfbfaa2b3bcea0b0c27fbd51d8480f4e
+    Node Count                : 1
+    Block Count               : 1
+    Shadow Clones Status      : Enabled
+    Has Self Encrypting Disk  : no
+    Cluster Masquerading I... : 
+    Cluster Masquerading PORT : 
+    Is registered to PC       : false
+    Rebuild Reservation       : Disabled
+    Encryption In Transit     : Disabled
+    Is LTS                    : false
+    External Data Services... : 
+    Support Verbosity Level   : BASIC_COREDUMP
+    Lock Down Status          : Disabled
+    Password Remote Login ... : Enabled
+    Timezone                  : UTC
+    On-Disk Dedup             : Disabled
+    NCC Version               : ncc-5.0.1
+    Degraded Node Monitoring  : Enabled
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+
+
+    Degraded Node Monitoring  : Enabled
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ ncli cluster remove-from-name-servers servers="8.8.8.8,8.8.4.4"
+
+    Name Servers              : 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ ncli cluster add-to-name-servers servers="192.168.86.1,192.168.86.238"
+
+    Name Servers              : 192.168.86.1, 192.168.86.238
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ ncli cluster set-external-ip-address external-ip-address="192.168.86.72"
+
+    Cluster Id                : 000624d1-1a26-783f-55fd-a0369f8df220::6196284818797228576
+    Cluster Uuid              : 000624d1-1a26-783f-55fd-a0369f8df220
+    Cluster Name              : demeter1
+    Cluster Version           : 6.8.1
+    Cluster Full Version      : el8.5-release-fraser-6.8.1-stable-a8aad732dfbfaa2b3bcea0b0c27fbd51d8480f4e
+    External IP address       : 192.168.86.72
+    Node Count                : 1
+    Block Count               : 1
+    Shadow Clones Status      : Enabled
+    Has Self Encrypting Disk  : no
+    Cluster Masquerading I... : 
+    Cluster Masquerading PORT : 
+    Is registered to PC       : false
+    Rebuild Reservation       : Disabled
+    Encryption In Transit     : Disabled
+    Is LTS                    : false
+    External Data Services... : 
+    Support Verbosity Level   : BASIC_COREDUMP
+    Lock Down Status          : Disabled
+    Password Remote Login ... : Enabled
+    Timezone                  : UTC
+    On-Disk Dedup             : Disabled
+    NCC Version               : ncc-5.0.1
+    Degraded Node Monitoring  : Enabled
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ ncli cluster edit-params external-data-services-ip-address="192.168.86.73"
+
+    Cluster Id                : 000624d1-1a26-783f-55fd-a0369f8df220::6196284818797228576
+    Cluster Uuid              : 000624d1-1a26-783f-55fd-a0369f8df220
+    Cluster Name              : demeter1
+    Cluster Version           : 6.8.1
+    Cluster Full Version      : el8.5-release-fraser-6.8.1-stable-a8aad732dfbfaa2b3bcea0b0c27fbd51d8480f4e
+    External IP address       : 192.168.86.72
+    Node Count                : 1
+    Block Count               : 1
+    Shadow Clones Status      : Enabled
+    Has Self Encrypting Disk  : no
+    Cluster Masquerading I... : 
+    Cluster Masquerading PORT : 
+    Is registered to PC       : false
+    Rebuild Reservation       : Disabled
+    Encryption In Transit     : Disabled
+    Is LTS                    : false
+    External Data Services... : 192.168.86.73
+    Support Verbosity Level   : BASIC_COREDUMP
+    Lock Down Status          : Disabled
+    Password Remote Login ... : Enabled
+    Timezone                  : UTC
+    On-Disk Dedup             : Disabled
+    NCC Version               : ncc-5.0.1
+    Degraded Node Monitoring  : Enabled
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ date
+Sat Oct 19 09:53:55 UTC 2024
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ cluster start
+2024-10-19 09:54:02,030Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2024-10-19 09:54:02,031Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 6196284818797228576, cluster incarnation id: 1729330365757503
+2024-10-19 09:54:02,032Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2024-10-19 09:54:02,034Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x192a421010701b5, negotiated timeout=20 secs
+2024-10-19 09:54:02,037Z INFO Dummy-2 zookeeper_session.py:940 Calling c_impl.close() for session 0x192a421010701b5
+2024-10-19 09:54:02,037Z INFO Dummy-2 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+2024-10-19 09:54:02,040Z INFO MainThread cluster:3302 Executing action start on SVMs 192.168.86.71
+Waiting on 192.168.86.71 (Up, ZeusLeader) to start: 
+
+
+The state of the cluster: start
+Lockdown mode: Disabled
+
+        CVM: 192.168.86.71 Up, ZeusLeader
+                              Xmount   UP       [118705, 118834, 118835, 118886]
+                           IkatProxy   UP       [118478, 118587, 118588, 118589]
+                                Zeus   UP       [113339, 113398, 113399, 113400, 113409, 113427]
+                           Scavenger   UP       [118714, 118876, 118877, 118878]
+                    SysStatCollector   UP       [125168, 125243, 125244, 125245]
+                    IkatControlPlane   UP       [125202, 125423, 125424, 125425]
+                       SSLTerminator   UP       [125253, 125507, 125508]
+                      SecureFileSync   UP       [125455, 125803, 125804, 125805]
+                              Medusa   UP       [127338, 128798, 128799, 128939, 129395]
+                  DynamicRingChanger   UP       [135549, 135658, 135659, 135675]
+                              Pithos   UP       [135584, 135828, 135829, 135841]
+                          InsightsDB   UP       [135663, 135921, 135922, 135940]
+                              Athena   UP       [135852, 136022, 136023, 136024]
+                             Mercury   UP       [186117, 186863, 186865, 186880]
+                              Mantle   UP       [136165, 136351, 136352, 136357]
+                          VipMonitor   UP       [136737, 136738, 136739, 136740, 136744]
+                            Stargate   UP       [136870, 137063, 137064, 137084, 137088]
+                InsightsDataTransfer   UP       [137628, 137705, 137706, 137708, 137709, 137710, 137711, 137712, 137713]
+                             GoErgon   UP       [137663, 137889, 137890, 137939]
+                             Cerebro   UP       [137721, 137992, 137993, 138523]
+                             Chronos   UP       [137835, 139106, 139107, 139522]
+                             Curator   UP       [138244, 139693, 139694, 142408]
+                               Prism   UP       [139379, 140211, 140212, 140394, 141864, 141914]
+                                Hera   UP       [139998, 141144, 141145, 141152]
+                        AlertManager   UP       [141470, 142072, 142073, 142120]
+                            Arithmos   UP       [142208, 142315, 142316, 142331]
+                             Catalog   UP       [142271, 142570, 142571, 142572, 142606]
+                           Acropolis   UP       [143344, 143523, 143524, 148088]
+                              Castor   UP       [143424, 145142, 145143, 145187, 145512]
+                               Uhura   UP       [143666, 145652, 145653, 146689]
+                   NutanixGuestTools   UP       [145575, 146537, 146538, 146696, 146762]
+                          MinervaCVM   UP       [152594, 154387, 154388, 154393]
+                       ClusterConfig   UP       [153582, 154896, 154897, 154899, 154920]
+                         APLOSEngine   UP       [154641, 155307, 155308, 155309]
+                               APLOS   UP       [157865, 158788, 158789, 158791]
+                     PlacementSolver   UP       [158185, 159450, 159451, 159453, 159583]
+                               Lazan   UP       [158871, 160512, 160513, 160514]
+                             Polaris   UP       [159869, 161026, 161027, 161235]
+                              Delphi   UP       [161104, 162126, 162127, 162129, 162164]
+                            Security   UP       [162044, 162994, 162995, 162997]
+                                Flow   UP       [162533, 163617, 163618, 163621, 163679]
+                             Anduril   UP       [180073, 180900, 180901, 180903, 180970]
+                              Narsil   UP       [166081, 166714, 166715, 166716]
+                               XTrim   UP       [166383, 166905, 166906, 166907]
+                       ClusterHealth   UP       [166859, 167265, 168016, 168017, 168020, 168029, 168146, 168147, 168154, 168278, 168279, 168284, 168287, 168288, 168289, 168290, 168293, 168301, 168302, 168305, 168476, 168477, 168493, 168494, 168571, 168572, 168585, 168586, 182030, 182031, 182033, 182034, 182038, 182040, 182041, 182042, 182043, 182045, 182048, 182050, 182051, 182054, 182146, 182152]
+2024-10-19 09:54:06,226Z INFO MainThread cluster:3465 Success!
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 

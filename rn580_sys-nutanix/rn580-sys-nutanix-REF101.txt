@@ -1,0 +1,268 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        add_cluster_create_access_key
+        convert_cluster
+        create
+        destroy
+        disable_auto_install
+        disable_rate_limit_iops
+        enable_auto_install
+        enable_rate_limit_iops
+        foundation_upgrade
+        host_upgrade
+        ipconfig
+        lite_upgrade
+        migrate_zeus
+        pass_shutdown_token
+        reconfig
+        remove_all_public_keys
+        remove_public_key
+        restart_genesis
+        set_rack_aware
+        set_two_node_cluster_leader
+        start
+        status
+        stop
+        upgrade
+        upgrade_node
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ cluster --help
+Usage: /usr/local/nutanix/cluster/bin/cluster [flags] [command]
+
+commands:
+
+        add_cluster_create_access_key
+        convert_cluster
+        create
+        destroy
+        disable_auto_install
+        disable_rate_limit_iops
+        enable_auto_install
+        enable_rate_limit_iops
+        foundation_upgrade
+        host_upgrade
+        ipconfig
+        lite_upgrade
+        migrate_zeus
+        pass_shutdown_token
+        reconfig
+        remove_all_public_keys
+        remove_public_key
+        restart_genesis
+        set_rack_aware
+        set_two_node_cluster_leader
+        start
+        status
+        stop
+        upgrade
+        upgrade_node
+
+flags:
+
+/usr/local/nutanix/cluster/bin/cluster:
+  -d,--[no]add_dependencies: Include Dependencies.
+    (default: 'false')
+  --backplane_netmask: Backplane netmask
+    (default: '')
+  --[no]backplane_network: Backplane network config
+    (default: 'false')
+  --backplane_subnet: Backplane subnet
+    (default: '')
+  --backplane_vlan: Backplane VLAN id
+    (default: '-1')
+    (an integer)
+  --[no]block_aware: Set to True to enable block awareness. This workflow is unsupported, in favour of configuring block awareness on a
+    created cluster
+    (default: 'false')
+  --bundle: Bundle for upgrading host in cluster.
+    (default: '')
+  --cluster_create_access_key: Public key of external agent to be added to authorized keys of all svm ips provided in input. The key is
+    authorized to allow access for the duration of cluster create only.
+    (default: '')
+  --cluster_external_ip: Cluster ip to manage the entire cluster.
+    (default: '')
+  --cluster_flags: Comma seperated list of strings, each denoting a boolean cluster flag
+    (default: '')
+  --cluster_function_list: List of functions of the cluster (use with create). Accepted functions are dict_keys(['ndfs', 'multicluster',
+    'cloud_data_gateway', 'minerva', 'witness_vm', 'extension_store_vm', 'ags_cluster', 'jump_box_vm', 'xi_vm', 'two_node_cluster',
+    'one_node_cluster', 'iam_cluster', 'clusters_on_aws_cluster'])
+    (default: 'ndfs')
+    (a comma separated list)
+  --cluster_name: Name of the cluster (use with create).
+    (default: '')
+  --cluster_uuid: Cluster uuid for cluster in string format.
+    (default: '')
+  -c,--config: Path to the cluster configuration file.
+    (default: '')
+  --container_name: Name of the default container on the cluster.
+    (default: '')
+  --dns_servers: Comma separated list of one or more DNS servers.
+    (default: '')
+  --domain_password: Domain password of the hosts.
+    (default: '')
+  --domain_username: Domain username of the hosts.
+    (default: '')
+  --[no]enable_lite_upgrade: Set to False to disable lite upgrade before it is ready.
+    (default: 'true')
+  --encrypted_password: Encrypted password to be applied on the cluster
+    (default: '')
+  --external_access_keys: Public ssh keys to be added to external keys of the cluster.
+    (default: '')
+    (a comma separated list)
+  --[no]force_install_genesis: Installs the infrastructure package on all of the nodes.
+    (default: 'true')
+  --[no]foundation_upgrade: Operation specified will be done in context of foundation upgrade
+    (default: 'false')
+  -h,--hardware_device_type: Type of hardware device. Please specify one of the following: disk nic hba bios bmc. (Currently supported:
+    disk, bios, bmc.)
+    (default: '')
+  -?,--[no]help: show this help
+  --[no]helpfull: Show flags for all modules
+    (default: 'false')
+  --[no]helpshort: show usage only for this module
+  --[no]helpxml: like --help, but generates XML output
+  --[no]host_upgrade: Operation specified will be done in context of host_upgrade
+    (default: 'false')
+  --hyperv_sku: Hypervisor sku to which the HyperV host is being upgraded.
+    (default: '')
+  --hypervisor: Hypervisor that needs to be upgraded. Possible values: esx, kvm, hyperv.
+    (default: '')
+  -p,--[no]ignore_preupgrade_tests: Perform preupgrade tests
+    (default: 'false')
+  --[no]ignore_vm_conversion_warnings: Ignore vm conversion errors during cluster conversion.
+    (default: 'false')
+  -i,--installer_dir_path: Location of the Nutanix installer directory.
+    (default: '')
+  -j,--ip_specification_json: JSON file with IP configuration.
+    (default: '')
+  --key_file: Nutanix default SSH public key.
+    (default: '/home/nutanix/ssh_keys/nutanix.pub')
+  --key_name: Identifier of the public ssh key in the cluster.
+    (default: 'legacy_nos_compatibility')
+  -l,--[no]lockdown_mode: Lockdown mode is the highest security mode available for a cluster as it disables SSH access completely to the
+    cluster.
+    (default: 'false')
+  -m,--[no]manual_upgrade: Manual upgrade method.
+    (default: 'false')
+  --md5sum: Md5sum of the bundle.
+    (default: '')
+  --migrate_from: The old zeus node IP address for Zeus migration.
+    (default: '')
+  --migrate_to: The new zeus node IP address for Zeus migration.
+    (default: '')
+  --ncc_precheck_args: Additional args to pass to NCC during precheck.
+    (default: '')
+  -n,--[no]no_verification: Skip verification for package integrity.
+    (default: 'true')
+  --ntp_servers: Comma separated list of one or more NTP servers.
+    (default: '')
+  --nutanix_default_password_salt: Seed prism admin password only if the password hash does not contain this salt.
+    (default: '$6$Mkd8T74/$')
+  --[no]password_lockdown_mode: Password lockdown mode is the penultimate security hardening as it disables SSH access only via
+    password. SSH access can be still performed via external access keys
+    (default: 'false')
+  --provided_root_certificate: File to be used as the root certificate when creating or upgrading a cluster.
+    (default: '')
+  --provided_root_certificate_key: File to be used as the root CA private key.
+    (default: '')
+  --python_proto_egg_path: Path of protobuf egg relative to the install dir.
+    (default: 'lib/py/protobuf-2.6.1-py2.6-linux-x86_64.egg')
+  --[no]rack_aware: Set to True to enable rack awareness. This workflow is unsupported, in favour of configuring rack awareness on a
+    created cluster
+    (default: 'false')
+  --rack_config_json_path: Path to the json file containing svm_ips to rack namemapping. Json file will contain svm_ips as the keys and
+    the name of the rack they belong to, as values
+    (default: '')
+  --redundancy_factor: Number of replicas of data as kept in cluster. Clusterwill tolerate node failure of 'redundancy_factor -1'nodes.
+    (default: '-1')
+    (an integer)
+  -r,--[no]remove_installer_dir: Whether or not to remove the installer directory automatically when finished.
+    (default: 'true')
+  --[no]seed_prism_password: Seed Prism admin password to be the same as the nutanix user if nutanix user has non-default password.
+    (default: 'true')
+  --shutdown_token_ip: IP address of intended shutdown token holder SVM.
+    (default: '')
+  --[no]skip_discovery: Skip discovery.
+    (default: 'false')
+  --[no]skip_genesis_gateway_server_stop: If set to true, skip stopping the genesis gateway server after initialising the cluster during
+    cluster create
+    (default: 'false')
+  --[no]skip_ncc_prechecks: If set to true, skip NCC checks during preupgrade.
+    (default: 'false')
+  --[no]skip_reconfig: Skip CVM reconfig.
+    (default: 'false')
+  --[no]skip_rf1_vms_check: If set to true, skip checking if there are running RF1 VMs which will get rebooted during upgrade
+    (default: 'false')
+  --[no]skip_upgrade: Skip actual upgrade.
+    (default: 'false')
+  --stand_alone_upgrade_timeout: Timeout for stand-alone upgrade.
+    (default: '600')
+    (an integer)
+  -s,--svm_ips: Comma separated list of IP addresses of one or more SVMs in the target cluster. Not required if cluster.cfg is being
+    used.
+    (default: '')
+  --svm_login: User name for logging into SVM.
+    (default: 'nutanix')
+  --target_hypervisor: Target hypervisor type for cluster conversion. Valid types esx/kvm.
+    (default: '')
+  -t,--timeout: Number of seconds each command to SVMs should take.
+    (default: '180')
+    (an integer)
+  -u,--upgrade_node_ip: Ipv4 or IPv6 address of node to be upgraded.
+    (default: '')
+  --vcenter_json_file: File containing vcenter details for dial workflow. The json has host, username and password keys.
+    (default: '')
+  --[no]vcenter_not_required: Set it to true if vcenter is not used to manage ESX cluster.
+    (default: 'false')
+  -v,--verification_file: Metadata file for package integrity, upgrade info.
+    (default: '')
+  --version: Version to which upgrade needs to be performed.
+    (default: '')
+  -w,--[no]wait: Wait for action to complete.
+    (default: 'true')
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
