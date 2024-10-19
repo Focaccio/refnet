@@ -1,0 +1,285 @@
+***********************************************************************************************
+***********************************************************************************************
+***********************************************************************************************
+
+net.ipv4.ip_forward = 1
+tc qdisc add dev ens32 root netem delay 50ms
+tc qdisc add dev ens34 root netem delay 50ms
+
+
+lab-cfw# 
+lab-cfw# 
+lab-cfw# sh run
+: Saved
+:
+PIX Version 6.3(5)
+interface ethernet0 auto
+interface ethernet1 auto
+nameif ethernet0 outside security0
+nameif ethernet1 inside security100
+enable password nDzzbb5hq84gn0CE encrypted
+passwd nDzzbb5hq84gn0CE encrypted
+hostname lab-cfw
+domain-name tst.areaf.net
+clock timezone PST -8
+clock summer-time PDT recurring 2 Sun Mar 2:00 1 Sun Nov 2:00
+fixup protocol dns maximum-length 512
+fixup protocol ftp 21
+fixup protocol h323 h225 1720
+fixup protocol h323 ras 1718-1719
+fixup protocol http 80
+fixup protocol rsh 514
+fixup protocol rtsp 554
+fixup protocol sip 5060
+fixup protocol sip udp 5060
+fixup protocol skinny 2000
+fixup protocol smtp 25
+fixup protocol sqlnet 1521
+fixup protocol tftp 69
+names
+access-list INSIDE_IN permit ip any any 
+access-list OUTSIDE_IN permit ip any any 
+access-list VPN-1-2-ALL permit ip 1.0.0.0 255.0.0.0 2.0.0.0 255.0.0.0 
+pager lines 24
+logging console notifications
+logging monitor notifications
+icmp permit any echo outside
+icmp permit any echo-reply outside
+icmp permit any time-exceeded outside
+icmp permit any echo inside
+icmp permit any echo-reply inside
+icmp permit any time-exceeded inside
+mtu outside 1500
+mtu inside 1500
+ip address outside 10.0.0.2 255.255.255.0
+ip address inside 1.0.0.2 255.255.255.0
+ip audit info action alarm
+ip audit attack action alarm
+pdm history enable
+arp timeout 14400
+global (outside) 1 interface
+nat (inside) 0 access-list VPN-1-2-ALL
+nat (inside) 1 0.0.0.0 0.0.0.0 0 0
+access-group OUTSIDE_IN in interface outside
+access-group INSIDE_IN in interface inside
+route outside 0.0.0.0 0.0.0.0 10.0.0.1 1
+route outside 12.0.0.2 255.255.255.255 10.0.0.1 1
+timeout xlate 3:00:00
+timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 rpc 0:10:00 h225 1:00:00
+timeout h323 0:05:00 mgcp 0:05:00 sip 0:30:00 sip_media 0:02:00
+timeout sip-disconnect 0:02:00 sip-invite 0:03:00
+timeout uauth 0:05:00 absolute
+aaa-server TACACS+ protocol tacacs+ 
+aaa-server TACACS+ max-failed-attempts 3 
+aaa-server TACACS+ deadtime 10 
+aaa-server RADIUS protocol radius 
+aaa-server RADIUS max-failed-attempts 3 
+aaa-server RADIUS deadtime 10 
+aaa-server LOCAL protocol local 
+no snmp-server location
+no snmp-server contact
+snmp-server community public
+no snmp-server enable traps
+floodguard enable
+sysopt connection permit-ipsec
+crypto ipsec transform-set TRANSFORM-SET_BASIC esp-des esp-md5-hmac 
+crypto map CRYPTO-MAP-BASIC-1-2 10 ipsec-isakmp
+crypto map CRYPTO-MAP-BASIC-1-2 10 match address VPN-1-2-ALL
+crypto map CRYPTO-MAP-BASIC-1-2 10 set peer 12.0.0.2
+crypto map CRYPTO-MAP-BASIC-1-2 10 set transform-set TRANSFORM-SET_BASIC
+crypto map CRYPTO-MAP-BASIC-1-2 interface outside
+isakmp enable outside
+isakmp key ******** address 12.0.0.2 netmask 255.255.255.255 
+isakmp log 1000
+isakmp policy 10 authentication pre-share
+isakmp policy 10 encryption 3des
+isakmp policy 10 hash sha
+isakmp policy 10 group 2
+isakmp policy 10 lifetime 28800
+telnet timeout 10
+ssh 0.0.0.0 0.0.0.0 outside
+ssh 0.0.0.0 0.0.0.0 inside
+ssh timeout 60
+console timeout 0
+terminal width 80
+Cryptochecksum:11ed10736471b824c1b1ff193be246f4
+: end
+lab-cfw#  
+lab-cfw# 
+
+
+
+***********************************************************************************************
+***********************************************************************************************
+***********************************************************************************************
+
+
+lab-tfw# 
+lab-tfw# 
+lab-tfw# 
+lab-tfw# sh run
+: Saved
+:
+PIX Version 6.3(5)
+interface ethernet0 100full
+interface ethernet1 auto
+nameif ethernet0 outside security0
+nameif ethernet1 inside security100
+enable password nDzzbb5hq84gn0CE encrypted
+passwd nDzzbb5hq84gn0CE encrypted
+hostname lab-tfw
+domain-name tst.areaf.net
+fixup protocol dns maximum-length 512
+fixup protocol ftp 21
+fixup protocol h323 h225 1720
+fixup protocol h323 ras 1718-1719
+fixup protocol http 80
+fixup protocol rsh 514
+fixup protocol rtsp 554
+fixup protocol sip 5060
+fixup protocol sip udp 5060
+fixup protocol skinny 2000
+fixup protocol smtp 25
+fixup protocol sqlnet 1521
+fixup protocol tftp 69
+names         
+access-list VPN-2-1-ALL permit ip 2.0.0.0 255.0.0.0 1.0.0.0 255.0.0.0 
+access-list INSIDE_IN permit ip any any 
+access-list OUTSIDE_IN permit ip any any 
+pager lines 24
+logging console notifications
+logging monitor notifications
+icmp permit any echo outside
+icmp permit any echo-reply outside
+icmp permit any time-exceeded outside
+icmp permit any echo inside
+icmp permit any echo-reply inside
+icmp permit any time-exceeded inside
+mtu outside 1500
+mtu inside 1500
+ip address outside 12.0.0.2 255.255.255.0
+ip address inside 2.0.0.2 255.255.255.0
+ip audit info action alarm
+ip audit attack action alarm
+pdm history enable
+arp timeout 14400
+global (outside) 1 interface
+nat (inside) 0 access-list VPN-2-1-ALL
+nat (inside) 1 0.0.0.0 0.0.0.0 0 0
+access-group OUTSIDE_IN in interface outside
+access-group INSIDE_IN in interface inside
+route outside 0.0.0.0 0.0.0.0 12.0.0.1 1
+timeout xlate 3:00:00
+timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 rpc 0:10:00 h225 1:00:00
+timeout h323 0:05:00 mgcp 0:05:00 sip 0:30:00 sip_media 0:02:00
+timeout sip-disconnect 0:02:00 sip-invite 0:03:00
+timeout uauth 0:05:00 absolute
+aaa-server TACACS+ protocol tacacs+ 
+aaa-server TACACS+ max-failed-attempts 3 
+aaa-server TACACS+ deadtime 10 
+aaa-server RADIUS protocol radius 
+aaa-server RADIUS max-failed-attempts 3 
+aaa-server RADIUS deadtime 10 
+aaa-server LOCAL protocol local 
+no snmp-server location
+no snmp-server contact
+snmp-server community public
+no snmp-server enable traps
+floodguard enable
+sysopt connection permit-ipsec
+crypto ipsec transform-set TRANSFORM-SET_BASIC esp-des esp-md5-hmac 
+crypto map CRYPTO-MAP-BASIC-2-1 10 ipsec-isakmp
+crypto map CRYPTO-MAP-BASIC-2-1 10 match address VPN-2-1-ALL
+crypto map CRYPTO-MAP-BASIC-2-1 10 set peer 10.0.0.2
+crypto map CRYPTO-MAP-BASIC-2-1 10 set transform-set TRANSFORM-SET_BASIC
+crypto map CRYPTO-MAP-BASIC-2-1 interface outside
+isakmp enable outside
+isakmp key ******** address 10.0.0.2 netmask 255.255.255.255 
+isakmp log 1000
+isakmp policy 10 authentication pre-share
+isakmp policy 10 encryption 3des
+isakmp policy 10 hash sha
+isakmp policy 10 group 2
+isakmp policy 10 lifetime 28800
+telnet 0.0.0.0 0.0.0.0 inside
+telnet timeout 60
+ssh 0.0.0.0 0.0.0.0 outside
+ssh 0.0.0.0 0.0.0.0 inside
+ssh timeout 60
+console timeout 0
+terminal width 80
+Cryptochecksum:7741047d4bf66d545f3f4edb55dab4b0
+: end
+lab-tfw#  
+lab-tfw# 
+lab-tfw# 
+lab-tfw# 
+lab-tfw# 
+lab-tfw# 
+lab-tfw# sh crypto isakmp
+isakmp enable outside
+isakmp key ******** address 10.0.0.2 netmask 255.255.255.255 
+isakmp log 1000
+isakmp policy 10 authentication pre-share
+isakmp policy 10 encryption 3des
+isakmp policy 10 hash sha
+isakmp policy 10 group 2
+isakmp policy 10 lifetime 28800
+lab-tfw# sh crypto isakmp sa
+Total     : 1
+Embryonic : 0
+        dst               src        state     pending     created
+        12.0.0.2         10.0.0.2    QM_IDLE         0           1
+lab-tfw# sh crypto ipsec sa 
+
+
+interface: outside
+    Crypto map tag: CRYPTO-MAP-BASIC-2-1, local addr. 12.0.0.2
+
+   local  ident (addr/mask/prot/port): (2.0.0.0/255.0.0.0/0/0)
+   remote ident (addr/mask/prot/port): (1.0.0.0/255.0.0.0/0/0)
+   current_peer: 10.0.0.2:500
+     PERMIT, flags={origin_is_acl,}
+    #pkts encaps: 1049, #pkts encrypt: 1049, #pkts digest 1049
+    #pkts decaps: 1049, #pkts decrypt: 1049, #pkts verify 1049
+    #pkts compressed: 0, #pkts decompressed: 0
+    #pkts not compressed: 0, #pkts compr. failed: 0, #pkts decompress failed: 0
+    #send errors 0, #recv errors 0
+
+     local crypto endpt.: 12.0.0.2, remote crypto endpt.: 10.0.0.2
+     path mtu 1500, ipsec overhead 56, media mtu 1500
+     current outbound spi: 2f3e6e62
+
+     inbound esp sas:
+      spi: 0x72b35cc0(1924357312)
+        transform: esp-des esp-md5-hmac ,
+        in use settings ={Tunnel, }
+        slot: 0, conn id: 1, crypto map: CRYPTO-MAP-BASIC-2-1
+        sa timing: remaining key lifetime (k/sec): (4607864/27588)
+        IV size: 8 bytes
+        replay detection support: Y
+
+
+     inbound ah sas:
+
+
+     inbound pcp sas:
+
+
+     outbound esp sas:
+      spi: 0x2f3e6e62(792620642)
+        transform: esp-des esp-md5-hmac ,
+        in use settings ={Tunnel, }
+        slot: 0, conn id: 2, crypto map: CRYPTO-MAP-BASIC-2-1
+        sa timing: remaining key lifetime (k/sec): (4607897/27588)
+        IV size: 8 bytes
+        replay detection support: Y
+
+
+     outbound ah sas:
+
+
+     outbound pcp sas:
+
+
+lab-tfw#  
