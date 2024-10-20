@@ -1,4 +1,42 @@
 
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+CONCEPTS
+
+
++++++++++++++++++++++++++++++++++++++++++++++++
+STORAGE
++++++++++++++++++++++++++++++++++++++++++++++++
+Selected during AHV install
+1. boot [H] nvme (can be RAID of NVME 0 an 1)
+2. CVM [C] ssd - for CVM vm (should be fastest)
+3. Data-store [D] - for VMs
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++
+NETWORKING
++++++++++++++++++++++++++++++++++++++++++++++++
+
++Management LAN
+Where initial access to CVM and host ahv ssh happens during base intsll on build in nic, not card nics
+
+
++Hypervisor LAN
+
++Backplane LAN
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -10,6 +48,57 @@ nutanix
 nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ uname -a
 Linux ntnx-244131ad-a-cvm 5.10.205-2.el8.nutanix.20240619.100203.x86_64 #1 SMP Wed Jun 19 04:58:21 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
 nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+WHAT is the HYPERVISOR LAN  
+The 192.168.5.0/24 network in Nutanix AHV is used for these specific internal communications:
+
+1. VM Migration Traffic:
+- Live Migration of VMs between nodes
+- Storage live migration
+- VM high availability (HA) operations
+
+2. AHV Host Management:
+- Host health monitoring
+- Cluster membership
+- Host-to-host communication
+- Acropolis services coordination
+
+3. Storage Operations:
+- iSCSI heartbeat monitoring
+- Storage path health checks
+- Storage failover communications
+
+4. Cluster Services:
+- Host resource statistics
+- Cluster state updates
+- Host state synchronization
+- HA heartbeat messages
+
+Example commands to view traffic:
+```bash
+# View network statistics
+netstat -i br0
+
+# Monitor traffic
+tcpdump -i br0 -n
+
+# Check connections
+netstat -antp | grep 192.168.5
+```
+
+Best practices:
+- Don't modify this network configuration
+- Keep this network isolated
+- Don't route this network externally
+- Don't use this range for other purposes in your environment
+
+Would you like more details about any specific type of internal communication?
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 
 
 
