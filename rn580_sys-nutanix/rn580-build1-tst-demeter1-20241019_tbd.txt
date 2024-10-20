@@ -149,3 +149,168 @@ Lockdown mode: Disabled
                        ClusterHealth   UP       [166859, 167265, 168016, 168017, 168020, 168029, 168146, 168147, 168154, 168278, 168279, 168284, 168287, 168288, 168289, 168290, 168293, 168301, 168302, 168305, 168476, 168477, 168493, 168494, 168571, 168572, 168585, 168586, 182030, 182031, 182033, 182034, 182038, 182040, 182041, 182042, 182043, 182045, 182048, 182050, 182051, 182054, 182146, 182152]
 2024-10-19 09:54:06,226Z INFO MainThread cluster:3465 Success!
 nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+
+NEXT user = email not username
+
+
+
+
+
+
+
+
+
+
+
+
+
+Nutanix Controller VM
+
+Nutanix Controller VM (CVM) is a virtual storage appliance.
+
+Alteration of the CVM (unless advised by Nutanix Technical Support or
+Support Portal Documentation) is unsupported and may result in loss
+of User VMs or other data residing on the cluster.
+
+Unsupported alterations may include (but are not limited to):
+
+- Configuration changes / removal of files.
+- Installation of third-party software/scripts not approved by Nutanix.
+- Installation or upgrade of software packages from non-Nutanix
+  sources (using yum, rpm, or similar).
+
+** SSH to CVM via 'nutanix' user will be restricted in coming releases.  **
+** Please consider using the 'admin' user for basic workflows.           **
+Last login: Sat Oct 19 11:06:02 UTC 2024 from 192.168.86.71 on ssh
+Last login: Sat Oct 19 11:06:21 2024 from 192.168.86.237
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ cluster stop
+2024-10-19 11:06:27,592Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2024-10-19 11:06:27,593Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 6196284818797228576, cluster incarnation id: 1729330365757503
+2024-10-19 11:06:27,593Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2024-10-19 11:06:27,600Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x192a42101070400, negotiated timeout=20 secs
+2024-10-19 11:06:27,602Z INFO Dummy-2 zookeeper_session.py:940 Calling c_impl.close() for session 0x192a42101070400
+2024-10-19 11:06:27,602Z INFO Dummy-2 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+2024-10-19 11:06:27,605Z INFO MainThread cluster:3302 Executing action stop on SVMs 192.168.86.71
+2024-10-19 11:06:27,605Z WARNING MainThread genesis_utils.py:348 Deprecated: use util.cluster.info.get_node_uuid() instead
+2024-10-19 11:06:27,610Z INFO MainThread cluster:3349 
+
+***** CLUSTER NAME *****
+demeter1
+
+This operation will stop the Nutanix storage services and any VMs using Nutanix storage will become unavailable. Do you want to proceed? (I agree/[N]): Y
+Please enter a valid input.
+This operation will stop the Nutanix storage services and any VMs using Nutanix storage will become unavailable. Do you want to proceed? (I agree/[N]): I agree
+2024-10-19 11:06:50,488Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2024-10-19 11:06:50,488Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 6196284818797228576, cluster incarnation id: 1729330365757503
+2024-10-19 11:06:50,489Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2024-10-19 11:06:50,490Z INFO Dummy-3 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x192a42101070402, negotiated timeout=20 secs
+2024-10-19 11:06:50,494Z INFO Dummy-2 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+Waiting on 192.168.86.71 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+Prism
+ClusterHealth
+
+
+Waiting on 192.168.86.71 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.71 (Up, ZeusLeader) to stop: 
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.71 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.71 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+
+
+The state of the cluster: stop
+Lockdown mode: Disabled
+
+        CVM: 192.168.86.71 Up, ZeusLeader
+                              Xmount   UP       [942777, 942843, 942844, 942846]
+                           IkatProxy   UP       [118478, 118587, 118588, 118589]
+                                Zeus   UP       [113339, 113398, 113399, 113400, 113409, 113427]
+                           Scavenger   UP       [118714, 118876, 118877, 118878]
+                    SysStatCollector DOWN       []
+                    IkatControlPlane DOWN       []
+                       SSLTerminator DOWN       []
+                      SecureFileSync DOWN       []
+                              Medusa DOWN       []
+                  DynamicRingChanger DOWN       []
+                              Pithos DOWN       []
+                          InsightsDB DOWN       []
+                              Athena DOWN       []
+                             Mercury DOWN       []
+                              Mantle DOWN       []
+                          VipMonitor   UP       [136737, 136738, 136739, 136740, 136744]
+                            Stargate DOWN       []
+                InsightsDataTransfer DOWN       []
+                             GoErgon DOWN       []
+                             Cerebro DOWN       []
+                             Chronos DOWN       []
+                             Curator DOWN       []
+                               Prism DOWN       []
+                                Hera DOWN       []
+                        AlertManager DOWN       []
+                            Arithmos DOWN       []
+                             Catalog DOWN       []
+                           Acropolis DOWN       []
+                              Castor DOWN       []
+                               Uhura DOWN       []
+                   NutanixGuestTools DOWN       []
+                          MinervaCVM DOWN       []
+                       ClusterConfig DOWN       []
+                         APLOSEngine DOWN       []
+                               APLOS DOWN       []
+                     PlacementSolver DOWN       []
+                               Lazan DOWN       []
+                             Polaris DOWN       []
+                              Delphi DOWN       []
+                            Security DOWN       []
+                                Flow DOWN       []
+                             Anduril DOWN       []
+                              Narsil DOWN       []
+                               XTrim DOWN       []
+                       ClusterHealth DOWN       []
+2024-10-19 11:07:13,983Z INFO MainThread cluster:2193 Cluster has been stopped via 'cluster stop' command, hence stopping all services.
+2024-10-19 11:07:13,983Z INFO MainThread cluster:3465 Success!
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+
+
+
