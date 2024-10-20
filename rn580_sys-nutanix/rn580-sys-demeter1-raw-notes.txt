@@ -1,0 +1,290 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###############################################################################################
+Network changes
+###############################################################################################
+
+
+===============================================================================================
+BASE INSTALL CE demeter1
+===============================================================================================
+
+[root@NTNX-244131ad-A ~]# ovs-vsctl show
+222ca8b8-fbae-4725-ba7e-5d4af8733739
+    Bridge br.nf
+        Port br.nf
+            Interface br.nf
+                type: internal
+        Port br.nf.d
+            Interface br.nf.d
+                type: patch
+                options: {peer=br.dmx.u}
+        Port br.nf.u
+            Interface br.nf.u
+                type: patch
+                options: {peer=br.microseg.d}
+    Bridge br.microseg
+        Port br.microseg.u
+            Interface br.microseg.u
+                type: patch
+                options: {peer=br.mx.d}
+        Port br.microseg.d
+            Interface br.microseg.d
+                type: patch
+                options: {peer=br.nf.u}
+        Port br.microseg
+            Interface br.microseg
+                type: internal
+    Bridge br0.local
+        Port br0.local
+            Interface br0.local
+                type: internal
+        Port br0.local.d
+            Interface br0.local.d
+                type: patch
+                options: {peer=br.mx.u.br0}
+    Bridge brSpan
+        fail_mode: secure
+        Port brSpan
+            Interface brSpan
+                type: internal
+    Bridge br0
+        Port br0-arp
+            Interface br0-arp
+                type: vxlan
+                options: {key="1", remote_ip="192.168.5.2"}
+        Port br0-up
+            Interface eth1
+            Interface eth3
+            Interface eth4
+            Interface eth0
+            Interface eth2
+        Port br0
+            tag: 0
+            Interface br0
+                type: internal
+        Port br0.u
+            Interface br0.u
+                type: patch
+                options: {peer=br.dmx.d.br0}
+        Port vnet0
+            Interface vnet0
+        Port vnet2
+            Interface vnet2
+        Port br0-dhcp
+            Interface br0-dhcp
+                type: vxlan
+                options: {key="1", remote_ip="192.168.86.71"}
+    Bridge br.mx
+        Port br.mx
+            Interface br.mx
+                type: internal
+        Port br.mx.d
+            Interface br.mx.d
+                type: patch
+                options: {peer=br.microseg.u}
+        Port br.mx.u.br0
+            Interface br.mx.u.br0
+                type: patch
+                options: {peer=br0.local.d}
+    Bridge br.dmx
+        Port br.dmx.d.br0
+            Interface br.dmx.d.br0
+                type: patch
+                options: {peer=br0.u}
+        Port br.dmx.u
+            Interface br.dmx.u
+                type: patch
+                options: {peer=br.nf.d}
+        Port br.dmx
+            Interface br.dmx
+                type: internal
+    ovs_version: "2.14.8"
+[root@NTNX-244131ad-A ~]# 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+AFTER editing network to make vs1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+   24  2024-10-20 13:24:11+0000 history
+[root@NTNX-244131ad-A ~]# !23
+ovs-vsctl show
+222ca8b8-fbae-4725-ba7e-5d4af8733739
+    Bridge br.nf
+        Port br.nf
+            Interface br.nf
+                type: internal
+        Port br.nf.d
+            Interface br.nf.d
+                type: patch
+                options: {peer=br.dmx.u}
+        Port br.nf.u
+            Interface br.nf.u
+                type: patch
+                options: {peer=br.microseg.d}
+    Bridge br.microseg
+        Port br.microseg.u
+            Interface br.microseg.u
+                type: patch
+                options: {peer=br.mx.d}
+        Port br.microseg.d
+            Interface br.microseg.d
+                type: patch
+                options: {peer=br.nf.u}
+        Port br.microseg
+            Interface br.microseg
+                type: internal
+    Bridge br0.local
+        Port br0.local
+            Interface br0.local
+                type: internal
+        Port br0.local.d
+            Interface br0.local.d
+                type: patch
+                options: {peer=br.mx.u.br0}
+    Bridge brSpan
+        fail_mode: secure
+        Port brSpan
+            Interface brSpan
+                type: internal
+    Bridge br1.local
+        Port br1.local
+            Interface br1.local
+                type: internal
+        Port br1.local.d
+            Interface br1.local.d
+                type: patch
+                options: {peer=br.mx.u.br1}
+    Bridge br0
+        Port br0-arp
+            Interface br0-arp
+                type: vxlan
+                options: {key="1", remote_ip="192.168.5.2"}
+        Port br0
+            tag: 0
+            Interface br0
+                type: internal
+        Port br0.u
+            Interface br0.u
+                type: patch
+                options: {peer=br.dmx.d.br0}
+        Port br0-up
+            Interface eth1
+            Interface eth0
+        Port vnet0
+            Interface vnet0
+        Port vnet2
+            Interface vnet2
+        Port br0-dhcp
+            Interface br0-dhcp
+                type: vxlan
+                options: {key="1", remote_ip="192.168.86.71"}
+    Bridge br.mx
+        Port br.mx
+            Interface br.mx
+                type: internal
+        Port br.mx.d
+            Interface br.mx.d
+                type: patch
+                options: {peer=br.microseg.u}
+        Port br.mx.u.br0
+            Interface br.mx.u.br0
+                type: patch
+                options: {peer=br0.local.d}
+        Port br.mx.u.br1
+            Interface br.mx.u.br1
+                type: patch
+                options: {peer=br1.local.d}
+    Bridge br1
+        Port br1
+            Interface br1
+                type: internal
+        Port br1-up
+            Interface eth3
+            Interface eth4
+        Port br1-dhcp
+            Interface br1-dhcp
+                type: vxlan
+                options: {key="2", remote_ip="192.168.86.71"}
+        Port br1.u
+            Interface br1.u
+                type: patch
+                options: {peer=br.dmx.d.br1}
+        Port br1-arp
+            Interface br1-arp
+                type: vxlan
+                options: {key="2", remote_ip="192.168.5.2"}
+    Bridge br.dmx
+        Port br.dmx.d.br0
+            Interface br.dmx.d.br0
+                type: patch
+                options: {peer=br0.u}
+        Port br.dmx.d.br1
+            Interface br.dmx.d.br1
+                type: patch
+                options: {peer=br1.u}
+        Port br.dmx.u
+            Interface br.dmx.u
+                type: patch
+                options: {peer=br.nf.d}
+        Port br.dmx
+            Interface br.dmx
+                type: internal
+    ovs_version: "2.14.8"
+[root@NTNX-244131ad-A ~]# 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
