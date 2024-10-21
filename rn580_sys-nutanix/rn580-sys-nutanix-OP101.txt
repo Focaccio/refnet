@@ -15,12 +15,84 @@ https://kenmoini.com/post/2021/10/deploying-nutanix-ahv-ce/
 https://portal.nutanix.com/page/documents/kbs/details?targetId=kA032000000TUo6CAG
 
 
+_____TESTS_____
+```TEST1 nnt new nic test
+
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+```````````````````````````````````````````````````````````````````````````````````````````````
+```TEST1  nnt new nic test
+```````````````````````````````````````````````````````````````````````````````````````````````
+AFTER ADDING USB NIC DONGLE - but before reboot
+
+[root@NTNX-244131ad-A ~]# 
+[root@NTNX-244131ad-A ~]# ip link
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: eth1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq master ovs-system state DOWN mode DEFAULT group default qlen 1000
+    link/ether a0:36:9f:8d:f2:20 brd ff:ff:ff:ff:ff:ff
+    altname enp2s0f0
+3: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel master ovs-system state UP mode DEFAULT group default qlen 1000
+    link/ether c8:d9:d2:0c:e5:d7 brd ff:ff:ff:ff:ff:ff
+    altname eno1
+    altname enp0s31f6
+4: eth2: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq state DOWN mode DEFAULT group default qlen 1000
+    link/ether a0:36:9f:8d:f2:21 brd ff:ff:ff:ff:ff:ff
+    altname enp2s0f1
+5: eth3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 qdisc mq master ovs-system state UP mode DEFAULT group default qlen 1000
+    link/ether a0:36:9f:8d:f2:22 brd ff:ff:ff:ff:ff:ff
+    altname enp2s0f2
+6: eth4: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 qdisc mq master ovs-system state UP mode DEFAULT group default qlen 1000
+    link/ether a0:36:9f:8d:f2:23 brd ff:ff:ff:ff:ff:ff
+    altname enp2s0f3
+7: ovs-system: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether 12:95:99:9c:01:3b brd ff:ff:ff:ff:ff:ff
+8: br0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/ether c8:d9:d2:0c:e5:d7 brd ff:ff:ff:ff:ff:ff
+9: brSpan: <BROADCAST,MULTICAST> mtu 65000 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether ea:10:3b:57:d9:45 brd ff:ff:ff:ff:ff:ff
+10: br0.local: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether 46:1b:34:38:98:41 brd ff:ff:ff:ff:ff:ff
+11: virbr0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+    link/ether 52:54:00:7f:21:21 brd ff:ff:ff:ff:ff:ff
+15: br.microseg: <BROADCAST,MULTICAST> mtu 65000 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether b2:bb:2c:27:4c:47 brd ff:ff:ff:ff:ff:ff
+16: br.mx: <BROADCAST,MULTICAST> mtu 65000 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether c6:0c:05:b0:e7:45 brd ff:ff:ff:ff:ff:ff
+17: br.dmx: <BROADCAST,MULTICAST> mtu 65000 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether 26:e5:65:c0:84:4b brd ff:ff:ff:ff:ff:ff
+18: br.nf: <BROADCAST,MULTICAST> mtu 65000 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether a6:7f:9e:07:e5:4a brd ff:ff:ff:ff:ff:ff
+19: vxlan_sys_4789: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65000 qdisc noqueue master ovs-system state UNKNOWN mode DEFAULT group default qlen 1000
+    link/ether be:c1:6b:48:e9:a5 brd ff:ff:ff:ff:ff:ff
+20: br1: <BROADCAST,MULTICAST> mtu 9000 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether a0:36:9f:8d:f2:22 brd ff:ff:ff:ff:ff:ff
+21: br1.local: <BROADCAST,MULTICAST> mtu 9000 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether 06:1e:1f:6b:3f:4f brd ff:ff:ff:ff:ff:ff
+22: vnet3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq master ovs-system state UNKNOWN mode DEFAULT group default qlen 1000
+    link/ether fe:54:00:08:fb:98 brd ff:ff:ff:ff:ff:ff
+23: vnet4: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master virbr0 state UNKNOWN mode DEFAULT group default qlen 1000
+    link/ether fe:54:00:f0:12:7b brd ff:ff:ff:ff:ff:ff
+24: vnet5: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq master ovs-system state UNKNOWN mode DEFAULT group default qlen 1000
+    link/ether fe:54:00:05:07:ec brd ff:ff:ff:ff:ff:ff
+27: vnet8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 qdisc mq master ovs-system state UNKNOWN mode DEFAULT group default qlen 1000
+    link/ether fe:54:00:e2:52:9c brd ff:ff:ff:ff:ff:ff
+[root@NTNX-244131ad-A ~]# clock
+2024-10-21 10:44:22.297677+00:00
+[root@NTNX-244131ad-A ~]# 
 
 
 
 
-
-
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 
