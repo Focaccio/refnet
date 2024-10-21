@@ -1,0 +1,573 @@
+
+
+
+
+
+
+
+
+
+
+
+
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ ncli
+
+Welcome, admin
+You're now connected to 000624d1-1a26-783f-55fd-a0369f8df220 (demeter1) at 127.0.0.1
+
+<ncli> help
+
+Command Formats:
+    <ncli> <entity> <action> [<name>=<value>] ...
+    <ncli> help [detailed=true|false]
+    <ncli> <entity> help [detailed=true|false]
+    <ncli> <entity> <action> help [detailed=true|false]
+
+Entities and their corresponding Actions:
+
+    health-check | check 
+        list | ls 
+        edit | update 
+
+    data-at-rest-encryption 
+        get-status 
+        password 
+        test-configuration 
+        rekey-disks 
+        rekey-software-encryption-keys 
+        backup-software-encryption-keys 
+        get-recent-certificate-test-results 
+
+    file-server | fs 
+        add-admin-user 
+        add-dns 
+        add-icap-server 
+        add-quota-policy 
+        add-snapshot-policy 
+        add-virus-scan-policy 
+        delete | remove | rm 
+        delete-admin-user 
+        delete-icap-server 
+        delete-infected-files 
+        delete-quota-policy 
+        delete-share 
+        delete-snapshot-policy 
+        delete-user 
+        delete-virus-scan-policy 
+        get 
+        get-admin-user 
+        get-builtin-groups 
+        get-file-servers-usage 
+        get-fsm 
+        get-icap-server 
+        get-infected-file 
+        get-quota-email-config 
+        get-quota-policy 
+        get-share | show-share 
+        get-snapshot 
+        get-virus-scan-policy 
+        list | ls 
+        list-admin-users 
+        list-all-fs-shares 
+        list-dns 
+        list-icap-servers 
+        list-infected-files 
+        list-quota-policies 
+        list-shares | list-shares 
+        list-snapshot-policies 
+        list-snapshots 
+        list-user 
+        quarantine-infected-files 
+        regenerate-ssl-certificate 
+        remove-dns 
+        rescan-infected-files 
+        reset-infected-files 
+        test-icap-connection 
+        unquarantine-infected-files 
+        update-admin-user 
+        update-icap-server 
+        update-quota-email-config 
+        update-quota-policy 
+        update-share | edit-share 
+        update-snapshot-policy 
+        update-user 
+        update-virus-scan-policy 
+        upgrade-files-module 
+        verify-dns 
+        activate | activate 
+        add-share 
+        add-user | add-user 
+        add-user-mapping | add-user-mapping 
+        clone | clone 
+        configure-name-services | configure-name-services 
+        create | add 
+        edit | update 
+        edit-security-params 
+        get-principal-type | get-principal-type 
+        get-security-config 
+        get-ssl-certificate | get-ssl-certificate 
+        get-user-mapping | get-user-mapping 
+        join-domain | join-domain 
+        leave-domain | leave-domain 
+        load-balance 
+        protect | protect 
+        search-user-mapping 
+        ssl-certificate-generate 
+        update-network 
+        update-user-mapping 
+        upgrade | upgrade 
+        ssl-certificate-change-pfx-file-password 
+
+    smb-server 
+        enable-kerberos 
+        disable-kerberos 
+        get-kerberos-status 
+
+    storagetier | tier 
+        list-supported-types | ls-supported-types 
+        list | ls 
+        remove | rm 
+        get-default-io-priority-order | get-def-io-pri 
+        set-default-io-priority-order | set-def-io-pri 
+
+    snapshot | snap 
+        list | ls 
+        list-stats | ls-stats 
+        create | add 
+        clone 
+        remove | rm 
+
+    cloud 
+        add-credentials 
+        remove-credentials 
+        ls-credentials 
+        set-default-credentials 
+        ls-cvm-images 
+        deploy-remote-site 
+        ls-cvms 
+        ls-subnets 
+        clear-all-credentials 
+        destroy-remote-site 
+
+    progress-monitor 
+        list | ls 
+        delete | remove 
+
+    disk 
+        list | ls 
+        list-stats | ls-stats 
+        list-free | ls-free 
+        remove-start | rm-start | delete 
+        get-remove-status | get-rm-status 
+
+    events | event 
+        list | ls 
+        history 
+        acknowledge | ack 
+
+    vdisk 
+        list | ls 
+        list-stats | ls-stats 
+        create | add 
+        edit | update 
+        remove | rm 
+        snapshot | snap 
+        clone 
+        list-snapshots | ls-snaps 
+        remove-reservation 
+
+    license 
+        apply-license 
+        get-license 
+        get-allowances 
+        generate-cluster-info 
+        download-cluster-info 
+
+    authconfig 
+        list | ls 
+        edit | update 
+        remove | rm 
+        list-directory | ls-directory 
+        create-directory | add-directory 
+        edit-directory | update-directory 
+        remove-directory | rm-directory 
+        list-role-mappings | ls-role-mappings 
+        delete-role-mapping 
+        add-role-mapping 
+        add-to-role-mapping-values 
+        remove-from-role-mapping-values 
+        get-directory-values-by-type 
+        test-ldap-connection 
+        update-client-authentication 
+        delete-ca-chain-certificate | delete-ca-chain-cert 
+        get-client-authentication-config 
+        update-service-account 
+        set-certificate-revocation 
+        clear-certificate-revocation 
+
+    data-at-rest-encryption-certificate 
+        get-csr-information 
+        update-csr-information 
+        list-ca-certificates | ls-ca-certificates 
+        upload-ca-certificate 
+        remove-ca-certificate | rm-ca-certificate 
+        download-csrs 
+        upload-cvm-certificates 
+        replace-cvm-certificate 
+        remove-cvm-certificate | rm-cvm-certificate 
+
+    snmp 
+        get-status 
+        set-status 
+        list-users | ls-users 
+        add-user 
+        edit-user | update-user 
+        remove-user | delete-user 
+        list-traps | ls-traps 
+        add-trap 
+        edit-trap | update-trap 
+        remove-trap | delete-trap 
+        list-transports | ls-transports 
+        add-transport 
+        remove-transport | delete-transport 
+
+    container | ctr | storage-container 
+        list | ls 
+        list-stats | ls-stats 
+        create | add 
+        edit | update 
+        remove | rm 
+        get-down-migrate-times | get-dm-times 
+        set-down-migrate-times | set-dm-times 
+        add-to-nfs-whitelist 
+        remove-from-nfs-whitelist 
+
+    storagepool | sp 
+        list | ls 
+        list-stats | ls-stats 
+        create | add 
+        edit | update 
+
+    key-management-server 
+        get 
+        list | ls 
+        add 
+        update 
+        remove | rm 
+        change-key-management-server-type 
+
+    nutanix-guest-tools | ngt 
+        get 
+        list 
+        enable 
+        disable 
+        enable-applications 
+        disable-applications 
+        mount 
+        unmount 
+        list-applications 
+        delete 
+
+    datastore 
+        list | ls 
+        create | add 
+        delete | remove | rm 
+
+    http-proxy | proxy 
+        list | ls 
+        add 
+        edit | update 
+        remove | rm 
+        get-whitelist 
+        add-to-whitelist 
+        delete-from-whitelist 
+
+    ssl-certificate 
+        import 
+        ssl-certificate-generate 
+        ssl-certificate-change-pfx-file-password 
+
+    software 
+        list | ls 
+        download 
+        upload 
+        remove | rm | delete 
+        pause 
+        automatic-download 
+
+    rackable-unit | ru 
+        list | ls 
+        edit | update 
+        remove | rm 
+
+    host 
+        generate-csr-for-discovered-node 
+        remove-start | rm-start | delete 
+        get-remove-status | get-rm-status 
+        discover-nodes 
+        configure-node 
+        list | ls 
+        list-stats | ls-stats 
+        edit | update 
+        set-monitoring 
+        enable-metadata-store 
+        get-certificate-information 
+        set-default-vm-vhd-location 
+        reset-default-vm-vhd-location 
+        join-domain 
+
+    pulse-config 
+        list | ls 
+        edit | update 
+
+    alerts | alert 
+        list | ls 
+        history 
+        acknowledge | ack 
+        resolve 
+        get-alert-config 
+        edit-alert-config | update-alert-config 
+
+    multicluster 
+        get-cluster-state 
+        register-to-prism-central 
+        remove-from-multicluster 
+
+    remote-site | rs 
+        create | add 
+        list | ls 
+        edit | update 
+        remove | rm 
+        list-snapshots | ls-snaps 
+        rm-snapshot | rm-snap 
+        retrieve-snapshot 
+        add-bandwidth-schedule 
+        list-bandwidth-schedules 
+        remove-bandwidth-schedule 
+        add-network-mapping 
+        list-network-mapping 
+        remove-network-mapping 
+        list-networks 
+
+    user 
+        list | ls 
+        edit | update 
+        create | add 
+        delete | remove | rm 
+        enable 
+        disable 
+        change-password 
+        reset-password 
+        grant-user-admin-role 
+        revoke-user-admin-role 
+        grant-cluster-admin-role 
+        revoke-cluster-admin-role 
+        show-profile 
+        grant-backup-admin-role 
+        revoke-backup-admin-role 
+        get-logged-in-users | get-logged-in-users 
+        get-logged-in-user | get-logged-in-user 
+
+    failover-cluster 
+        list 
+        create 
+        join-nodes 
+        remove-node 
+
+    vstore 
+        list | ls 
+        protect 
+        unprotect 
+
+    virtual-disk 
+        list | ls 
+
+    rsyslog-config 
+        list | ls 
+        list-servers | ls-servers 
+        create-server | add-server 
+        edit-server | update-server 
+        delete-server | remove-server 
+        list-modules | ls-modules 
+        create-module | add-module 
+        delete-module | remove-module 
+        get-status 
+        set-status 
+
+    volume-group 
+        attach-to-vm 
+        close | detach-external 
+        create 
+        delete 
+        delete-disk 
+        detach-from-vm 
+        list | ls 
+        list-unprotected 
+        open | attach-external 
+        update 
+        clone-disk 
+        create-disk 
+        get 
+        update-disk 
+
+    cluster 
+        generate-csr-for-discovered-node 
+        remove-start | rm-start | delete 
+        get-remove-status | get-rm-status 
+        discover-nodes 
+        configure-node 
+        version 
+        get-params | info 
+        edit-params | edit-info 
+        get-remote-support-status 
+        start-remote-support 
+        stop-remote-support 
+        get-nfs-whitelist 
+        add-to-nfs-whitelist 
+        remove-from-nfs-whitelist 
+        get-ntp-servers 
+        add-to-ntp-servers 
+        remove-from-ntp-servers 
+        get-name-servers 
+        add-to-name-servers 
+        remove-from-name-servers 
+        set-smtp-server 
+        get-smtp-server 
+        clear-smtp-server 
+        send-test-email 
+        remove-all-public-keys | rm-all-public-keys 
+        list-public-keys | ls-public-keys 
+        add-public-key 
+        remove-public-key | rm-public-key 
+        set-external-ip-address 
+        set-timezone 
+        clear-external-ip-address 
+        get-redundancy-state 
+        set-redundancy-state 
+        get-domain-fault-tolerance-status | get-dm-ft-stat 
+        status 
+        join-domain 
+        set-dvm-configuration 
+        get-ipmi-monitoring-status 
+        start-la-jolla-deployment 
+        get-la-jolla-azure-info 
+        set-ipmi-monitoring-status 
+        add-witness 
+        edit-cvm-security-params 
+        list-witness 
+        edit-hypervisor-security-params 
+        update-witness 
+        get-cvm-security-config 
+        remove-witness 
+        get-hypervisor-security-config 
+        edit-hypervisor-lldp-params 
+        get-hypervisor-lldp-config 
+        get-resiliency-preference 
+        set-resiliency-preference 
+        get-dns-domain-suffix 
+        update-dns-domain-suffix 
+        remove-dns-domain-suffix 
+        get-dns-search-suffixes 
+        add-to-dns-search-suffixes 
+        remove-from-dns-search-suffixes 
+        remove-all-dns-search-suffixes 
+        invalidate-sessions 
+
+    managementserver | ms 
+        list-management-server-info 
+        register 
+        unregister 
+        list | ls 
+        add 
+        edit | update 
+        remove | rm 
+
+    protection-domain | pd 
+        realize-snapshot 
+        create | add 
+        remove | rm 
+        list | ls 
+        activate 
+        rollback-pd 
+        migrate 
+        list-snapshots | ls-snaps 
+        add-minutely-schedule 
+        add-hourly-schedule 
+        add-daily-schedule 
+        add-weekly-schedule 
+        add-monthly-schedule 
+        remove-from-schedules 
+        clear-schedules 
+        ls-schedules 
+        set-retention-policy 
+        clear-retention-policy 
+        ls-pending-one-time-snapshots 
+        add-one-time-snapshot | create-one-time-snapshot 
+        rm-one-time-schedules 
+        restore-snapshot 
+        protect 
+        unprotect 
+        rm-snapshot | rm-snap 
+        list-replication-status | ls-repl-status 
+        retain-snapshot | retain-snap 
+        pause-replication | pause-repl 
+        resume-replication | resume-repl 
+        abort-replication | abort-repl 
+        ls-pending-actions 
+        metro-avail-enable 
+        metro-avail-disable 
+        update-failure-handling 
+        promote-to-active 
+        suspend-schedules 
+        resume-schedules 
+        add-secondly-schedule 
+        status 
+
+    virtualmachine | vm 
+        list | ls 
+        list-stats | ls-stats 
+        list-snapshots | ls-snaps 
+        list-attached-flr-snapshots 
+        attach-flr-disk 
+        detach-flr-disk 
+        list-flr-snapshots | ls-flr-snaps 
+        update-fingerprint-on-write 
+        update-on-disk-dedup 
+
+    network | net 
+        add-switch-config 
+        get-qos 
+        edit-switch-config 
+        enable-qos 
+        delete-switch-config 
+        edit-qos 
+        disable-qos 
+        list-switch 
+        list-switch-ports 
+        get-switch-collector-config 
+        edit-switch-collector-config 
+        list-host-nics 
+        list-snmp-profile 
+        list-vm-nics 
+        add-snmp-profile 
+        list-host-vnics 
+        edit-snmp-profile 
+        delete-snmp-profile 
+
+    task 
+        get 
+        list | ls 
+        wait-for-task 
+
+    share 
+        -- No Actions Available --
+
+    tag 
+        -- No Actions Available --
+
+'<name>=<value>' arguments are specific to each operation
+
+<ncli> 
+
+
+
