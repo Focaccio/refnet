@@ -23,7 +23,9 @@ Where initial access to CVM and host ahv ssh happens during base intsll on build
 
 +Hypervisor LAN
 
+
 +Backplane LAN
+Object storage - MASS sotrage between nodes !!!!!
 
 
 
