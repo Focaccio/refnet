@@ -1,0 +1,186 @@
+
+
+
+feature vpc
+feature interface-vlan
+
+vrf context VPC_KEEPALIVE
+
+
+interface port-channel1025
+  description UL-sp1b-Po1025
+  switchport
+  switchport mode trunk
+  switchport trunk allowed vlan all
+  spanning-tree port type network
+  ! vpc peer-link
+interface Ethernet1/51
+  description [UL-sp1b-Eth1/51]
+  switchport
+  switchport mode trunk
+  switchport trunk allowed vlan all
+  channel-group 1025 mode active
+  no shutdown
+interface Ethernet1/52
+  description [UL-sp1b-Eth1/52]
+  switchport
+  switchport mode trunk
+  switchport trunk allowed vlan all
+  channel-group 1025 mode active
+  no shutdown
+
+interface port-channel1024
+  description UL-sp1b-Po1024
+interface Ethernet1/47
+  description [UL-sp1b-Eth1/47]
+  channel-group 1024 mode active
+  no shutdown
+interface Ethernet1/48
+  description [UL-sp1b-Eth1/48]
+  channel-group 1024 mode active
+  no shutdown
+
+interface port-channel1024.3000
+  description vPC-KEEPALIVE-sp1b-Po1024.3000
+  encapsulation dot1q 3000
+  vrf member VPC_KEEPALIVE
+  no ip redirects
+  ip address 10.0.0.0/31
+  no shutdown
+
+
+
+
+
+vpc domain 1
+  peer-switch
+  role priority 1
+  system-priority 4096
+  peer-keepalive destination 10.0.0.1 source 10.0.0.0 vrf VPC_KEEPALIVE
+  peer-gateway
+  auto-recovery
+  ipv6 nd synchronize
+  ip arp synchronize
+
+
+
+
+
+cfs eth distribute
+feature ospf
+feature bgp
+feature ospfv3
+feature udld
+feature interface-vlan
+feature hsrp
+feature lacp
+feature vpc
+feature lldp
+feature bfd
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+feature vpc
+feature interface-vlan
+
+vrf context VPC_KEEPALIVE
+
+
+interface port-channel1025
+  description UL-sp1a-Po1025
+  switchport
+  switchport mode trunk
+  switchport trunk allowed vlan all
+  spanning-tree port type network
+  ! vpc peer-link
+interface Ethernet1/51
+  description [UL-sp1a-Eth1/51]
+  switchport
+  switchport mode trunk
+  switchport trunk allowed vlan all
+  channel-group 1025 mode active
+  no shutdown
+interface Ethernet1/52
+  description [UL-sp1a-Eth1/52]
+  switchport
+  switchport mode trunk
+  switchport trunk allowed vlan all
+  channel-group 1025 mode active
+  no shutdown
+
+interface port-channel1024
+  description UL-sp1a-Po1024
+interface Ethernet1/47
+  description [UL-sp1a-Eth1/47]
+  channel-group 1024 mode active
+  no shutdown
+interface Ethernet1/48
+  description [UL-sp1a-Eth1/48]
+  channel-group 1024 mode active
+  no shutdown
+
+interface port-channel1024.3000
+  description vPC-KEEPALIVE-sp1a-Po1024.3000
+  encapsulation dot1q 3000
+  vrf member VPC_KEEPALIVE
+  no ip redirects
+  ip address 10.0.0.1/31
+  no shutdown
+
+
+
+
+  vpc domain 1
+  peer-switch
+  role priority 2
+  system-priority 4096
+  peer-keepalive destination 10.0.0.0 source 10.0.0.1 vrf VPC_KEEPALIVE
+  peer-gateway
+  auto-recovery
+  ipv6 nd synchronize
+  ip arp synchronize
+
+
+
+
+
+cfs eth distribute
+feature ospf
+feature bgp
+feature ospfv3
+feature udld
+feature interface-vlan
+feature hsrp
+feature lacp
+feature vpc
+feature lldp
+feature bfd
+
+
+
+
+
+
+
+
+
+
+
+
+vrf context management
+  ip route 0.0.0.0/0 172.22.16.1
+
+  
