@@ -1,0 +1,94 @@
+
+
+
+When virtual switch is set to active-active the LACP on the switch moves from I to p
+
+eth0 and eth1 in vs0 with active-standby
+sw2#ses
+Flags:  D - down        P - bundled in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      f - failed to allocate aggregator
+
+        M - not in use, minimum links not met
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+
+Number of channel-groups in use: 3
+Number of aggregators:           3
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+1      Po1(SU)         LACP      Fa0/1(P)    Fa0/2(P)    
+3      Po3(SD)          -        
+5      Po5(SD)         LACP      Gi0/1(I)    Gi0/2(I)    
+
+sw2#
+sw2#
+
+eth0 and eth1 in vs0 with active-active
+
+sw2#ses
+Flags:  D - down        P - bundled in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      f - failed to allocate aggregator
+
+        M - not in use, minimum links not met
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+
+Number of channel-groups in use: 3
+Number of aggregators:           3
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+1      Po1(SU)         LACP      Fa0/1(P)    Fa0/2(P)    
+3      Po3(SD)          -        
+5      Po5(SU)         LACP      Gi0/1(P)    Gi0/2(P)    
+
+sw2#
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+adding a new interface is failing 
+gui says check logs
+chat says   
+    
+
+Nutanix Controller VM
+
+Nutanix Controller VM (CVM) is a virtual storage appliance.
+
+Alteration of the CVM (unless advised by Nutanix Technical Support or
+Support Portal Documentation) is unsupported and may result in loss
+of User VMs or other data residing on the cluster.
+
+Unsupported alterations may include (but are not limited to):
+
+- Configuration changes / removal of files.
+- Installation of third-party software/scripts not approved by Nutanix.
+- Installation or upgrade of software packages from non-Nutanix
+  sources (using yum, rpm, or similar).
+
+** SSH to CVM via 'nutanix' user will be restricted in coming releases.  **
+** Please consider using the 'admin' user for basic workflows.           **
+Last login: Sat Nov  2 18:37:05 UTC 2024 from 192.168.86.71 on ssh
+Last login: Sat Nov  2 18:38:16 2024 from 192.168.86.20
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+
