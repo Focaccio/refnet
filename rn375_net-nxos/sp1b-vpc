@@ -1,0 +1,100 @@
+sp1b-vpc
+
+vrf context VPC-TEST-KA
+  description VPC-TEST-KA
+  address-family ipv4 unicast
+
+
+sp1b# sh vpc
+Legend:
+                (*) - local vPC is down, forwarding via vPC peer-link
+
+vPC domain id                     : 101 
+Peer status                       : peer link not configured      
+vPC keep-alive status             : peer is alive                 
+Configuration consistency status  : failed  
+Per-vlan consistency status       : failed                        
+Configuration inconsistency reason: vPC peer-link does not exist  
+Type-2 consistency status         : failed  
+Type-2 inconsistency reason       : vPC peer-link does not exist  
+vPC role                          : none established              
+Number of vPCs configured         : 0   
+Peer Gateway                      : Disabled
+Dual-active excluded VLANs        : -
+Graceful Consistency Check        : Disabled (due to peer configuration)
+Auto-recovery status              : Disabled
+Delay-restore status              : Timer is off.(timeout = 30s)
+Delay-restore SVI status          : Timer is off.(timeout = 10s)
+Operational Layer3 Peer-router    : Disabled
+Virtual-peerlink mode             : Disabled
+sp1b# 
+sp1b# sh run int e1/48
+
+
+```acta
+***********************************************************************************************
+***********************************************************************************************
+***********************************************************************************************
+***********************************************************************************************
+
+vrf context VPC-TEST-KA
+  description VPC-TEST-KA
+  address-family ipv4 unicast
+
+
+interface Ethernet1/48
+  description VPC-TEST-KA
+  no switchport
+  vrf member VPC-TEST-KA
+  ip address 10.99.0.102/24
+
+
+
+interface Ethernet1/52
+  description VPC-peerlink
+  switchport mode trunk
+  channel-group 101 mode active
+
+
+interface port-channel101
+  switchport mode trunk
+  spanning-tree port type network
+  vpc peer-link
+
+
+***********************************************************************************************
+***********************************************************************************************
+***********************************************************************************************
+***********************************************************************************************
+
+
+sp1b# sh vpc
+Legend:
+                (*) - local vPC is down, forwarding via vPC peer-link
+
+vPC domain id                     : 101 
+Peer status                       : peer adjacency formed ok      
+vPC keep-alive status             : peer is alive                 
+Configuration consistency status  : success 
+Per-vlan consistency status       : success                       
+Type-2 consistency status         : failed  
+Type-2 inconsistency reason       : QoSMgr Qos configuration incompatible
+vPC role                          : primary                       
+Number of vPCs configured         : 0   
+Peer Gateway                      : Disabled
+Dual-active excluded VLANs        : -
+Graceful Consistency Check        : Enabled
+Auto-recovery status              : Disabled
+Delay-restore status              : Timer is on.(timeout = 30s, 25s left)
+Delay-restore SVI status          : Timer is off.(timeout = 10s)
+Operational Layer3 Peer-router    : Disabled
+Virtual-peerlink mode             : Disabled
+
+vPC Peer-link status
+---------------------------------------------------------------------
+id    Port   Status Active vlans    
+--    ----   ------ -------------------------------------------------
+1     Po101  up     1                                                                    
+sp1b# 
+
+
