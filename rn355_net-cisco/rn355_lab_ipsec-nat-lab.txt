@@ -1,0 +1,205 @@
+
+
+
+
+To accommodate 1:1 NAT for multiple internal endpoints, you can configure NAT with a larger subnet on the loopback interface. This approach maps multiple internal IPs to corresponding public IPs (1:1 mapping), while routing traffic through the GRE tunnel.
+
+Here’s how you can do it:
+
+Scenario
+	•	Router A:
+	•	Inside subnet: 192.168.1.0/24
+	•	Public IP range for NAT: 198.51.100.128/25 (e.g., 198.51.100.128 - 198.51.100.255 on Loopback0)
+	•	Tunnel routed through GRE with IPsec protection.
+	•	Router B:
+	•	Inside subnet: 192.168.2.0/24
+	•	Public IP range for NAT: 203.0.113.128/25 (e.g., 203.0.113.128 - 203.0.113.255 on Loopback0)
+	•	Tunnel routed through GRE with IPsec protection.
+
+Configuration for Router A
+	1.	Configure Loopback Interface:
+Assign the public IP range to Loopback0 for NAT.
+
+interface Loopback0
+ ip address 198.51.100.128 255.255.255.128
+
+
+	2.	Configure NAT:
+	•	Define a static NAT mapping for 1:1 translations:
+
+ip nat inside source static 192.168.1.10 198.51.100.129
+ip nat inside source static 192.168.1.11 198.51.100.130
+ip nat inside source static 192.168.1.12 198.51.100.131
+! Repeat for as many mappings as needed
+
+
+	•	Mark interfaces for NAT:
+
+interface FastEthernet0/0
+ ip address 192.168.1.1 255.255.255.0
+ ip nat inside
+ no shutdown
+
+interface Loopback0
+ ip nat outside
+
+
+	3.	GRE Tunnel Interface:
+Use the loopback interface for NAT, but route traffic through the GRE tunnel.
+
+interface Tunnel0
+ ip unnumbered FastEthernet0/1
+ tunnel source FastEthernet0/1
+ tunnel destination 203.0.113.1
+ tunnel protection ipsec profile GRE-IPSEC-PROFILE
+
+
+	4.	Routing:
+Route NATed traffic through the GRE tunnel:
+
+ip route 192.168.2.0 255.255.255.0 Tunnel0
+
+Configuration for Router B
+	1.	Configure Loopback Interface:
+Assign the public IP range to Loopback0 for NAT.
+
+interface Loopback0
+ ip address 203.0.113.128 255.255.255.128
+
+
+	2.	Configure NAT:
+	•	Define a static NAT mapping for 1:1 translations:
+
+ip nat inside source static 192.168.2.10 203.0.113.129
+ip nat inside source static 192.168.2.11 203.0.113.130
+ip nat inside source static 192.168.2.12 203.0.113.131
+! Repeat for as many mappings as needed
+
+
+	•	Mark interfaces for NAT:
+
+interface FastEthernet0/0
+ ip address 192.168.2.1 255.255.255.0
+ ip nat inside
+ no shutdown
+
+interface Loopback0
+ ip nat outside
+
+
+	3.	GRE Tunnel Interface:
+Use the loopback interface for NAT, but route traffic through the GRE tunnel.
+
+interface Tunnel0
+ ip unnumbered FastEthernet0/1
+ tunnel source FastEthernet0/1
+ tunnel destination 198.51.100.1
+ tunnel protection ipsec profile GRE-IPSEC-PROFILE
+
+
+	4.	Routing:
+Route NATed traffic through the GRE tunnel:
+
+ip route 192.168.1.0 255.255.255.0 Tunnel0
+
+Key Notes:
+	1.	1:1 NAT for Multiple Endpoints:
+	•	Each internal IP is mapped to a unique public IP on the loopback interface.
+	•	Example:
+	•	192.168.1.10 → 198.51.100.129
+	•	192.168.1.11 → 198.51.100.130
+	2.	GRE Tunnel and NAT Separation:
+	•	NAT is applied at the loopback interface, while the GRE tunnel routes the translated traffic.
+	3.	Routing:
+	•	Ensure traffic destined for the remote internal network (192.168.2.0/24 on Router A, 192.168.1.0/24 on Router B) is routed through the GRE tunnel.
+	4.	Scalability:
+	•	The public subnet assigned to the loopback (198.51.100.128/25) provides up to 126 usable public IP addresses for 1:1 NAT.
+
+Verification
+	1.	Verify NAT Mappings:
+
+show ip nat translations
+
+
+	2.	Verify Tunnel Interface:
+
+show interface Tunnel0
+show ip interface Tunnel0
+
+
+	3.	Verify IPsec SA:
+
+show crypto ipsec sa
+show crypto isakmp sa
+
+
+	4.	Ping Test:
+Test connectivity between internal devices across the GRE tunnel to ensure NAT and routing are working correctly.
+
+This configuration allows you to scale 1:1 NAT for multiple internal endpoints by leveraging a larger public IP subnet assigned to the loopback interface while routing all traffic through the GRE tunnel. Let me know if you need additional clarification or refinements!
+
+
+
+
+
+
+
+
+
+
+
+
+crypto isakmp policy 500
+ encr aes
+ authentication pre-share
+ group 5
+crypto isakmp key TUNNELKEY address 100.100.0.31
+!
+!
+crypto ipsec transform-set TRANSFORM101 esp-aes esp-sha-hmac 
+!
+crypto ipsec profile VTIPROFILE
+ set transform-set TRANSFORM101 
+
+ interface Tunnel1
+ description TU1-to-t1
+ ip unnumbered FastEthernet0/0
+ tunnel source FastEthernet0/0
+ tunnel destination 100.100.0.31
+!
+ip route 192.168.31.0 255.255.255.0 Tunnel1
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+crypto isakmp policy 500
+ encr aes
+ authentication pre-share
+ group 5
+ exi
+crypto isakmp key TUNNELKEY address 100.100.0.21
+!
+!
+crypto ipsec transform-set TRANSFORM101 esp-aes esp-sha-hmac 
+!
+crypto ipsec profile VTIPROFILE
+ set transform-set TRANSFORM101 
+exi
+
+interface Tunnel1
+ description TU1-to-c1
+ ip unnumbered FastEthernet0/0
+ tunnel source FastEthernet0/0
+ tunnel destination 100.100.0.21
+
+ip route 192.168.150.0 255.255.255.0 Tunnel1
+
+
+
