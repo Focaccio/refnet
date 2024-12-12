@@ -1,0 +1,188 @@
+
+NAT with gre tunnel
+
+
+===============================================================================================
+===============================================================================================
+NMS - mgmt etc
+
+!
+interface FastEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface Serial0/0
+ no ip address
+ shutdown
+!
+interface FastEthernet0/1
+ description P-UL_c1-gw
+ ip address 192.168.150.86 255.255.255.0
+ duplex auto
+ speed auto
+!
+!
+ip route 0.0.0.0 0.0.0.0 192.168.150.21
+!
+!
+```show
+_lab_nms_#
+_lab_nms_#ssh -l lab 172.21.202.2                  
+
+Password: 
+
+_lab_ep_#
+_lab_ep_#
+_lab_ep_#
+_lab_ep_#
+
+
+
+===============================================================================================
+===============================================================================================
+c1 - core site
+
+interface Tunnel1
+ description V-TU1_to-t1
+ ip unnumbered FastEthernet0/0
+ tunnel source FastEthernet0/0
+ tunnel destination 100.100.0.31
+!
+interface FastEthernet0/0
+ description P-PATH_circuit-to-t1
+ ip address 100.100.0.21 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface Serial0/0
+ no ip address
+ shutdown
+!
+interface FastEthernet0/1
+ description P-UL_nms
+ ip address 192.168.150.21 255.255.255.0
+ duplex auto
+ speed auto
+
+!         
+ip route 172.21.101.0 255.255.255.0 Tunnel1
+ip route 172.21.202.0 255.255.255.0 Tunnel1
+ip route 192.168.31.0 255.255.255.0 Tunnel1
+!
+
+
+
+
+
+
+
+===============================================================================================
+===============================================================================================
+t1 - terminal site
+
+
+!
+interface Tunnel1
+ description V_PATH_tunel-to-c1
+ ip unnumbered FastEthernet0/0
+ ip nat outside
+ ip nat enable
+ ip virtual-reassembly
+ tunnel source FastEthernet0/0
+ tunnel destination 100.100.0.21
+!
+interface FastEthernet0/0
+ description P_PATH_circuit-to-c1
+ ip address 100.100.0.31 255.255.255.0
+ ip virtual-reassembly
+ duplex auto
+ speed auto
+
+!
+interface FastEthernet0/1
+ description P_DL_endpoint-192-168-31-6
+ ip address 192.168.31.5 255.255.255.0
+ ip nat inside
+ ip nat enable
+ ip virtual-reassembly
+ duplex auto
+ speed auto
+!
+!
+ip route 192.168.150.0 255.255.255.0 Tunnel1
+!
+!
+ip nat pool NATPOOL202 172.21.202.2 172.21.202.252 netmask 255.255.255.0
+ip nat inside source list 22 pool NATPOOL202
+!
+
+access-list 22 permit 192.168.31.0 0.0.0.255
+!         
+!
+!
+
+```show
+_lab_t1_#sh ip nat translations 
+Pro Inside global      Inside local       Outside local      Outside global
+icmp 172.21.202.2:1    192.168.31.6:1     192.168.150.86:1   192.168.150.86:1
+tcp 172.21.202.2:22    192.168.31.6:22    192.168.150.86:16437 192.168.150.86:16437
+--- 172.21.202.2       192.168.31.6       ---                ---
+_lab_t1_#
+
+
+===============================================================================================
+===============================================================================================
+EP - endpoint
+
+
+!
+!
+!
+interface FastEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface Serial0/0
+ no ip address
+ shutdown
+!
+interface FastEthernet0/1
+ description P-UL_t1-gateway
+ ip address 192.168.31.6 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface Serial0/1
+ no ip address
+ shutdown
+!
+ip route 0.0.0.0 0.0.0.0 192.168.31.5
+!
+!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
