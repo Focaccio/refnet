@@ -1,5 +1,5 @@
 
-NAT with gre tunnel
+NAT with ipsec gre tunnel
 
 
 ===============================================================================================
@@ -7,6 +7,8 @@ NAT with gre tunnel
 NMS - mgmt etc
 
 !
+
+
 interface FastEthernet0/0
  no ip address
  duplex auto
@@ -43,11 +45,25 @@ _lab_ep_#
 ===============================================================================================
 c1 - core site
 
+crypto isakmp policy 500
+ encr aes
+ authentication pre-share
+ group 5
+crypto isakmp key TUNNELKEY address 100.100.0.31
+!
+!
+crypto ipsec transform-set TRANSFORM101 esp-aes esp-sha-hmac 
+!
+crypto ipsec profile VTIPROFILE
+ set transform-set TRANSFORM101 
+
 interface Tunnel1
  description V-TU1_to-t1
  ip unnumbered FastEthernet0/0
  tunnel source FastEthernet0/0
  tunnel destination 100.100.0.31
+ tunnel mode ipsec ipv4
+ tunnel protection ipsec profile VTIPROFILE
 !
 interface FastEthernet0/0
  description P-PATH_circuit-to-t1
@@ -81,6 +97,18 @@ ip route 192.168.31.0 255.255.255.0 Tunnel1
 ===============================================================================================
 t1 - terminal site
 
+crypto isakmp policy 500
+ encr aes
+ authentication pre-share
+ group 5
+crypto isakmp key TUNNELKEY address 100.100.0.21
+!
+!
+crypto ipsec transform-set TRANSFORM101 esp-aes esp-sha-hmac 
+!
+crypto ipsec profile VTIPROFILE
+ set transform-set TRANSFORM101 
+!
 
 !
 interface Tunnel1
@@ -91,6 +119,9 @@ interface Tunnel1
  ip virtual-reassembly
  tunnel source FastEthernet0/0
  tunnel destination 100.100.0.21
+ tunnel mode ipsec ipv4
+ tunnel protection ipsec profile VTIPROFILE
+!
 !
 interface FastEthernet0/0
  description P_PATH_circuit-to-c1
