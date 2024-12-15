@@ -33,13 +33,17 @@ interface Tunnel77
  tunnel source 100.100.76.21
  tunnel destination 100.100.76.31
 
+no crypto isakmp key TUNNELKEY77 address 100.100.77.31
+crypto isakmp key TUNNELKEY7677 address 100.100.76.31
 
 
-crypto isakmp key TUNNELKEY77 address 100.100.76.31
+crypto ipsec profile VTIPROFILE77
+ set transform-set TRANSFORM101 
 
 interface Tunnel77
- tunnel mode ipsec ipv4
- tunnel protection ipsec profile VTIPROFILE
+tunnel mode ipsec ipv4
+tunnel protection ipsec profile VTIPROFILE77
+
 
 +++
 
@@ -79,11 +83,16 @@ interface Tunnel77
  tunnel source 100.100.76.31
  tunnel destination 100.100.76.21
 
-crypto isakmp key TUNNELKEY76 address 100.100.76.21
+no crypto isakmp key TUNNELKEY77 address 100.100.77.21
+crypto isakmp key TUNNELKEY7677 address 100.100.76.21
 
-interface Tunnel76
+
+crypto ipsec profile VTIPROFILE77
+ set transform-set TRANSFORM101 
+
+interface Tunnel77
  tunnel mode ipsec ipv4
- tunnel protection ipsec profile VTIPROFILE
+ tunnel protection ipsec profile VTIPROFILE77
 
 interface Tunnel76
  ip nat outside
