@@ -1,0 +1,105 @@
+tunnel-and-nat-mixes
+
+
+===============================================================================================
+===============================================================================================
+C 1
+===============================================================================================
+===============================================================================================
+
+crypto isakmp policy 500
+ encr aes
+ authentication pre-share
+ group 5
+crypto isakmp key TUNNELKEY address 100.100.0.31
+crypto ipsec transform-set TRANSFORM101 esp-aes esp-sha-hmac 
+crypto ipsec profile VTIPROFILE
+ set transform-set TRANSFORM101 
+interface Tunnel1
+ description V-TU1_to-t1
+ ip unnumbered FastEthernet0/0
+ tunnel source FastEthernet0/0
+ tunnel destination 100.100.0.31
+ tunnel mode ipsec ipv4
+ tunnel protection ipsec profile VTIPROFILE
+
++++ADD-ON
+int f0/0
+ip add 100.100.76.21 255.255.255.0 secondary
+
+interface Tunnel77
+ description V-PATH-TU77_to-t1
+ ip add 100.100.77.21 255.255.255.0
+ tunnel source 100.100.76.21
+ tunnel destination 100.100.76.31
+
+
+
+crypto isakmp key TUNNELKEY77 address 100.100.76.31
+
+interface Tunnel77
+ tunnel mode ipsec ipv4
+ tunnel protection ipsec profile VTIPROFILE
+
++++
+
+===============================================================================================
+===============================================================================================
+T 1
+===============================================================================================
+===============================================================================================
+
+crypto isakmp policy 500
+ encr aes
+ authentication pre-share
+ group 5
+crypto isakmp key TUNNELKEY address 100.100.0.21
+crypto ipsec transform-set TRANSFORM101 esp-aes esp-sha-hmac 
+crypto ipsec profile VTIPROFILE
+ set transform-set TRANSFORM101 
+interface Tunnel1
+ description V_PATH_tunel-to-c1
+ ip unnumbered FastEthernet0/0
+ ip nat outside
+ ip nat enable
+ ip virtual-reassembly
+ tunnel source FastEthernet0/0
+ tunnel destination 100.100.0.21
+ tunnel mode ipsec ipv4
+ tunnel protection ipsec profile VTIPROFILE
+
++++ADD-ON
+
+int f0/0
+ip add 100.100.76.31 255.255.255.0 secondary
+
+interface Tunnel77
+ description V-PATH-TU77_to-c1
+ ip address 100.100.77.31 255.255.255.0
+ tunnel source 100.100.76.31
+ tunnel destination 100.100.76.21
+
+crypto isakmp key TUNNELKEY76 address 100.100.76.21
+
+interface Tunnel76
+ tunnel mode ipsec ipv4
+ tunnel protection ipsec profile VTIPROFILE
+
+interface Tunnel76
+ ip nat outside
+ ip nat enable
+ ip virtual-reassembly
+
++++
+
+
+
+
+
+
+
+
+
+
+
+
