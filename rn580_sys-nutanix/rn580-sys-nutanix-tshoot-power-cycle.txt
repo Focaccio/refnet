@@ -30,7 +30,7 @@ admin@192.168.86.71's password:
 
 ```ahv is up on .70
 ```cvm is up on .71 post boot
-```no access to front endpoint
+```no access to front end web portal 
 
 03:33 greg@xcfit16.local ~ ? ssh 192.168.86.71 -ladmin
 Nutanix Controller VM
