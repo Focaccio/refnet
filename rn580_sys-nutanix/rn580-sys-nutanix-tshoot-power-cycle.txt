@@ -1,0 +1,158 @@
+
+
+
+
+
+03:30 greg@xcfit16.local ~ ? ping 192.168.86.70
+PING 192.168.86.70 (192.168.86.70): 56 data bytes
+64 bytes from 192.168.86.70: icmp_seq=0 ttl=64 time=7.294 ms
+64 bytes from 192.168.86.70: icmp_seq=1 ttl=64 time=7.386 ms
+^C
+--- 192.168.86.70 ping statistics ---
+2 packets transmitted, 2 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 7.294/7.340/7.386/0.046 ms
+03:30 greg@xcfit16.local ~ ? ping 192.168.86.71
+PING 192.168.86.71 (192.168.86.71): 56 data bytes
+64 bytes from 192.168.86.71: icmp_seq=0 ttl=64 time=7.577 ms
+64 bytes from 192.168.86.71: icmp_seq=1 ttl=64 time=6.446 ms
+^C
+--- 192.168.86.71 ping statistics ---
+2 packets transmitted, 2 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 6.446/7.011/7.577/0.566 ms
+03:30 greg@xcfit16.local ~ ? ssh 192.168.86.71 -ladmin
+The authenticity of host '192.168.86.71 (192.168.86.71)' can't be established.
+ECDSA key fingerprint is SHA256:e38QW+s6dtRUrm5O6wgMonKhY7kDBHghnbzPvtcjqNI.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '192.168.86.71' (ECDSA) to the list of known hosts.
+Nutanix Controller VM
+admin@192.168.86.71's password: 
+
+```ahv is up on .70
+```cvm is up on .71 post boot
+```no access to front endpoint
+
+03:33 greg@xcfit16.local ~ ? ssh 192.168.86.71 -ladmin
+Nutanix Controller VM
+admin@192.168.86.71's password: 
+Permission denied, please try again.
+admin@192.168.86.71's password: 
+
+Nutanix Controller VM (CVM) is a virtual storage appliance.
+
+Alteration of the CVM (unless advised by Nutanix Technical Support or
+Support Portal Documentation) is unsupported and may result in loss
+of User VMs or other data residing on the cluster.
+
+Unsupported alterations may include (but are not limited to):
+
+- Configuration changes / removal of files.
+- Installation of third-party software/scripts not approved by Nutanix.
+- Installation or upgrade of software packages from non-Nutanix
+  sources (using yum, rpm, or similar).
+
+** SSH to CVM via 'nutanix' user will be restricted in coming releases.  **
+** Please consider using the 'admin' user for basic workflows.           **
+Last login: Wed Dec 18 11:38:20 UTC 2024 on pts/0
+Last failed login: Sat Dec 21 11:34:02 UTC 2024 from 192.168.86.168 on ssh:notty
+There was 1 failed login attempt since the last successful login.
+Last login: Sat Dec 21 11:34:34 2024 from 192.168.86.168
+admin@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+admin@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+admin@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+
+
+
+admin@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+admin@NTNX-244131ad-A-CVM:192.168.86.71:~$ cluster start
+
+We trust you have received the usual lecture from the local System
+Administrator. It usually boils down to these three things:
+
+    #1) Respect the privacy of others.
+    #2) Think before you type.
+    #3) With great power comes great responsibility.
+
+[sudo] password for admin: 
+Sorry, try again.
+[sudo] password for admin: 
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+2024-12-21 11:35:51,043Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2024-12-21 11:35:51,057Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 6196284818797228576, cluster incarnation id: 1729330365757503
+2024-12-21 11:35:51,057Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2024-12-21 11:35:51,100Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x193e8edbe3901b0, negotiated timeout=20 secs
+2024-12-21 11:35:51,104Z INFO MainThread cluster:3302 Executing action start on SVMs 192.168.86.71
+2024-12-21 11:35:51,153Z INFO Dummy-2 zookeeper_session.py:940 Calling c_impl.close() for session 0x193e8edbe3901b0
+2024-12-21 11:35:51,154Z INFO Dummy-2 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+Waiting on 192.168.86.71 (Up, ZeusLeader) to start: 
+
+
+The state of the cluster: start
+Lockdown mode: Disabled
+
+	CVM: 192.168.86.71 Up, ZeusLeader
+		              Xmount   UP	[6009, 6247, 6248, 6396]	
+		           IkatProxy   UP	[5897, 5987, 5988, 5989]	
+		                Zeus   UP	[4960, 5019, 5020, 5021, 5030, 5048]	
+		           Scavenger   UP	[6020, 6391, 6392, 6393]	
+		    SysStatCollector   UP	[32390, 32652, 32653, 32654]	
+		    IkatControlPlane   UP	[32416, 32806, 32807, 32809]	
+		       SSLTerminator   UP	[32436, 32921, 32922]	
+		      SecureFileSync   UP	[32462, 32989, 32990, 32992]	
+		              Medusa   UP	[33278, 33502, 33503, 33559, 34644]	
+		  DynamicRingChanger   UP	[38260, 39009, 39010, 39258]	
+		              Pithos   UP	[38341, 39170, 39171, 39354]	
+		          InsightsDB   UP	[38369, 39447, 39448, 47642]	
+		              Athena   UP	[38442, 39365, 39366, 39367]	
+		             Mercury   UP	[38681, 39521, 39522, 45106]	
+		              Mantle   UP	[38744, 39675, 39676, 43476]	
+		          VipMonitor   UP	[4189, 4190, 4191, 4192, 4193]	
+		            Stargate   UP	[43437, 44090, 44091, 54219, 54225]	
+		InsightsDataTransfer   UP	[48079, 48399, 48400, 48438, 48439, 48440, 48441, 48442, 48443]	
+		             GoErgon   UP	[48131, 48547, 48548, 53580]	
+		             Cerebro   UP	[48219, 48700, 48701, 54650]	
+		             Chronos   UP	[48265, 48813, 48814, 49013]	
+		             Curator   UP	[48322, 49155, 49156, 53891]	
+		               Prism   UP	[48468, 49339, 49340, 50530, 55746, 55912]	
+		                Hera   UP	[48571, 49081, 49082, 49087]	
+		        AlertManager   UP	[48634, 49287, 49288, 51563]	
+		            Arithmos   UP	[48737, 49576, 49577, 53660]	
+		             Catalog   UP	[48847, 49885, 49886, 49887, 50351]	
+		           Acropolis   UP	[52829, 53195, 53196, 55437]	
+		              Castor   UP	[52897, 53341, 53342, 53387, 53798]	
+		               Uhura   UP	[52936, 53450, 53451, 53452]	
+		   NutanixGuestTools   UP	[53070, 53593, 53594, 53674, 53759]	
+		          MinervaCVM   UP	[58486, 60476, 60477, 60478]	
+		       ClusterConfig   UP	[58797, 60608, 60609, 60610, 60675]	
+		         APLOSEngine   UP	[59236, 60683, 60684, 60685]	
+		               APLOS   UP	[61166, 62006, 62007, 62012]	
+		     PlacementSolver   UP	[61262, 61961, 61962, 61963, 62198]	
+		               Lazan   UP	[61338, 62459, 62460, 62461]	
+		             Polaris   UP	[61500, 62584, 62585, 62695]	
+		              Delphi   UP	[61574, 62770, 62771, 62773, 62806]	
+		            Security   UP	[62279, 63588, 63589, 63590]	
+		                Flow   UP	[62525, 64066, 64067, 64068, 64162]	
+		             Anduril   UP	[62869, 65067, 65068, 65076, 65175]	
+		              Narsil   UP	[63496, 65733, 65734, 65735]	
+		               XTrim   UP	[64394, 67617, 67624, 67625]	
+		       ClusterHealth   UP	[65275, 68411, 69768, 69770, 69779, 69788, 69919, 69920, 69924, 69925, 69928, 69931, 69933, 69934, 69960, 69961, 69965, 70079, 70080, 70082, 70242, 70243, 70255, 70256, 70264, 70265, 70277, 70278, 71790, 71791, 71797, 71798, 71800, 71805, 71807, 71811, 71816, 71821, 71844, 71865, 71870, 72163, 72173]	
+2024-12-21 11:35:54,971Z INFO MainThread cluster:3465 Success!
+admin@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
