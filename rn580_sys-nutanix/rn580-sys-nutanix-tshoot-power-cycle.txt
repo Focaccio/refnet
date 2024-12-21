@@ -156,3 +156,85 @@ Lockdown mode: Disabled
 		       ClusterHealth   UP	[65275, 68411, 69768, 69770, 69779, 69788, 69919, 69920, 69924, 69925, 69928, 69931, 69933, 69934, 69960, 69961, 69965, 70079, 70080, 70082, 70242, 70243, 70255, 70256, 70264, 70265, 70277, 70278, 71790, 71791, 71797, 71798, 71800, 71805, 71807, 71811, 71816, 71821, 71844, 71865, 71870, 72163, 72173]	
 2024-12-21 11:35:54,971Z INFO MainThread cluster:3465 Success!
 admin@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+
+
+
+admin@NTNX-244131ad-A-CVM:192.168.86.71:~$ manage_ovs show_uplinks
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+mesg: cannot open /dev/pts/0: Permission denied
+ 
+Bridge: br0
+  Bond: br0-up
+    bond_mode: balance-tcp
+    interfaces: eth1 eth0
+    lacp: active
+    lacp-fallback: True
+    lacp_speed: fast
+    lacp_status: negotiated
+Bridge: br1
+  Bond: br1-up
+    bond_mode: balance-tcp
+    interfaces: eth4 eth3
+    lacp: active
+    lacp-fallback: True
+    lacp_speed: fast
+    lacp_status: negotiated
+admin@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+
+
+sw2#ses
+Flags:  D - down        P - bundled in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      f - failed to allocate aggregator
+
+        M - not in use, minimum links not met
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+
+Number of channel-groups in use: 2
+Number of aggregators:           2
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+1      Po1(SU)         LACP      Fa0/11(P)   Fa0/12(P)   
+6      Po6(SU)         LACP      Gi0/1(P)    Gi0/2(P)    
+
+sw2#sh lldp nei
+Capability codes:
+    (R) Router, (B) Bridge, (T) Telephone, (C) DOCSIS Cable Device
+    (W) WLAN Access Point, (P) Repeater, (S) Station, (O) Other
+
+Device ID           Local Intf     Hold-time  Capability      Port ID
+sw1                 Fa0/23         120        B,R             Fa0/17
+sp1b                Fa0/36         120        B,R             mgmt0
+sp1c                Fa0/35         120        B,R             mgmt0
+NTNX-244131ad-A     Gi0/1          120        B,R             eth0
+NTNX-244131ad-A     Gi0/2          120        B,R             eth1
+NTNX-244131ad-A     Fa0/48         120        B,R             eth2
+NTNX-244131ad-A     Fa0/11         120        B,R             eth3
+NTNX-244131ad-A     Fa0/12         120        B,R             eth4
+
+Total entries displayed: 8
+
+sw2#

@@ -1,0 +1,46 @@
+
+PATH Logging
+...............................................................................................
+$$$
+START
+$$$
+20241012
++received elitedesk 800 g4 i7 from ebay
+learned 3x drives:
+    1. data (jbod)
+    2. fast nvme cvm
+    3. slowish smallish (raid?) boot
++determined machine is 8G
++buy 16x4 for 64G incoming
++determined need nvme m2
++buy nvme evo plus970 incoming
+
+
+
+
+
+
+sudo dd if=/Users/f16/0builder/phoenix.x86_64-fnd_5.6.1_patch-aos_6.8.1_ga.iso of=/dev/rdisk4 bs=1m
+
+
+systemctl status instsvcdrv.service
+
+
+
+
+
+-rw-r--r--@  1 greg  staff     1416176 Oct  6 06:18 ntx-ce.pdf
+-rw-r--r--@  1 greg  staff  7123425280 Oct 12 04:01 phoenix.x86_64-fnd_5.6.1_patch-aos_6.8.1_ga.iso                            sudo dd if=/Users/f16/0builder/phoenix.x86_64-fnd_5.6.1_patch-aos_6.8.1_ga.iso of=/dev/rdisk4 bs=1m
+6793+1 records in6.local /Users/f16/0builder ? sudo dd if=/Users/f16/0builder/phoenix.x86_64-fnd_5.6.1_patch-aos_6.8.1_ga.iso of=/dev/rdisk4 bs=1m
+6793+1 records out
+7123425280 bytes transferred in 1455.649018 secs (4893642 bytes/sec)
+05:49 root@xcfit16.local /Users/f16/0builder ?
+05:56 root@xcfit16.local /Users/f16/0builder ?
+05:56 root@xcfit16.local /Users/f16/0builder ? diskutil eject /dev/disk4
+Disk /dev/disk4 ejected
+05:56 root@xcfit16.local /Users/f16/0builder ?
+
+
+
+
+
