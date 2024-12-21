@@ -238,3 +238,11 @@ NTNX-244131ad-A     Fa0/12         120        B,R             eth4
 Total entries displayed: 8
 
 sw2#
+Current configuration : 148 bytes
+!
+interface Port-channel1
+ description UL-demeter_VS1_BR1-UP
+ switchport trunk allowed vlan 202
+ switchport mode trunk
+ spanning-tree portfast
+end
