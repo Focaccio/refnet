@@ -1,0 +1,337 @@
+
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+sp1c# 
+sp1c# sh run
+
+!Command: show running-config
+!No configuration change since last restart
+!Time: Mon Dec 23 12:04:42 2024
+
+version 9.2(4) Bios:version 4.5.0 
+hostname sp1c
+vdc sp1c id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 104
+  limit-resource u4route-mem minimum 128 maximum 128
+  limit-resource u6route-mem minimum 96 maximum 96
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature privilege
+feature bash-shell
+feature scp-server
+feature sftp-server
+feature tacacs+
+cfs eth distribute
+feature ospf
+feature port-security
+feature interface-vlan
+feature hsrp
+feature lacp
+feature vpc
+feature lldp
+feature sflow
+feature openflow
+
+
+
+vlan 1
+vlan 172
+  name V172-SERVICES-X
+vrf context VPC-TEST-KA
+  description VPC-TEST-KA
+  address-family ipv4 unicast
+vrf context management
+  ip route 0.0.0.0/0 172.30.30.254
+no port-channel load-balance resilient
+
+no hardware profile ecmp resilient
+vpc domain 101
+  peer-keepalive destination 10.99.0.102 source 10.99.0.103 vrf VPC-TEST-KA
+  peer-gateway
+  layer3 peer-router
+  auto-recovery reload-delay 60
+
+
+interface Vlan1
+
+interface Vlan172
+  description V172-SERVICES-X
+  no shutdown
+  ip address 172.16.16.103/24
+  hsrp 172 
+    preempt 
+    priority 103
+    ip 172.16.16.1
+
+interface port-channel101
+  switchport mode trunk
+  spanning-tree port type network
+  vpc peer-link
+
+interface Ethernet1/1
+
+interface Ethernet1/9
+
+i
+interface Ethernet1/31
+
+interface Ethernet1/32
+
+interface Ethernet1/33
+
+interface Ethernet1/46
+
+interface Ethernet1/47
+
+interface Ethernet1/48
+  description VPC-TEST-KA
+  no switchport
+  vrf member VPC-TEST-KA
+  ip address 10.99.0.103/24
+
+interface Ethernet1/49
+
+interface Ethernet1/50
+
+interface Ethernet1/51
+  description VPC-peerlink
+  switchport mode trunk
+  channel-group 101 mode active
+
+interface Ethernet1/52
+  description VPC-peerlink
+  switchport mode trunk
+  channel-group 101 mode active
+
+interface mgmt0
+  vrf member management
+  ip address 198.18.225.103/24
+cli alias name crs copy ru st
+cli alias name sf show run | i feature
+cli alias name sri show run | i 
+cli alias name sfi show feature | i
+cli alias name wha sh run | i alias
+cli alias name sis show int status
+cli alias name sisi show int status | i
+cli alias name spcs show port-channel sum
+cli alias name siib show ip int brie
+cli alias name sit show int trunk
+cli alias name srs show run | sec
+cli alias name srint show run int
+cli alias name sln show lldp nei
+cli alias name srb show run | begin
+cli alias name sps show port-channel sum
+cli alias name shb show hsrp brief
+line console
+  exec-timeout 0
+line vty
+  exec-timeout 120
+boot nxos bootflash:/n3000-compact.9.2.4.bin 
+
+
+
+sp1c# sh vpc
+Legend:
+                (*) - local vPC is down, forwarding via vPC peer-link
+
+vPC domain id                     : 101 
+Peer status                       : peer adjacency formed ok      
+vPC keep-alive status             : peer is alive                 
+Configuration consistency status  : success 
+Per-vlan consistency status       : success                       
+Type-2 consistency status         : success 
+vPC role                          : secondary                     
+Number of vPCs configured         : 0   
+Peer Gateway                      : Enabled
+Dual-active excluded VLANs        : -
+Graceful Consistency Check        : Enabled
+Auto-recovery status              : Enabled, timer is off.(timeout = 60s)
+Delay-restore status              : Timer is off.(timeout = 30s)
+Delay-restore SVI status          : Timer is off.(timeout = 10s)
+Operational Layer3 Peer-router    : Enabled
+Virtual-peerlink mode             : Disabled
+
+vPC Peer-link status
+---------------------------------------------------------------------
+id    Port   Status Active vlans    
+--    ----   ------ -------------------------------------------------
+1     Po101  up     1,172                                                                
+sp1c# shb
+*:IPv6 group   #:group belongs to a bundle
+                     P indicates configured to preempt.
+                     |
+ Interface   Grp  Prio P State    Active addr      Standby addr     Group addr
+  Vlan172     172  103  P Active   local            172.16.16.102    172.16.16.1     (conf)
+sp1c# 
+
+
+
+
+
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+sp1b# sh run
+
+!Command: show running-config
+!No configuration change since last restart
+!Time: Mon Dec 23 12:01:17 2024
+
+version 9.2(4) Bios:version 5.0.0 
+hostname sp1b
+vdc sp1b id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 104
+  limit-resource u4route-mem minimum 128 maximum 128
+  limit-resource u6route-mem minimum 96 maximum 96
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature privilege
+feature bash-shell
+feature scp-server
+feature sftp-server
+feature tacacs+
+cfs eth distribute
+feature ospf
+feature port-security
+feature interface-vlan
+feature hsrp
+feature lacp
+feature vpc
+feature lldp
+feature sflow
+feature openflow
+
+
+banner motd #Nexus 3000 Switch
+#
+
+ssh ciphers all
+
+ip domain-lookup
+ip domain-name tst.areaf.net
+crypto key param rsa label sp1b.tst.areaf.net modulus 2048 
+service unsupported-transceiver
+
+
+
+vlan 1
+vlan 172
+  name V172-SERVICES-X
+vrf context VPC-TEST-KA
+  description VPC-TEST-KA
+  address-family ipv4 unicast
+vrf context management
+  ip route 0.0.0.0/0 198.18.225.68
+no port-channel load-balance resilient
+
+no hardware profile ecmp resilient
+vpc domain 101
+  peer-keepalive destination 10.99.0.103 source 10.99.0.102 vrf VPC-TEST-KA
+  peer-gateway
+  layer3 peer-router
+  auto-recovery reload-delay 60
+
+
+interface Vlan1
+
+interface Vlan172
+  description V172-SERVICES-X
+  no shutdown
+  ip address 172.16.16.102/24
+  hsrp 172 
+    preempt 
+    priority 102
+    ip 172.16.16.1
+
+interface port-channel101
+  switchport mode trunk
+  spanning-tree port type network
+  vpc peer-link
+
+interface Ethernet1/1
+
+interface Ethernet1/2
+
+
+
+interface Ethernet1/42
+
+interface Ethernet1/43
+
+interface Ethernet1/44
+
+interface Ethernet1/45
+
+interface Ethernet1/46
+
+interface Ethernet1/47
+
+interface Ethernet1/48
+  description VPC-TEST-KA
+  no switchport
+  vrf member VPC-TEST-KA
+  ip address 10.99.0.102/24
+
+interface Ethernet1/49
+
+interface Ethernet1/50
+
+interface Ethernet1/51
+  description VPC-peerlink
+  switchport mode trunk
+  channel-group 101 mode active
+
+interface Ethernet1/52
+  description VPC-peerlink
+  switchport mode trunk
+  channel-group 101 mode active
+
+interface mgmt0
+  vrf member management
+  ip address 198.18.225.102/24
+cli alias name sis show int status
+cli alias name sf show run | i feature
+cli alias name sri show run | i 
+cli alias name sfi show feature | i
+cli alias name wha sh run | i alias
+cli alias name sisi show int status | i
+cli alias name spcs show port-channel sum
+cli alias name crs copy ru st
+cli alias name siib show ip int brie
+cli alias name sit show int trunk
+cli alias name srs show run | sec
+cli alias name srint show run int
+cli alias name siibv show ip int brie vrf 
+cli alias name sln show lldp nei
+cli alias name sps show port-channel summary
+cli alias name shb show hsrp brief
+line console
+  exec-timeout 0
+line vty
+  exec-timeout 120
+boot nxos bootflash:/n3000-compact.9.2.4.bin 
+feature analytics
+
+
+
+sp1b#       
+
+
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+
+
+
+
+
