@@ -1,0 +1,393 @@
+
+```index
+
+...............................................................................................
+```11a-xe-xe ios-xe max psk ipsec ikev2
+a custom attempt
+
+...............................................................................................
+```11a-xe-xe ios-xe max psk ipsec ikev2
+b 4o attempt
+
+
+...............................................................................................
+```11c-xe-xe ios-xe max psk ipsec ikev2
+c 4o attempt
+c use vti
+
+
+
+...............................................................................................
+```12a-xe-ios 
+a first attempt
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+index separator
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+```11c-xe-xe ios-xe max psk ipsec ikev2
+
+```innerc
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A
+! ISAKMP/IKE Phase 1 Configuration
+crypto isakmp policy 10
+ encryption aes 256
+ hash sha512
+ authentication pre-share
+ group 24
+ lifetime 86400
+
+! Pre-shared Key
+crypto isakmp key StrongP@ssword456 address <Router_B_IP>
+
+! IPsec Phase 2 (Transform Set)
+crypto ipsec transform-set AES_GCM esp-gcm 256
+crypto isakmp keepalive 10 3
+
+! IPsec Profile
+crypto ipsec profile VTI_PROFILE
+ set transform-set AES_GCM
+ set pfs group24
+
+! Virtual Tunnel Interface Configuration
+interface Tunnel0
+ ip address 10.0.0.1 255.255.255.252
+ tunnel source <Router_A_IP>
+ tunnel destination <Router_B_IP>
+ tunnel protection ipsec profile VTI_PROFILE
+
+! Routing Configuration
+ip route <Destination_Network> <Subnet_Mask> 10.0.0.2
+
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+B   
+! ISAKMP/IKE Phase 1 Configuration
+crypto isakmp policy 10
+ encryption aes 256
+ hash sha512
+ authentication pre-share
+ group 24
+ lifetime 86400
+
+! Pre-shared Key
+crypto isakmp key StrongP@ssword456 address <Router_A_IP>
+crypto isakmp keepalive 10 3
+
+! IPsec Phase 2 (Transform Set)
+crypto ipsec transform-set AES_GCM esp-gcm 256
+
+! IPsec Profile
+crypto ipsec profile VTI_PROFILE
+ set transform-set AES_GCM
+ set pfs group24
+
+! Virtual Tunnel Interface Configuration
+interface Tunnel0
+ ip address 10.0.0.2 255.255.255.252
+ tunnel source <Router_B_IP>
+ tunnel destination <Router_A_IP>
+ tunnel protection ipsec profile VTI_PROFILE
+
+! Routing Configuration
+ip route <Source_Network> <Subnet_Mask> 10.0.0.1
+
+
+
+
+
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+```11a-xe-xe ios-xe max psk ipsec ikev2
+
+```innera
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A  
+! Define IKEv2 keyring with pre-shared key
+crypto ikev2 keyring IKEV2_KEYRING
+ peer SITE_B
+  address 192.168.2.1
+  pre-shared-key StrongP@ssw0rd123
+
+! Define IKEv2 proposal with strongest encryption
+crypto ikev2 proposal IKEV2_PROPOSAL
+ encryption aes-gcm-256
+ integrity sha512
+ group 20
+
+! Define IKEv2 policy
+crypto ikev2 policy IKEV2_POLICY
+ proposal IKEV2_PROPOSAL
+
+! Define IKEv2 profile
+crypto ikev2 profile IKEV2_PROFILE
+ match identity remote address 192.168.2.1 255.255.255.255
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local IKEV2_KEYRING
+
+! Define IPsec transform-set with AES-GCM
+crypto ipsec transform-set IPSEC_TSET esp-gcm 256
+ mode tunnel
+
+! Define IPsec profile
+crypto ipsec profile IPSEC_PROFILE
+ set transform-set IPSEC_TSET
+ set ikev2-profile IKEV2_PROFILE
+
+! Configure the tunnel interface
+interface Tunnel0
+ ip address 10.1.1.1 255.255.255.252
+ tunnel source GigabitEthernet0/0
+ tunnel destination 192.168.2.1
+ tunnel protection ipsec profile IPSEC_PROFILE
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+B   
+! Define IKEv2 keyring with pre-shared key
+crypto ikev2 keyring IKEV2_KEYRING
+ peer SITE_A
+  address 192.168.1.1
+  pre-shared-key StrongP@ssw0rd123
+
+! Define IKEv2 proposal with strongest encryption
+crypto ikev2 proposal IKEV2_PROPOSAL
+ encryption aes-gcm-256
+ integrity sha512
+ group 20
+
+! Define IKEv2 policy
+crypto ikev2 policy IKEV2_POLICY
+ proposal IKEV2_PROPOSAL
+
+! Define IKEv2 profile
+crypto ikev2 profile IKEV2_PROFILE
+ match identity remote address 192.168.1.1 255.255.255.255
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local IKEV2_KEYRING
+
+! Define IPsec transform-set with AES-GCM
+crypto ipsec transform-set IPSEC_TSET esp-gcm 256
+ mode tunnel
+
+! Define IPsec profile
+crypto ipsec profile IPSEC_PROFILE
+ set transform-set IPSEC_TSET
+ set ikev2-profile IKEV2_PROFILE
+
+! Configure the tunnel interface
+interface Tunnel0
+ ip address 10.1.1.2 255.255.255.252
+ tunnel source GigabitEthernet0/0
+ tunnel destination 192.168.1.1
+ tunnel protection ipsec profile IPSEC_PROFILE
+
+
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+```11b-xe-xe ios-xe max psk ipsec ikev2
+
+```innerb
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A 
+! ISAKMP/IKE Phase 1 Configuration
+crypto isakmp policy 10
+ encryption aes 256
+ hash sha256
+ authentication pre-share
+ group 21
+ lifetime 86400
+
+! Pre-shared Key
+crypto isakmp key StrongP@ssword123 address <Router_B_IP>
+
+! IPsec Phase 2 (Transform Set)
+crypto ipsec transform-set MY_TRANSFORM_SET esp-aes 256 esp-sha256-hmac
+ mode tunnel
+
+! IPsec Profile
+crypto ipsec profile MY_IPSEC_PROFILE
+ set transform-set MY_TRANSFORM_SET
+
+! Access Control List for Traffic Matching
+ip access-list extended VPN_ACL
+ permit ip <Source_Network> <Source_Wildcard> <Destination_Network> <Destination_Wildcard>
+
+! Crypto Map
+crypto map MY_CRYPTO_MAP 10 ipsec-isakmp
+ set peer <Router_B_IP>
+ set transform-set MY_TRANSFORM_SET
+ set pfs group21
+ match address VPN_ACL
+
+! Interface Configuration
+interface GigabitEthernet0/0
+ ip address <Router_A_Interface_IP> <Subnet_Mask>
+ crypto map MY_CRYPTO_MAP
+
+! Routing (if needed, adjust based on your setup)
+ip route <Destination_Network> <Subnet_Mask> <Router_B_IP>
+
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+B   
+! ISAKMP/IKE Phase 1 Configuration
+crypto isakmp policy 10
+ encryption aes 256
+ hash sha256
+ authentication pre-share
+ group 21
+ lifetime 86400
+
+! Pre-shared Key
+crypto isakmp key StrongP@ssword123 address <Router_A_IP>
+
+! IPsec Phase 2 (Transform Set)
+crypto ipsec transform-set MY_TRANSFORM_SET esp-aes 256 esp-sha256-hmac
+ mode tunnel
+
+! IPsec Profile
+crypto ipsec profile MY_IPSEC_PROFILE
+ set transform-set MY_TRANSFORM_SET
+
+! Access Control List for Traffic Matching
+ip access-list extended VPN_ACL
+ permit ip <Destination_Network> <Destination_Wildcard> <Source_Network> <Source_Wildcard>
+
+! Crypto Map
+crypto map MY_CRYPTO_MAP 10 ipsec-isakmp
+ set peer <Router_A_IP>
+ set transform-set MY_TRANSFORM_SET
+ set pfs group21
+ match address VPN_ACL
+
+! Interface Configuration
+interface GigabitEthernet0/0
+ ip address <Router_B_Interface_IP> <Subnet_Mask>
+ crypto map MY_CRYPTO_MAP
+
+! Routing (if needed, adjust based on your setup)
+ip route <Source_Network> <Subnet_Mask> <Router_A_IP>
+
+
+
+
+
+
+
+
+
+
+
+
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+```12a-xe-ios 
+
+```innera
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A 
+IOS-xe! Define IKEv1 phase 1 policy
+crypto isakmp policy 10
+ encryption aes 256
+ hash sha512
+ authentication pre-share
+ group 16
+ lifetime 86400
+
+! Configure pre-shared key
+crypto isakmp key StrongP@ssw0rd123 address 192.168.2.1
+
+! Define IPsec transform set
+crypto ipsec transform-set IPSEC_TSET esp-aes 256 esp-sha-hmac
+ mode tunnel
+
+! Define IPsec profile
+crypto map IPSEC_MAP 10 ipsec-isakmp
+ set peer 192.168.2.1
+ set transform-set IPSEC_TSET
+ match address ACL_IPSEC
+
+! Define access-list for interesting traffic
+access-list 100 permit ip 10.1.1.0 0.0.0.255 10.2.2.0 0.0.0.255
+
+! Apply the crypto map to an interface
+interface GigabitEthernet0/0
+ ip address 192.168.1.1 255.255.255.0
+ crypto map IPSEC_MAP
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+B   
+! Define IKEv1 phase 1 policy
+crypto isakmp policy 10
+ encryption aes 256
+ hash sha512
+ authentication pre-share
+ group 16
+ lifetime 86400
+
+! Configure pre-shared key
+crypto isakmp key StrongP@ssw0rd123 address 192.168.1.1
+
+! Define IPsec transform set
+crypto ipsec transform-set IPSEC_TSET esp-aes 256 esp-sha-hmac
+ mode tunnel
+
+! Define crypto map
+crypto map IPSEC_MAP 10 ipsec-isakmp
+ set peer 192.168.1.1
+ set transform-set IPSEC_TSET
+ match address ACL_IPSEC
+
+! Define access-list for interesting traffic
+access-list 100 permit ip 10.2.2.0 0.0.0.255 10.1.1.0 0.0.0.255
+
+! Apply the crypto map to an interface
+interface GigabitEthernet0/0
+ ip address 192.168.2.1 255.255.255.0
+ crypto map IPSEC_MAP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
