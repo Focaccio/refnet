@@ -20,8 +20,56 @@ NETWORKING
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 NOTES from 
 ```bp2050-phys
+1. vlans: cvm and hypervisor
+put cvm and hypervisor traffic on own vlan  
+ACT: dedicated VLAN for CVM and HV traffic (and physical) 
+2. vlans: cvm and hypervisor
+cvm and hypervisor traffic untagged (native)
+3. vlans: "nutanix" (cvms and hv?)
+nodes use ipv6 ND neighbor discovery and ipv6 UDP broadcast for cluster expansion
+ACT: disable bloacks of unsolicitied multicast and broadcast 
+ACT: allow unsolicited multi and bcast in ipv6
+4. vlans: "nutanix"
+ACT: disable proxy arp
+5. vlans: VMs
+ACT: Use tagged VLANs
+6. spanning-tree: host ports
+DONT use spanning tree edge port (as seen in bp2050) when using lacp
+7. PHYS: vpc paired leaf
+The design is dual switch VPC enabled leaf (lf1a + lf1b)  - with no spine yet....
+2x9KFX3
+8. multicast:
+enable IGMP snooping for multicast environments
 
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+NOTES from 
+```bp2071-ahv-nets
+1. ovs: the glue
+ovs connects cvm, HV, and guiest vms to the physiocal switch
+2. ovs: l2 switch
+keeps mac address table and learns
+3. ahv provides ovs feature via Prism
+vlan tags, lacp
+4. ovs: EACH NODE has its own
+each nodes has its own OVS-L2SW...
+5. VS - VIRTUAL SWITCH - vs0
+vs aggregates ovs bridges from multiple nodes
+e.g. vs0 will aggregate all br0 and br0-up uplinks from all nodes
+BRIDGES are withing OVS-L2SW (configuration items)
+6. BR - BRIDGES - br0 and virbr0
+MANAGEMENT and STORAGE traffic by default on br0 and virb0
+...so br0 and virb0 should be the native vlan separated vlan from VM vlans
+...br0 and virbr0 is VHE infrastructure....
+the linux virbr0 is OUSIDE the OVS domain
+7. PORTS - logical / virtual constructs in a bridge to 
+Internal Ports - with same name as defualt bridge br0 are AHV host management
+TAP ports - connect VM nics to bridges
+VXLAN ports - IPAM funcitonality
+BOND ports - NIC teaming of physical interfaces
+8. BONDS
+default system BOND br0-up (contains all interfaces)
+...PARE this down to 2x 25G
+...free up 2x 25G for br1-up all vm traffic
 
 
 
