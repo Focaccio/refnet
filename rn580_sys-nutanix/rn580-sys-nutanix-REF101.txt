@@ -17,6 +17,23 @@ Selected during AHV install
 NETWORKING
 +++++++++++++++++++++++++++++++++++++++++++++++
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+NOTES from 
+```bp2050-phys
+
+
+
+
+
+OOB switch / vlan for IPMI
++SNMP   
++SSH acces   / isolated non-connected local only network
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 +Management LAN
 Where initial access to CVM and host ahv ssh happens during base intsll on build in nic, not card nics
 
