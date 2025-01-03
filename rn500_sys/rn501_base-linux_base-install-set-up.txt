@@ -90,7 +90,23 @@ SPECIALIZED - MODS
 ...............................................................................................
 ...............................................................................................
 
+```sources fix
+# Line commented out by installer because it failed to verify:
+deb http://security.debian.org/ jessie/updates main contrib
+# Line commented out by installer because it failed to verify:
+deb-src http://security.debian.org/ jessie/updates main contrib
 
+deb http://mirror.math.princeton.edu/pub/debian/ jessie main contrib non-free
+deb-src http://mirror.math.princeton.edu/pub/debian/ jessie main contrib non-free
+
+deb http://mirror.math.princeton.edu/pub/debian jessie-backports main contrib non-free
+deb-src http://mirror.math.princeton.edu/pub/debian jessie-backports main contrib non-free
+
+deb http://mirror.math.princeton.edu/pub/debian jessie-updates main contrib non-free
+deb-src http://mirror.math.princeton.edu/pub/debian jessie-updates main contrib non-free
+
+deb http://security.debian.org/debian-security jessie/updates main contrib
+deb-src http://security.debian.org/debian-security jessie/updates main contrib
 
 
 root@d12:/etc# PS1='\A\u@\[\033[1m\]\H\[\033[0m\] \w ? '

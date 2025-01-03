@@ -27,7 +27,7 @@ ACT: dedicated VLAN for CVM and HV traffic (and physical)
 cvm and hypervisor traffic untagged (native)
 3. vlans: "nutanix" (cvms and hv?)
 nodes use ipv6 ND neighbor discovery and ipv6 UDP broadcast for cluster expansion
-ACT: disable bloacks of unsolicitied multicast and broadcast 
+ACT: disable blocks of unsolicitied multicast and broadcast 
 ACT: allow unsolicited multi and bcast in ipv6
 4. vlans: "nutanix"
 ACT: disable proxy arp
