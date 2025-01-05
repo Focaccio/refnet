@@ -1,0 +1,170 @@
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+CLI TOOLS HEADERS
+
+ncli
+
+
+acli   
+
+
+manage_ovs   
+
+
+allssh   
+
+
+```ncc   
+
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+
+===============================================================================================
+
+
+```ncc   
+raw info   
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ ncc health_checks 
++---------------------------------------------------------------------------------------------------------+
+| Type | Name                         | Impact        | Short help                                        |
++---------------------------------------------------------------------------------------------------------+
+| P    | run_all                      | Non-Intrusive | Run all non-intrusive plugins in this module      |
+| M    | anomaly_checks               | N/A           | Anomaly checks                                    |
+| M    | cassandra_checks             | N/A           | Cassandra related checks                          |
+| M    | cerebro_stats                | N/A           | Various cerebro stats collectors.                 |
+| M    | data_protection_checks       | N/A           | Data Protection related checks                    |
+| M    | draas_checks                 | N/A           | Checks relating to Disaster Recovery as a Service |
+| M    | fileserver_checks            | N/A           | File Server related checks                        |
+| M    | hardware_checks              | N/A           | Hardware related checks                           |
+| P    | help_opts                    | Non-Intrusive | Show various options for this module.             |
+| M    | hypervisor_checks            | N/A           | Various hypervisor checks.                        |
+| M    | key_manager_checks           | N/A           | Checks related to Key Management Servers          |
+| M    | metro_availability_checks    | N/A           | Metro Availability related checks                 |
+| M    | msp_controller_checks        | N/A           | Checks relating to MSP Controller                 |
+| M    | network_checks               | N/A           | Network related checks                            |
+| M    | ngt_checks                   | N/A           | NGT checks.                                       |
+| M    | nu_checker                   | N/A           | Checks that are implemented using NuChecker       |
+| M    | object_store_checks          | N/A           | Checks relating to Object Stores.                 |
+| M    | pcvm_checks                  | N/A           | pcvm checks.                                      |
+| M    | policy_checks                | N/A           | All policy checks                                 |
+| M    | pulse_checks                 | N/A           | All Pulse checks                                  |
+| M    | robo_checks                  | N/A           | Robo related checks                               |
+| M    | sar_checks                   | N/A           | Checks run on SAR stats on the CVM                |
+| M    | self_encrypting_drive_checks | N/A           | Checks related to self encrypting drives          |
+| M    | stargate_checks              | N/A           | Stargate related checks                           |
+| M    | system_checks                | N/A           | Various system checks on the cluster.             |
+| M    | volume_group_checks          | N/A           | Checks related to volume groups                   |
++---------------------------------------------------------------------------------------------------------+
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ ncc health_checks network_checks
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Type | Name                                         | Impact        | Short help                                                                                                                       |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| P    | run_all                                      | Non-Intrusive | Run all non-intrusive plugins in this module                                                                                     |
+| P    | ahv_duplicate_secondary_ip_check             | Non-Intrusive | Checks if AHV's secondary IPs have been duplicated in the network.                                                               |
+| P    | ahv_dvs_config_consistency_check             | Non-Intrusive | Checks for any discrepancies between VS configuration persisted in IDF and AHV host configuration on OVS bridges                 |
+| P    | ahv_host_mtu_check                           | Non-Intrusive | Check MTU of the AHV host network interfaces.                                                                                    |
+| P    | ahv_secondary_ip_ping_check                  | Non-Intrusive | Checks if each AHV can ping every host's secondary IP addresses                                                                  |
+| P    | bond_uplink_usability_check                  | Non-Intrusive | Checks if at least 2 uplinks in the bonds are connected andthe VLANs are configured correctly                                    |
+| P    | check_interface_configuration_files          | Non-Intrusive | Checks if network interface configuration file for eth0 has the required fields                                                  |
+| P    | check_network_switch                         | Non-Intrusive | Checks if network switches are configured properly.                                                                              |
+| P    | check_ntp                                    | Non-Intrusive | Checks if NTP is configured and syncing correctly.                                                                               |
+| P    | check_unsupported_sfp                        | Non-Intrusive | Checks if unsupported SFP is plugged in.                                                                                         |
+| P    | co_min_hc_bandwidth_check                    | Non-Intrusive | Checks whether the total HC network bandwidth is 2x of the CO bandwidth.                                                         |
+| P    | conntrack_check                              | Non-Intrusive | Checks if conntrack_stats_collector service on AHV is able to connect to Kafka service running on Prism Central on TCP port 9446 |
+| P    | conntrack_connection_limit_check             | Non-Intrusive | Check that conntrack table is not getting full                                                                                   |
+| P    | conntrack_mode_check                         | Non-Intrusive | Check whether conntrack_stats_collector is running in FLOW mode when policy-hit logging is enabled on flow policy                |
+| P    | cvm_dvportgroup_binding_check                | Non-Intrusive | Recommends static binding against ephemeral binding for dvPortGroups                                                             |
+| P    | cvm_mtu_check                                | Non-Intrusive | Checks if CVM MTU is set properly.                                                                                               |
+| P    | cvm_mtu_uniformity_check                     | Non-Intrusive | Checks that each CVM's management interface has the same MTU                                                                     |
+| P    | cvm_network_error_check                      | Non-Intrusive | Checks if CVM has lesser than 0.500000% TcpInCsum error rate during an interval of execution of (900 seconds).                   |
+| P    | cvm_time_drift_check                         | Non-Intrusive | Checks if the time drift between CVMs is less than the 3 seconds.                                                                |
+| P    | duplicate_cvm_ip_check                       | Non-Intrusive | Checks if CVM IPs have been duplicated in the network.                                                                           |
+| P    | duplicate_dsip_check                         | Non-Intrusive | Checks if duplicate DSIP exists in the network.                                                                                  |
+| P    | duplicate_hypervisor_ip_check                | Non-Intrusive | Checks if Hypervisor IPs have been duplicated in the network.                                                                    |
+| P    | fanout_secure_port_connection_pe_to_pc_check | Non-Intrusive | Fanout Secure Port Connection PE to PC Check                                                                                     |
+| P    | fns_pe_upgrade_prechecks                     | Non-Intrusive | FNS PE Upgrade Prechecks                                                                                                         |
+| P    | help_opts                                    | Non-Intrusive | Show various options for this module.                                                                                            |
+| P    | host_cvm_subnets_check                       | Non-Intrusive | Checks if host and CVM share the same subnet                                                                                     |
+| P    | host_pingable_check                          | Non-Intrusive | Checks if all host ips are pingable                                                                                              |
+| P    | inter_cvm_ping_latency_check                 | Non-Intrusive | Checks ping times between CVMs                                                                                                   |
+| P    | ipv6_config_check                            | Non-Intrusive | Checks if CVM interfaces have been configured with IPv6 manually                                                                 |
+| P    | ndp_check                                    | Non-Intrusive | Checks if the NDP(Nutanix Discovery Protocol) works in the cvm external network                                                  |
+| P    | network_controller_host_certs_expiry_check   | Non-Intrusive | Check if Network Controller Host certs are soon to be expired                                                                    |
+| P    | nic_link_down_check                          | Non-Intrusive | Checks if any nic is down.                                                                                                       |
+| P    | ns_config_consistency_check                  | Non-Intrusive | Checks if host bridge/vswitch configuration matches NS config in zookeeper                                                       |
+| P    | ofpfmfc_table_full_check                     | Non-Intrusive | Check that Openflow table is not getting full                                                                                    |
+| P    | ovs_congestion_status_check                  | Non-Intrusive | Check if OVS is in congested/blocked state                                                                                       |
+| M    | switch_checks                                | N/A           | Network switch related checks                                                                                                    |
+| P    | zeus_config_ip_address_check                 | Non-Intrusive | Checks if CVM/Hypervisor/IPMI IP addresses are in sync with zeus configuration                                                   |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ ncc health_checks network_checks ndp_check
+
+####################################################
+# TIMESTAMP : Sun Jan 05 11:09:08 2025 (UTC +0000) #
+####################################################
+Cluster Name: demeter1
+Cluster Id: 6196284818797228576
+Cluster UUID: 000624d1-1a26-783f-55fd-a0369f8df220
+Cluster Version: 6.8.1
+NCC Version: 5.0.1-83db8d0f
+    CVM ID(Svmid)            : 2
+    CVM external IP          : 192.168.86.71
+    Hypervisor IP            : 192.168.86.70
+    Hypervisor version       : Nutanix 20230302.101026
+    Node serial              : MXL9044JXY
+    Model                    : CommunityEdition
+    Node Position            : A
+    Block S/N                : 244131ad
+
+
+Running : health_checks network_checks ndp_check
+[==================================================] 100%
+/health_checks/network_checks/ndp_check                                                                                                                                                                                        [ PASS ] 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++-----------------------+
+| State         | Count |
++-----------------------+
+| Pass          | 1     |
+| Total Plugins | 1     |
++-----------------------+
+Plugin output written to /home/nutanix/data/logs/ncc-output-latest.log
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
