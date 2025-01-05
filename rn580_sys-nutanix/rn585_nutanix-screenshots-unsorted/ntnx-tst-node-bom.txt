@@ -1,0 +1,10 @@
+Community Edition Node BOM from Demeter @ TST
+152     Server              HP Elitedesk 800 G4 SFF i7-8700  
+120     MEMORY              64GB 4x16GB DDR4-2666 UDIMM RAM Memory HP EliteDesk 800 G4 Workstation Edition
+40      DISK CVM            Installed SanDisk SD6SB1M2 / alt: SanDisk Z400s 256GB SSD (SD8SBAT-256G-1122)
+100     DISK Data          C300-CTFDDAC256M / alt: Crucial M4 2.5" 256GB SATA III MLC Internal Solid State Drive (SSD) CT256M4SSD2
+                            alt: PNY CS900 250GB 3D NAND 2.5" SATA III Internal Solid State Drive (SSD) - (SSD7CS900-250-RB)
+70      DISK HYPERVISOR     Samsung 970 EVO Plus SSD 250GB - M.2 NVMe V-NAND SSD (MZ-V7S250B/AM)
+40      NETWORK             Intel I350-T4 1GbE Quad Port Ethernet
+Total
+525

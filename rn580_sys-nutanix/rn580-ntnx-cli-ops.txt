@@ -3,16 +3,44 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 CLI TOOLS HEADERS
 
-ncli
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+```AHV
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-acli   
+```virsh
+
+```SOP - reboot
 
 
-manage_ovs   
+
+```virsh
+[root@NTNX-244131ad-A ~]# virsh domiflist NTNX-244131ad-A-CVM
+ Interface   Type      Source               Model    MAC
+------------------------------------------------------------------------
+ vnet0       bridge    br0                  virtio   52:54:00:08:fb:98
+ vnet1       network   NTNX-Local-Network   virtio   52:54:00:f0:12:7b
+ vnet2       bridge    br0                  virtio   52:54:00:05:07:ec
+ vnet3       bridge    br1                  virtio   52:54:00:e2:52:9c
+
+[root@NTNX-244131ad-A ~]# 
 
 
-allssh   
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+```CVM
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+```ncli
+
+
+```acli   
+
+
+```manage_ovs   
+
+
+```allssh   
 
 
 ```ncc   
@@ -23,6 +51,11 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
 ===============================================================================================
 
 
@@ -139,6 +172,100 @@ nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$
 
 
 
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+
+```virsh
+[root@NTNX-244131ad-A ~]# virsh domiflist NTNX-244131ad-A-CVM
+ Interface   Type      Source               Model    MAC
+------------------------------------------------------------------------
+ vnet0       bridge    br0                  virtio   52:54:00:08:fb:98
+ vnet1       network   NTNX-Local-Network   virtio   52:54:00:f0:12:7b
+ vnet2       bridge    br0                  virtio   52:54:00:05:07:ec
+ vnet3       bridge    br1                  virtio   52:54:00:e2:52:9c
+
+[root@NTNX-244131ad-A ~]# 
+
+
+```SOP - reboot
+
+```AHV
+[root@NTNX-244131ad-A ~]# reboot
+REBOOTED   
+[root@NTNX-244131ad-A ~]# uptime
+ 13:56:22 up 3 min,  1 user,  load average: 0.81, 0.44, 0.19
+[root@NTNX-244131ad-A ~]# 
+
+```CVM
+came back by itself
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ uptime
+ 13:57:43 up 4 min,  1 user,  load average: 5.60, 1.68, 0.60
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+
+portal up @71
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ ncli
+
+
+Welcome, admin
+You're now connected to 000624d1-1a26-783f-55fd-a0369f8df220 (demeter1) at 127.0.0.1
+
+<ncli> 
+<ncli> 
+<ncli> cluster status
+
+    Name                      : 192.168.86.71
+    Status                    : Up, ZeusLeader
+    Xmount                    : up
+    IkatProxy                 : up
+    Zeus                      : up
+    Scavenger                 : up
+    SysStatCollector          : up
+    IkatControlPlane          : up
+    SSLTerminator             : up
+    SecureFileSync            : up
+    Medusa                    : up
+    DynamicRingChanger        : up
+    Pithos                    : up
+    InsightsDB                : up
+    Athena                    : up
+    Mercury                   : up
+    Mantle                    : up
+    VipMonitor                : up
+    Stargate                  : up
+    InsightsDataTransfer      : up
+    GoErgon                   : up
+    Cerebro                   : up
+    Chronos                   : up
+    Curator                   : up
+    Prism                     : up
+    Hera                      : up
+    AlertManager              : up
+    Arithmos                  : up
+    Catalog                   : up
+    Acropolis                 : up
+    Castor                    : up
+    Uhura                     : up
+    NutanixGuestTools         : up
+    MinervaCVM                : up
+    ClusterConfig             : up
+    APLOSEngine               : up
+    APLOS                     : up
+    PlacementSolver           : up
+    Lazan                     : up
+    Polaris                   : up
+    Delphi                    : up
+    Security                  : up
+    Flow                      : up
+    Anduril                   : up
+    Narsil                    : up
+    XTrim                     : up
+    ClusterHealth             : up
+<ncli> 
 
 
 
