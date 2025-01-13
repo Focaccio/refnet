@@ -1,0 +1,86 @@
+references
+cisco hardening:
+https://www.cisco.com/c/en/us/support/docs/ios-nx-os-software/ios-xe-16/220270-use-cisco-ios-xe-hardening-guide.html?utm_source=chatgpt.com
+
+
+
+
+```ACLs   
+IOS xe suports object-groups   
+
+
+
+
+
+
+
+
+```passwords  / enable
+enable algorithm-type scrypt secret <enable-password> 
+username <user> algorithm-type scrypt secret <user-password>
+
+
+```crypto ipsec vpn   
++ use type 6 for PSK
+
+
+archive
+path disk0:archived-config 
+maximum 14 
+time-period 1440
+
+
+
+REVERSABLE CYBER On/Off MGMT support
+
+cdp run
+lldp run
+
+
+
+
+1 581 604 864
+
+ 
+
+
+
+
+4194304K bytes of physical memory.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

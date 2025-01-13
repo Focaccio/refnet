@@ -3,6 +3,15 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 CLI TOOLS HEADERS
 
+GOPS general ops   
+SED self encrypting drives?
+DARE   -   data at rest encryption - 5-10% performance hit / less with SED drives
+DARE - can not be reversed 
+
+
+
+
+
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ```AHV
@@ -11,7 +20,7 @@ CLI TOOLS HEADERS
 
 ```virsh
 
-```SOP - reboot
+```sops_reboot
 
 
 
@@ -31,13 +40,59 @@ CLI TOOLS HEADERS
 ```CVM
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-```ncli
+```ncli   AOS on cluster
+AOS is the foundation level
+cluster wide operation, but still for aos
+
+NCLI commands:
+ncli cluster info
+ncli host list   
+ncli storagepool list
+ncli vm list 
+ncli network list
+ncli disk list
+ncli replication info
+ncli cluster status   // ncc health_checks run_all 
+ncli alert list 
+
+```acli   AOS info run on CVM
+aos is the foundation level built with the following:
++1   Linux kernel   -   lsb
++2   KVM   -   hypervisor base
++3   DFS   -   Distributed File System - Google File System (GFS) and Apache Cassandra
++4   OVS   -   network switch  
++5   Apache Zookeeper   -   Cluster level operations
++6   Containers and Microservices   -   Internally AOS uses containerized services
++7   MapReduce   -  
++8   Storage Optimization   -   SPDK / RedHat GlusterFS Deduplication, compression
++9   APIs   -   RESTful APIs   -   Allows automation and integration with 3rd parties   
++10  AHV   -   Built on KVM   
+AOS compliance:
+FedRAMP - unclass only (Nutanix is Moderate Approved)
+FIPS 140-2
+GDPR
+TS is ICD 503
+IL6 is S and TS
+IL6 - isolation between workloads
 
 
-```acli   
+ACLI commands:
+acli vm.list   
+acli vm.get "VMname"
+acli net.list   
+acli net.get "netname"
+acli image.list 
+acli host.list
+acli cluster.info
 
+
+
+
+ac
 
 ```manage_ovs   
+see mac address table
+
 [root@NTNX-244131ad-A ~]# ovs-appctl fdb/show br1
  port  VLAN  MAC                Age
     7     7  ea:6f:b6:37:13:28  298
