@@ -1,3 +1,219 @@
+
+different local and remote PSK
+
+
+
+
+
+
+1
+crypto ikev2 keyring IKEV2-KEYRING-101
+ peer XRTR1
+  address 100.100.0.126
+  no pre-shared-key local LOCAL-TUNNELKEY
+  no pre-shared-key remote REMOTE-TUNNELKEY
+  pre-shared key tunnelkey
+
+
+
+2
+crypto ikev2 keyring IKEV2-KEYRING-101
+ peer XRTR1
+  address 100.100.0.126
+  no pre-shared-key local LOCAL-TUNNELKEY
+  no pre-shared-key remote REMOTE-TUNNELKEY
+  pre-shared key tunnelkey
+
+
+...on xrtr1
+
+crypto ikev2 proposal IKEV2-PROPOSAL-101 
+ encryption aes-cbc-256
+ integrity sha512
+ group 21
+crypto ikev2 policy IKEV2-POLICY-101 
+ proposal IKEV2-PROPOSAL-101
+crypto ikev2 keyring IKEV2-KEYRING-101
+ peer XRTR2
+  address 100.100.0.128
+  pre-shared-key local LOCAL-TUNNELKEY-100-100-0-126
+  pre-shared-key remote REMOTE-TUNNELKEY-100-100-0-128
+ !
+crypto ikev2 profile IKEV2-PROFILE-101
+ match address local 100.100.0.126
+ match identity remote address 100.100.0.128 255.255.255.255 
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local IKEV2-KEYRING-101
+crypto ipsec transform-set TRANSFORM-101 esp-aes 256 esp-sha512-hmac 
+ mode transport
+crypto ipsec profile IPSEC-PROFILE-101
+ set transform-set TRANSFORM-101 
+ set ikev2-profile IKEV2-PROFILE-101
+
+
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+...on xrtr2 
+
+ crypto ikev2 proposal IKEV2-PROPOSAL-101 
+ encryption aes-cbc-256
+ integrity sha512
+ group 21
+ exi
+crypto ikev2 policy IKEV2-POLICY-101 
+ proposal IKEV2-PROPOSAL-101
+ exi
+crypto ikev2 keyring IKEV2-KEYRING-101
+ peer XRTR1
+  address 100.100.0.126
+  pre-shared-key local LOCAL-TUNNELKEY-100-100-0-128
+  pre-shared-key remote REMOTE-TUNNELKEY-100-100-0-126
+  exi   
+  exi   
+ !
+crypto ikev2 profile IKEV2-PROFILE-101
+ match address local 100.100.0.128
+ match identity remote address 100.100.0.126 255.255.255.255 
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local IKEV2-KEYRING-101
+ exi  
+crypto ipsec transform-set TRANSFORM-101 esp-aes 256 esp-sha512-hmac 
+ mode transport
+ exi   
+crypto ipsec profile IPSEC-PROFILE-101
+ set transform-set TRANSFORM-101 
+ set ikev2-profile IKEV2-PROFILE-101
+
+
+
+
+
+
+
+
+
+
+! ======== Router A Configuration ========
+
+! Step 1: Define IKEv2 Keyring
+crypto ikev2 keyring ROUTER_A_KEYRING
+ peer ROUTER_B
+  address 192.0.2.2
+  pre-shared-key local MyLocalPSK_A
+  pre-shared-key remote MyRemotePSK_A
+
+! Step 2: IKEv2 Proposal
+crypto ikev2 proposal SECURE_PROPOSAL
+ encryption aes-cbc-256
+ integrity sha512
+ group 21
+
+! Step 3: IKEv2 Policy
+crypto ikev2 policy SECURE_POLICY
+ proposal SECURE_PROPOSAL
+
+! Step 4: IKEv2 Profile
+crypto ikev2 profile SECURE_PROFILE
+ match address local 192.0.2.1
+ match identity remote address 192.0.2.2 255.255.255.255
+ authentication local pre-share
+ authentication remote pre-share
+ keyring local ROUTER_A_KEYRING
+
+! Step 5: IPsec Transform Set
+crypto ipsec transform-set SECURE_TRANSFORM esp-aes 256 esp-sha512-hmac
+ mode transport
+
+! Step 6: IPsec Profile
+crypto ipsec profile SECURE_IPSEC_PROFILE
+ set transform-set SECURE_TRANSFORM
+ set ikev2-profile SECURE_PROFILE
+
+! Step 7: GRE Tunnel Interface with VTI
+interface Tunnel0
+ ip address 10.1.1.1 255.255.255.252
+ tunnel source 192.0.2.1
+ tunnel destination 192.0.2.2
+ tunnel protection ipsec profile SECURE_IPSEC_PROFILE
+
+! ======== Router B Configuration ========
+
+! Step 1: Define IKEv2 Keyring
+crypto ikev2 keyring ROUTER_B_KEYRING
+ peer ROUTER_A
+  address 192.0.2.1
+  pre-shared-key local MyLocalPSK_B
+  pre-shared-key remote MyRemotePSK_B
+
+! Step 2: IKEv2 Proposal
+crypto ikev2 proposal SECURE_PROPOSAL
+ encryption aes-cbc-256
+ integrity sha512
+ group 21
+
+! Step 3: IKEv2 Policy
+crypto ikev2 policy SECURE_POLICY
+ proposal SECURE_PROPOSAL
+
+! Step 4: IKEv2 Profile
+crypto ikev2 profile SECURE_PROFILE
+ match address local 192.0.2.2
+ match identity remote address 192.0.2.1 255.255.255.255
+ authentication local pre-share
+ authentication remote pre-share
+ keyring local ROUTER_B_KEYRING
+
+! Step 5: IPsec Transform Set
+crypto ipsec transform-set SECURE_TRANSFORM esp-aes 256 esp-sha512-hmac
+ mode transport
+
+! Step 6: IPsec Profile
+crypto ipsec profile SECURE_IPSEC_PROFILE
+ set transform-set SECURE_TRANSFORM
+ set ikev2-profile SECURE_PROFILE
+
+! Step 7: GRE Tunnel Interface with VTI
+interface Tunnel0
+ ip address 10.1.1.2 255.255.255.252
+ tunnel source 192.0.2.2
+ tunnel destination 192.0.2.1
+ tunnel protection ipsec profile SECURE_IPSEC_PROFILE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ! ======== Router A Configuration ========
 
 ! Step 1: IKEv2 Keyring

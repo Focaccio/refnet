@@ -1,0 +1,58 @@
+! BRANCH router xrtr2
+crypto ikev2 proposal IKEV2-PROPOSAL-202
+ encryption aes-gcm-256
+ group 21
+ prf sha512
+ exi
+
+crypto ikev2 policy IKEV2-POLICY-202
+ proposal IKEV2-PROPOSAL-202
+ match fvrf any
+ exi
+
+crypto ikev2 keyring IKEV2-KEYRING-202
+ peer PEER1_CORE-ROUTER1
+  address 100.100.0.126
+  identity address 100.100.0.126
+  pre-shared-key local tunnelkey-XYZ456
+  pre-shared-key remote tunnelkey-ABC123
+  exi
+  exi
+
+crypto ikev2 profile IKEV2-PROFILE-202
+ match identity remote address 100.100.0.126 255.255.255.255
+ identity local address 100.100.0.128
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local IKEV2-KEYRING-202
+ exi
+
+crypto ipsec security-association replay window-size 1024
+crypto ipsec security-association lifetime seconds 3600
+crypto ipsec security-association lifetime kilobytes 102400
+
+crypto ipsec transform-set TRANSFORM-SET-202 esp-gcm 256
+ mode tunnel
+ exi
+
+crypto ipsec profile IPSEC-PROFILE-202
+ set transform-set TRANSFORM-SET-202
+ set ikev2-profile IKEV2-PROFILE-202
+ set pfs group21
+ set security-association lifetime seconds 3600
+ set security-association lifetime kilobytes 102400
+ exi
+
+interface Tunnel202
+ ip unnumbered g0/0/0
+ tunnel source GigabitEthernet0/0/0
+ tunnel destination 100.100.0.126
+ ip mtu 1384
+ ip tcp adjust-mss 1344
+ exi
+
+int tu202
+ tunnel mode ipsec ipv4
+ tunnel protection ipsec profile IPSEC-PROFILE-202
+ exi
+ 

@@ -1,0 +1,43 @@
+! Router B Configuration
+crypto ikev2 proposal IKE-PROP
+ encryption aes-gcm-256
+ group 21
+ prf sha512
+
+crypto ikev2 policy IKE-POL
+ proposal IKE-PROP
+ match fvrf any
+
+crypto ikev2 keyring KEY-RING
+ peer ROUTER-A
+  address 192.168.1.1
+  identity address 192.168.1.1
+  pre-shared-key local cisco456
+  pre-shared-key remote cisco123
+
+crypto ikev2 profile IKE-PROF
+ match identity remote address 192.168.1.1 255.255.255.255
+ identity local address 192.168.2.1
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local KEY-RING
+
+crypto ipsec security-association replay window-size 1024
+crypto ipsec security-association lifetime seconds 3600
+crypto ipsec security-association lifetime kilobytes 100000
+
+crypto ipsec transform-set TSET esp-gcm 256
+ mode transport
+
+crypto ipsec profile IPSEC-PROF
+ set transform-set TSET
+ set ikev2-profile IKE-PROF
+ set pfs group21
+ set security-association lifetime seconds 3600
+ set security-association lifetime kilobytes 100000
+
+interface Tunnel0
+ ip address 10.0.0.2 255.255.255.252
+ tunnel source GigabitEthernet0/0
+ tunnel destination 192.168.1.1
+ tunnel protection ipsec profile IPSEC-PROF
