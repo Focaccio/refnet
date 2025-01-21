@@ -10,6 +10,7 @@ IOS xe suports object-groups
 
 
 
+```alias   
 
 
 
@@ -55,10 +56,37 @@ lldp run
 
 
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+```alias   
+
+cli alias name sps show port-channel sum
+cli alias name sit show int trunk
+cli alias name sfi show feature | i
+cli alias name wha sh run | i alias
+cli alias name sis show int status
+cli alias name spcs show port-channel sum
+cli alias name sri show run | i 
+cli alias name siib show ip int brie
+cli alias name sf show run | i feature
+cli alias name srs show run | sec
+cli alias name srint show run int
+cli alias name sid show int des
+cli alias name siibv show ip int brie vrf 
+cli alias name shb show hsrp brief
+cli alias name sisic show int status | i connected
+cli alias name sided show int des | ex --
+cli alias name sln show lacp nei
+cli alias name sisdis show int status | i disabled
+cli alias name crs copy ru st
+cli alias name sisi show int status | i
+cli alias name srb show run | begin
 
 
-
-
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
 
 
 
