@@ -84,6 +84,7 @@ cli alias name sisdis show int status | i disabled
 cli alias name crs copy ru st
 cli alias name sisi show int status | i
 cli alias name srb show run | begin
+cli alias name siava show ip arp vrf all
 
 int vlan X   
 autostate excluded  
