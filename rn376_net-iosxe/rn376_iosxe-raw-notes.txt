@@ -70,6 +70,7 @@ cli alias name sis show int status
 cli alias name spcs show port-channel sum
 cli alias name sri show run | i 
 cli alias name siib show ip int brie
+cli alias name siibva show ip int brie vrf all
 cli alias name sf show run | i feature
 cli alias name srs show run | sec
 cli alias name srint show run int
@@ -84,6 +85,8 @@ cli alias name crs copy ru st
 cli alias name sisi show int status | i
 cli alias name srb show run | begin
 
+int vlan X   
+autostate excluded  
 
 -----------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------
