@@ -1,0 +1,280 @@
+
+
+
+
+===============================================================================================
+===============================================================================================
+===============================================================================================
+leaf1a 
+...............................................................................................
+...............................................................................................
+...............................................................................................
+
+
+
+
+interface Ethernet1/51
+  description VPC-PEERLINK_PO101-MEMBER-1
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-4094
+  channel-group 101 mode active
+
+interface Ethernet1/52
+  description VPC-PEERLINK_PO101-MEMBER-2
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-4094
+  channel-group 101 mode active
+
+interface port-channel101
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-4094
+  spanning-tree port type network
+  vpc peer-link
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+interface port-channel1024
+  description V-PO124_UL-LEAF1C-PO1024
+  switchport mode trunk
+  switchport trunk allowed vlan 3000
+  spanning-tree port type network
+
+interface Ethernet1/45
+  switchport mode trunk
+  switchport trunk allowed vlan 3000
+  channel-group 1024 mode active
+
+interface Ethernet1/46
+  switchport mode trunk
+  switchport trunk allowed vlan 3000
+  channel-group 1024 mode active
+
+
+vrf context VPC-KEEPALIVE
+  description VPC-KEEPALIVE
+
+interface Vlan3000
+  description V-V3000_VPC-KEEPALIVE
+  no shutdown
+  no autostate
+  vrf member VPC-KEEPALIVE
+  no ip redirects
+  ip address 10.0.0.1/30
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+feature vpc
+
+vpc domain 101
+  peer-switch
+  role priority 1
+  peer-keepalive destination 10.0.0.2 source 10.0.0.1 vrf VPC-KEEPALIVE
+  peer-gateway
+  layer3 peer-router
+  auto-recovery reload-delay 60
+  ip arp synchronize
+
+interface port-channel101
+  vpc peer-link
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+```shows   
+leaf1b# spcs
+Flags:  D - Down        P - Up in port-channel (members)
+        I - Individual  H - Hot-standby (LACP only)
+        s - Suspended   r - Module-removed
+        b - BFD Session Wait
+        S - Switched    R - Routed
+        U - Up (port-channel)
+        p - Up in delay-lacp mode (member)
+        M - Not in use. Min-links not met
+--------------------------------------------------------------------------------
+Group Port-       Type     Protocol  Member Ports
+      Channel
+--------------------------------------------------------------------------------
+101   Po101(SU)   Eth      LACP      Eth1/51(P)   Eth1/52(P)   
+1024  Po1024(SU)  Eth      LACP      Eth1/45(P)   Eth1/46(P)   
+leaf1b# 
+
+leaf1b# sh vpc
+Legend:
+                (*) - local vPC is down, forwarding via vPC peer-link
+
+vPC domain id                     : 101 
+Peer status                       : peer adjacency formed ok      
+vPC keep-alive status             : peer is not reachable through peer-keepalive
+Configuration consistency status  : success 
+Per-vlan consistency status       : success                       
+Type-2 consistency status         : success 
+vPC role                          : primary                       
+Number of vPCs configured         : 0   
+Peer Gateway                      : Enabled
+Dual-active excluded VLANs        : -
+Graceful Consistency Check        : Enabled
+Auto-recovery status              : Enabled, timer is off.(timeout = 60s)
+Delay-restore status              : Timer is off.(timeout = 30s)
+Delay-restore SVI status          : Timer is off.(timeout = 10s)
+Operational Layer3 Peer-router    : Enabled
+Virtual-peerlink mode             : Disabled
+
+vPC Peer-link status
+---------------------------------------------------------------------
+id    Port   Status Active vlans    
+--    ----   ------ -------------------------------------------------
+1     Po101  up     1,172                                                                
+leaf1b# 
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+
+
+
+
+
+
+===============================================================================================
+===============================================================================================
+===============================================================================================
+leaf1c 
+...............................................................................................
+...............................................................................................
+...............................................................................................
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+interface port-channel101
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-4094
+  spanning-tree port type network
+  vpc peer-link
+
+interface Ethernet1/51
+  description VPC-PEERLINK_PO101-MEMBER-1of2
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-4094
+  channel-group 101 mode active
+
+interface Ethernet1/52
+  description VPC-PEERLINK_PO101-MEMBER-2of2
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-4094
+  channel-group 101 mode active
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+interface port-channel1024
+  description V-PO124_UL-LEAF1B-PO1024
+  switchport mode trunk
+  switchport trunk allowed vlan 3000
+  spanning-tree port type network
+
+interface Ethernet1/45
+  switchport mode trunk
+  switchport trunk allowed vlan 3000
+  channel-group 1024 mode active
+
+interface Ethernet1/46
+  switchport mode trunk
+  switchport trunk allowed vlan 3000
+  channel-group 1024 mode active
+
+interface Vlan3000
+  description V-V3000_VPC-KEEPALIVE
+  no shutdown
+  no autostate
+  vrf member VPC-KEEPALIVE
+  no ip redirects
+  ip address 10.0.0.2/30
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+vpc domain 101
+  peer-switch
+  role priority 2
+  peer-keepalive destination 10.0.0.1 source 10.0.0.2 vrf VPC-KEEPALIVE
+  peer-gateway
+  layer3 peer-router
+  auto-recovery reload-delay 60
+  ip arp synchronize
+
+interface port-channel101
+  vpc peer-link
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+leaf1c# sh vpc
+Legend:
+                (*) - local vPC is down, forwarding via vPC peer-link
+
+vPC domain id                     : 101 
+Peer status                       : peer adjacency formed ok      
+vPC keep-alive status             : peer is not reachable through peer-keepalive
+Configuration consistency status  : success 
+Per-vlan consistency status       : success                       
+Type-2 consistency status         : success 
+vPC role                          : secondary                     
+Number of vPCs configured         : 0   
+Peer Gateway                      : Enabled
+Dual-active excluded VLANs        : -
+Graceful Consistency Check        : Enabled
+Auto-recovery status              : Enabled, timer is off.(timeout = 60s)
+Delay-restore status              : Timer is off.(timeout = 30s)
+Delay-restore SVI status          : Timer is off.(timeout = 10s)
+Operational Layer3 Peer-router    : Enabled
+Virtual-peerlink mode             : Disabled
+
+vPC Peer-link status
+---------------------------------------------------------------------
+id    Port   Status Active vlans    
+--    ----   ------ -------------------------------------------------
+1     Po101  up     1,172                                                                
+leaf1c# 
+
+
+
+leaf1c# spcs
+Flags:  D - Down        P - Up in port-channel (members)
+        I - Individual  H - Hot-standby (LACP only)
+        s - Suspended   r - Module-removed
+        b - BFD Session Wait
+        S - Switched    R - Routed
+        U - Up (port-channel)
+        p - Up in delay-lacp mode (member)
+        M - Not in use. Min-links not met
+--------------------------------------------------------------------------------
+Group Port-       Type     Protocol  Member Ports
+      Channel
+--------------------------------------------------------------------------------
+101   Po101(SU)   Eth      LACP      Eth1/51(P)   Eth1/52(P)   
+1024  Po1024(SU)  Eth      LACP      Eth1/45(P)   Eth1/46(P)   
+leaf1c# 
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+
+
+
+
+
+
+
+
+
+
