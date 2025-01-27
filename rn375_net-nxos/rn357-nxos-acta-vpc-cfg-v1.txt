@@ -1,0 +1,255 @@
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+
+nx-os vpc with hsrp
++initial basic framework
++leaf1a
++leaf1b
+
+Dual Leaf 
+<Future Spine 1a and Spine1b (not yet present)>
+
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+##### leaf1a
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+
+feature interface-vlan
+feature hsrp
+feature lacp
+feature vpc
+
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+##### L3 KEEP-ALIVE - in dedicated vrf
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+
+interface port-channel1024
+  description VPC-KEEPALIVE_ROUTED
+  no switchport
+  vrf member VPC-KEEPALIVE
+  ip address 100.64.0.1/24
+
+interface Ethernet1/45
+  description VPC-KEEPALIVE_PO1024-MEMBER-1of2
+  no switchport
+  channel-group 1024 mode active
+interface Ethernet1/46
+  description VPC-KEEPALIVE_PO1024-MEMBER-2of2
+  no switchport
+  channel-group 1024 mode active
+
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+##### PEER-LINK - L2 Trunk of VPC VLANs
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+
+interface port-channel101
+  description VPC-PEERRLINK_L2-TRUNK-VPC-VLANS
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-3002,3004-4094
+  spanning-tree port type network
+  vpc peer-link
+
+interface Ethernet1/51
+  description VPC-PEERLINK_PO101-MEMBER-1of2
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-3002,3004-4094
+  channel-group 101 mode active
+interface Ethernet1/52
+  description VPC-PEERLINK_PO101-MEMBER-2of2
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-3002,3004-4094
+  channel-group 101 mode active
+
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+##### VPC feature
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+
+vpc domain 101
+  peer-switch
+  role priority 1
+  peer-keepalive destination 100.64.0.2 source 100.64.0.1 vrf VPC-KEEPALIVE
+  peer-gateway
+  layer3 peer-router
+  auto-recovery reload-delay 60
+  ip arp synchronize
+
+
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+##### VPC Port-Channel 7 - match if# eth1/7
+##### VPC Port-channel 7 - trunk vlans w/ hsrp SVI
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+
+interface Ethernet1/7
+  switchport mode trunk
+  switchport trunk allowed vlan 7,202
+  channel-group 7 mode active
+
+interface port-channel7
+  switchport mode trunk
+  switchport trunk allowed vlan 7,202
+  vpc 7
+
+interface Vlan202
+  description V202-198-19-202-X
+  no shutdown
+  ip address 198.19.202.102/24
+  hsrp 202 
+    preempt 
+    priority 101
+    ip 198.19.202.1
+
+ ***** trunk to NTNX VHE node phys <eth3> *****
+
+ interface Ethernet1/7
+  switchport mode trunk
+  switchport trunk allowed vlan 7,202
+  channel-group 7 mode active
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+##### leaf1b
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+
+feature interface-vlan
+feature hsrp
+feature lacp
+feature vpc
+
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+##### L3 KEEP-ALIVE - in dedicated vrf
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+
+interface port-channel1024
+  description VPC-KEEPALIVE_ROUTED
+  no switchport
+  vrf member VPC-KEEPALIVE
+  ip address 100.64.0.2/24
+
+interface Ethernet1/45
+  description VPC-KEEPALIVE_PO1024-MEMBER-1of2
+  no switchport
+  channel-group 1024 mode active
+interface Ethernet1/46
+  description VPC-KEEPALIVE_PO1024-MEMBER-2of2
+  no switchport
+  channel-group 1024 mode active
+
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+##### PEER-LINK - L2 Trunk of VPC VLANs
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+
+interface port-channel101
+  description VPC-PEERRLINK_L2-TRUNK-VPC-VLANS
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-3002,3004-4094
+  spanning-tree port type network
+  vpc peer-link
+
+interface Ethernet1/51
+  description VPC-PEERLINK_PO101-MEMBER-1of2
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-3002,3004-4094
+  channel-group 101 mode active
+interface Ethernet1/52
+  description VPC-PEERLINK_PO101-MEMBER-2of2
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-3002,3004-4094
+  channel-group 101 mode active
+
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+##### VPC feature
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+
+vpc domain 101
+  peer-switch
+  role priority 1
+  peer-keepalive destination 100.64.0.1 source 100.64.0.2 vrf VPC-KEEPALIVE
+  peer-gateway
+  layer3 peer-router
+  auto-recovery reload-delay 60
+  ip arp synchronize
+
+
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+##### VPC Port-Channel 7 - match if# eth1/7
+##### VPC Port-channel 7 - trunk vlans w/ hsrp SVI
+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++
+
+interface Ethernet1/7
+  switchport mode trunk
+  switchport trunk allowed vlan 7,202
+  channel-group 7 mode active
+
+interface port-channel7
+  switchport mode trunk
+  switchport trunk allowed vlan 7,202
+  vpc 7
+
+interface Vlan202
+  description V202-198-19-202-X
+  no shutdown
+  ip address 198.19.202.103/24
+  hsrp 202 
+    preempt 
+    priority 101
+    ip 198.19.202.1
+
+ ***** trunk to NTNX VHE node phys <eth4> *****
+
+ interface Ethernet1/7
+  switchport mode trunk
+  switchport trunk allowed vlan 7,202
+  channel-group 7 mode active
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
