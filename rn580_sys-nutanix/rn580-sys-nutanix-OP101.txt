@@ -173,25 +173,42 @@ cluster start
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 # Create a cluster, redundancy_factor=1 basically means single-node
 cluster -s "192.168.86.71" --redundancy_factor=1 create
+cluster -s "192.168.86.171" --redundancy_factor=1 create
 #SUCESS
++The assembly starts one by one...
+2025-02-19 12:12:09,498Z INFO MainThread cluster:2265 Waiting for response from 192.168.86.171
+Waiting on 192.168.86.171 (Up, ZeusLeader) to start: 
+MinervaCVM
+...
+
 
 # Give your cluster a name
 ncli cluster edit-params new-name="demeter1"
+
+ncli cluster edit-params new-name="hecate1"
 #SUCCESS
 
 
 # Get rid of Google auto-set nameservers maybe if you need
 ncli cluster remove-from-name-servers servers="8.8.8.8,8.8.4.4"
+
+ncli cluster remove-from-name-servers servers="8.8.8.8,8.8.4.4"
 #SUCCESS
 
 # Set your actual name servers
 ncli cluster add-to-name-servers servers="192.168.86.1,192.168.86.238"
+
+ncli cluster add-to-name-servers servers="192.168.86.1"
 #SUCCESS
 
 
 # Set some parameters
 ncli cluster set-external-ip-address external-ip-address="192.168.86.72"
 ncli cluster edit-params external-data-services-ip-address="192.168.86.73"
+
+ncli cluster set-external-ip-address external-ip-address="192.168.86.172"
+ncli cluster edit-params external-data-services-ip-address="192.168.86.173"
+
 #SUCCESS
 
 
