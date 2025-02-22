@@ -2,7 +2,9 @@ NTNX raw notes
 ...............................................................................................
 ```ntnx-concepts
 
-CVM - PER NODE in the CLUSTER
+CVM - RUNS PER NODE in the CLUSTER ____ ONE NODE CVM is the ACTIVE
+_____3x IP ADDRESSES and "NICS"
+
  eth0       LOCAL CVM //// ***** FIXED IP / DOES NOT MOVE *****
                 WEB-CONSOLE / SSH / CVM<>CVM / API requests
 
