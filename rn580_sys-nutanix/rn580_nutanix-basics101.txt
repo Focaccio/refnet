@@ -1,11 +1,16 @@
-
-PATH Logging
+NTNX raw notes   
 ...............................................................................................
 ```ntnx-concepts
+
 CVM - PER NODE in the CLUSTER
- eth0       WEB-CONSOLE / SSH / CVM<>CVM / API requests
- eth0:1     **** MOVING IP **** linked to the ACTIVE CVM (moves is node goes off-line)
- eth0:2
+ eth0       LOCAL CVM //// ***** FIXED IP / DOES NOT MOVE *****
+                WEB-CONSOLE / SSH / CVM<>CVM / API requests
+
+ eth0:1     VIP /// ***** MOVING IP ***** 
+                linked to the ACTIVE CVM (moves is node goes off-line)
+
+ eth0:2     EXTERNAL DATA /// ***** MOVING IP ***** 
+                for data cervices to the cluster like iSCSI
  3 IP addresses
  
 
