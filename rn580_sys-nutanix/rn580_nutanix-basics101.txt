@@ -1,8 +1,47 @@
 NTNX raw notes   
 ...............................................................................................
-```ntnx-concepts
+DISTILLED INTELLEGENCE ```di 
+1. CREATE +External Bond Bridge for Storage Replication >>>>
+    LEAVE AS DEFAULT BR0
+2. CREATE +PROD Bond and Bridge for VM ingress egress NICS
+    Make BR1
+3. CREATE +MGMT Bond and Bridge for cluster management?
+    MAke BR2
 
-CVM - RUNS PER NODE in the CLUSTER ____ ONE NODE CVM is the ACTIVE
+READING RESULTS ```ntnx-concepts
+
+Checking Bond and BR should naturally be on the NODE-AHV-HOST
+
+
+
+
+
+AHV is the bare metal type 1 hypervisor 
+    >>> BUILT ON KVM   officially maintained by the linux kernel
+    linux kernel (kvm) maintainers / linux foundation - SF on market street
+    +intel / ibm / google / canonical / nutanix
+
+AOS = SOFTWARE DEFINED STORAGE 
+    AOS - RUNS of EVERY NODE - INSIDE !!! the CVM
+        DSF = Distributed Storage Fabric   
+    SEE AOS on CVM
+        genesis status     
+ncc health_checks run_all | grep -i stargate
+Nutanix SDS is proprietary - CALLED DSF  
+DISTRIBUTED STORAGE FABRIC   
+    +node distribution
+    +tiering
+    +Protection
+    +services
+        snapshots
+        clones
+        compression
+        Deduplication
+
+
+
+
+CVM ____ RUNS PER NODE in the CLUSTER ____ ONE NODE CVM is the ACTIVE
 _____3x IP ADDRESSES and "NICS"
 
  eth0       LOCAL CVM //// ***** FIXED IP / DOES NOT MOVE *****
@@ -16,7 +55,38 @@ _____3x IP ADDRESSES and "NICS"
  3 IP addresses
  
 
+THE 5 network
+_____ 192-168-5-0 NETWORK  
+*******************************************
+***** CVM ***** ALWAYS 
+192-168-5-2 / !!! 25 !!! CVM on ETH1   
+!!!!! BCAST 192-168-5-127
+~~~~~~~~~~~~~~~~~~~~~
+192-168-5-254 / !!! 24 !!! CVM on ETH1:1   
+!!!!! BCAST 192-168-5-255 
+_____ CVM GATEWAY to REACH CVM???  
+*******************************************
+***** AHV ***** ALWAYS 5.1
+192-168-5-1 _____ ON ***** VIRB0 ****
+*******************************************
++ "INTERNAL" data CVM (AOS etc) <> AHV DATA
+    CONTROL PLANE NETWORK 
+        Heartbeats
+        Config setting changes sharing and updates  
+        Prism element communication
+    it is ISOLATED and does not require an external switch or VLAN
+    key to the nutanix stack   
+    cluster operations 
+    storage i/o operations
 
+THE EXTERNAL network
+DEFAULT BR0 - leave it as default
++++++ THIS handles the CORE OPERATIONS +++++
+    STORAGE REPLICATION !!!!!
+    metadata sync
+    prism traffic
+    !!!!! DATA VLAN !!!!!
+Services using External
 
 
 
@@ -83,4 +153,17 @@ Disk /dev/disk4 ejected
 
 
 
-
+nutanix@NTNX-895b5886-A-CVM:192.168.86.171:~$ ncc health_checks run_all | grep -i stargate
+/health_checks/stargate_checks/garbage_egroups_size_check                                                                                                                      [ PASS ] 
+/health_checks/stargate_checks/container_on_removed_storage_pool                                                                                                               [ PASS ] 
+/health_checks/stargate_checks/copyupblockissue_check                                                                                                                          [ PASS ] 
+/health_checks/stargate_checks/dedup_auto_disabled_check                                                                                                                       [ PASS ] 
+/health_checks/stargate_checks/node_storage_tier_skew_check                                                                                                                    [ PASS ] 
+/health_checks/stargate_checks/oplog_index_memory_usage_check                                                                                                                  [ PASS ] 
+/health_checks/stargate_checks/unresponsive_stargate_check                                                                                                                     [ PASS ] 
+/health_checks/stargate_checks/compression_disabled_check                                                                                                                      [ PASS ] 
+/health_checks/stargate_checks/list_vms_with_qos_attrs                                                                                                                         [ PASS ] 
+/health_checks/stargate_checks/usage_discrepancy_check                                                                                                                         [ PASS ] 
+/health_checks/stargate_checks/ondisk_dedup_enabled_check                                                                                                                      [ PASS ] 
+/health_checks/stargate_checks/list_containers_with_conversion_to_aes_in_progress                                                                                              [ PASS ] 
+nutanix@NTNX-895b5886-A-CVM:192.168.86.171:~$ 
