@@ -1,6 +1,6 @@
 NTNX raw notes   
 ...............................................................................................
-DISTILLED INTELLEGENCE ```di 
+DISTILLED INTELLEGENCE - CONCEPTS  ```di-cpts 
 1. CREATE +External Bond Bridge for Storage Replication >>>>
     LEAVE AS DEFAULT BR0
 2. CREATE +PROD Bond and Bridge for VM ingress egress NICS
@@ -11,6 +11,22 @@ DISTILLED INTELLEGENCE ```di
 READING RESULTS ```ntnx-concepts
 
 Checking Bond and BR should naturally be on the NODE-AHV-HOST
+
+
+DISTILLED INTELLEGENCE - OPS ```di-ops
+1. HOST level - USE virsh
+    VIRSH is your friend!!!   
+    virsh iface-list --all   
+[root@NTNX-895b5886-A ~]# virsh iface-list --all
+ Name   State      MAC Address
+--------------------------------------
+ br0    active     c8:d9:d2:16:c3:49
+ eth0   active     c8:d9:d2:16:c3:49
+ eth1   inactive   a0:36:9f:1f:c1:18
+ eth2   inactive   a0:36:9f:1f:c1:19
+ eth3   inactive   a0:36:9f:1f:c1:1a
+ eth4   inactive   a0:36:9f:1f:c1:1b
+ lo     active     00:00:00:00:00:00    
 
 
 
