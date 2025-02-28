@@ -16,7 +16,8 @@ Checking Bond and BR should naturally be on the NODE-AHV-HOST
 DISTILLED INTELLEGENCE - OPS ```di-ops
 1. HOST level - USE virsh
     VIRSH is your friend!!!   
-    virsh iface-list --all   
+   ***** virsh iface-list --all   
+unconfigured hcat   
 [root@NTNX-895b5886-A ~]# virsh iface-list --all
  Name   State      MAC Address
 --------------------------------------
@@ -26,7 +27,97 @@ DISTILLED INTELLEGENCE - OPS ```di-ops
  eth2   inactive   a0:36:9f:1f:c1:19
  eth3   inactive   a0:36:9f:1f:c1:1a
  eth4   inactive   a0:36:9f:1f:c1:1b
- lo     active     00:00:00:00:00:00    
+ lo     active     00:00:00:00:00:00  
+
+configured dmtr   
+[root@NTNX-244131ad-A ~]# virsh iface-list --all
+ Name   State      MAC Address
+--------------------------------------
+ br0    active     c8:d9:d2:0c:e5:d7
+ eth0   active     c8:d9:d2:0c:e5:d7
+ eth1   active     a0:36:9f:8d:f2:20
+ eth2   active     a0:36:9f:8d:f2:21
+ eth3   inactive   a0:36:9f:8d:f2:22
+ eth4   inactive   a0:36:9f:8d:f2:23
+ lo     active     00:00:00:00:00:00   
+
+
+2. BOND verifications
+  *****  ovs-appctl bond/show
+_____ unconfigured hcat   
+[root@NTNX-895b5886-A ~]# ovs-appctl bond/show
+---- br0-up ----
+bond_mode: active-backup
+bond may use recirculation: no, Recirc-ID : -1
+bond-hash-basis: 0
+lb_output action: disabled, bond-id: -1
+updelay: 0 ms
+downdelay: 0 ms
+lacp_status: off
+lacp_fallback_ab: false
+active-backup primary: <none>
+active slave mac: c8:d9:d2:16:c3:49(eth0)
+
+slave eth0: enabled
+  active slave
+  may_enable: true
+
+slave eth1: disabled
+  may_enable: false
+
+slave eth2: disabled
+  may_enable: false
+
+slave eth3: disabled
+  may_enable: false
+
+slave eth4: disabled
+  may_enable: false
+
+[root@NTNX-895b5886-A ~]# 
+
+_____ cfgd dmtr   
+[root@NTNX-244131ad-A ~]# ovs-appctl bond/show
+---- br1-up ----
+bond_mode: balance-tcp
+bond may use recirculation: no, Recirc-ID : -1
+bond-hash-basis: 0
+lb_output action: disabled, bond-id: -1
+updelay: 0 ms
+downdelay: 0 ms
+lacp_status: configured
+lacp_fallback_ab: true
+active-backup primary: <none>
+active slave mac: 00:00:00:00:00:00(none)
+
+slave eth3: disabled
+  may_enable: false
+
+slave eth4: disabled
+  may_enable: false
+
+---- br0-up ----
+bond_mode: balance-tcp
+bond may use recirculation: yes, Recirc-ID : 1
+bond-hash-basis: 0
+lb_output action: disabled, bond-id: -1
+updelay: 0 ms
+downdelay: 0 ms
+next rebalance: 1971 ms
+lacp_status: negotiated
+lacp_fallback_ab: true
+active-backup primary: <none>
+active slave mac: a0:36:9f:8d:f2:20(eth1)
+
+slave eth0: enabled
+  may_enable: true
+  hash 192: 2 kB load
+
+slave eth1: enabled
+  active slave
+  may_enable: true
+
+[root@NTNX-244131ad-A ~]# 
 
 
 

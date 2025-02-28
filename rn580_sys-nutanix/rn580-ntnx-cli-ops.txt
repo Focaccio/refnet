@@ -3,10 +3,10 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 CLI TOOLS HEADERS
 
-GOPS general ops   
-SED self encrypting drives?
-DARE   -   data at rest encryption - 5-10% performance hit / less with SED drives
-DARE - can not be reversed 
+```OPS general ops   
+```SED self encrypting drives?
+    DARE   -   data at rest encryption - 5-10% performance hit / less with SED drives
+    DARE - can not be reversed 
 
 
 
@@ -39,6 +39,9 @@ DARE - can not be reversed
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ```CVM
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+``linux level commands
+sudo lsof -nP -iTCP -sTCP:LISTEN -iUDP | grep TCP
+
 
 ```ncli   AOS on cluster
 AOS is the foundation level
