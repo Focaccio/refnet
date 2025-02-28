@@ -1,7 +1,12 @@
 
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 CONCEPTS
-
+SDS - is DSF built into AOS  
+DSF is proprietary
+DSF provides linkage to object AWS S3 storage
+Block storage (for VMs and applications)
+File storage (through Nutanix Files, formerly AFS)
+Object storage (through Nutanix Objects)
 
 +++++++++++++++++++++++++++++++++++++++++++++++
 STORAGE

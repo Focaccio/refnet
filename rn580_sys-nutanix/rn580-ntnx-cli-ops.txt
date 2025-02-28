@@ -41,7 +41,10 @@ CLI TOOLS HEADERS
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ``linux level commands
 sudo lsof -nP -iTCP -sTCP:LISTEN -iUDP | grep TCP
-
+COUUNT total with wc -l   
+nutanix@NTNX-895b5886-A-CVM:192.168.86.171:~$ sudo lsof -nP -iTCP -sTCP:LISTEN -iUDP | grep TCP | wc -l
+118
+nutanix@NTNX-895b5886-A-CVM:192.168.86.171:~$ 
 
 ```ncli   AOS on cluster
 AOS is the foundation level
