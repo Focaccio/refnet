@@ -1,0 +1,75 @@
+
+
+
+
+
+```arp
+An Ethernet frame with EtherType 0x0806 and ARP opcode 1 represents an ARP Request packet. Here’s a breakdown of such a frame:
+
+Ethernet Frame Structure:
+	1.	Destination MAC Address (6 bytes): For an ARP request, this is typically the broadcast address FF:FF:FF:FF:FF:FF, indicating all devices on the local network should process the frame.￼
+	2.	Source MAC Address (6 bytes): The MAC address of the device sending the ARP request.￼
+	3.	EtherType (2 bytes): Set to 0x0806 to indicate the payload is an ARP message.
+
+ARP Packet Structure (contained within the Ethernet frame):
+	4.	Hardware Type (2 bytes): Specifies the type of hardware addressing. For Ethernet, this value is 0x0001.￼
+	5.	Protocol Type (2 bytes): Indicates the protocol for which the ARP request is made. For IPv4, this is 0x0800.￼
+	6.	Hardware Address Length (1 byte): Length of hardware addresses. For Ethernet MAC addresses, this is 6.
+	7.	Protocol Address Length (1 byte): Length of protocol addresses. For IPv4 addresses, this is 4.
+	8.	Operation (2 bytes): Specifies the ARP operation. A value of 0x0001 denotes an ARP Request.￼
+	9.	Sender Hardware Address (6 bytes): MAC address of the sender.￼
+	10.	Sender Protocol Address (4 bytes): IP address of the sender.￼
+	11.	Target Hardware Address (6 bytes): MAC address of the target. In an ARP request, this is typically set to 00:00:00:00:00:00 since the sender is seeking this information.
+	12.	Target Protocol Address (4 bytes): IP address of the target whose MAC address is being requested.
+
+Frame Diagram:
++-------------------+-------------------+-------------------+-------------------+
+| Destination MAC Address (6 bytes): FF:FF:FF:FF:FF:FF                           |
++-------------------+-------------------+-------------------+-------------------+
+| Source MAC Address (6 bytes): [Sender's MAC]                                   |
++-------------------+-------------------+-------------------+-------------------+
+| EtherType (2 bytes): 0x0806                                                   |
++-------------------+-------------------+-------------------+-------------------+
+| Hardware Type (2 bytes): 0x0001                                               |
++-------------------+-------------------+-------------------+-------------------+
+| Protocol Type (2 bytes): 0x0800                                               |
++-------------------+-------------------+-------------------+-------------------+
+| Hardware Address Length (1 byte): 6                                           |
++-------------------+-------------------+-------------------+-------------------+
+| Protocol Address Length (1 byte): 4                                           |
++-------------------+-------------------+-------------------+-------------------+
+| Operation (2 bytes): 0x0001                                                   |
++-------------------+-------------------+-------------------+-------------------+
+| Sender Hardware Address (6 bytes): [Sender's MAC]                             |
++-------------------+-------------------+-------------------+-------------------+
+| Sender Protocol Address (4 bytes): [Sender's IP]                               |
++-------------------+-------------------+-------------------+-------------------+
+| Target Hardware Address (6 bytes): 00:00:00:00:00:00                           |
++-------------------+-------------------+-------------------+-------------------+
+| Target Protocol Address (4 bytes): [Target's IP]                               |
++-------------------+-------------------+-------------------+-------------------+
+
+Notes:
+	•	The Destination MAC Address is set to the broadcast address in ARP requests to ensure all devices on the local network receive the request.
+	•	The Sender Hardware Address and Sender Protocol Address fields contain the MAC and IP addresses of the device initiating the ARP request.￼
+	•	The Target Hardware Address is unknown at the time of the request and is therefore set to all zeros.￼
+	•	The Target Protocol Address is the IP address for which the MAC address is being sought.￼
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
