@@ -55,7 +55,58 @@ Notes:
 	•	The Target Hardware Address is unknown at the time of the request and is therefore set to all zeros.￼
 	•	The Target Protocol Address is the IP address for which the MAC address is being sought.￼
 
+???????????????????????????????????????????????????????????????????????????????????????????????
 
+An Ethernet frame with EtherType 0x0806 and ARP opcode 2 signifies an ARP Reply packet. Here’s a detailed breakdown of such a frame:
+
+Ethernet Frame Structure:
+	1.	Destination MAC Address (6 bytes): The MAC address of the device that sent the initial ARP Request.
+	2.	Source MAC Address (6 bytes): The MAC address of the device sending the ARP Reply.
+	3.	EtherType (2 bytes): Set to 0x0806, indicating the payload is an ARP message.
+
+ARP Packet Structure (contained within the Ethernet frame):
+	4.	Hardware Type (2 bytes): Specifies the type of hardware addressing. For Ethernet, this value is 0x0001.
+	5.	Protocol Type (2 bytes): Indicates the protocol for which the ARP reply is made. For IPv4, this is 0x0800.
+	6.	Hardware Address Length (1 byte): Length of hardware addresses. For Ethernet MAC addresses, this is 6.
+	7.	Protocol Address Length (1 byte): Length of protocol addresses. For IPv4 addresses, this is 4.
+	8.	Operation (2 bytes): Specifies the ARP operation. A value of 0x0002 denotes an ARP Reply.
+	9.	Sender Hardware Address (6 bytes): MAC address of the sender (the device replying to the ARP request).
+	10.	Sender Protocol Address (4 bytes): IP address of the sender.
+	11.	Target Hardware Address (6 bytes): MAC address of the target (the device that sent the ARP request).
+	12.	Target Protocol Address (4 bytes): IP address of the target.
+
++-------------------+-------------------+-------------------+-------------------+
+| Destination MAC Address (6 bytes): [Requester's MAC]                            |
++-------------------+-------------------+-------------------+-------------------+
+| Source MAC Address (6 bytes): [Responder's MAC]                                |
++-------------------+-------------------+-------------------+-------------------+
+| EtherType (2 bytes): 0x0806                                                   |
++-------------------+-------------------+-------------------+-------------------+
+| Hardware Type (2 bytes): 0x0001                                               |
++-------------------+-------------------+-------------------+-------------------+
+| Protocol Type (2 bytes): 0x0800                                               |
++-------------------+-------------------+-------------------+-------------------+
+| Hardware Address Length (1 byte): 6                                           |
++-------------------+-------------------+-------------------+-------------------+
+| Protocol Address Length (1 byte): 4                                           |
++-------------------+-------------------+-------------------+-------------------+
+| Operation (2 bytes): 0x0002                                                   |
++-------------------+-------------------+-------------------+-------------------+
+| Sender Hardware Address (6 bytes): [Responder's MAC]                          |
++-------------------+-------------------+-------------------+-------------------+
+| Sender Protocol Address (4 bytes): [Responder's IP]                            |
++-------------------+-------------------+-------------------+-------------------+
+| Target Hardware Address (6 bytes): [Requester's MAC]                          |
++-------------------+-------------------+-------------------+-------------------+
+| Target Protocol Address (4 bytes): [Requester's IP]                            |
++-------------------+-------------------+-------------------+-------------------+
+
+Notes:
+	•	Destination MAC Address: Set to the MAC address of the device that initiated the ARP Request, ensuring the ARP Reply is sent directly to the requester.
+	•	Source MAC Address: The MAC address of the device responding to the ARP Request.
+	•	Operation: A value of 0x0002 indicates this is an ARP Reply.
+	•	Sender Hardware and Protocol Address: Contain the MAC and IP addresses of the device sending the ARP Reply.
+	•	Target Hardware and Protocol Address: Contain the MAC and IP addresses of the device that sent the ARP Request.
 
 
 
