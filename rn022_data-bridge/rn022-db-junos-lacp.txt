@@ -1,0 +1,42 @@
+
+JUNOS
+# Create VLAN 100
+set vlans VLAN100 vlan-id 100
+
+# Configure the Aggregated Ethernet Interface (ae0)
+set interfaces ae0 description "Link to Cisco 3850"
+!set interfaces ae0 aggregated-ether-options lacp active
+set interfaces ae0 aggregated-ether-options lacp passive
+set interfaces ae0 unit 0 family ethernet-switching interface-mode access
+set interfaces ae0 unit 0 family ethernet-switching vlan members VLAN100
+
+# Assign Physical Interfaces to the Aggregated Ethernet Interface
+set interfaces ge-0/0/1 description "Port Channel to Cisco 3850"
+set interfaces ge-0/0/1 ether-options 802.3ad ae0
+
+set interfaces ge-0/0/2 description "Port Channel to Cisco 3850"
+set interfaces ge-0/0/2 ether-options 802.3ad ae0
+
+# Assign the Layer 3 IP Address to the VLAN Interface
+set interfaces vlan unit 100 family inet address 1.0.0.13/24
+set vlans VLAN100 l3-interface vlan.100
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
