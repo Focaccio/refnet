@@ -1,1 +1,9 @@
+```config-save-as-set
+in cli mode
+>show configuration | display set | save /<CF>/var/tmp/cfg-acta-20250318_AS-SET.set
 
+THEB
+
+>file show /cf/var/tmp/cfg-acta-20250318_AS-SET.set
+set ...
+set ...
