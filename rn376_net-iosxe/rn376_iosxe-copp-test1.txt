@@ -1,0 +1,98 @@
+! This configuration provides protection for the control plane against common DoS attacks.
+
+! Define ACLs for permitted traffic
+ip access-list extended ALLOW_ICMP
+ permit icmp any any
+
+ip access-list extended ALLOW_SSH
+ permit tcp any any eq 22
+
+ip access-list extended ALLOW_SNMP
+ permit udp any any eq snmp
+ permit udp any any eq snmptrap
+
+ip access-list extended ALLOW_DHCP
+ permit udp any eq bootps any eq bootpc
+ permit udp any eq bootpc any eq bootps
+
+ip access-list extended ALLOW_NTP
+ permit udp any any eq ntp
+
+ip access-list extended ALLOW_DNS
+ permit udp any any eq domain
+ permit tcp any any eq domain
+
+ip access-list extended ALLOW_HTTP_HTTPS
+ permit tcp any any eq 80
+ permit tcp any any eq 443
+
+ip access-list extended ALLOW_ARP
+ permit ip any any
+ remark Permit ARP packets
+
+ip access-list extended ALLOW_CDP_LLDP
+ permit udp any any eq 162
+ permit udp any eq 162 any
+
+! Define class-maps for each type of traffic
+class-map match-any CLASS_ICMP
+ match access-group name ALLOW_ICMP
+
+class-map match-any CLASS_SSH
+ match access-group name ALLOW_SSH
+
+class-map match-any CLASS_SNMP
+ match access-group name ALLOW_SNMP
+
+class-map match-any CLASS_DHCP
+ match access-group name ALLOW_DHCP
+
+class-map match-any CLASS_NTP
+ match access-group name ALLOW_NTP
+
+class-map match-any CLASS_DNS
+ match access-group name ALLOW_DNS
+
+class-map match-any CLASS_HTTP_HTTPS
+ match access-group name ALLOW_HTTP_HTTPS
+
+class-map match-any CLASS_ARP
+ match access-group name ALLOW_ARP
+
+class-map match-any CLASS_CDP_LLDP
+ match access-group name ALLOW_CDP_LLDP
+
+! Define a class-map for other traffic
+class-map match-any CLASS_OTHER
+ match any
+
+! Define policy-maps to apply rate limiting
+policy-map COPP_POLICY
+ class CLASS_ICMP
+    police 8000000 64000 64000 conform-action transmit exceed-action drop
+ class CLASS_SSH
+    police 1000000 64000 64000 conform-action transmit exceed-action drop
+ class CLASS_SNMP
+    police 2000000 32000 32000 conform-action transmit exceed-action drop
+ class CLASS_DHCP
+    police 1000000 64000 64000 conform-action transmit exceed-action drop
+ class CLASS_NTP
+    police 1000000 32000 32000 conform-action transmit exceed-action drop
+ class CLASS_DNS
+    police 1000000 64000 64000 conform-action transmit exceed-action drop
+ class CLASS_HTTP_HTTPS
+    police 2000000 64000 64000 conform-action transmit exceed-action drop
+ class CLASS_ARP
+    police 3000000 32000 32000 conform-action transmit exceed-action drop
+ class CLASS_CDP_LLDP
+    police 512000 32000 32000 conform-action transmit exceed-action drop
+ class CLASS_OTHER
+    police 64000 8000 8000 conform-action drop exceed-action drop
+ class class-default
+    police 64000 8000 8000 conform-action drop exceed-action drop
+
+! Apply the policy-map to the control plane
+control-plane
+ service-policy input COPP_POLICY
+
+! End of configuration
