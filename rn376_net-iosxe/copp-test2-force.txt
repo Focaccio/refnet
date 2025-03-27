@@ -1,0 +1,111 @@
+! -------------------------------------------------------------
+! Enhanced Control Plane Protection (CoPP) for Cisco C9300 IOS-XE
+! -------------------------------------------------------------
+
+! === Management and Infrastructure Protocols ===
+ip access-list extended ALLOW_ICMP
+ permit icmp any any echo
+ permit icmp any any echo-reply
+ permit icmp any any ttl-exceeded
+ permit icmp any any port-unreachable
+ permit icmp any any unreachable
+ remark Allow essential ICMP types only
+
+ip access-list extended ALLOW_SSH
+ permit tcp any any eq 22
+ remark Secure Shell Access
+
+ip access-list extended ALLOW_SNMP
+ permit udp any any eq snmp
+ permit udp any any eq snmptrap
+ remark SNMP polling and traps
+
+ip access-list extended ALLOW_DHCP
+ permit udp any eq bootps any eq bootpc
+ permit udp any eq bootpc any eq bootps
+ remark DHCP client and server
+
+ip access-list extended ALLOW_NTP
+ permit udp any any eq ntp
+ remark Network Time Protocol
+
+ip access-list extended ALLOW_DNS
+ permit udp any any eq domain
+ permit tcp any any eq domain
+ remark DNS queries and responses
+
+ip access-list extended ALLOW_HTTP_HTTPS
+ permit tcp any any eq www
+ permit tcp any any eq 443
+ remark Web management access
+
+ip access-list extended ALLOW_NETFLOW
+ permit udp any any eq 2055
+ permit udp any any eq 9995
+ permit udp any any eq 9996
+ remark NetFlow exports
+
+ip access-list extended ALLOW_WCCP
+ permit udp any any eq 2048
+ remark WCCP protocol
+
+! === Class Maps ===
+class-map match-any CLASS_MANAGEMENT
+ match access-group name ALLOW_SSH
+ match access-group name ALLOW_HTTP_HTTPS
+ match access-group name ALLOW_SNMP
+
+class-map match-any CLASS_MONITORING
+ match access-group name ALLOW_ICMP
+ match access-group name ALLOW_NETFLOW
+
+class-map match-any CLASS_NORMAL
+ match access-group name ALLOW_DNS
+ match access-group name ALLOW_NTP
+ match access-group name ALLOW_DHCP
+ match access-group name ALLOW_WCCP
+
+class-map match-any CLASS_UNDESIRED
+ match any
+
+! === Policy Map ===
+policy-map COPP_POLICY
+
+ ! Management Traffic - High Priority
+ class CLASS_MANAGEMENT
+  police 2000000 64000 64000
+   conform-action transmit
+   exceed-action transmit
+   violate-action drop
+
+ ! Monitoring Traffic - Medium Priority
+ class CLASS_MONITORING
+  police 1000000 32000 32000
+   conform-action transmit
+   exceed-action drop
+   violate-action drop
+
+ ! Normal Operational Traffic - Lower Priority
+ class CLASS_NORMAL
+  police 512000 16000 16000
+   conform-action transmit
+   exceed-action drop
+   violate-action drop
+
+ ! Undesired / Unknown Traffic - Lowest Priority
+ class CLASS_UNDESIRED
+  police 64000 8000 8000
+   conform-action drop
+   exceed-action drop
+   violate-action drop
+
+ ! Default Catch-All - Same as Undesired
+ class class-default
+  police 64000 8000 8000
+   conform-action drop
+   exceed-action drop
+   violate-action drop
+
+! === Apply Policy to Control Plane ===
+control-plane
+ service-policy input COPP_POLICY
