@@ -1,0 +1,32 @@
+
+
+
+3 nodes each as 1 node clusters
+
+demeter 70/71/72
+hecate 170/171/172
+triptolemus 180/181/182
+
+on demeter ahv
+go to demeter cvm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
