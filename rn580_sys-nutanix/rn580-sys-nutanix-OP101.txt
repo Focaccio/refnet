@@ -176,6 +176,9 @@ cluster -s "192.168.86.71" --redundancy_factor=1 create
 cluster -s "192.168.86.171" --redundancy_factor=1 create
 
 cluster -s "192.168.86.181" --redundancy_factor=1 create
+cluster -s "192.168.86.181" --redundancy_factor=1 create
+
+
 
 #SUCESS
 +The assembly starts one by one...
