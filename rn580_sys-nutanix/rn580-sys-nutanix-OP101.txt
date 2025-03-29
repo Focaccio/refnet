@@ -7,7 +7,11 @@ https://kenmoini.com/post/2021/10/deploying-nutanix-ahv-ce/
 
 1. install ahv type1 boot
 
-2. create cluster
+2. ssh to AHV verify CVM is also running with virsh list --all
+
+3. ssh to CVM
+
+4. create cluster
 ```cc
 
 
