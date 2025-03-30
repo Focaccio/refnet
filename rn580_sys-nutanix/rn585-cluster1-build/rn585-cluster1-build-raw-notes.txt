@@ -10,6 +10,45 @@ triptolemus 180/181/182
 on demeter ahv
 go to demeter cvm
 
+1. create each node as 1 node cluster - get cvm
+2. destroy cluster
+3. rebuild cluster listing all 3x #x CVM IPs that are communicating on VLAN 7
+
+
+creating a virtual switch among the nodes // 
+1. remove the ports from each node the vs0 first
+
+
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ cluster -s 192.168.86.71,192.168.86.171,192.168.86.181 create
+2025-03-29 14:05:30,228Z WARNING MainThread genesis_utils.py:5875 Could not complete the operation <function NodeManager.destroy_marker_exists at 0x7fbd09cd7a60> on SVMs ['192.168.86.171', '192.168.86.181'] in required time
+
+2025-03-29 14:06:00,281Z WARNING ThreadPoolExecutor-0_1 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-03-29 14:06:00,287Z WARNING ThreadPoolExecutor-0_0 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-03-29 14:06:01,288Z ERROR MainThread cluster:3262 Failed to check if destroy is in progress on the CVM: 192.168.86.171, retval: None
+2025-03-29 14:06:01,288Z ERROR MainThread cluster:3262 Failed to check if destroy is in progress on the CVM: 192.168.86.181, retval: None
+2025-03-29 14:06:01,288Z ERROR MainThread cluster:3270 Could not ascertain if the nodes: ['192.168.86.171', '192.168.86.181'] are being destroyed
+2025-03-29 14:06:01,288Z WARNING MainThread cluster:3275 Checking only for the existence of the node_unconfigure marker on the failed nodes: ['192.168.86.171', '192.168.86.181']
+2025-03-29 14:06:01,558Z INFO MainThread cluster:3290 ret, out, err:
+65280
+b''
+b''
+2025-03-29 14:06:02,149Z INFO MainThread cluster:3290 ret, out, err:
+65280
+b''
+b''
+2025-03-29 14:06:02,149Z INFO MainThread cluster:3302 Executing action create on SVMs 192.168.86.71,192.168.86.171,192.168.86.181
+2025-03-29 14:06:02,149Z INFO MainThread security_helper.py:653 Valid security configuration received.
+2025-03-29 14:06:05,182Z CRITICAL MainThread cluster:1271 Could not discover all nodes specified. Please make sure that the SVMs from which you wish to create the cluster are not already part of another cluster. Undiscovered ips : 192.168.86.71,192.168.86.171,192.168.86.181
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 
 
@@ -17,16 +56,1077 @@ go to demeter cvm
 
 
 
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 
 
 
 
 
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+
+
+
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ cluster -s 192.168.86.71,192.168.86.171,192.168.86.181 create
+2025-03-29 14:23:08,823Z INFO MainThread cluster:3302 Executing action create on SVMs 192.168.86.71,192.168.86.171,192.168.86.181
+2025-03-29 14:23:08,823Z INFO MainThread security_helper.py:653 Valid security configuration received.
+2025-03-29 14:23:12,183Z CRITICAL MainThread cluster:1271 Could not discover all nodes specified. Please make sure that the SVMs from which you wish to create the cluster are not already part of another cluster. Undiscovered ips : 192.168.86.71
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ cluster stop
+2025-03-29 14:23:24,035Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:23:24,036Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 6196284818797228576, cluster incarnation id: 1729330365757503
+2025-03-29 14:23:24,036Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:23:24,038Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x195285b4e5a93e9, negotiated timeout=20 secs
+2025-03-29 14:23:24,039Z INFO Dummy-2 zookeeper_session.py:940 Calling c_impl.close() for session 0x195285b4e5a93e9
+2025-03-29 14:23:24,039Z INFO Dummy-2 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+2025-03-29 14:23:24,042Z INFO MainThread cluster:3302 Executing action stop on SVMs 192.168.86.71
+2025-03-29 14:23:24,042Z WARNING MainThread genesis_utils.py:348 Deprecated: use util.cluster.info.get_node_uuid() instead
+2025-03-29 14:23:24,047Z INFO MainThread cluster:3349 
+
+***** CLUSTER NAME *****
+demeter1
+
+This operation will stop the Nutanix storage services and any VMs using Nutanix storage will become unavailable. Do you want to proceed? (I agree/[N]): I agree
+2025-03-29 14:23:28,051Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:23:28,051Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 6196284818797228576, cluster incarnation id: 1729330365757503
+2025-03-29 14:23:28,054Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:23:28,056Z INFO Dummy-3 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x195285b4e5a93ea, negotiated timeout=20 secs
+2025-03-29 14:23:28,060Z INFO Dummy-2 zookeeper_session.py:940 Calling c_impl.close() for session 0x195285b4e5a93ea
+2025-03-29 14:23:28,060Z INFO Dummy-2 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+Waiting on 192.168.86.71 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+Medusa
+VipMonitor
+Stargate
+Prism
+ClusterHealth
+
+
+Waiting on 192.168.86.71 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.71 (Up, ZeusLeader) to stop: 
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.71 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.71 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.71 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.71 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+
+
+The state of the cluster: stop
+Lockdown mode: Disabled
+
+        CVM: 192.168.86.71 Up, ZeusLeader
+                              Xmount   UP       [885332, 885453, 885454, 885459]
+                           IkatProxy   UP       [6026, 6112, 6113, 6114]
+                                Zeus   UP       [4868, 4927, 4928, 4929, 4938, 4956]
+                           Scavenger   UP       [6150, 6315, 6316, 6320]
+                    SysStatCollector DOWN       []
+                    IkatControlPlane DOWN       []
+                       SSLTerminator DOWN       []
+                      SecureFileSync DOWN       []
+                              Medusa DOWN       []
+                  DynamicRingChanger DOWN       []
+                              Pithos DOWN       []
+                          InsightsDB DOWN       []
+                              Athena DOWN       []
+                             Mercury DOWN       []
+                              Mantle DOWN       []
+                          VipMonitor   UP       [3642, 3643, 3644, 3645, 3646]
+                            Stargate DOWN       []
+                InsightsDataTransfer DOWN       []
+                             GoErgon DOWN       []
+                             Cerebro DOWN       []
+                             Chronos DOWN       []
+                             Curator DOWN       []
+                               Prism DOWN       []
+                                Hera DOWN       []
+                        AlertManager DOWN       []
+                            Arithmos DOWN       []
+                             Catalog DOWN       []
+                           Acropolis DOWN       []
+                              Castor DOWN       []
+                               Uhura DOWN       []
+                   NutanixGuestTools DOWN       []
+                          MinervaCVM DOWN       []
+                       ClusterConfig DOWN       []
+                         APLOSEngine DOWN       []
+                               APLOS DOWN       []
+                     PlacementSolver DOWN       []
+                               Lazan DOWN       []
+                             Polaris DOWN       []
+                              Delphi DOWN       []
+                            Security DOWN       []
+                                Flow DOWN       []
+                             Anduril DOWN       []
+                              Narsil DOWN       []
+                               XTrim DOWN       []
+                       ClusterHealth DOWN       []
+2025-03-29 14:23:57,105Z INFO MainThread cluster:2193 Cluster has been stopped via 'cluster stop' command, hence stopping all services.
+2025-03-29 14:23:57,105Z INFO MainThread cluster:3465 Success!
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ cluster destroy
+2025-03-29 14:24:12,604Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:24:12,606Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 6196284818797228576, cluster incarnation id: 1729330365757503
+2025-03-29 14:24:12,606Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:24:12,630Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x195285b4e5a93fe, negotiated timeout=20 secs
+2025-03-29 14:24:12,631Z INFO Dummy-2 zookeeper_session.py:940 Calling c_impl.close() for session 0x195285b4e5a93fe
+2025-03-29 14:24:12,631Z INFO Dummy-2 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+2025-03-29 14:24:12,634Z INFO MainThread cluster:3302 Executing action destroy on SVMs 192.168.86.71
+2025-03-29 14:24:12,634Z WARNING MainThread genesis_utils.py:348 Deprecated: use util.cluster.info.get_node_uuid() instead
+2025-03-29 14:24:12,638Z INFO MainThread cluster:3349 
+
+***** CLUSTER NAME *****
+demeter1
+
+This operation will completely erase all data and all metadata, and each node will no longer belong to a cluster. Do you want to proceed? (Y/[N]): Y
+2025-03-29 14:24:16,861Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:24:16,862Z WARNING MainThread zookeeper_session.py:220 Going to replace the passed host_port_list: zk1:9876,zk2:9876,zk3:9876 with the ZOOKEEPER_HOST_PORT_LIST environment variable: zk1:9876 because the passed host_port_list appears to have been copied from FLAGS.zookeeper_host_port_list
+2025-03-29 14:24:16,862Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 6196284818797228576, cluster incarnation id: 1729330365757503
+2025-03-29 14:24:16,862Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:24:16,884Z INFO Dummy-3 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x195285b4e5a93ff, negotiated timeout=20 secs
+2025-03-29 14:24:16,885Z INFO MainThread cluster:1951 Cluster destroy initiated by ssh client IP: 192.168.86.168
+2025-03-29 14:24:23,848Z INFO MainThread cluster:1830 Unconfigured VIP Monitor service on svm_ips: ['192.168.86.71']
+2025-03-29 14:24:24,061Z INFO MainThread cluster:1834 Unconfigured zk mappings on nodes : ['192.168.86.71']
+2025-03-29 14:24:41,414Z INFO MainThread cluster:446 Restarted Genesis on 192.168.86.71.
+2025-03-29 14:24:41,414Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:24:43,628Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:24:45,833Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:24:48,036Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:24:50,240Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:24:52,442Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:24:54,644Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:24:56,850Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:24:59,054Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:01,261Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:03,465Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:05,670Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:07,878Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:10,080Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:12,281Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:14,484Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:16,686Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:18,888Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:21,090Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:23,292Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:25,494Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:27,701Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:29,907Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:32,108Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:34,310Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:36,512Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:38,774Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:40,982Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:43,186Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:45,388Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:47,591Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:49,793Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:51,995Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:54,197Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:56,399Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:25:58,601Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:00,802Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:03,003Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:05,207Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:07,410Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:09,618Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:11,821Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:14,024Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:16,227Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:18,430Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:20,633Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:22,835Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:25,036Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:27,238Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:29,441Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:31,645Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:33,846Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:36,048Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:38,252Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:40,454Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:42,656Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:44,858Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:48,418Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:50,620Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:52,826Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:55,030Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:57,232Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:26:59,436Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:01,636Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:03,920Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:06,122Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:08,324Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:10,527Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:12,729Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:14,932Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:17,138Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:19,348Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:21,553Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:23,759Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:25,962Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:28,168Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:30,372Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:32,576Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:34,781Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:36,991Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:39,197Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:41,422Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:43,630Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:45,838Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:48,043Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:50,246Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:52,455Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:54,658Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:56,863Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.71']
+2025-03-29 14:27:57,066Z INFO MainThread cluster:3465 Success!
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
 
 
 
 
 
 
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+Nutanix Controller VM
+
+Nutanix Controller VM (CVM) is a virtual storage appliance.
+
+Alteration of the CVM (unless advised by Nutanix Technical Support or
+Support Portal Documentation) is unsupported and may result in loss
+of User VMs or other data residing on the cluster.
+
+Unsupported alterations may include (but are not limited to):
+
+- Configuration changes / removal of files.
+- Installation of third-party software/scripts not approved by Nutanix.
+- Installation or upgrade of software packages from non-Nutanix
+  sources (using yum, rpm, or similar).
+
+** SSH to CVM via 'nutanix' user will be restricted in coming releases.  **
+** Please consider using the 'admin' user for basic workflows.           **
+Last login: Sat Mar 29 14:01:10 UTC 2025 from 192.168.86.71 on ssh
+Last login: Sat Mar 29 14:01:41 2025 from 192.168.86.168
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ date
+Sat Mar 29 14:03:28 UTC 2025
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ cluster status
+2025-03-29 14:03:34,794Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:03:34,795Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 6196284818797228576, cluster incarnation id: 1729330365757503
+2025-03-29 14:03:34,796Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:03:34,805Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x195285b4e5a9345, negotiated timeout=20 secs
+2025-03-29 14:03:34,806Z INFO MainThread cluster:3302 Executing action status on SVMs 192.168.86.71
+2025-03-29 14:03:34,806Z INFO Dummy-2 zookeeper_session.py:940 Calling c_impl.close() for session 0x195285b4e5a9345
+2025-03-29 14:03:34,806Z INFO Dummy-2 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+The state of the cluster: start
+Lockdown mode: Disabled
+
+        CVM: 192.168.86.71 Up, ZeusLeader
+                              Xmount   UP       [30197, 30364, 30365, 30389]
+                           IkatProxy   UP       [6026, 6112, 6113, 6114]
+                                Zeus   UP       [4868, 4927, 4928, 4929, 4938, 4956]
+                           Scavenger   UP       [6150, 6315, 6316, 6320]
+                    SysStatCollector   UP       [61137, 61293, 61294, 61295]
+                    IkatControlPlane   UP       [61147, 61351, 61352, 61353]
+                       SSLTerminator   UP       [61152, 61454, 61455]
+                      SecureFileSync   UP       [61160, 61495, 61496, 61501]
+                              Medusa   UP       [61605, 61827, 61828, 61913, 62669]
+                  DynamicRingChanger   UP       [65005, 65353, 65354, 65698]
+                              Pithos   UP       [65225, 65416, 65417, 65764]
+                          InsightsDB   UP       [65239, 65635, 65636, 67160]
+                              Athena   UP       [65252, 65645, 65646, 65648]
+                             Mercury   UP       [65264, 65552, 65553, 66326]
+                              Mantle   UP       [65285, 65694, 65695, 66197]
+                          VipMonitor   UP       [3642, 3643, 3644, 3645, 3646]
+                            Stargate   UP       [66302, 66437, 66438, 71590, 71591]
+                InsightsDataTransfer   UP       [69772, 69930, 69931, 69942, 69943, 69944, 69945, 69946, 69947]
+                             GoErgon   UP       [69812, 70022, 70023, 71515]
+                             Cerebro   UP       [69828, 70166, 70167, 71815]
+                             Chronos   UP       [69837, 70106, 70107, 70433]
+                             Curator   UP       [69851, 70234, 70235, 71574]
+                               Prism   UP       [69884, 70340, 70341, 70681, 72526, 72605]
+                                Hera   UP       [69938, 70365, 70366, 70367]
+                        AlertManager   UP       [69963, 70434, 70435, 70993]
+                            Arithmos   UP       [70039, 70516, 70517, 71406]
+                             Catalog   UP       [70141, 70583, 70584, 70585, 70690]
+                           Acropolis   UP       [71233, 71398, 71399, 71400]
+                              Castor   UP       [71255, 71457, 71458, 71511, 71679]
+                               Uhura   UP       [71272, 71507, 71508, 71509]
+                   NutanixGuestTools   UP       [71320, 71918, 71919, 71978, 72257]
+                          MinervaCVM   UP       [77142, 77300, 77301, 77302]
+                       ClusterConfig   UP       [77152, 77362, 77363, 77364, 77390]
+                         APLOSEngine   UP       [77172, 77414, 77415, 77416]
+                               APLOS   UP       [77790, 77995, 77996, 77997]
+                     PlacementSolver   UP       [77823, 78054, 78055, 78057, 78070]
+                               Lazan   UP       [77842, 78155, 78156, 78157]
+                             Polaris   UP       [77854, 78241, 78242, 78418]
+                              Delphi   UP       [77874, 78367, 78368, 78369, 78408]
+                            Security   UP       [78063, 78866, 78867, 78868]
+                                Flow   UP       [78181, 79409, 79410, 79411, 79454]
+                             Anduril   UP       [78436, 81166, 81167, 81168, 81321]
+                              Narsil   UP       [78814, 82032, 82033, 82034]
+                               XTrim   UP       [79362, 82516, 82517, 82518]
+                       ClusterHealth   UP       [80259, 82770, 83039, 83043, 83056, 83072, 83394, 83395, 83419, 83420, 83423, 83448, 83449, 83450, 83451, 83455, 83456, 83606, 83607, 83625, 83626, 83631, 83632, 84174, 84175, 84176, 84178, 84179, 84181, 84182, 84183, 84184, 84185, 84186, 84195, 84196, 84199, 84325, 84329, 2896568, 2896569, 2896570, 2896612, 2896613]
+2025-03-29 14:03:36,702Z INFO MainThread cluster:3465 Success!
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ cluster -s 192.168.86.71,192.168.86.171,192.168.86.181 create
+2025-03-29 14:05:30,228Z WARNING MainThread genesis_utils.py:5875 Could not complete the operation <function NodeManager.destroy_marker_exists at 0x7fbd09cd7a60> on SVMs ['192.168.86.171', '192.168.86.181'] in required time
+
+2025-03-29 14:06:00,281Z WARNING ThreadPoolExecutor-0_1 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-03-29 14:06:00,287Z WARNING ThreadPoolExecutor-0_0 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-03-29 14:06:01,288Z ERROR MainThread cluster:3262 Failed to check if destroy is in progress on the CVM: 192.168.86.171, retval: None
+2025-03-29 14:06:01,288Z ERROR MainThread cluster:3262 Failed to check if destroy is in progress on the CVM: 192.168.86.181, retval: None
+2025-03-29 14:06:01,288Z ERROR MainThread cluster:3270 Could not ascertain if the nodes: ['192.168.86.171', '192.168.86.181'] are being destroyed
+2025-03-29 14:06:01,288Z WARNING MainThread cluster:3275 Checking only for the existence of the node_unconfigure marker on the failed nodes: ['192.168.86.171', '192.168.86.181']
+2025-03-29 14:06:01,558Z INFO MainThread cluster:3290 ret, out, err:
+65280
+b''
+b''
+2025-03-29 14:06:02,149Z INFO MainThread cluster:3290 ret, out, err:
+65280
+b''
+b''
+2025-03-29 14:06:02,149Z INFO MainThread cluster:3302 Executing action create on SVMs 192.168.86.71,192.168.86.171,192.168.86.181
+2025-03-29 14:06:02,149Z INFO MainThread security_helper.py:653 Valid security configuration received.
+2025-03-29 14:06:05,182Z CRITICAL MainThread cluster:1271 Could not discover all nodes specified. Please make sure that the SVMs from which you wish to create the cluster are not already part of another cluster. Undiscovered ips : 192.168.86.71,192.168.86.171,192.168.86.181
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ cluster -s 192.168.86.71,192.168.86.171,192.168.86.181 create
+2025-03-29 14:19:00,540Z WARNING MainThread genesis_utils.py:5875 Could not complete the operation <function NodeManager.destroy_marker_exists at 0x7f46d26a3a60> on SVMs ['192.168.86.171', '192.168.86.181'] in required time
+2025-03-29 14:19:30,600Z WARNING ThreadPoolExecutor-0_1 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-03-29 14:19:30,600Z WARNING ThreadPoolExecutor-0_0 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-03-29 14:19:31,602Z ERROR MainThread cluster:3262 Failed to check if destroy is in progress on the CVM: 192.168.86.171, retval: None
+2025-03-29 14:19:31,602Z ERROR MainThread cluster:3262 Failed to check if destroy is in progress on the CVM: 192.168.86.181, retval: None
+2025-03-29 14:19:31,602Z ERROR MainThread cluster:3270 Could not ascertain if the nodes: ['192.168.86.171', '192.168.86.181'] are being destroyed
+2025-03-29 14:19:31,602Z WARNING MainThread cluster:3275 Checking only for the existence of the node_unconfigure marker on the failed nodes: ['192.168.86.171', '192.168.86.181']
+2025-03-29 14:19:31,761Z INFO MainThread cluster:3290 ret, out, err:
+65280
+b''
+b''
+2025-03-29 14:19:31,761Z INFO MainThread cluster:3290 ret, out, err:
+65280
+b''
+b''
+2025-03-29 14:19:31,761Z INFO MainThread cluster:3302 Executing action create on SVMs 192.168.86.71,192.168.86.171,192.168.86.181
+2025-03-29 14:19:31,761Z INFO MainThread security_helper.py:653 Valid security configuration received.
+2025-03-29 14:19:40,822Z CRITICAL MainThread cluster:1271 Could not discover all nodes specified. Please make sure that the SVMs from which you wish to create the cluster are not already part of another cluster. Undiscovered ips : 192.168.86.71
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+
+
+
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+
+raw logs
+
+[root@NTNX-244131ad-A ~]# ip -4 a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+9: br0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 qdisc noqueue state UNKNOWN group default qlen 1000
+    inet 192.168.86.70/24 brd 192.168.86.255 scope global br0
+       valid_lft forever preferred_lft forever
+13: virbr0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    inet 192.168.5.1/24 brd 192.168.5.255 scope global virbr0
+       valid_lft forever preferred_lft forever
+[root@NTNX-244131ad-A ~]# ping 192.168.86.170
+PING 192.168.86.170 (192.168.86.170) 56(84) bytes of data.
+64 bytes from 192.168.86.170: icmp_seq=1 ttl=64 time=1.05 ms
+64 bytes from 192.168.86.170: icmp_seq=2 ttl=64 time=0.334 ms
+^C
+--- 192.168.86.170 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 0.334/0.689/1.045/0.356 ms
+[root@NTNX-244131ad-A ~]# ping 192.168.86.171
+PING 192.168.86.171 (192.168.86.171) 56(84) bytes of data.
+64 bytes from 192.168.86.171: icmp_seq=1 ttl=64 time=1.04 ms
+64 bytes from 192.168.86.171: icmp_seq=2 ttl=64 time=0.311 ms
+^C
+--- 192.168.86.171 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1000ms
+rtt min/avg/max/mdev = 0.311/0.676/1.041/0.365 ms
+[root@NTNX-244131ad-A ~]# ping 192.168.86.180
+PING 192.168.86.180 (192.168.86.180) 56(84) bytes of data.
+64 bytes from 192.168.86.180: icmp_seq=1 ttl=64 time=0.874 ms
+64 bytes from 192.168.86.180: icmp_seq=2 ttl=64 time=0.284 ms
+^C
+--- 192.168.86.180 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1041ms
+rtt min/avg/max/mdev = 0.284/0.579/0.874/0.295 ms
+[root@NTNX-244131ad-A ~]# ping 192.168.86.181
+PING 192.168.86.181 (192.168.86.181) 56(84) bytes of data.
+64 bytes from 192.168.86.181: icmp_seq=1 ttl=64 time=1.04 ms
+64 bytes from 192.168.86.181: icmp_seq=2 ttl=64 time=0.253 ms
+^C
+--- 192.168.86.181 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 0.253/0.644/1.035/0.391 ms
+[root@NTNX-244131ad-A ~]# ping 192.168.86.71
+PING 192.168.86.71 (192.168.86.71) 56(84) bytes of data.
+64 bytes from 192.168.86.71: icmp_seq=1 ttl=64 time=0.075 ms
+64 bytes from 192.168.86.71: icmp_seq=2 ttl=64 time=0.069 ms
+^C
+--- 192.168.86.71 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1023ms
+rtt min/avg/max/mdev = 0.069/0.072/0.075/0.003 ms
+[root@NTNX-244131ad-A ~]# 
+
+
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+Nutanix Controller VM
+
+Nutanix Controller VM (CVM) is a virtual storage appliance.
+
+Alteration of the CVM (unless advised by Nutanix Technical Support or
+Support Portal Documentation) is unsupported and may result in loss
+of User VMs or other data residing on the cluster.
+
+Unsupported alterations may include (but are not limited to):
+
+- Configuration changes / removal of files.
+- Installation of third-party software/scripts not approved by Nutanix.
+- Installation or upgrade of software packages from non-Nutanix
+  sources (using yum, rpm, or similar).
+
+** SSH to CVM via 'nutanix' user will be restricted in coming releases.  **
+** Please consider using the 'admin' user for basic workflows.           **
+Last login: Sat Mar 29 14:02:18 UTC 2025 from 192.168.86.181 on ssh
+Last login: Sat Mar 29 14:02:26 2025 from 192.168.86.168
+nutanix@NTNX-69d33309-A-CVM:192.168.86.181:~$ cluster destroy
+2025-03-29 14:13:09,086Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:13:09,087Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 2945530312758639772, cluster incarnation id: 1743240823171213
+2025-03-29 14:13:09,087Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:13:09,095Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x195e20067a00344, negotiated timeout=20 secs
+2025-03-29 14:13:09,097Z INFO Dummy-2 zookeeper_session.py:940 Calling c_impl.close() for session 0x195e20067a00344
+2025-03-29 14:13:09,097Z INFO Dummy-2 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+2025-03-29 14:13:09,100Z INFO MainThread cluster:3302 Executing action destroy on SVMs 192.168.86.181
+2025-03-29 14:13:09,100Z WARNING MainThread genesis_utils.py:348 Deprecated: use util.cluster.info.get_node_uuid() instead
+2025-03-29 14:13:09,105Z INFO MainThread cluster:3349 
+
+***** CLUSTER NAME *****
+triptolemus1
+
+This operation will completely erase all data and all metadata, and each node will no longer belong to a cluster. Do you want to proceed? (Y/[N]): Y
+2025-03-29 14:13:14,375Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:13:14,376Z WARNING MainThread zookeeper_session.py:220 Going to replace the passed host_port_list: zk1:9876,zk2:9876,zk3:9876 with the ZOOKEEPER_HOST_PORT_LIST environment variable: zk1:9876 because the passed host_port_list appears to have been copied from FLAGS.zookeeper_host_port_list
+2025-03-29 14:13:14,376Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 2945530312758639772, cluster incarnation id: 1743240823171213
+2025-03-29 14:13:14,376Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:13:14,381Z INFO Dummy-3 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x195e20067a00345, negotiated timeout=20 secs
+2025-03-29 14:13:14,381Z INFO MainThread cluster:1951 Cluster destroy initiated by ssh client IP: 192.168.86.168
+2025-03-29 14:13:14,471Z ERROR MainThread cluster:1854 Cannot destroy a started cluster. Cluster needs to be stopped first.
+2025-03-29 14:13:14,471Z INFO Dummy-2 zookeeper_session.py:940 Calling c_impl.close() for session 0x195e20067a00345
+2025-03-29 14:13:14,472Z ERROR MainThread cluster:3467 Operation failed
+2025-03-29 14:13:14,472Z INFO Dummy-2 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+nutanix@NTNX-69d33309-A-CVM:192.168.86.181:~$ cluster stop
+2025-03-29 14:13:51,142Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:13:51,143Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 2945530312758639772, cluster incarnation id: 1743240823171213
+2025-03-29 14:13:51,144Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:13:51,149Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x195e20067a00347, negotiated timeout=20 secs
+2025-03-29 14:13:51,150Z INFO Dummy-2 zookeeper_session.py:940 Calling c_impl.close() for session 0x195e20067a00347
+2025-03-29 14:13:51,150Z INFO Dummy-2 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+2025-03-29 14:13:51,154Z INFO MainThread cluster:3302 Executing action stop on SVMs 192.168.86.181
+2025-03-29 14:13:51,154Z WARNING MainThread genesis_utils.py:348 Deprecated: use util.cluster.info.get_node_uuid() instead
+2025-03-29 14:13:51,159Z INFO MainThread cluster:3349 
+
+***** CLUSTER NAME *****
+triptolemus1
+
+This operation will stop the Nutanix storage services and any VMs using Nutanix storage will become unavailable. Do you want to proceed? (I agree/[N]): I agree
+2025-03-29 14:13:58,426Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:13:58,426Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 2945530312758639772, cluster incarnation id: 1743240823171213
+2025-03-29 14:13:58,426Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:13:58,431Z INFO Dummy-3 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x195e20067a00348, negotiated timeout=20 secs
+2025-03-29 14:13:58,432Z INFO Dummy-4 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+Waiting on 192.168.86.181 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+Medusa
+VipMonitor
+Prism
+ClusterHealth
+
+
+Waiting on 192.168.86.181 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.181 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.181 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.181 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+
+
+The state of the cluster: stop
+Lockdown mode: Disabled
+
+        CVM: 192.168.86.181 Up, ZeusLeader
+                              Xmount   UP       [666973, 667099, 667100, 667112]
+                           IkatProxy   UP       [6075, 6170, 6171, 6173]
+                                Zeus   UP       [4880, 4939, 4940, 4941, 4950, 4968]
+                           Scavenger   UP       [6206, 6685, 6686, 6688]
+                    SysStatCollector DOWN       []
+                    IkatControlPlane DOWN       []
+                       SSLTerminator DOWN       []
+                      SecureFileSync DOWN       []
+                              Medusa DOWN       []
+                  DynamicRingChanger DOWN       []
+                              Pithos DOWN       []
+                          InsightsDB DOWN       []
+                              Athena DOWN       []
+                             Mercury DOWN       []
+                              Mantle DOWN       []
+                          VipMonitor   UP       [3416, 3417, 3418, 3419, 3420]
+                            Stargate DOWN       []
+                InsightsDataTransfer DOWN       []
+                             GoErgon DOWN       []
+                             Cerebro DOWN       []
+                             Chronos DOWN       []
+                             Curator DOWN       []
+                               Prism DOWN       []
+                                Hera DOWN       []
+                        AlertManager DOWN       []
+                            Arithmos DOWN       []
+                             Catalog DOWN       []
+                           Acropolis DOWN       []
+                              Castor DOWN       []
+                               Uhura DOWN       []
+                   NutanixGuestTools DOWN       []
+                          MinervaCVM DOWN       []
+                       ClusterConfig DOWN       []
+                         APLOSEngine DOWN       []
+                               APLOS DOWN       []
+                     PlacementSolver DOWN       []
+                               Lazan DOWN       []
+                             Polaris DOWN       []
+                              Delphi DOWN       []
+                            Security DOWN       []
+                                Flow DOWN       []
+                             Anduril DOWN       []
+                              Narsil DOWN       []
+                               XTrim DOWN       []
+                       ClusterHealth DOWN       []
+2025-03-29 14:14:22,627Z INFO MainThread cluster:2193 Cluster has been stopped via 'cluster stop' command, hence stopping all services.
+2025-03-29 14:14:22,627Z INFO MainThread cluster:3465 Success!
+nutanix@NTNX-69d33309-A-CVM:192.168.86.181:~$ cluster destroy
+2025-03-29 14:16:22,502Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:16:22,503Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 2945530312758639772, cluster incarnation id: 1743240823171213
+2025-03-29 14:16:22,504Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:16:22,520Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x195e20067a00362, negotiated timeout=20 secs
+2025-03-29 14:16:22,522Z INFO Dummy-2 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+2025-03-29 14:16:22,524Z INFO MainThread cluster:3302 Executing action destroy on SVMs 192.168.86.181
+2025-03-29 14:16:22,524Z WARNING MainThread genesis_utils.py:348 Deprecated: use util.cluster.info.get_node_uuid() instead
+2025-03-29 14:16:22,528Z INFO MainThread cluster:3349 
+
+***** CLUSTER NAME *****
+triptolemus1
+
+This operation will completely erase all data and all metadata, and each node will no longer belong to a cluster. Do you want to proceed? (Y/[N]): Y
+2025-03-29 14:16:26,471Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:16:26,472Z WARNING MainThread zookeeper_session.py:220 Going to replace the passed host_port_list: zk1:9876,zk2:9876,zk3:9876 with the ZOOKEEPER_HOST_PORT_LIST environment variable: zk1:9876 because the passed host_port_list appears to have been copied from FLAGS.zookeeper_host_port_list
+2025-03-29 14:16:26,472Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 2945530312758639772, cluster incarnation id: 1743240823171213
+2025-03-29 14:16:26,472Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:16:26,486Z INFO Dummy-3 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x195e20067a00363, negotiated timeout=20 secs
+2025-03-29 14:16:26,487Z INFO MainThread cluster:1951 Cluster destroy initiated by ssh client IP: 192.168.86.168
+2025-03-29 14:16:33,341Z INFO MainThread cluster:1830 Unconfigured VIP Monitor service on svm_ips: ['192.168.86.181']
+2025-03-29 14:16:33,535Z INFO MainThread cluster:1834 Unconfigured zk mappings on nodes : ['192.168.86.181']
+2025-03-29 14:16:50,349Z INFO MainThread cluster:446 Restarted Genesis on 192.168.86.181.
+2025-03-29 14:16:50,349Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:16:52,595Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:16:54,795Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:16:56,998Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:16:59,199Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:01,400Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:03,738Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:05,948Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:08,152Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:10,361Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:12,562Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:14,764Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:16,965Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:19,164Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:21,363Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:23,563Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:25,763Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:27,962Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:30,164Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:32,362Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:34,579Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:36,783Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:38,985Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:41,185Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:43,384Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:45,583Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:47,781Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:49,982Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:52,183Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:54,382Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:56,581Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:17:58,780Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:00,979Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:03,178Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:05,379Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:07,578Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:09,777Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:11,978Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:14,177Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:16,379Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:18,583Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:20,785Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:22,986Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:25,185Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:27,385Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:29,584Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:31,783Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:33,982Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:36,181Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:38,381Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:40,580Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:42,778Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:44,978Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:47,178Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:49,378Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:51,579Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:53,779Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:55,979Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:18:58,178Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:00,377Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:02,575Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:04,795Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:06,995Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:09,198Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:11,404Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:13,607Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:15,808Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:18,008Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:20,209Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:22,412Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:24,618Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:26,822Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:29,024Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:31,223Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:33,429Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:35,631Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:37,834Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:40,037Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:42,240Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:44,440Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.181']
+2025-03-29 14:19:44,640Z INFO MainThread cluster:3465 Success!
+nutanix@NTNX-69d33309-A-CVM:192.168.86.181:~$ 
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+Nutanix Controller VM
+
+Nutanix Controller VM (CVM) is a virtual storage appliance.
+
+Alteration of the CVM (unless advised by Nutanix Technical Support or
+Support Portal Documentation) is unsupported and may result in loss
+of User VMs or other data residing on the cluster.
+
+Unsupported alterations may include (but are not limited to):
+
+- Configuration changes / removal of files.
+- Installation of third-party software/scripts not approved by Nutanix.
+- Installation or upgrade of software packages from non-Nutanix
+  sources (using yum, rpm, or similar).
+
+** SSH to CVM via 'nutanix' user will be restricted in coming releases.  **
+** Please consider using the 'admin' user for basic workflows.           **
+Last login: Sat Mar 29 14:01:26 UTC 2025 from 192.168.86.171 on ssh
+Last login: Sat Mar 29 14:02:05 2025 from 192.168.86.168
+nutanix@NTNX-895b5886-A-CVM:192.168.86.171:~$ 
+nutanix@NTNX-895b5886-A-CVM:192.168.86.171:~$ 
+nutanix@NTNX-895b5886-A-CVM:192.168.86.171:~$ 
+nutanix@NTNX-895b5886-A-CVM:192.168.86.171:~$ cluster destroy
+2025-03-29 14:13:30,821Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:13:30,823Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 2089564908581536024, cluster incarnation id: 1739966808428000
+2025-03-29 14:13:30,823Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:13:30,825Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x1952df5985b5369, negotiated timeout=20 secs
+2025-03-29 14:13:30,826Z INFO Dummy-2 zookeeper_session.py:940 Calling c_impl.close() for session 0x1952df5985b5369
+2025-03-29 14:13:30,826Z INFO Dummy-2 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+2025-03-29 14:13:30,830Z INFO MainThread cluster:3302 Executing action destroy on SVMs 192.168.86.171
+2025-03-29 14:13:30,830Z WARNING MainThread genesis_utils.py:348 Deprecated: use util.cluster.info.get_node_uuid() instead
+2025-03-29 14:13:30,835Z INFO MainThread cluster:3349 
+
+***** CLUSTER NAME *****
+hecate1
+
+This operation will completely erase all data and all metadata, and each node will no longer belong to a cluster. Do you want to proceed? (Y/[N]): Y
+2025-03-29 14:13:33,373Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:13:33,373Z WARNING MainThread zookeeper_session.py:220 Going to replace the passed host_port_list: zk1:9876,zk2:9876,zk3:9876 with the ZOOKEEPER_HOST_PORT_LIST environment variable: zk1:9876 because the passed host_port_list appears to have been copied from FLAGS.zookeeper_host_port_list
+2025-03-29 14:13:33,374Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 2089564908581536024, cluster incarnation id: 1739966808428000
+2025-03-29 14:13:33,374Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:13:33,379Z INFO Dummy-3 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x1952df5985b536a, negotiated timeout=20 secs
+2025-03-29 14:13:33,379Z INFO MainThread cluster:1951 Cluster destroy initiated by ssh client IP: 192.168.86.168
+2025-03-29 14:13:33,505Z ERROR MainThread cluster:1854 Cannot destroy a started cluster. Cluster needs to be stopped first.
+2025-03-29 14:13:33,505Z ERROR MainThread cluster:3467 Operation failed
+nutanix@NTNX-895b5886-A-CVM:192.168.86.171:~$ cluster stop
+2025-03-29 14:13:42,064Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:13:42,066Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 2089564908581536024, cluster incarnation id: 1739966808428000
+2025-03-29 14:13:42,066Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:13:42,075Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x1952df5985b536e, negotiated timeout=20 secs
+2025-03-29 14:13:42,076Z INFO Dummy-2 zookeeper_session.py:940 Calling c_impl.close() for session 0x1952df5985b536e
+2025-03-29 14:13:42,076Z INFO Dummy-2 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+2025-03-29 14:13:42,079Z INFO MainThread cluster:3302 Executing action stop on SVMs 192.168.86.171
+2025-03-29 14:13:42,079Z WARNING MainThread genesis_utils.py:348 Deprecated: use util.cluster.info.get_node_uuid() instead
+2025-03-29 14:13:42,084Z INFO MainThread cluster:3349 
+
+***** CLUSTER NAME *****
+hecate1
+
+This operation will stop the Nutanix storage services and any VMs using Nutanix storage will become unavailable. Do you want to proceed? (I agree/[N]): I agree
+2025-03-29 14:14:06,324Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:14:06,325Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 2089564908581536024, cluster incarnation id: 1739966808428000
+2025-03-29 14:14:06,325Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:14:06,330Z INFO Dummy-3 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x1952df5985b5375, negotiated timeout=20 secs
+2025-03-29 14:14:06,331Z INFO Dummy-4 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+Waiting on 192.168.86.171 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+Prism
+ClusterHealth
+
+
+Waiting on 192.168.86.171 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.171 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.171 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.171 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.171 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+
+
+The state of the cluster: stop
+Lockdown mode: Disabled
+
+        CVM: 192.168.86.171 Up, ZeusLeader
+                              Xmount   UP       [2363956, 2364038, 2364039, 2364084]
+                           IkatProxy   UP       [6124, 6208, 6209, 6210]
+                                Zeus   UP       [5126, 5185, 5186, 5187, 5196, 5214]
+                           Scavenger   UP       [6255, 6408, 6409, 6410]
+                    SysStatCollector DOWN       []
+                    IkatControlPlane DOWN       []
+                       SSLTerminator DOWN       []
+                      SecureFileSync DOWN       []
+                              Medusa DOWN       []
+                  DynamicRingChanger DOWN       []
+                              Pithos DOWN       []
+                          InsightsDB DOWN       []
+                              Athena DOWN       []
+                             Mercury DOWN       []
+                              Mantle DOWN       []
+                          VipMonitor   UP       [3989, 3990, 3991, 3992, 3993]
+                            Stargate DOWN       []
+                InsightsDataTransfer DOWN       []
+                             GoErgon DOWN       []
+                             Cerebro DOWN       []
+                             Chronos DOWN       []
+                             Curator DOWN       []
+                               Prism DOWN       []
+                                Hera DOWN       []
+                        AlertManager DOWN       []
+                            Arithmos DOWN       []
+                             Catalog DOWN       []
+                           Acropolis DOWN       []
+                              Castor DOWN       []
+                               Uhura DOWN       []
+                   NutanixGuestTools DOWN       []
+                          MinervaCVM DOWN       []
+                       ClusterConfig DOWN       []
+                         APLOSEngine DOWN       []
+                               APLOS DOWN       []
+                     PlacementSolver DOWN       []
+                               Lazan DOWN       []
+                             Polaris DOWN       []
+                              Delphi DOWN       []
+                            Security DOWN       []
+                                Flow DOWN       []
+                             Anduril DOWN       []
+                              Narsil DOWN       []
+                               XTrim DOWN       []
+                       ClusterHealth DOWN       []
+2025-03-29 14:14:29,206Z INFO MainThread cluster:2193 Cluster has been stopped via 'cluster stop' command, hence stopping all services.
+2025-03-29 14:14:29,206Z INFO MainThread cluster:3465 Success!
+nutanix@NTNX-895b5886-A-CVM:192.168.86.171:~$ cluster destroy
+2025-03-29 14:16:35,859Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:16:35,860Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 2089564908581536024, cluster incarnation id: 1739966808428000
+2025-03-29 14:16:35,860Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:16:35,872Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x1952df5985b538b, negotiated timeout=20 secs
+2025-03-29 14:16:35,873Z INFO Dummy-2 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+2025-03-29 14:16:35,873Z INFO MainThread cluster:3302 Executing action destroy on SVMs 192.168.86.171
+2025-03-29 14:16:35,873Z WARNING MainThread genesis_utils.py:348 Deprecated: use util.cluster.info.get_node_uuid() instead
+2025-03-29 14:16:35,878Z INFO MainThread cluster:3349 
+
+***** CLUSTER NAME *****
+hecate1
+
+This operation will completely erase all data and all metadata, and each node will no longer belong to a cluster. Do you want to proceed? (Y/[N]): Y
+2025-03-29 14:16:38,998Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-03-29 14:16:38,999Z WARNING MainThread zookeeper_session.py:220 Going to replace the passed host_port_list: zk1:9876,zk2:9876,zk3:9876 with the ZOOKEEPER_HOST_PORT_LIST environment variable: zk1:9876 because the passed host_port_list appears to have been copied from FLAGS.zookeeper_host_port_list
+2025-03-29 14:16:38,999Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 2089564908581536024, cluster incarnation id: 1739966808428000
+2025-03-29 14:16:38,999Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876
+2025-03-29 14:16:39,000Z INFO Dummy-3 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x1952df5985b538c, negotiated timeout=20 secs
+2025-03-29 14:16:39,001Z INFO MainThread cluster:1951 Cluster destroy initiated by ssh client IP: 192.168.86.168
+2025-03-29 14:16:45,914Z INFO MainThread cluster:1830 Unconfigured VIP Monitor service on svm_ips: ['192.168.86.171']
+2025-03-29 14:16:46,112Z INFO MainThread cluster:1834 Unconfigured zk mappings on nodes : ['192.168.86.171']
+2025-03-29 14:17:03,014Z INFO MainThread cluster:446 Restarted Genesis on 192.168.86.171.
+2025-03-29 14:17:03,015Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:05,253Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:07,449Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:09,644Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:11,839Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:14,034Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:16,227Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:18,425Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:20,622Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:22,818Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:25,015Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:27,212Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:29,408Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:31,608Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:33,803Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:35,997Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:38,191Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:40,386Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:42,587Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:44,782Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:46,975Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:49,173Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:51,372Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:53,567Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:55,761Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:17:57,954Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:00,150Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:02,346Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:04,666Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:06,861Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:09,056Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:11,251Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:13,445Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:15,640Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:17,834Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:20,028Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:22,222Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:24,416Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:26,610Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:28,804Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:30,999Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:33,197Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:35,398Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:37,593Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:39,787Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:41,999Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:44,193Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:46,387Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:48,581Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:50,775Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:52,969Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:55,163Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:57,356Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:18:59,554Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:01,748Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:03,968Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:06,163Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:08,357Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:10,552Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:12,747Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:14,940Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:17,136Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:19,332Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:21,528Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:23,723Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:25,915Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:28,109Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:30,303Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:32,498Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:34,692Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:36,886Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:39,080Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:41,285Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:43,481Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:45,677Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:47,874Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:50,071Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:52,274Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:54,472Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:56,675Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:19:58,874Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:20:01,079Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:20:03,288Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:20:05,486Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:20:07,688Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:20:09,888Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:20:12,083Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:20:14,359Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:20:16,560Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:20:18,756Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:20:20,951Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:20:23,173Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:20:25,369Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:20:27,581Z INFO MainThread cluster:317 Checking for /home/nutanix/.node_unconfigure to disappear on ips ['192.168.86.171']
+2025-03-29 14:20:27,777Z INFO Dummy-4 zookeeper_session.py:940 Calling c_impl.close() for session 0x1952df5985b538c
+2025-03-29 14:20:27,777Z INFO Dummy-4 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+2025-03-29 14:20:27,777Z INFO MainThread cluster:3465 Success!
+nutanix@NTNX-895b5886-A-CVM:192.168.86.171:~$ 
 
