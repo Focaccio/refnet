@@ -18,7 +18,8 @@ nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ cluster -s "192.168.86.71" create
 2025-04-05 00:31:38,217Z ERROR MainThread cluster:3467 Operation failed
 nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
 
-
+$$$ fix this by specifying replication factor 1
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ cluster -s "192.168.86.71" --redundancy_factor=1 create
 
 
 
