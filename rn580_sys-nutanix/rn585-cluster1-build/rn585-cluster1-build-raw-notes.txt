@@ -1,4 +1,12 @@
-
+20250404
+1. Unable to manipulate vs0 with interface - fails
+2. Stop cluster on 3x CVMs
+3. Destroy cluster on 3x CVMs
+~~~~
+4. Build cluster on DMTR with br0 and br1 and MGMT
+5. Build cluster on HCAT with br0 and br1 and MGMT
+6. Build cluster on TRPT with br0 and br1 and mgmt with 9200 etc
+7. Destory all then from DMTR CVM rebuild
 
 
 3 nodes each as 1 node clusters
