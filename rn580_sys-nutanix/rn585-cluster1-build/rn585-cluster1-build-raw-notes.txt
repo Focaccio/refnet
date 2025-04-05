@@ -9,6 +9,20 @@
 7. Destory all then from DMTR CVM rebuild
 
 
+CAREFUL // Errors in rebuilding after destroy
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ cluster -s "192.168.86.71" create
+2025-04-05 00:31:38,211Z INFO MainThread cluster:3302 Executing action create on SVMs 192.168.86.71
+2025-04-05 00:31:38,211Z INFO MainThread security_helper.py:653 Valid security configuration received.
+2025-04-05 00:31:38,216Z INFO MainThread service_utils.py:2201 The model type C300-CTFDDAC256M for SVM boot disk /dev/sdb is not in disk inventory, defaulting to DAS-SATA
+2025-04-05 00:31:38,217Z ERROR MainThread cluster:1190 Cannot create one node backup cluster as not enough boot ssds are present to facilitate backup on this cluster Available no of boot ssds is 1
+2025-04-05 00:31:38,217Z ERROR MainThread cluster:3467 Operation failed
+nutanix@NTNX-244131ad-A-CVM:192.168.86.71:~$ 
+
+
+
+
+
+
 3 nodes each as 1 node clusters
 
 demeter 70/71/72
