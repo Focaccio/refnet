@@ -1,3 +1,25 @@
+
+
+
+Networking is a mess.
+Going to try manually
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 20250404
 1. Unable to manipulate vs0 with interface - fails
 2. Stop cluster on 3x CVMs
