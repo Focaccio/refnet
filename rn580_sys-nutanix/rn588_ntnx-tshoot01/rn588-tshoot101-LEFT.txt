@@ -1,0 +1,81 @@
+rn-588-tshoot101-LEFT
+Errors in cluster networking
+Bond configuration is not consistent across nodes. 
+No bond found on host:192.168.86.70, 
+but present on host:192.168.86.170
+=== 170 ===
+[root@NTNX-895b5886-A ~]# ovs-vsctl list bridge |grep name
+name                : br2.local
+name                : br0.local
+name                : br.microseg
+name                : br1
+name                : br1.local
+name                : brSpan
+name                : br0
+name                : br.mx
+name                : br.nf
+name                : br.dmx
+name                : br2
+[root@NTNX-895b5886-A ~]# 
+
+
+
+
+[root@NTNX-895b5886-A ~]# ovs-vsctl list bridge |grep name |grep br0
+name                : br0.local
+name                : br0
+[root@NTNX-895b5886-A ~]# ovs-vsctl list bridge |grep name |grep br1
+name                : br1
+name                : br1.local
+
+
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[root@NTNX-895b5886-A ~]# ovs-vsctl list-ports br0
+br0-arp
+br0-dhcp
+br0-up
+br0.u
+vnet0
+vnet2
+[root@NTNX-895b5886-A ~]# ovs-vsctl list-ports br1
+br1-arp
+br1-dhcp
+br1-up
+br1.u
+[root@NTNX-895b5886-A ~]#
+
+[root@NTNX-895b5886-A ~]# ovs-vsctl list port br1-up
+_uuid               : 7d91390d-8e61-4a88-8c75-0731e8f51535
+bond_active_slave   : "a0:36:9f:1f:c1:1a"
+bond_downdelay      : 0
+bond_fake_iface     : false
+bond_mode           : balance-tcp
+bond_updelay        : 0
+cvlans              : []
+external_ids        : {}
+fake_bridge         : false
+interfaces          : [17e55f0e-c671-4065-8bc5-cb95f466d564, 53ec5f8d-de7e-4d3a-a316-19d2910bb25d]
+lacp                : active
+mac                 : []
+name                : br1-up
+other_config        : {lacp-fallback-ab=True, lacp-time=fast}
+protected           : false
+qos                 : []
+rstp_statistics     : {}
+rstp_status         : {}
+statistics          : {}
+status              : {}
+tag                 : []
+trunks              : []
+vlan_mode           : []
+[root@NTNX-895b5886-A ~]# 
+
+

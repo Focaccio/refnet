@@ -1,0 +1,53 @@
+rn588-thsoot101-RIGHT
+Errors in cluster networking
+Bond configuration is not consistent across nodes. 
+No bond found on host:192.168.86.70, 
+but present on host:192.168.86.170
+=== 70 ===
+[root@NTNX-244131ad-A ~]# ovs-vsctl list bridge |grep name
+name                : brSpan
+name                : br1
+name                : br.mx
+name                : br0
+name                : br0.local
+name                : br.dmx
+name                : br.nf
+name                : br.microseg
+name                : br1.local
+name                : br1-up
+name                : br1-up.local
+[root@NTNX-244131ad-A ~]# 
+[root@NTNX-244131ad-A ~]# ovs-vsctl list bridge |grep name |grep br0
+name                : br0
+name                : br0.local
+[root@NTNX-244131ad-A ~]# ovs-vsctl list bridge |grep name |grep br1
+name                : br1
+name                : br1.local
+name                : br1-up
+name                : br1-up.local
+[root@NTNX-244131ad-A ~]# 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[root@NTNX-244131ad-A ~]# ovs-vsctl list-ports br0
+br0-arp
+br0-dhcp
+br0-up
+br0.u
+[root@NTNX-244131ad-A ~]# ovs-vsctl list-ports br1
+br1-arp
+br1-dhcp
+br1.u
+[root@NTNX-244131ad-A ~]# 
+
+
+
+
+
+
+
+
+
