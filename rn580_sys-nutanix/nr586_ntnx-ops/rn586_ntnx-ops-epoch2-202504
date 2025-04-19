@@ -1,0 +1,69 @@
+
+
+Lessons learned:
+1. Prism gui not accurate
+2. Use CVM manage_ovs show commands to see real upliks and bods
+3. Don't make mistakes - consitency between node changes breaks cluster
+4. Destroying cluster does not wipe OVSDB - PHENIX rebuilds are needed
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+New Cluster Build:
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!
+FRESH FROM PHOENIX
+!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+__________________________
+Demeter node = 4a4
+__________________________
+
+
+__________________________
+Hecate node = 4ac
+__________________________
+[root@NTNX-a1d544ac-A ~]# ovs-vsctl list interface |grep name |grep -v _name |nl
+     1  name                : vnet2
+     2  name                : eth1
+     3  name                : eth3
+     4  name                : eth2
+     5  name                : vnet0
+     6  name                : br0
+     7  name                : eth0
+     8  name                : eth4
+[root@NTNX-a1d544ac-A ~]# clock
+2025-04-19 18:43:49.467528+00:00
+[root@NTNX-a1d544ac-A ~]# 
+
+
+
+Triptolemus node = dc4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
