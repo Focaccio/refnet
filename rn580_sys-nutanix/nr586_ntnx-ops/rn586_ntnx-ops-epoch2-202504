@@ -20,7 +20,18 @@ FRESH FROM PHOENIX
 __________________________
 Demeter node = 4a4
 __________________________
-
+[root@NTNX-6669e4a4-A ~]# ovs-vsctl list interface |grep name |grep -v _name |nl
+     1  name                : eth1
+     2  name                : vnet2
+     3  name                : eth0
+     4  name                : eth3
+     5  name                : vnet0
+     6  name                : eth4
+     7  name                : br0
+     8  name                : eth2
+[root@NTNX-6669e4a4-A ~]# clock
+2025-04-19 18:46:52.776324+00:00
+[root@NTNX-6669e4a4-A ~]# 
 
 __________________________
 Hecate node = 4ac
@@ -42,7 +53,18 @@ __________________________
 __________________________
 Triptolemus node = dc4
 __________________________
-
+[root@NTNX-92877dc4-A ~]# ovs-vsctl list interface |grep name |grep -v _name |nl
+     1  name                : vnet0
+     2  name                : eth4
+     3  name                : eth0
+     4  name                : br0
+     5  name                : eth1
+     6  name                : vnet2
+     7  name                : eth2
+     8  name                : eth3
+[root@NTNX-92877dc4-A ~]# clock
+2025-04-19 18:47:48.357027+00:00
+[root@NTNX-92877dc4-A ~]# 
 
 
 
