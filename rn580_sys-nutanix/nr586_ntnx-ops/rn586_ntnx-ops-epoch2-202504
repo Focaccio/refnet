@@ -1,15 +1,57 @@
 
+...............................................................................................
+...............................................................................................
+...............................................................................................
+...............................................................................................
+OPS - CLUSTER CREATE
+I. Fresh Phoenix to put everything on the same network basis
+II. SSH to CVM from node on the 192.168.5.x network
+II. Verify ping between all the CVMs
+III. VERIFY CVMs are not part of any cluster
+IV. Create cluster with cluster create command
+V. Build vs bridges and bonds
 
+
+
+
+...............................................................................................
+...............................................................................................
+...............................................................................................
+...............................................................................................
+
+
+
+...............................................................................................
+...............................................................................................
+OPS - LEARNED GUIDANCE
 Lessons learned:
 1. Prism gui not accurate
 2. Use CVM manage_ovs show commands to see real upliks and bods
 3. Don't make mistakes - consitency between node changes breaks cluster
 4. Destroying cluster does not wipe OVSDB - PHENIX rebuilds are needed
 
-I. Fresh Phoenix to put everything on the same network basis
-II. ping between all the CVMs
-III. VERIFY CVMs are not part of any cluster
-IV. Create cluster
+...............................................................................................
+...............................................................................................
+
+
+
+
+
+OPS - VERIFICATIONS
+
+...............................................................................................
+...............................................................................................
+OPS - NEW LEARNS
+1. SSH from NODE to CVM via 192.168.5.x networ easily
+
+
+
+Process - follow tree
+ps -ef --forest
+
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ ps -ef --forest
+...............................................................................................
+...............................................................................................
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -619,7 +661,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-IV. Create cluster
+cluster CREATE
 
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -903,6 +945,231 @@ Lockdown mode: Disabled
 2025-04-20 01:20:05,703Z INFO MainThread cluster:1745 Running CE cluster post-create script
 2025-04-20 01:20:20,250Z INFO MainThread cluster:3465 Success!
 nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ 
+
+
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+Build networking
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+
+1. Only change remove eth3 and eth4 from vs0 on all three nodes.
+
+
+
+
+
+
+
+
+
+
+
+__________________________
+Demeter node = 4a4
+node 192.168.86.60
+cvm 192.168.86.61
+
+__________________________
+Hecate node = 08b
+node 192.168.86.150
+cvm 192.168.86.151
+
+__________________________
+Triptolemus node = dc4
+node 192.168.86.180
+cvm 192.168.86.181
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+__________________________
+Demeter node = 4a4
+node 192.168.86.60
+cvm 192.168.86.61
+///////////////////////////////////////////////////////////////////////////////////////////////
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth1,eth2,eth0,eth4,eth3
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ 
+
+1
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth1,eth2,eth0,eth4,eth3
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth4,eth3,eth0,eth2,eth1
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth3,eth1,eth0,eth2,eth4
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ clock
+clock: Cannot access the Hardware Clock via any known method.
+clock: Use the --verbose option to see the details of our search for an access method.
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ date
+Sun Apr 20 12:41:56 UTC 2025
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ clock
+clock: Cannot access the Hardware Clock via any known method.
+clock: Use the --verbose option to see the details of our search for an access method.
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth0,eth3,eth1,eth2,eth4
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth1,eth4,eth0,eth2,eth3
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ 
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ 
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ date
+Sun Apr 20 12:43:09 UTC 2025
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth0,eth4,eth2,eth3,eth1
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth4,eth1,eth2,eth3,eth0
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth1,eth4,eth3,eth0,eth2
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ date
+Sun Apr 20 12:44:04 UTC 2025
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth3,eth1,eth0,eth2,eth4
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth0,eth1,eth2 
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ date
+Sun Apr 20 12:45:08 UTC 2025
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ 
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+__________________________
+Hecate node = 08b
+node 192.168.86.150
+cvm 192.168.86.151
+///////////////////////////////////////////////////////////////////////////////////////////////
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth3,eth1,eth4,eth0,eth2
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ 
+
+
+1
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth3,eth1,eth4,eth0,eth2
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth1,eth0,eth2 
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ 
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ 
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ 
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth2,eth0,eth1 
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ date
+Sun Apr 20 12:42:28 UTC 2025
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth0,eth1,eth2 
+dnutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ date
+Sun Apr 20 12:43:03 UTC 2025
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ 
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+__________________________
+Triptolemus node = dc4
+node 192.168.86.180
+cvm 192.168.86.181
+///////////////////////////////////////////////////////////////////////////////////////////////
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth2,eth4,eth1,eth0,eth3
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$
+
+1
+
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth2,eth4,eth1,eth0,eth3
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ ^C
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth0,eth2,eth1,eth3,eth4
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth2,eth3,eth1,eth0,eth4
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth0,eth1,eth2 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ date
+Sun Apr 20 12:42:34 UTC 2025
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ manage_ovs show_cvm_uplinks_map
+CVM_Interface   Host_Interface  OVS_Bridge      Bond_Name       Bond_Mode       Uplink_Interfaces
+eth0            vnet0           br0             br0-up          active-backup   eth0,eth1,eth2 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ date
+Sun Apr 20 12:42:47 UTC 2025
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
