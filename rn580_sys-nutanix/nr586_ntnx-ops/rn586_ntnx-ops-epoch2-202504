@@ -17,8 +17,29 @@ New Cluster Build:
 FRESH FROM PHOENIX
 !!!!!!!!!!!!!!!!!!!!!!!!!!
 
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+I. Put everything on the same basis
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 __________________________
 Demeter node = 4a4
+node 192.168.86.60
+cvm 192.168.86.61
 __________________________
 [root@NTNX-6669e4a4-A ~]# ovs-vsctl list interface |grep name |grep -v _name |nl
      1  name                : eth1
@@ -31,10 +52,65 @@ __________________________
      8  name                : eth2
 [root@NTNX-6669e4a4-A ~]# clock
 2025-04-20 00:34:41.435005+00:00
+[root@NTNX-6669e4a4-A ~]#
+[root@NTNX-6669e4a4-A ~]# ip -4 a |grep inet
+    inet 127.0.0.1/8 scope host lo
+    inet 192.168.86.60/24 brd 192.168.86.255 scope global br0
+    inet 192.168.5.1/24 brd 192.168.5.255 scope global virbr0
 [root@NTNX-6669e4a4-A ~]# 
+[root@NTNX-6669e4a4-A ~]# virsh list --all
+ Id   Name                  State
+-------------------------------------
+ 1    NTNX-6669e4a4-A-CVM   running
 
+[root@NTNX-6669e4a4-A ~]# virsh domiflist NTNX-6669e4a4-A-CVM
+ Interface   Type      Source               Model    MAC
+------------------------------------------------------------------------
+ vnet0       bridge    br0                  virtio   52:54:00:ee:47:08
+ vnet1       network   NTNX-Local-Network   virtio   52:54:00:6d:27:36
+ vnet2       bridge    br0                  virtio   52:54:00:18:98:ab
+
+[root@NTNX-6669e4a4-A ~]#
+[root@NTNX-6669e4a4-A ~]# ip n
+192.168.86.1 dev br0 lladdr 60:b7:6e:7b:43:4d STALE 
+192.168.86.8 dev br0 lladdr fc:fb:fb:9b:30:41 STALE 
+192.168.86.21 dev br0 lladdr 00:01:2e:78:9c:2c DELAY 
+192.168.5.254 dev virbr0 lladdr 52:54:00:6d:27:36 REACHABLE 
+[root@NTNX-6669e4a4-A ~]# ssh 192.168.5.254 -lnutanix
+The authenticity of host '192.168.5.254 (192.168.5.254)' can't be established.
+ECDSA key fingerprint is SHA256:Qrx4TgIYusoyAAK8MccRLsIvichrLSplPQi1b3yERMg.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '192.168.5.254' (ECDSA) to the list of known hosts.
+Nutanix Controller VM
+nutanix@192.168.5.254's password: 
+
+Nutanix Controller VM (CVM) is a virtual storage appliance.
+
+Alteration of the CVM (unless advised by Nutanix Technical Support or
+Support Portal Documentation) is unsupported and may result in loss
+of User VMs or other data residing on the cluster.
+
+Unsupported alterations may include (but are not limited to):
+
+- Configuration changes / removal of files.
+- Installation of third-party software/scripts not approved by Nutanix.
+- Installation or upgrade of software packages from non-Nutanix
+  sources (using yum, rpm, or similar).
+
+** SSH to CVM via 'nutanix' user will be restricted in coming releases.  **
+** Please consider using the 'admin' user for basic workflows.           **
+Last login: Sat Apr 19 19:48:46 UTC 2025 from 192.168.86.21 on pts/0
+Last login: Sun Apr 20 00:44:44 2025 from 192.168.5.1
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ 
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 __________________________
 Hecate node = 08b
+node 192.168.86.150
+cvm 192.168.86.151
 __________________________
 [root@NTNX-5684d08b-A ~]# ovs-vsctl list interface |grep name |grep -v _name |nl
      1  name                : eth4
@@ -48,10 +124,84 @@ __________________________
 [root@NTNX-5684d08b-A ~]# clock
 2025-04-20 00:34:13.032302+00:00
 [root@NTNX-5684d08b-A ~]# 
+[root@NTNX-5684d08b-A ~]# virsh list --all
+ Id   Name                  State
+-------------------------------------
+ 1    NTNX-5684d08b-A-CVM   running
 
+[root@NTNX-5684d08b-A ~]# virsh domiflist  NTNX-5684d08b-A-CVM
+ Interface   Type      Source               Model    MAC
+------------------------------------------------------------------------
+ vnet0       bridge    br0                  virtio   52:54:00:67:56:70
+ vnet1       network   NTNX-Local-Network   virtio   52:54:00:3c:2d:ef
+ vnet2       bridge    br0                  virtio   52:54:00:2d:a8:1c
 
+[root@NTNX-5684d08b-A ~]# 
+[root@NTNX-5684d08b-A ~]# ip -4 a | grep inet
+    inet 127.0.0.1/8 scope host lo
+    inet 192.168.86.150/24 brd 192.168.86.255 scope global br0
+    inet 192.168.5.1/24 brd 192.168.5.255 scope global virbr0
+[root@NTNX-5684d08b-A ~]# ip n
+192.168.86.1 dev br0 lladdr 60:b7:6e:7b:43:4d STALE 
+192.168.86.29 dev br0 lladdr 12:dd:d3:92:fc:00 STALE 
+192.168.5.254 dev virbr0 lladdr 52:54:00:3c:2d:ef REACHABLE 
+192.168.86.2 dev br0 FAILED 
+192.168.86.21 dev br0 lladdr 00:01:2e:78:9c:2c REACHABLE 
+[root@NTNX-5684d08b-A ~]# ssh 192.168.5.254 -lnutanix
+The authenticity of host '192.168.5.254 (192.168.5.254)' can't be established.
+ECDSA key fingerprint is SHA256:NfeZP3k+gy7+Qu3LwZH32gLLYmDUwa7ziPxZeQYjmD8.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '192.168.5.254' (ECDSA) to the list of known hosts.
+Nutanix Controller VM
+nutanix@192.168.5.254's password: 
+
+Nutanix Controller VM (CVM) is a virtual storage appliance.
+
+Alteration of the CVM (unless advised by Nutanix Technical Support or
+Support Portal Documentation) is unsupported and may result in loss
+of User VMs or other data residing on the cluster.
+
+Unsupported alterations may include (but are not limited to):
+
+- Configuration changes / removal of files.
+- Installation of third-party software/scripts not approved by Nutanix.
+- Installation or upgrade of software packages from non-Nutanix
+  sources (using yum, rpm, or similar).
+
+** SSH to CVM via 'nutanix' user will be restricted in coming releases.  **
+** Please consider using the 'admin' user for basic workflows.           **
+Last login: Sun Apr 20 00:33:34 UTC 2025
+Last login: Sun Apr 20 00:46:07 2025 from 192.168.5.1
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ ip link
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether 52:54:00:67:56:70 brd ff:ff:ff:ff:ff:ff
+    altname enp0s3
+    altname ens3
+3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether 52:54:00:3c:2d:ef brd ff:ff:ff:ff:ff:ff
+    altname enp0s4
+    altname ens4
+4: eth2: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether 52:54:00:2d:a8:1c brd ff:ff:ff:ff:ff:ff
+    altname enp0s5
+    altname ens5
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ 
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ ip -4 a |grep inet
+    inet 127.0.0.1/8 scope host lo
+    inet 192.168.86.151/24 brd 192.168.86.255 scope global eth0
+    inet 192.168.5.2/25 brd 192.168.5.127 scope global eth1
+    inet 192.168.5.254/24 brd 192.168.5.255 scope global eth1:1
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 __________________________
 Triptolemus node = dc4
+node 192.168.86.180
+cvm 192.168.86.181
 __________________________
 [root@NTNX-92877dc4-A ~]# ovs-vsctl list interface |grep name |grep -v _name |nl
      1  name                : vnet0
@@ -65,7 +215,90 @@ __________________________
 [root@NTNX-92877dc4-A ~]# clock
 2025-04-20 00:35:07.980045+00:00
 [root@NTNX-92877dc4-A ~]# 
+[root@NTNX-92877dc4-A ~]# virsh list --all
+ Id   Name                  State
+-------------------------------------
+ 1    NTNX-92877dc4-A-CVM   running
 
+[root@NTNX-92877dc4-A ~]# virsh domiflist NTNX-92877dc4-A-CVM
+ Interface   Type      Source               Model    MAC
+------------------------------------------------------------------------
+ vnet0       bridge    br0                  virtio   52:54:00:fe:39:4b
+ vnet1       network   NTNX-Local-Network   virtio   52:54:00:e2:cc:ea
+ vnet2       bridge    br0                  virtio   52:54:00:3a:35:56
+
+[root@NTNX-92877dc4-A ~]# 
+[root@NTNX-92877dc4-A ~]# ip -4 a | grep inet
+    inet 127.0.0.1/8 scope host lo
+    inet 192.168.86.180/24 brd 192.168.86.255 scope global br0
+    inet 192.168.5.1/24 brd 192.168.5.255 scope global virbr0
+[root@NTNX-92877dc4-A ~]# ip n
+192.168.86.21 dev br0 lladdr 00:01:2e:78:9c:2c REACHABLE 
+192.168.86.1 dev br0 lladdr 60:b7:6e:7b:43:4d STALE 
+192.168.86.23 dev br0 lladdr 48:d6:d5:53:9f:8a STALE 
+192.168.86.7 dev br0 lladdr 00:1b:90:a3:02:c1 STALE 
+192.168.86.243 dev br0 lladdr 14:c6:7d:53:5a:d8 STALE 
+192.168.5.254 dev virbr0 lladdr 52:54:00:e2:cc:ea REACHABLE 
+192.168.86.10 dev br0 lladdr 00:80:a3:8d:56:11 STALE 
+192.168.86.8 dev br0 lladdr fc:fb:fb:9b:30:41 STALE 
+[root@NTNX-92877dc4-A ~]# ssh 192.168.5.254 -lnutanix
+The authenticity of host '192.168.5.254 (192.168.5.254)' can't be established.
+ECDSA key fingerprint is SHA256:55fOOMCkQZWlRTOuV0JJ1pHs0qBKKfk4xxUhHnfCmnc.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yse^H^H^H^H^H^H^Hyes
+Please type 'yes', 'no' or the fingerprint: yes
+Warning: Permanently added '192.168.5.254' (ECDSA) to the list of known hosts.
+Nutanix Controller VM
+nutanix@192.168.5.254's password: 
+
+Nutanix Controller VM (CVM) is a virtual storage appliance.
+
+Alteration of the CVM (unless advised by Nutanix Technical Support or
+Support Portal Documentation) is unsupported and may result in loss
+of User VMs or other data residing on the cluster.
+
+Unsupported alterations may include (but are not limited to):
+
+- Configuration changes / removal of files.
+- Installation of third-party software/scripts not approved by Nutanix.
+- Installation or upgrade of software packages from non-Nutanix
+  sources (using yum, rpm, or similar).
+
+** SSH to CVM via 'nutanix' user will be restricted in coming releases.  **
+** Please consider using the 'admin' user for basic workflows.           **
+Last login: Sat Apr 19 20:09:05 UTC 2025 from 192.168.86.21 on pts/0
+Last login: Sun Apr 20 00:47:13 2025 from 192.168.5.1
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ ip link
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether 52:54:00:fe:39:4b brd ff:ff:ff:ff:ff:ff
+    altname enp0s3
+    altname ens3
+3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether 52:54:00:e2:cc:ea brd ff:ff:ff:ff:ff:ff
+    altname enp0s4
+    altname ens4
+4: eth2: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether 52:54:00:3a:35:56 brd ff:ff:ff:ff:ff:ff
+    altname enp0s5
+    altname ens5
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ ip -4 a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    altname enp0s3
+    altname ens3
+    inet 192.168.86.181/24 brd 192.168.86.255 scope global eth0
+       valid_lft forever preferred_lft forever
+3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    altname enp0s4
+    altname ens4
+    inet 192.168.5.2/25 brd 192.168.5.127 scope global eth1
+       valid_lft forever preferred_lft forever
+    inet 192.168.5.254/24 brd 192.168.5.255 scope global eth1:1
+       valid_lft forever preferred_lft forever
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
 
 
 
