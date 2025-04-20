@@ -6,7 +6,10 @@ Lessons learned:
 3. Don't make mistakes - consitency between node changes breaks cluster
 4. Destroying cluster does not wipe OVSDB - PHENIX rebuilds are needed
 
-
+I. Fresh Phoenix to put everything on the same network basis
+II. ping between all the CVMs
+III. VERIFY CVMs are not part of any cluster
+IV. Create cluster
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -502,21 +505,404 @@ nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$
 
 
 
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+II. Ping between all the CVMs
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+
+
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ date
+Sun Apr 20 01:03:19 UTC 2025
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ ping 192.168.86.61
+PING 192.168.86.61 (192.168.86.61) 56(84) bytes of data.
+64 bytes from 192.168.86.61: icmp_seq=1 ttl=64 time=0.020 ms
+64 bytes from 192.168.86.61: icmp_seq=2 ttl=64 time=0.040 ms
+^C
+--- 192.168.86.61 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1045ms
+rtt min/avg/max/mdev = 0.020/0.030/0.040/0.010 ms
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ ping 192.168.86.151
+PING 192.168.86.151 (192.168.86.151) 56(84) bytes of data.
+64 bytes from 192.168.86.151: icmp_seq=1 ttl=64 time=1.20 ms
+64 bytes from 192.168.86.151: icmp_seq=2 ttl=64 time=0.479 ms
+64 bytes from 192.168.86.151: icmp_seq=3 ttl=64 time=0.470 ms
+^C
+--- 192.168.86.151 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2037ms
+rtt min/avg/max/mdev = 0.470/0.717/1.202/0.342 ms
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ ping 192.168.86.181
+PING 192.168.86.181 (192.168.86.181) 56(84) bytes of data.
+64 bytes from 192.168.86.181: icmp_seq=1 ttl=64 time=0.863 ms
+64 bytes from 192.168.86.181: icmp_seq=2 ttl=64 time=0.416 ms
+64 bytes from 192.168.86.181: icmp_seq=3 ttl=64 time=0.491 ms
+^C
+--- 192.168.86.181 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2037ms
+rtt min/avg/max/mdev = 0.416/0.590/0.863/0.195 ms
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ 
+
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+III. VERIFY CVMs are not part of any cluster
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+__________________________
+Demeter node = 4a4
+node 192.168.86.60
+cvm 192.168.86.61
+
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ cluster status
+2025-04-20 01:05:42,795Z CRITICAL MainThread cluster:3241 Cluster is currently unconfigured. Please create the cluster.
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+__________________________
+Hecate node = 08b
+node 192.168.86.150
+cvm 192.168.86.151
+
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ 
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ cluster status
+2025-04-20 01:06:07,533Z CRITICAL MainThread cluster:3241 Cluster is currently unconfigured. Please create the cluster.
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+__________________________
+Triptolemus node = dc4
+node 192.168.86.180
+cvm 192.168.86.181
+
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ cluster status
+2025-04-20 01:06:27,943Z CRITICAL MainThread cluster:3241 Cluster is currently unconfigured. Please create the cluster.
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
 
 
 
 
 
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+IV. Create cluster
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 
+ cluster -s 192.168.86.151,192.168.86.61,192.168.86.181 --redundancy_factor=2 --cluster_name=elefx
+--redundancy_factor=2
+--cluster_name=<name>
 
 
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$  cluster -s 192.168.86.151,192.168.86.61,192.168.86.181 --redundancy_factor=2 --cluster_name=elefx create
+
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$  cluster -s 192.168.86.151,192.168.86.61,192.168.86.181 --redundancy_factor=2 --cluster_name=elefx create
+2025-04-20 01:13:47,151Z INFO MainThread cluster:3302 Executing action create on SVMs 192.168.86.151,192.168.86.61,192.168.86.181
+2025-04-20 01:13:47,151Z INFO MainThread security_helper.py:653 Valid security configuration received.
+2025-04-20 01:13:50,671Z INFO MainThread cluster:1280 Discovered node: 
+ip: 192.168.86.151
+        rackable_unit_serial: 5684d08b
+        node_position: A
+        node_uuid: 5017159e-4399-49ae-8192-b1c7b23eb8ed
+
+2025-04-20 01:13:50,671Z INFO MainThread cluster:1280 Discovered node: 
+ip: 192.168.86.181
+        rackable_unit_serial: 92877dc4
+        node_position: A
+        node_uuid: bb55287a-65d4-4651-81e9-3d44aff92ff2
+
+2025-04-20 01:13:50,671Z INFO MainThread cluster:1280 Discovered node: 
+ip: 192.168.86.61
+        rackable_unit_serial: 6669e4a4
+        node_position: A
+        node_uuid: fc13c491-8cea-409a-a98c-9c9ff55833ef
+
+2025-04-20 01:13:50,671Z INFO MainThread cluster:1298 Cluster is on arch x86_64
+2025-04-20 01:13:50,671Z INFO MainThread cluster:895 Skipping PMEM Homogeneity Check across Hosts and CVMs, as PMEM is unsupported in this version of AOS
+2025-04-20 01:13:50,671Z INFO MainThread genesis_utils.py:9055 Maximum node limit for community edition cluster is 4
+2025-04-20 01:13:50,674Z INFO MainThread genesis_rack_utils.py:50 Rack not configured on node (svm_ip: 192.168.86.151)
+2025-04-20 01:13:50,676Z INFO MainThread genesis_rack_utils.py:50 Rack not configured on node (svm_ip: 192.168.86.61)
+2025-04-20 01:13:50,678Z INFO MainThread genesis_rack_utils.py:50 Rack not configured on node (svm_ip: 192.168.86.181)
+2025-04-20 01:13:53,354Z INFO MainThread cluster:1608 iptables configured on SVM 192.168.86.151
+2025-04-20 01:13:55,750Z INFO MainThread cluster:1608 iptables configured on SVM 192.168.86.61
+2025-04-20 01:13:58,124Z INFO MainThread cluster:1608 iptables configured on SVM 192.168.86.181
+2025-04-20 01:13:58,127Z INFO MainThread cluster:1620 Creating certificates
+2025-04-20 01:14:01,058Z INFO MainThread cluster:1637 Setting the cluster functions on SVM node 192.168.86.151
+2025-04-20 01:14:01,058Z INFO MainThread cluster:1646 Populating cluster functions temp file on SVM node 192.168.86.151
+2025-04-20 01:14:01,099Z INFO MainThread cluster:1654 Configuring Zeus mapping ({'192.168.86.151': 1, '192.168.86.181': 2, '192.168.86.61': 3}) on SVM node 192.168.86.151
+2025-04-20 01:14:01,987Z INFO MainThread cluster:1637 Setting the cluster functions on SVM node 192.168.86.61
+2025-04-20 01:14:01,989Z INFO MainThread cluster:1646 Populating cluster functions temp file on SVM node 192.168.86.61
+2025-04-20 01:14:02,031Z INFO MainThread cluster:1654 Configuring Zeus mapping ({'192.168.86.151': 1, '192.168.86.181': 2, '192.168.86.61': 3}) on SVM node 192.168.86.61
+2025-04-20 01:14:03,037Z INFO MainThread cluster:1637 Setting the cluster functions on SVM node 192.168.86.181
+2025-04-20 01:14:03,040Z INFO MainThread cluster:1646 Populating cluster functions temp file on SVM node 192.168.86.181
+2025-04-20 01:14:03,082Z INFO MainThread cluster:1654 Configuring Zeus mapping ({'192.168.86.151': 1, '192.168.86.181': 2, '192.168.86.61': 3}) on SVM node 192.168.86.181
+2025-04-20 01:14:03,703Z INFO MainThread cluster:1678 Creating cluster with SVMs: 192.168.86.151,192.168.86.61,192.168.86.181
+2025-04-20 01:14:03,762Z INFO MainThread cluster:1690 Will seed prism with password hash $6$28RR./ZTWVh/I$pt7t3SDm8cw0EL89eVclkKcwPn36HCFp//qG59OWBOyVdTjY60wAHA2RLfMPiYbwcid87TN1pftAbVuue.MGn1
+2025-04-20 01:15:22,010Z INFO MainThread cluster:1718 Zeus is not ready yet, trying again in 5 seconds
+2025-04-20 01:15:31,666Z INFO MainThread cluster:1736 Stopped genesis gateway server on 192.168.86.151
+2025-04-20 01:15:31,674Z INFO MainThread cluster:1736 Stopped genesis gateway server on 192.168.86.61
+2025-04-20 01:15:31,686Z INFO MainThread cluster:1736 Stopped genesis gateway server on 192.168.86.181
+2025-04-20 01:15:31,686Z INFO MainThread cluster:1739 Waiting for services to start
+Waiting on 192.168.86.151 (Up) to start: 
+SysStatCollector
+IkatControlPlane
+SSLTerminator
+SecureFileSync
+Medusa
+DynamicRingChanger
+Pithos
+InsightsDB
+Athena
+Mercury
+Mantle
+Stargate
+InsightsDataTransfer
+GoErgon
+Cerebro
+Chronos
+Curator
+Prism
+Hera
+AlertManager
+Arithmos
+Catalog
+Acropolis
+Castor
+Uhura
+NutanixGuestTools
+MinervaCVM
+ClusterConfig
+APLOSEngine
+APLOS
+PlacementSolver
+Lazan
+Polaris
+Delphi
+Security
+Flow
+Anduril
+Narsil
+XTrim
+ClusterHealth
+
+Waiting on 192.168.86.181 (Up) to start: 
+SysStatCollector
+IkatControlPlane
+SSLTerminator
+SecureFileSync
+Medusa
+DynamicRingChanger
+Pithos
+InsightsDB
+Athena
+Mercury
+Mantle
+Stargate
+InsightsDataTransfer
+GoErgon
+Cerebro
+Chronos
+Curator
+Prism
+Hera
+AlertManager
+Arithmos
+Catalog
+Acropolis
+Castor
+Uhura
+NutanixGuestTools
+MinervaCVM
+ClusterConfig
+APLOSEngine
+APLOS
+PlacementSolver
+Lazan
+Polaris
+Delphi
+Security
+Flow
+Anduril
+Narsil
+XTrim
+ClusterHealth
+
+Waiting on 192.168.86.61 (Up, ZeusLeader) to start: 
+SysStatCollector
+IkatControlPlane
+SSLTerminator
+SecureFileSync
+Medusa
+DynamicRingChanger
+Pithos
+InsightsDB
+Athena
+Mercury
+Mantle
+Stargate
+InsightsDataTransfer
+GoErgon
+Cerebro
+Chronos
+Curator
+Prism
+Hera
+AlertManager
+Arithmos
+Catalog
+Acropolis
+Castor
+Uhura
+NutanixGuestTools
+MinervaCVM
+ClusterConfig
+APLOSEngine
+APLOS
+PlacementSolver
+Lazan
+Polaris
+Delphi
+Security
+Flow
+Anduril
+Narsil
+XTrim
+ClusterHealth
 
 
+2025-04-20 01:19:08,029Z INFO MainThread cluster:2265 Waiting for response from 192.168.86.151
+Waiting on 192.168.86.151 (Up) to start: 
+APLOS
+PlacementSolver
+Lazan
+Polaris
+Delphi
+Security
+Flow
+Anduril
+Narsil
+XTrim
+ClusterHealth
 
 
+2025-04-20 01:19:26,624Z INFO MainThread cluster:2265 Waiting for response from 192.168.86.151
+Waiting on 192.168.86.151 (Up) to start: 
+PlacementSolver
+Lazan
+Polaris
+Delphi
+Security
+Flow
+Anduril
+Narsil
+XTrim
+ClusterHealth
 
 
+2025-04-20 01:19:45,971Z INFO MainThread cluster:2265 Waiting for response from 192.168.86.151
+Waiting on 192.168.86.151 (Up) to start: 
+Anduril
+Narsil
+XTrim
+ClusterHealth
+
+
+2025-04-20 01:20:04,387Z INFO MainThread cluster:2265 Waiting for response from 192.168.86.151
+Waiting on 192.168.86.151 (Up) to start: 
+
+
+The state of the cluster: start
+Lockdown mode: Disabled
+
+        CVM: 192.168.86.151 Up
+                              Xmount   UP       [68210, 68369, 68370, 68450]
+                           IkatProxy   UP       [67888, 68039, 68040, 68041]
+                                Zeus   UP       [63411, 63488, 63489, 63503, 63522, 63540]
+                           Scavenger   UP       [68223, 68447, 68448, 68449]
+                    SysStatCollector   UP       [74324, 74403, 74404, 74405]
+                    IkatControlPlane   UP       [74343, 74494, 74495, 74496]
+                       SSLTerminator   UP       [74415, 74694, 74695]
+                      SecureFileSync   UP       [74428, 74797, 74799, 74800]
+                              Medusa   UP       [75812, 76534, 76535, 76652, 78571]
+                  DynamicRingChanger   UP       [84394, 84557, 84558, 84589]
+                              Pithos   UP       [84439, 84691, 84692, 84693]
+                          InsightsDB   UP       [84503, 84766, 84767, 84784]
+                              Athena   UP       [84642, 84855, 84856, 84857]
+                             Mercury   UP       [84995, 85097, 85098, 85103]
+                              Mantle   UP       [85041, 85186, 85187, 85207]
+                          VipMonitor   UP       [85632, 85633, 85634, 85635, 85642]
+                            Stargate   UP       [85718, 85912, 85913, 85917, 85918]
+                InsightsDataTransfer   UP       [87314, 88291, 88292, 88338, 88339, 88341, 88342, 88343, 88344]
+                             GoErgon   UP       [87983, 89775, 89776, 89788]
+                             Cerebro   UP       [88305, 89852, 89853, 90001]
+                             Chronos   UP       [88973, 89987, 89988, 90023]
+                             Curator   UP       [89857, 90173, 90174, 90228]
+                               Prism   UP       [90195, 90462, 90463, 90487]
+                                Hera   UP       [90333, 90592, 90593, 90594]
+                        AlertManager   UP       [90507, 90703, 90704, 90721]
+                            Arithmos   UP       [90637, 90831, 90832, 90884]
+                             Catalog   UP       [90708, 90979, 90980, 90981, 90991]
+                           Acropolis   UP       [91571, 91727, 91728, 96453]
+                              Castor   UP       [91667, 91913, 91914, 91924, 92378]
+                               Uhura   UP       [91773, 92857, 92860, 95226]
+                   NutanixGuestTools   UP       [92323, 94653, 94654, 94725, 94817]
+                          MinervaCVM   UP       [96180, 96277, 96278, 96279]
+                       ClusterConfig   UP       [96216, 96375, 96376, 96379]
+                         APLOSEngine   UP       [96388, 96505, 96506, 96507]
+                               APLOS   UP       [100340, 101853, 101854, 101855]
+                     PlacementSolver   UP       [101488, 102072, 102073, 102074, 102082]
+                               Lazan   UP       [102013, 102400, 102401, 102402]
+                             Polaris   UP       [102110, 102499, 102500, 102709]
+                              Delphi   UP       [102267, 103923, 103924, 103926, 104076]
+                            Security   UP       [102992, 105628, 105629, 105632]
+                                Flow   UP       [105348, 106461, 106462, 106468, 106624]
+                             Anduril   UP       [106118, 106973, 106974, 106975, 106986]
+                              Narsil   UP       [106873, 107101, 107102, 107103]
+                               XTrim   UP       [106965, 107265, 107266, 107267]
+                       ClusterHealth   UP       [107192, 107424, 107425]
+2025-04-20 01:20:05,703Z INFO MainThread cluster:1745 Running CE cluster post-create script
+2025-04-20 01:20:20,250Z INFO MainThread cluster:3465 Success!
+nutanix@NTNX-5684d08b-A-CVM:192.168.86.151:~$ 
 
 
 
