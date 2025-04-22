@@ -82,9 +82,30 @@ OVS tables
 
 ```ntxovs OVS commands
 
-OVS-VSCTL   
+OVS-VSCTL   >>> this is interaction with the OVSDB .....
+   ovs-vsctl --help
 OVS-OFCTL   
-OVS-APPCTL   
+OVS-APPCTL  >>> this is interaction with 
+   ovs-appctl list-commands
+
+lldpcli is built in to ntx   
+
+
+
+*****ovs-vsctl
+Manages and queries the OVS database (OVSDB)
+ovsdb-server
+Configuration
+
+*****ovs-appctl
+Sends runtime control commands to OVS daemons (like ovs-vswitchd)
+ovs-vswitchd, ovsdb-server, ovs-controller, etc.
+Live status, debug, control
+
+
+
+	•	ovs-vsctl: Writes persistent config (bridges, ports, interfaces, bonds, VLANs)
+	•	ovs-appctl: Sends runtime commands (show MAC table, dump flows, reset stats, control LACP, etc.)
 
 
 ovs-vsctl list interface |grep name |grep -v _name |nl |grep br
@@ -139,4 +160,94 @@ LOCAL     0  c8:d9:d2:16:c3:49    0
    11     0  60:b7:6e:7b:43:4d    0
 [root@NTNX-5684d08b-A ~]# 
 
+[root@NTNX-5684d08b-A ~]# ovs-appctl list-commands
+The available commands are:
+  autoattach/show-isid    [bridge]
+  autoattach/statistics   [bridge]
+  autoattach/status       [bridge]
+  bfd/set-forwarding      [interface] normal|false|true
+  bfd/show                [interface]
+  bond/disable-slave      port slave
+  bond/enable-slave       port slave
+  bond/hash               mac [vlan] [basis]
+  bond/list               
+  bond/migrate            port hash slave
+  bond/set-active-slave   port slave
+  bond/show               [port]
+  bridge/dump-flows       [--offload-stats] bridge
+  bridge/reconnect        [bridge]
+  cfm/set-fault           [interface] normal|false|true
+  cfm/show                [interface]
+  coverage/read-counter   COUNTER
+  coverage/show           
+  dpctl/add-dp            dp [iface...]
+  dpctl/add-flow          [dp] flow actions
 
+
+
+
+
+
+[lldpcli] # show neighbors 
+-- Show neighbors data
+      <CR>  Show neighbors data
+   details  With more details
+   summary  With less details
+    hidden  Include hidden neighbors
+     ports  Restrict configuration to some ports
+  protocol  Restrict to specific protocol
+
+[lldpcli] # show neighbors summary 
+-------------------------------------------------------------------------------
+LLDP neighbors:
+-------------------------------------------------------------------------------
+Interface:    eth1, via: LLDP
+  Chassis:     
+    ChassisID:    mac fc:fb:fb:9b:30:00
+    SysName:      sw2.tst.areaf.net
+  Port:        
+    PortID:       ifname Fa0/17
+    PortDescr:    FastEthernet0/17
+    TTL:          120
+-------------------------------------------------------------------------------
+Interface:    eth2, via: LLDP
+  Chassis:     
+    ChassisID:    mac fc:fb:fb:9b:30:00
+    SysName:      sw2.tst.areaf.net
+  Port:        
+    PortID:       ifname Fa0/18
+    PortDescr:    FastEthernet0/18
+    TTL:          120
+-------------------------------------------------------------------------------
+Interface:    eth3, via: LLDP
+  Chassis:     
+    ChassisID:    mac fc:fb:fb:9b:30:00
+    SysName:      sw2.tst.areaf.net
+  Port:        
+    PortID:       ifname Fa0/19
+    PortDescr:    FastEthernet0/19
+    TTL:          120
+-------------------------------------------------------------------------------
+Interface:    eth4, via: LLDP
+  Chassis:     
+    ChassisID:    mac fc:fb:fb:9b:30:00
+    SysName:      sw2.tst.areaf.net
+  Port:        
+    PortID:       ifname Fa0/20
+    PortDescr:    FastEthernet0/20
+    TTL:          120
+-------------------------------------------------------------------------------
+Interface:    eth0, via: LLDP
+  Chassis:     
+    ChassisID:    mac fc:fb:fb:9b:30:00
+    SysName:      sw2.tst.areaf.net
+  Port:        
+    PortID:       ifname Fa0/16
+    PortDescr:    FastEthernet0/16
+    TTL:          120
+-------------------------------------------------------------------------------
+[lldpcli] #  
+[lldpcli] # 
+[lldpcli] # exit
+
+[root@NTNX-5684d08b-A ~]# 
