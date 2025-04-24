@@ -9,7 +9,7 @@
 
 ```ntxovs OVS commands
 
-
+```ntnx-axioms
 
 
 
@@ -251,3 +251,172 @@ Interface:    eth0, via: LLDP
 [lldpcli] # exit
 
 [root@NTNX-5684d08b-A ~]# 
+
+
+
+
+
+
+
+
+
+
+
+
+```
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+```ntnx-axioms
+TIPS
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Design Plans:
+
+AXIOM 1 - build switch config first!
++Once a NIC is assigned to a new VS and a new br# is created there is no easy way to go back...
+
+AXIOM 2 - get br0 working BACKPLANE-STORAGE-and-CVM (Leave? IPMI out?)
+
+AXIOM 3 - get br1 working VM-TRAFFIC
+
+AXIOM 4 - add br2 working MONITOR-WRENCH (on IPMI)
+
+
+
+sudo ovs-vsctl add-bond br1 bond1 eth2 eth3
+
+
+1. Leave eth0 (ipmi) in br0 for "automatic" layer 3 SDS and MGMT in VLAN7
+``````
+2. Build br1 for VM-traffic
+3. Build br2 for OOB
+>>>leave AHV eth0 in br0
+***
+LEAVE CVM eth0 in br0
+***
+Put new ETHX-OOB in BR2 for standard management
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+or add VLAN in br2 for oob mgmt
+
+
+
+
+
+_____AHV
+ovs-vsctl
+ovsdb-client dump
+ovsdb-client dump | grep -i lacp
+
+from AHV89 hcat
+lacp=a0:36:9f:1f:c1:18
+PO2 - access 7
+   2: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq master ovs-system state UP mode DEFAULT group default qlen 1000
+    link/ether a0:36:9f:1f:c1:18 brd ff:ff:ff:ff:ff:ff
+    altname enp3s0f0
+   3: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq master ovs-system state UP mode DEFAULT group default qlen 1000
+    link/ether a0:36:9f:1f:c1:19 brd ff:ff:ff:ff:ff:ff
+    altname enp3s0f1
+SW2
+sw2#sh mac address-table | i Po2
+   7    5254.0027.7428    DYNAMIC     Po2
+   7    a036.9f1f.c118    DYNAMIC     Po2
+   7    a036.9f1f.c119    DYNAMIC     Po2
+   7    a236.9f1f.c118    DYNAMIC     Po2
+   7    a236.9f1f.c119    DYNAMIC     Po2
+sw2#
+~~~~~~~~~~~~~~~
+from AHV89 hcat 
+PO4 - trunk 202
+lacp=a0:36:9f:1f:c1:1a
+   5: eth3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq master ovs-system state UP mode DEFAULT group default qlen 1000
+    link/ether a0:36:9f:1f:c1:1a brd ff:ff:ff:ff:ff:ff
+    altname enp3s0f2
+   6: eth4: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq master ovs-system state UP mode DEFAULT group default qlen 1000
+    link/ether a0:36:9f:1f:c1:1b brd ff:ff:ff:ff:ff:ff
+    altname enp3s0f3
+SW2
+
+~~~~~~~~~~~~~~~
+
+
+
+_____CVM
+manage_ovs
+
+
++Do networking first
++Build single node cluster
++without lacp on node lacp will come up on switch with I stand-alone
++have IPMI unplugged?
+1. edit vs0 for storage (init admin) vlan PO-#1 node ports eth1, eth2
+2. create new vs1 for vm-traffic trunk PO-#2 node ports eth3, eth4
+3. create new vs2 for oob - NO PO eth0
+
+
+interface Port-channel1
+ description PO1-89-STORAGE-BACKPLANE
+ switchport access vlan 200
+ switchport mode access
+
+
+
+interface FastEthernet0/21
+
+no channel-group 2 mode active
+ channel-group 1 mode active
+
+
+interface FastEthernet0/22
+
+no channel-group 2 mode active
+channel-group 1 mode active
+
+
+
+interface Port-channel 5
+ switchport mode trunk
+ switchport trunk allowed vlan 202
+no shut
+
+interface FastEthernet0/33
+shut
+ description PO5-MEMBER1-TRUNK
+ switchport mode trunk
+ switchport trunk allowed vlan 202
+ channel-group 5 mode active
+no shut
+
+interface FastEthernet0/34
+shut
+ description PO5-MEMBER2-TRUNK
+ switchport mode trunk
+ switchport trunk allowed vlan 202
+ channel-group 5 mode active
+no shut
+
+
+
+interface Port-channel6
+ switchport trunk allowed vlan 202
+ switchport mode trunk
+no shut
+
+
+interface FastEthernet0/11
+shut
+ description PO6-MEMBER1-TRUNK
+ switchport mode trunk
+ switchport trunk allowed vlan 202
+ channel-group 6 mode active
+no shut
+
+interface FastEthernet0/12
+shut
+ description PO6-MEMBER2-TRUNK
+ switchport mode trunk
+ switchport trunk allowed vlan 202
+ channel-group 6 mode active
+no shut
