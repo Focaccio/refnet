@@ -2,11 +2,172 @@
 
 
 
+```ovs-routing
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+```ovs-routing
+[root@NTNX-5684d08b-A ~]# ovs-appctl ovs/route/show
+Route Table:
+Cached: 127.0.0.1/32 dev lo SRC 127.0.0.1 local
+Cached: 192.168.5.1/32 dev virbr0 SRC 192.168.5.1 local
+Cached: 192.168.86.150/32 dev br0 SRC 192.168.86.150 local
+Cached: 127.0.0.0/8 dev lo SRC 127.0.0.1 local
+Cached: 192.168.5.0/24 dev virbr0 SRC 192.168.5.1
+Cached: 192.168.86.0/24 dev br0 SRC 192.168.86.150
+Cached: 0.0.0.0/0 dev br0 GW 192.168.86.1 SRC 192.168.86.150
+[root@NTNX-5684d08b-A ~]# 
+
+
+
+
+
+
+
+
+
+
+
+
+[root@NTNX-5684d08b-A ~]# ovs-appctl bond/show
+
+
+
+
+
+[root@NTNX-5684d08b-A ~]# ovs-appctl list-commands
+The available commands are:
+  autoattach/show-isid    [bridge]
+  autoattach/statistics   [bridge]
+  autoattach/status       [bridge]
+  bfd/set-forwarding      [interface] normal|false|true
+  bfd/show                [interface]
+  bond/disable-slave      port slave
+  bond/enable-slave       port slave
+  bond/hash               mac [vlan] [basis]
+  bond/list               
+  bond/migrate            port hash slave
+  bond/set-active-slave   port slave
+  bond/show               [port]
+  bridge/dump-flows       [--offload-stats] bridge
+  bridge/reconnect        [bridge]
+  cfm/set-fault           [interface] normal|false|true
+  cfm/show                [interface]
+  coverage/read-counter   COUNTER
+  coverage/show           
+  dpctl/add-dp            dp [iface...]
+  dpctl/add-flow          [dp] flow actions
+  dpctl/add-if            dp iface...
+  dpctl/ct-bkts           [dp] [gt=N]
+  dpctl/ct-del-limits     [dp] zone=N1[,N2]...
+  dpctl/ct-disable-tcp-seq-chk [dp]
+  dpctl/ct-enable-tcp-seq-chk [dp]
+  dpctl/ct-get-limits     [dp] [zone=N1[,N2]...]
+  dpctl/ct-get-maxconns   [dp]
+  dpctl/ct-get-nconns     [dp]
+  dpctl/ct-get-tcp-seq-chk [dp]
+  dpctl/ct-set-limits     [dp] [default=L] [zone=N,limit=L]...
+  dpctl/ct-set-maxconns   [dp] maxconns
+  dpctl/ct-stats-show     [dp] [zone=N]
+  dpctl/del-dp            dp
+  dpctl/del-flow          [dp] flow
+  dpctl/del-flows         [dp]
+  dpctl/del-if            dp iface...
+  dpctl/dump-conntrack    [-m] [-s] [dp] [zone=N]
+  dpctl/dump-dps          
+  dpctl/dump-flows        [-m] [--names] [dp] [filter=..] [type=..]
+  dpctl/flush-conntrack   [dp] [zone=N] [ct-tuple]
+  dpctl/get-flow          [dp] ufid
+  dpctl/ipf-get-status    [dp]
+  dpctl/ipf-set-disabled  [dp] v4|v6
+  dpctl/ipf-set-enabled   [dp] v4|v6
+  dpctl/ipf-set-max-nfrags [dp] maxfrags
+  dpctl/ipf-set-min-frag  [dp] v4|v6 minfragment
+  dpctl/list-commands     
+  dpctl/mod-flow          [dp] flow actions
+  dpctl/normalize-actions actions
+  dpctl/parse-actions     actions
+  dpctl/set-if            dp iface...
+  dpctl/show              [-s] [dp...]
+  dpif-netdev/bond-show   [dp]
+  dpif-netdev/pmd-perf-log-set on|off [-b before] [-a after] [-e|-ne] [-us usec] [-q qlen]
+  dpif-netdev/pmd-perf-show [-nh] [-it iter-history-len] [-ms ms-history-len] [-pmd core] [dp]
+  dpif-netdev/pmd-rxq-rebalance [dp]
+  dpif-netdev/pmd-rxq-show [-pmd core] [dp]
+  dpif-netdev/pmd-stats-clear [-pmd core] [dp]
+  dpif-netdev/pmd-stats-show [-pmd core] [dp]
+  dpif-netdev/subtable-lookup-prio-get 
+  dpif-netdev/subtable-lookup-prio-set [lookup_func] [prio]
+  dpif-netlink/dispatch-mode 
+  dpif/dump-dps           
+  dpif/dump-flows         [-m] [--names | --no-names] bridge
+  dpif/set-dp-features    bridge
+  dpif/show               
+  dpif/show-dp-features   bridge
+  exit                    [--cleanup]
+  fdb/flush               [bridge]
+  fdb/show                bridge
+  fdb/stats-clear         [bridge]
+  fdb/stats-show          bridge
+  lacp/show               [port]
+  lacp/show-stats         [port]
+  list-commands           
+  mdb/flush               [bridge]
+  mdb/show                bridge
+  memory/show             
+  ofproto/list            
+  ofproto/list-tunnels    
+  ofproto/trace           {[dp_name] odp_flow | bridge br_flow} [OPTIONS...] [-generate|packet]
+  ofproto/trace-packet-out [-consistent] {[dp_name] odp_flow | bridge br_flow} [OPTIONS...] [-generate|packet] actions
+  ovs/route/add           ip_addr/prefix_len out_br_name [gw] [pkt_mark=mark]
+  ovs/route/del           ip_addr/prefix_len [pkt_mark=mark]
+  ovs/route/lookup        ip_addr [pkt_mark=mark]
+  ovs/route/show          
+  qos/show                interface
+  qos/show-types          interface
+  revalidator/pause       (null)
+  revalidator/purge       
+  revalidator/resume      (null)
+  revalidator/wait        
+  rstp/show               [bridge]
+  rstp/tcn                [bridge]
+  stp/show                [bridge]
+  stp/tcn                 [bridge]
+  tnl/arp/flush           
+  tnl/arp/set             BRIDGE IP MAC
+  tnl/arp/show            
+  tnl/egress_port_range   min max
+  tnl/neigh/flush         
+  tnl/neigh/set           BRIDGE IP MAC
+  tnl/neigh/show          
+  tnl/ports/show          -v
+  upcall/disable-megaflows 
+  upcall/disable-ufid     
+  upcall/enable-megaflows 
+  upcall/enable-ufid      
+  upcall/set-flow-limit   flow-limit-number
+  upcall/show             
+  version                 
+  vlog/close              
+  vlog/disable-rate-limit [module]...
+  vlog/enable-rate-limit  [module]...
+  vlog/list               
+  vlog/list-pattern       
+  vlog/reopen             
+  vlog/set                {spec | PATTERN:destination:pattern}
+[root@NTNX-5684d08b-A ~]# 
 
 
 
