@@ -1,0 +1,373 @@
+
+
+
+
+tunnel interface 
+
+
+
+
+interface Tunnel202
+ ip unnumbered GigabitEthernet0/0/0
+ ip mtu 1384
+ ip tcp adjust-mss 1344
+ tunnel source GigabitEthernet0/0/0
+ tunnel mode ipsec ipv4
+ tunnel destination 100.100.0.128
+ tunnel protection ipsec profile IPSEC-PROFILE-202
+
+11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+
+rtr1
+ interface Tunnel1
+ ip unnumbered GigabitEthernet0/0/1
+ ip mtu 1384
+ ip tcp adjust-mss 1344
+ tunnel source GigabitEthernet0/0/1
+ !tunnel mode ipsec ipv4
+ tunnel destination 1.0.0.2
+ !tunnel protection ipsec profile IPSEC-PROFILE-202
+
+ interface Loopback1
+ description V-TEST-TU1-111-0-0-1
+ ip address 111.0.0.1 255.255.255.255
+ exi
+ !
+ ip route 111.0.0.2 255.255.255.255 tu1
+
+............................................
+
+ip route 9.2.0.2 255.255.255.255 1.0.0.2
+
+int lo91
+des V-TU9-IPADDRESS
+ip add 9.1.0.1 255.255.255.255
+no shut
+
+int lo31
+des V-IPTA-31
+ip add 31.0.0.1 255.255.255.0
+
+interface Tunnel9
+ ip address 9.0.0.1 255.255.255.252
+ ip mtu 1384
+ ip tcp adjust-mss 1344
+ tunnel source Loopback91
+ tunnel destination 9.2.0.2
+
+ ip route 32.0.0.0 255.255.255.0 tu9
+
+
+conf t
+int tu9
+tunnel mode ipsec ipv4
+tunnel protection ipsec profile IPSEC-PROFILE_IPT-A-B_ONA
+exi
+
+conf t
+int tu1
+tunnel mode ipsec ipv4
+tunnel protection ipsec profile IPSEC-PROFILE_TU1-AB_ONA
+exi
+
+22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
+
+
+ rtr2
+ interface Tunnel1
+ ip unnumbered GigabitEthernet0/0/1
+ ip mtu 1384
+ ip tcp adjust-mss 1344
+ tunnel source GigabitEthernet0/0/1
+ !tunnel mode ipsec ipv4
+ tunnel destination 1.0.0.1
+ !tunnel protection ipsec profile IPSEC-PROFILE-202
+
+ interface Loopback1
+ description V-TEST-TU1-111-0-0-2
+ ip address 111.0.0.2 255.255.255.255
+ exi
+ !
+ ip route 111.0.0.1 255.255.255.255 tu1
+
+.............................................
+
+ip route 9.1.0.1 255.255.255.255 1.0.0.1
+
+int lo92
+des V-TU9-IPADDRESS
+ip add 9.2.0.2 255.255.255.255
+no shut
+
+int lo32
+des V-IPTA-32
+ip add 32.0.0.2 255.255.255.0
+
+interface Tunnel9
+ ip address 9.0.0.2 255.255.255.252
+ ip mtu 1384
+ ip tcp adjust-mss 1344
+ tunnel source Loopback92
+ tunnel destination 9.1.0.1
+
+ ip route 31.0.0.0 255.255.255.0 tu9
+
+
+
+conf t
+int tu9
+tunnel mode ipsec ipv4
+tunnel protection ipsec profile IPSEC-PROFILE_IPT-A-B_ONB
+exi
+
+
+conf t
+int tu1
+tunnel mode ipsec ipv4
+tunnel protection ipsec profile IPSEC-PROFILE_TU1-AB_ONB
+exi
+
+
+
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ CRYPTO
+
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+>>>>> RTR 1
+
+!general
+crypto ikev2 proposal IKEV2-PROPOSAL_X_A256-S512-G21 
+ encryption aes-gcm-256
+ prf sha512
+ group 21
+ exi
+
+!general
+crypto ikev2 policy IKEV2-POLICY_X_A256-S512-G21
+ proposal IKEV2-PROPOSAL_X_A256-S512-G21
+ exi
+
+!spec
+crypto ikev2 keyring IKEV2-KEYRING_IPT-A-B_ONA
+ peer FAR-SIDE_IPTB-RTR
+  address 9.2.0.2
+  identity address 9.2.0.2
+  pre-shared-key local IPTA-123
+  pre-shared-key remote IPTB-456
+  exi
+  exi
+ 
+!spec
+crypto ikev2 profile IKEV2-PROFILE_IPT-A-B_ONA
+ match identity remote address 9.2.0.2 255.255.255.255 
+ identity local address 9.1.0.1
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local IKEV2-KEYRING_IPT-A-B_ONA
+ exi
+
+!general
+crypto ipsec security-association lifetime kilobytes 102400
+crypto ipsec security-association replay window-size 1024
+
+!general
+crypto ipsec transform-set TRANSFORM-SET_X esp-gcm 256 
+ mode tunnel
+ exi
+
+!spec
+crypto ipsec profile IPSEC-PROFILE_IPT-A-B_ONA
+ set security-association lifetime kilobytes 102400
+ set transform-set TRANSFORM-SET_X 
+ set pfs group21
+ set ikev2-profile IKEV2-PROFILE_IPT-A-B_ONA
+exi
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++
+
+
+!spec
+crypto ikev2 keyring IKEV2-KEYRING_TU1-AB_ONA
+ peer FAR-SIDE_TU1-B-RTR
+  address 1.0.0.2
+  identity address 1.0.0.2
+  pre-shared-key local TU1-A-123
+  pre-shared-key remote TU1-B-456
+  exi
+  exi
+ 
+!spec
+crypto ikev2 profile IKEV2-PROFILE_TU1-AB_ONA
+ match identity remote address 1.0.0.2 255.255.255.255 
+ identity local address 1.0.0.1
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local IKEV2-KEYRING_TU1-AB_ONA
+ exi
+
+!spec
+crypto ipsec profile IPSEC-PROFILE_TU1-AB_ONA
+ set security-association lifetime kilobytes 102400
+ set transform-set TRANSFORM-SET_X 
+ set pfs group21
+ set ikev2-profile IKEV2-PROFILE_TU1-AB_ONA
+ exi
+
+
+
+
+
+
+
+
+
+22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
+22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
+
+>>>>>> RTR 2
+
+
+!general
+crypto ikev2 proposal IKEV2-PROPOSAL_X_A256-S512-G21 
+ encryption aes-gcm-256
+ prf sha512
+ group 21
+ exi
+
+!general
+crypto ikev2 policy IKEV2-POLICY_X_A256-S512-G21
+ proposal IKEV2-PROPOSAL_X_A256-S512-G21
+ exi
+
+!spec
+crypto ikev2 keyring IKEV2-KEYRING_IPT-A-B_ONB
+ peer FAR-SIDE_IPTA-RTR
+  address 9.1.0.1
+  identity address 9.1.0.1
+  pre-shared-key local IPTB-456
+  pre-shared-key remote IPTA-123
+  exi
+  exi
+ 
+!spec
+crypto ikev2 profile IKEV2-PROFILE_IPT-A-B_ONB
+ match identity remote address 9.1.0.1 255.255.255.255 
+ identity local address 9.2.0.2
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local IKEV2-KEYRING_IPT-A-B_ONB
+ exi
+
+!general
+crypto ipsec security-association lifetime kilobytes 102400
+crypto ipsec security-association replay window-size 1024
+
+!general
+crypto ipsec transform-set TRANSFORM-SET_X esp-gcm 256 
+ mode tunnel
+ exi
+
+!spec
+crypto ipsec profile IPSEC-PROFILE_IPT-A-B_ONB
+ set security-association lifetime kilobytes 102400
+ set transform-set TRANSFORM-SET_X 
+ set pfs group21
+ set ikev2-profile IKEV2-PROFILE_IPT-A-B_ONB
+ exi
+
++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++
+
+!general
+crypto ikev2 proposal IKEV2-PROPOSAL_X_A256-S512-G21 
+ encryption aes-gcm-256
+ prf sha512
+ group 21
+ exi
+!general
+crypto ikev2 policy IKEV2-POLICY_X_A256-S512-G21
+ proposal IKEV2-PROPOSAL_X_A256-S512-G21
+ exi
+!general
+crypto ipsec security-association lifetime kilobytes 102400
+crypto ipsec security-association replay window-size 1024
+!general
+crypto ipsec transform-set TRANSFORM-SET_X esp-gcm 256 
+ mode tunnel
+ exi
+
+!spec
+crypto ikev2 keyring IKEV2-KEYRING_TU1-AB_ONB
+ peer FAR-SIDE_TU1-A-RTR
+  address 1.0.0.1
+  identity address 1.0.0.1
+  pre-shared-key local TU1-B-456
+  pre-shared-key remote TU1-A-123
+  exi
+  exi
+ 
+!spec
+crypto ikev2 profile IKEV2-PROFILE_TU1-AB_ONB
+ match identity remote address 1.0.0.1 255.255.255.255 
+ identity local address 1.0.0.2
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local IKEV2-KEYRING_TU1-AB_ONB
+ exi
+
+!spec
+crypto ipsec profile IPSEC-PROFILE_TU1-AB_ONB
+ set security-association lifetime kilobytes 102400
+ set transform-set TRANSFORM-SET_X 
+ set pfs group21
+ set ikev2-profile IKEV2-PROFILE_TU1-AB_ONB
+ exi
+
+
+
+
+
+
+
+
+
