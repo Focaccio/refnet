@@ -1,0 +1,67 @@
+
+
+```freebsd based firewall
+```basis for areaf networking remote access, site routing, VPNS etc etc
+```tnsr???
+
+```commands
+netstat -rn -f inet
+
+
+```rawnotes
+
+
+
+# netstat -rn -f inet
+Routing tables
+
+Internet:
+Destination        Gateway            Flags     Netif Expire
+default            192.168.86.1       UGS    mvneta0.
+10.10.10.1         link#7             UH          lo0
+10.168.86.0/24     link#11            U      mvneta0.
+10.168.86.1        link#7             UHS         lo0
+127.0.0.1          link#7             UH          lo0
+192.168.86.0/24    link#13            U      mvneta0.
+192.168.86.1       link#13            UHS    mvneta0.
+192.168.86.33      link#7             UHS         lo0
+198.18.86.0/24     link#12            U      mvneta0.
+198.18.86.1        link#7             UHS         lo0
+198.19.198.0/24    link#10            U       tun_wg0
+198.19.198.1       link#7             UHS         lo0
+# 
+[Disconnected]
+[Connected]
+[Disconnected]
+[Connected]
+ugen0.2: <vendor 0x3538 product 0x0059> at usbus0
+umass0 on uhub1
+umass0: <vendor 0x3538 product 0x0059, class 0/0, rev 2.00/1.00, addr 1> on usbus0
+da0 at umass-sim0 bus 0 scbus0 target 0 lun 0
+da0: <Generic USB Flash Disk 0.00> Removable Direct Access SCSI-2 device
+da0: Serial Number 0000000000039B
+da0: 40.000MB/s transfers
+da0: 15423MB (31588248 512 byte sectors)
+da0: quirks=0x3<NO_SYNC_CACHE,NO_6_BYTE>
+
+# 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
