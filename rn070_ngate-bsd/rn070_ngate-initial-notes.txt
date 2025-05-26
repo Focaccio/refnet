@@ -47,6 +47,62 @@ da0: quirks=0x3<NO_SYNC_CACHE,NO_6_BYTE>
 # 
 
 
+```diskops
+[Disconnected]
+[Connected]
+ugen0.2: <vendor 0x3538 product 0x0059> at usbus0
+umass0 on uhub1
+umass0: <vendor 0x3538 product 0x0059, class 0/0, rev 2.00/1.00, addr 1> on usbus0
+da0 at umass-sim0 bus 0 scbus0 target 0 lun 0
+da0: <Generic USB Flash Disk 0.00> Removable Direct Access SCSI-2 device
+da0: Serial Number 0000000000039B
+da0: 40.000MB/s transfers
+da0: 15423MB (31588248 512 byte sectors)
+da0: quirks=0x3<NO_SYNC_CACHE,NO_6_BYTE>
+
+
+DONE     gpart destroy -F /dev/da0
+DONE     gpart create -s GPT /dev/da0
+DONE     gpart add -t freebsd-ufs -a 4k /dev/da0
+DONE     newfs -U /dev/da0p1
+DONE     mkdir /mnt/pat16
+DONE     mount /dev/da0p1 /mnt/pat16
+
+
+
+# gpart destroy -F /dev/da0
+da0 destroyed
+# gpart create -s GPT /dev/da0
+da0 created
+# gpart add -t freebsd-ufs -a 4k /dev/da0
+da0p1 added
+# newfs -U /dev/da0p1
+/dev/da0p1: 15423.9MB (31588168 sectors) block size 32768, fragment size 4096
+        using 25 cylinder groups of 625.22MB, 20007 blks, 80128 inodes.
+        with soft updates
+super-block backups (for fsck_ffs -b #) at:
+ 192, 1280640, 2561088, 3841536, 5121984, 6402432, 7682880, 8963328, 10243776,
+ 11524224, 12804672, 14085120, 15365568, 16646016, 17926464, 19206912,
+ 20487360, 21767808, 23048256, 24328704, 25609152, 26889600, 28170048,
+ 29450496, 30730944
+# 
+# mkdir /mnt/pat16
+# mount /dev/da0p1 /mnt/pat16
+# gpart show
+=>       1  15273599  mmcsd0  MBR  (7.3G)
+         1    409600       1  efi  (200M)
+    409601    131072       2  fat32  (64M)
+    540673  14732927       3  freebsd  [active]  (7.0G)
+
+=>       0  14732927  mmcsd0s3  BSD  (7.0G)
+         0        16            - free -  (8.0K)
+        16  14732911         1  freebsd-zfs  (7.0G)
+
+=>      40  31588168  da0  GPT  (15G)
+        40  31588168    1  freebsd-ufs  (15G)
+
+# 
+
 
 
 
