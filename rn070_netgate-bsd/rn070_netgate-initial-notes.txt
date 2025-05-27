@@ -10,6 +10,11 @@ netstat -rn -f inet
 
 ```rawnotes
 
++commands
+# netstat -rin -f inet
+
+
+
 
 
 # netstat -rn -f inet
