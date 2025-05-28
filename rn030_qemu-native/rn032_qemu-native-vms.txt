@@ -1,20 +1,129 @@
 
 
 
+curl -o https://download.freebsd.org/releases/VM-IMAGES/13.5-RELEASE/aarch64/Latest/
 
 
 
+curl -o https://download.freebsd.org/releases/VM-IMAGES/13.5-RELEASE/aarch64/Latest/FreeBSD-13.5-RELEASE-arm64-aarch64.qcow2.xz
 
 
 
+02:54 greg@xcf16 /Users/0-qemu ? ls -la
+total 19427720
+drwxrwxrwx  11 root  admin         352 May 28 02:41 .
+drwxr-xr-x  14 root  admin         448 May 27 03:29 ..
+-rw-r--r--   1 greg  admin         731 May 27 04:55 CHECKSUM.SHA512
+-rw-r--r--   1 greg  admin  3820879872 May 27 03:35 FreeBSD-13.5-RELEASE-arm64-aarch64.qcow2
+-rw-r--r--   1 greg  admin         146 May 27 03:31 FreeBSD-14.0-RELEASE-amd64-disc1.iso
+-rw-r--r--   1 greg  admin         146 May 27 03:30 FreeBSD-14.0-RELEASE-arm64-disc1.iso
+-rwxrwxrwx   1 greg  admin  3820879872 May 27 05:06 freebsd135.qcow2
+-rwxrwxrwx   1 greg  admin  3820879872 May 27 05:16 freebsd135x.qcow2
+-rw-r--r--   1 greg  admin    67108864 May 28 02:42 pflash1.img
+-rwxr-xr-x   1 greg  admin         787 May 27 05:21 qemutest1.sh
+-rwxrwxrwx   1 greg  admin         760 May 28 02:41 testvm.sh
+02:54 greg@xcf16 /Users/0-qemu ? more testvm.sh 
+#!/bin/bash
+
+# Variables
+EFI_CODE="/opt/homebrew/share/qemu/edk2-aarch64-code.fd"
+EFI_VARS="pflash1.img"
+DISK_IMAGE="freebsd135x.qcow2"
+
+# Create EFI variable storage if it doesn't exist
+if [ ! -f "$EFI_VARS" ]; then
+  dd if=/dev/zero of="$EFI_VARS" bs=1m count=64
+fi
+
+# Launch QEMU
+qemu-system-aarch64 \
+  -machine virt,accel=hvf \
+  -cpu host \
+  -smp 4 \
+  -m 4096 \
+  -drive if=pflash,format=raw,readonly=on,file="$EFI_CODE" \
+  -drive if=pflash,format=raw,file="$EFI_VARS" \
+  -drive file="$DISK_IMAGE",format=qcow2,if=virtio,cache=writethrough \
+  -device virtio-gpu-pci \
+  -device qemu-xhci \
+  -device usb-kbd \
+  -device usb-tablet \
+  -device intel-hda \
+  -device hda-duplex \
+  -display default,show-cursor=on \
+  -serial mon:stdio \
+  -nographic
+02:54 greg@xcf16 /Users/0-qemu ? 
 
 
 
+first open air qemu 20250528
 
+root@:/ # whoami
+root
+root@:/ # ipconfig -a
+-sh: ipconfirandog: not foundm: unblocking device.
 
+root@:/ # ifconfig -a
+vtnet0: flags=8822<BROADCAST,SIMPLEX,MULTICAST> metric 0 mtu 1500
+        options=80028<VLAN_MTU,JUMBO_MTU,LINKSTATE>
+        ether 52:54:00:12:34:56
+        media: Ethernet autoselect (10Gbase-T <full-duplex>)
+        status: active
+        nd6 options=29<PERFORMNUD,IFDISABLED,AUTO_LINKLOCAL>
+lo0: flags=8008<LOOPBACK,MULTICAST> metric 0 mtu 16384
+        options=680003<RXCSUM,TXCSUM,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6>
+        groups: lo
+        nd6 options=21<PERFORMNUD,AUTO_LINKLOCAL>
+root@:/ # ip link
+-sh: ip: not found
+root@:/ # 
+root@:/ # 
+root@:/ # 
+root@:/ # 
+root@:/ # 
+root@:/ # 
+root@:/ # ps -af
+PID TT  STAT    TIME COMMAND
+ 17 u0  Ss   0:00.01 -sh (sh)
+ 23 u0  R+   0:00.00 ps -af
+root@:/ # ps -ax
+PID TT  STAT     TIME COMMAND
+  0  -  DLs   0:00.01 [kernel]
+  1  -  ILs   0:00.00 /sbin/init -s
+  2  -  DL    0:00.00 [crypto]
+  3  -  DL    0:00.00 [cam]
+  4  -  DL    0:00.01 [rand_harvestq]
+  5  -  DL    0:00.01 [pagedaemon]
+  6  -  DL    0:00.00 [vmdaemon]
+  7  -  DL    0:00.00 [bufdaemon]
+  8  -  DL    0:00.00 [syncer]
+  9  -  DL    0:00.00 [vnlru]
+ 10  -  DL    0:00.00 [audit]
+ 11  -  RNL  14:57.06 [idle]
+ 12  -  WL    0:00.03 [intr]
+ 13  -  DL    0:00.00 [geom]
+ 14  -  DL    0:00.00 [sequencer 00]
+ 15  -  DL    0:00.01 [usb]
+ 16  -  DL    0:00.00 [KTLS]
+ 17 u0  Ss    0:00.01 -sh (sh)
+ 24 u0  R+    0:00.00 ps -ax
+root@:/ # df -h
+Filesystem         Size    Used   Avail Capacity  Mounted on
+/dev/gpt/rootfs    4.8G    3.6G    911M    80%    /
+devfs              1.0K      0B    1.0K     0%    /dev
+root@:/ # shutdown -p now
+Shutdown NOW!
+shutdown: [pid 27]
+root@:/ # wall: can't open temporary file: Read-only file system
+2025-05-28T09:53:13.606101+00:00 - shutdown 27 - - power-down by root: 
 
-
-
-
+System shutdown time has arrived
+Waiting (max 60 seconds) for system process `vnlru' to stop... done
+Waiting (max 60 seconds) for system process `syncer' to stop... 
+Syncing disks, vnodes remaining... 0 0 0 0 0 0 0 0 0 0 done
+All buffers synced.
+Uptime: 10m57s
+02:53 greg@xcf16 /Users/0-qemu ? 
 
 
