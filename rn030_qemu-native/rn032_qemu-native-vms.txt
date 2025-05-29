@@ -1,3 +1,176 @@
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+WORKING
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+#!/bin/bash
+
+# Variables
+EFI_CODE="/opt/homebrew/Cellar/qemu/10.0.0/share/qemu/edk2-aarch64-code.fd"
+EFI_VARS="pflash1.img"
+DISK_IMAGE="FreeBSD-14.2-RELEASE-arm64-aarch64-ufs.raw"
+
+# Ensure EFI var storage is exactly 64 MiB
+if [ ! -f "$EFI_VARS" ]; then
+  echo "Creating EFI variable storage: $EFI_VARS"
+  dd if=/dev/zero of="$EFI_VARS" bs=1m count=64
+else
+  VARS_SIZE=$(stat -f%z "$EFI_VARS")
+  if [ "$VARS_SIZE" -ne 67108864 ]; then
+    echo "WARNING: $EFI_VARS is not 64 MiB. Recreating it."
+    dd if=/dev/zero of="$EFI_VARS" bs=1m count=64
+  fi
+fi
+
+# Launch QEMU
+sudo qemu-system-aarch64 \
+  -machine virt,accel=hvf \
+  -cpu host \
+  -smp 4 \
+  -m 4096 \
+  -drive if=pflash,format=raw,readonly=on,file="$EFI_CODE" \
+  -drive if=pflash,format=raw,file="$EFI_VARS" \
+  -drive file="$DISK_IMAGE",format=raw,if=virtio,cache=writethrough \
+  -netdev vmnet-bridged,id=net0,ifname=en15 \
+  -device virtio-net-pci,netdev=net0 \
+  -device virtio-gpu-pci \
+  -device qemu-xhci \
+  -device usb-kbd \
+  -device usb-tablet \
+  -device intel-hda \
+  -device hda-duplex \
+  -display default,show-cursor=on \
+  -serial mon:stdio
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+
+
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+working boot config:
+
+02:54 greg@xcf16 /Users/0-qemu ? more testvm.sh 
+#!/bin/bash
+
+# Variables
+EFI_CODE="/opt/homebrew/share/qemu/edk2-aarch64-code.fd"
+EFI_VARS="pflash1.img"
+DISK_IMAGE="freebsd135x.qcow2"
+
+# Create EFI variable storage if it doesn't exist
+if [ ! -f "$EFI_VARS" ]; then
+  dd if=/dev/zero of="$EFI_VARS" bs=1m count=64
+fi
+
+# Launch QEMU
+qemu-system-aarch64 \
+  -machine virt,accel=hvf \
+  -cpu host \
+  -smp 4 \
+  -m 4096 \
+  -drive if=pflash,format=raw,readonly=on,file="$EFI_CODE" \
+  -drive if=pflash,format=raw,file="$EFI_VARS" \
+  -drive file="$DISK_IMAGE",format=qcow2,if=virtio,cache=writethrough \
+  -device virtio-gpu-pci \
+  -device qemu-xhci \
+  -device usb-kbd \
+  -device usb-tablet \
+  -device intel-hda \
+  -device hda-duplex \
+  -display default,show-cursor=on \
+  -serial mon:stdio \
+  -nographic
+
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+Testing New boot config:
+
+
+02:54 greg@xcf16 /Users/0-qemu ? more testvm.sh 
+#!/bin/bash
+
+# Variables
+EFI_CODE="/opt/homebrew/share/qemu/edk2-aarch64-code.fd"
+EFI_VARS="pflash1.img"
+DISK_IMAGE="freebsd135x.qcow2"
+
+# Create EFI variable storage if it doesn't exist
+if [ ! -f "$EFI_VARS" ]; then
+  dd if=/dev/zero of="$EFI_VARS" bs=1m count=64
+fi
+
+# Launch QEMU
+qemu-system-aarch64 \
+  -machine virt,accel=hvf \
+  -cpu host \
+  -smp 4 \
+  -m 4096 \
+  -drive if=pflash,format=raw,readonly=on,file="$EFI_CODE" \
+  -drive if=pflash,format=raw,file="$EFI_VARS" \
+  -drive file="$DISK_IMAGE",format=qcow2,if=virtio,cache=writethrough \
+  -netdev vmnet-bridged,id=net0,ifname=en15 \
+  -device virtio-net-pci,netdev=net0 \
+  -device virtio-gpu-pci \
+  -device qemu-xhci \
+  -device usb-kbd \
+  -device usb-tablet \
+  -device intel-hda \
+  -device hda-duplex \
+  -display default,show-cursor=on \
+  -serial mon:stdio \
+  -nographic
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+qemu-system-x86_64 \
+  -netdev vmnet-bridged,id=net0,ifname=en0 \
+  -device e1000,netdev=net0 \
+  -hda myvm.qcow2 \
+  -m 2048
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
