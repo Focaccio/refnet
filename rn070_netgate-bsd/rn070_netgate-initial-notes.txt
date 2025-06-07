@@ -40,7 +40,7 @@ CONTENT
 -----------------------------------------------------------------------------------------------
 
 ```access-and-setup
-1.micro usb with serial.app and prolific driver to cli  
+1.micro usb with serial.app (decisivetactics.com) and prolific driver to cli  
 2.cli switch to tcsh
 3.temp prompt
 alias precmd 'set prompt = "`date +%y%m%d-%H%M%S` %n@%m %/ _ "'
@@ -60,7 +60,14 @@ alias: precmd: not found
 250607-125133 root@negatemfs /mnt/pat16 _ 
 
 
-
+>>>capability1>>>fix prompt
+[24.03-RELEASE][greg@negatemfs.tst.areaf.net]/home/greg: 
+[24.03-RELEASE][greg@negatemfs.tst.areaf.net]/home/greg: source .tcshrc
+Command history storage is enabled. Clear history with: history -c; history -S.
+250607-134541 greg@negatemfs /home/greg _ 
+250607-134541 greg@negatemfs /home/greg _ 
+250607-134541 greg@negatemfs /home/greg _ 
+250607-134541 greg@negatemfs /home/greg _ 
 
 
 
