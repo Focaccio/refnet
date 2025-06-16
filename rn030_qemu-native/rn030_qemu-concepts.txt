@@ -1,0 +1,46 @@
+
+
+
+
+What is qemu and why does it work??
+
+
+
+
+Quick Emulator - run on ARCH on different - 
+   like ARM on x86
+   or ARM on ...
+No it is also a virtualizer
+
+What packages and modules allow me to run freebsd on macos
++ HVF
+   hypervisor framework
+
++ BIOS
+   virtualized BIOS 
+   ARM64 EFI (EDK-II) BIOS .fd
+
++Networking
+   vmnet
+   vmnet-bridged
+
+   
+
+
+	•	brew install qemu provides QEMU with HVF acceleration, leveraging macOS’s Hypervisor Framework.
+	•	Community examples (e.g. FreeBSD 13.2 for ARM64) show QEMU supports FreeBSD well on Apple Silicon  ￼.
+	•	You’ll need an ARM64 EFI (EDK-II) BIOS .fd file, obtainable via gist or Homebrew’s QEMU share directory.
+	•	Networking uses -nic vmnet-shared or -netdev vmnet-bridged support  ￼ ￼.
+	•	Offers full CLI control, powerful customization, but requires scripting and some setup.
+
+
+
+
+
+
+
+
+
+
+
+
