@@ -9,7 +9,8 @@ INDEX
 ###############################################################################################
 ###############################################################################################
 
-
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 ^^^access-and-setup
 
 ```as1
@@ -19,10 +20,16 @@ INDEX
 ```clean-shutdown
 sudo pkill -SIGTERM qemu-system-aarch64
 
-
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 ^^^OPS qemu-pure-ops aka qpop#-name
 
 ```qpop1-persist
+
+```qpop2-resize-raw
+
+
+
 
 ```ip-address
 stop disappearing ip address
@@ -200,3 +207,68 @@ It works:
 8. attach to the tmux name / qemu vm is still alive
 
 
+
+
+
+```qpop2-resize-raw
+
+qemu-img resize name.raw +10G
+
+03:08 greg@xcf16 /Users/1-qemu ? qemu-img resize FreeBSD-14.2-RELEASE-arm64-aarch64-ufs.raw +10G
+
+
+
+
+#!/bin/bash
+
+# Path to your raw disk image
+IMAGE="FreeBSD-14.2-RELEASE-arm64-aarch64-ufs.raw"
+
+# Run QEMU
+qemu-system-aarch64 \
+  -machine virt,highmem=off \
+  -cpu host \
+  -accel hvf \
+  -m 2048 \
+  -smp 4 \
+  -nographic \
+  -bios QEMU_EFI.fd \
+  -drive if=none,file="$IMAGE",format=raw,id=hd0 \
+  -device virtio-blk-device,drive=hd0 \
+  -netdev vmnet-bridged,id=net0,ifname=en18 \
+  -device virtio-net-device,netdev=net0 \
+  -no-reboot
+03:08 greg@xcf16 /Users/1-qemu ? qemu-img resize FreeBSD-14.2-RELEASE-arm64-aarch64-ufs.raw +10G
+WARNING: Image format was not specified for 'FreeBSD-14.2-RELEASE-arm64-aarch64-ufs.raw' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+Image resized.
+03:08 greg@xcf16 /Users/1-qemu ? ls -la
+total 53789416
+drwxrwxrwx  26 root  admin          832 Jun 24 03:02 .
+drwxr-xr-x  18 root  admin          576 Jun 17 03:56 ..
+-rwxrwxrwx   1 greg  admin          731 May 27 04:55 CHECKSUM.SHA512
+-rwxrwxrwx   1 greg  admin   3820879872 May 27 03:35 FreeBSD-13.5-RELEASE-arm64-aarch64.qcow2
+-rwxrwxrwx   1 greg  admin          146 May 27 03:31 FreeBSD-14.0-RELEASE-amd64-disc1.iso
+-rwxrwxrwx   1 greg  admin          146 May 27 03:30 FreeBSD-14.0-RELEASE-arm64-disc1.iso
+-rwxrwxrwx   1 greg  admin   3533373440 May 29 03:10 FreeBSD-14.2-RELEASE-arm64-aarch64-ufs.qcow2
+-rwxrwxrwx   1 greg  admin  17213994496 Jun 24 03:08 FreeBSD-14.2-RELEASE-arm64-aarch64-ufs.raw
+-rwxrwxrwx   1 greg  admin     67108864 May 30 07:27 QEMU_EFI.fd
+-rwxrwxrwx@  1 greg  admin    407044096 May 30 05:59 debian-12-nocloud-arm64.qcow2
+-rwxrwxrwx@  1 greg  admin   3221225472 Jun 21 07:44 debian-12-nocloud-arm64.raw
+-rwxrwxrwx   1 greg  admin          409 May 30 08:18 dtest1.sh
+-rwxrwxrwx   1 greg  admin     67108864 May 30 07:26 edk2-aarch64-code.fd
+-rwxrwxrwx   1 greg  admin   3820879872 May 27 05:06 freebsd135.qcow2
+-rwxrwxrwx   1 greg  admin   3820879872 May 27 05:16 freebsd135x.qcow2
+-rwxrwxrwx   1 greg  admin   3820879872 May 28 03:58 freebsd135y.qcow2
+-rwxrwxrwx   1 greg  admin          440 May 30 08:30 ftest1.vm
+-rwxrwxrwx   1 greg  admin          439 Jun  7 07:16 ftest2.vm
+-rwxrwxrwx   1 greg  admin     67108864 May 29 03:43 pflash1.img
+-rwxrwxrwx   1 greg  admin          787 May 27 05:21 qemutest1.sh
+-rwxrwxrwx   1 greg  admin          846 May 28 03:34 test2vm.sh
+-rwxrwxrwx   1 greg  admin          851 May 28 04:11 test3vm.sh
+-rwxrwxrwx   1 greg  admin          871 May 29 03:38 test4vm.sh
+-rwxrwxrwx   1 greg  admin          876 May 29 03:40 test5vm.sh
+-rwxrwxrwx   1 greg  admin         1118 May 29 03:43 test6vm.sh
+-rwxrwxrwx   1 greg  admin          760 May 28 02:41 testvm.sh
+03:08 greg@xcf16 /Users/1-qemu ? 
