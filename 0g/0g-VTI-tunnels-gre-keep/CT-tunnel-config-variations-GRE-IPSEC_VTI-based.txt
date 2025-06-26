@@ -207,3 +207,96 @@ crypto ipsec profile IPSEC_PROFILE
  set ikev2-profile IKEV2_PROFILE
 
 
+
+
+
+
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+NHRP / SDWAN compare
+...............................................................................................
+...............................................................................................
+...............................................................................................
+...............................................................................................
+...............................................................................................
+
+
++----------------------------+-----------------------------+-------------------------------+
+|         FEATURE            |     DMVPN (NHRP-Based)      |   SD-WAN (Controller-Based)   |
++----------------------------+-----------------------------+-------------------------------+
+| Peer Discovery             | NHRP dynamically resolves   | Controller tells edge devices |
+|                            | public IPs for tunnel dests | who peers are                 |
++----------------------------+-----------------------------+-------------------------------+
+| Tunnel Setup               | GRE tunnels with IPsec      | Encrypted tunnels (IPsec/TLS)|
+|                            | between peers               | auto-created via policy       |
++----------------------------+-----------------------------+-------------------------------+
+| Control Plane              | Decentralized (per peer)    | Centralized (vSmart, etc.)    |
++----------------------------+-----------------------------+-------------------------------+
+| Routing                    | Static, EIGRP, or OSPF      | Overlay routing, BGP, app-    |
+|                            |                             | aware routing                 |
++----------------------------+-----------------------------+-------------------------------+
+| Failover & Load Balance    | Manual/IP SLA-based         | Real-time via performance     |
+|                            |                             | monitoring + policies         |
++----------------------------+-----------------------------+-------------------------------+
+| Provisioning               | Manual config/NHRP mapping  | Zero-touch provisioning,      |
+|                            |                             | secure bootstrapping          |
++----------------------------+-----------------------------+-------------------------------+
+| Security                   | IPsec, pre-shared keys      | IPsec/TLS, cert-based auth    |
++----------------------------+-----------------------------+-------------------------------+
+| Scalability                | Hub-and-spoke, moderate     | Full mesh, highly scalable    |
++----------------------------+-----------------------------+-------------------------------+
+| GRE/NHRP Dependency        | Required                    | Not used                      |
++----------------------------+-----------------------------+-------------------------------+
+
+
+Instead of NHRP, SD-WAN Uses:
+
+1. Controller-Based Architecture
+	•	vSmart (Cisco Viptela), Orchestrator (Aruba EdgeConnect), or vBond manage control-plane info.
+	•	The controller tells each edge node:
+	•	Who its peers are
+	•	What tunnel endpoints to use
+	•	What encryption keys to use
+
+2. Overlay Routing
+	•	Each site builds encrypted tunnels (often IPsec or TLS) to other sites.
+	•	These tunnels are called overlay paths, often mapped to underlay circuits like broadband or MPLS.
+
+3. Real-Time Path Selection
+	•	Probes monitor latency, jitter, and loss.
+	•	Routes shift dynamically (no need for NHRP keepalives or manual tracking).
+
+4. Zero-Touch Provisioning
+	•	Devices come online, register with controller.
+	•	Controller pushes peer and tunnel info — no dynamic resolution needed.
+
+⸻
+
+Example: Aruba EdgeConnect
+	•	Edge nodes phone home to the Aruba Orchestrator.
+	•	Orchestrator tells them:
+	•	“Here are your peer nodes”
+	•	“Build secure tunnels to these IPs”
+	•	The EdgeConnect appliances build BFD-monitored tunnels to each other — no NHRP, no mGRE.
+
+⸻
+
+
+
+SD-WAN replaces NHRP with:
+	•	A controller that knows all endpoint identities and links
+	•	Pre-authenticated tunnels using certificates or shared keys
+	•	Dynamic overlay routing and real-time path steering
+
+
+
+
+
+
+
+
+
