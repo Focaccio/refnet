@@ -1,0 +1,209 @@
+
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+VTI
+...............................................................................................
+...............................................................................................
+...............................................................................................
+...............................................................................................
+...............................................................................................
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SIDE A
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+interface Tunnel100
+ ip address 10.0.0.1 255.255.255.252
+ tunnel source GigabitEthernet0/0
+ tunnel destination 198.51.100.2
+ tunnel mode ipsec ipv4
+ tunnel protection ipsec profile IPSEC_PROFILE
+
+crypto ikev2 proposal IKEV2_PROPOSAL
+ encryption aes-cbc-256
+ integrity sha256
+ group 14
+
+crypto ikev2 policy IKEV2_POLICY
+ proposal IKEV2_PROPOSAL
+
+crypto ikev2 keyring IKEV2_KEYRING
+ peer Z
+  address 198.51.100.2
+  pre-shared-key local sharedsecret123
+  pre-shared-key remote sharedsecret123
+
+crypto ikev2 profile IKEV2_PROFILE
+ match identity remote address 198.51.100.2 255.255.255.255
+ identity local address 198.51.100.1
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local IKEV2_KEYRING
+
+crypto ipsec transform-set TS esp-aes 256 esp-sha-hmac
+ mode tunnel
+
+crypto ipsec profile IPSEC_PROFILE
+ set transform-set TS
+ set ikev2-profile IPSEC_PROFILE
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SIDE Z
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+interface Tunnel100
+ ip address 10.0.0.2 255.255.255.252
+ tunnel source GigabitEthernet0/0
+ tunnel destination 198.51.100.1
+ tunnel mode ipsec ipv4
+ tunnel protection ipsec profile IPSEC_PROFILE
+
+crypto ikev2 proposal IKEV2_PROPOSAL
+ encryption aes-cbc-256
+ integrity sha256
+ group 14
+
+crypto ikev2 policy IKEV2_POLICY
+ proposal IKEV2_PROPOSAL
+
+crypto ikev2 keyring IKEV2_KEYRING
+ peer A
+  address 198.51.100.1
+  pre-shared-key local sharedsecret123
+  pre-shared-key remote sharedsecret123
+
+crypto ikev2 profile IKEV2_PROFILE
+ match identity remote address 198.51.100.1 255.255.255.255
+ identity local address 198.51.100.2
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local IKEV2_KEYRING
+
+crypto ipsec transform-set TS esp-aes 256 esp-sha-hmac
+ mode tunnel
+
+crypto ipsec profile IPSEC_PROFILE
+ set transform-set TS
+ set ikev2-profile IPSEC_PROFILE
+
+
+
+
+
+
+
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+GRE over IPSEC w/keepalive
+...............................................................................................
+...............................................................................................
+...............................................................................................
+...............................................................................................
+...............................................................................................
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SIDE A
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+interface Tunnel0
+ ip address 10.0.0.1 255.255.255.252
+ tunnel source GigabitEthernet0/0
+ tunnel destination 198.51.100.2
+ tunnel mode gre ip
+ keepalive 5 3
+ tunnel protection ipsec profile IPSEC_PROFILE
+
+crypto ikev2 proposal IKEV2_PROPOSAL
+ encryption aes-cbc-256
+ integrity sha256
+ group 14
+
+crypto ikev2 policy IKEV2_POLICY
+ proposal IKEV2_PROPOSAL
+
+crypto ikev2 keyring IKEV2_KEYRING
+ peer Z
+  address 198.51.100.2
+  pre-shared-key local sharedsecret123
+  pre-shared-key remote sharedsecret123
+
+crypto ikev2 profile IKEV2_PROFILE
+ match identity remote address 198.51.100.2 255.255.255.255
+ identity local address 198.51.100.1
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local IKEV2_KEYRING
+
+crypto ipsec transform-set TS esp-aes 256 esp-sha-hmac
+ mode transport
+
+crypto ipsec profile IPSEC_PROFILE
+ set transform-set TS
+ set ikev2-profile IKEV2_PROFILE
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SIDE Z
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+interface Tunnel0
+ ip address 10.0.0.2 255.255.255.252
+ tunnel source GigabitEthernet0/0
+ tunnel destination 198.51.100.1
+ tunnel mode gre ip
+ keepalive 5 3
+ tunnel protection ipsec profile IPSEC_PROFILE
+
+crypto ikev2 proposal IKEV2_PROPOSAL
+ encryption aes-cbc-256
+ integrity sha256
+ group 14
+
+crypto ikev2 policy IKEV2_POLICY
+ proposal IKEV2_PROPOSAL
+
+crypto ikev2 keyring IKEV2_KEYRING
+ peer A
+  address 198.51.100.1
+  pre-shared-key local sharedsecret123
+  pre-shared-key remote sharedsecret123
+
+crypto ikev2 profile IKEV2_PROFILE
+ match identity remote address 198.51.100.1 255.255.255.255
+ identity local address 198.51.100.2
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local IKEV2_KEYRING
+
+crypto ipsec transform-set TS esp-aes 256 esp-sha-hmac
+ mode transport
+
+crypto ipsec profile IPSEC_PROFILE
+ set transform-set TS
+ set ikev2-profile IKEV2_PROFILE
+
+

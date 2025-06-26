@@ -206,8 +206,9 @@ It works:
 6. new local session 7. tmux ls / it is still there
 8. attach to the tmux name / qemu vm is still alive
 
-
-
+ALSO create the tmux session with mouse scoll enabled:
+tmux new -s mysession \; set -g mouse on
+tmux new -s mfla3 \; set -g mouse on
 
 
 ```qpop2-resize-raw
