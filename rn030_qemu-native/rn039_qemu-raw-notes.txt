@@ -2,18 +2,155 @@
 
 
 
+ 1154  sudo qemu-img resize -f qcow2 F1-FreeBSD-14.2-RELEASE-arm64-aarch64-zfs.qcow2 +10G
+
+sudo qemu-img resize -f qcow2 FreeBSD-14.2-RELEASE-arm64-aarch64-zfs.qcow2 +10G
+
+03:48 greg@xcf16 /Users/0-qemu ? qemu-img info FreeBSD-14.2-RELEASE-arm64-aarch64-zfs.qcow2                  
+image: FreeBSD-14.2-RELEASE-arm64-aarch64-zfs.qcow2
+file format: qcow2
+virtual size: 16 GiB (17214013440 bytes)
+disk size: 3.5 GiB
+cluster_size: 65536
+Format specific information:
+    compat: 0.10
+    compression type: zlib
+    refcount bits: 16
+Child node '/file':
+    filename: FreeBSD-14.2-RELEASE-arm64-aarch64-zfs.qcow2
+    protocol type: file
+    file length: 3.52 GiB (3775070720 bytes)
+    disk size: 3.5 GiB
+03:48 greg@xcf16 /Users/0-qemu ? 
+
+
+*******************************************************************
+
+root@freebsd:~ # df -h
+Filesystem            Size    Used   Avail Capacity  Mounted on
+zroot/ROOT/default    4.3G    3.6G    781M    82%    /
+devfs                 1.0K      0B    1.0K     0%    /dev
+/dev/gpt/efiesp        32M    836K     31M     3%    /boot/efi
+zroot/tmp             781M    428K    781M     0%    /tmp
+zroot/var/crash       781M    424K    781M     0%    /var/crash
+zroot/home            781M    420K    781M     0%    /home
+zroot/usr/obj         781M    420K    781M     0%    /usr/obj
+zroot/var/tmp         781M    424K    781M     0%    /var/tmp
+zroot/usr/ports       781M    420K    781M     0%    /usr/ports
+zroot/var/mail        781M    420K    781M     0%    /var/mail
+zroot/var/audit       781M    428K    781M     0%    /var/audit
+zroot/usr/src         781M    420K    781M     0%    /usr/src
+zroot/var/log         781M    508K    781M     0%    /var/log
+root@freebsd:~ # 
+root@freebsd:~ # 
+root@freebsd:~ # 
+root@freebsd:~ # 
+root@freebsd:~ # 
+root@freebsd:~ # 
+root@freebsd:~ # gpart show
+=>      34  12649533  nda0  GPT  (16G) [CORRUPT]
+        34     66584     1  efi  (33M)
+     66618   2097152     2  freebsd-swap  (1.0G)
+   2163770  10485797     3  freebsd-zfs  (5.0G)
+
+root@freebsd:~ # 
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ZFS working expansion
+
+1. in OS   
+qemu-img resize -f qcow2 F1-FreeBSD-14.2-RELEASE-arm64-aarch64-zfs.qcow2 +10G
+
+2. inside qemu
+
+root@freebsd:~ # df -h
+Filesystem            Size    Used   Avail Capacity  Mounted on
+zroot/ROOT/default    4.3G    3.6G    781M    82%    /
+devfs                 1.0K      0B    1.0K     0%    /dev
+/dev/gpt/efiesp        32M    836K     31M     3%    /boot/efi
+zroot/tmp             781M    428K    781M     0%    /tmp
+zroot/var/crash       781M    424K    781M     0%    /var/crash
+zroot/home            781M    420K    781M     0%    /home
+zroot/usr/obj         781M    420K    781M     0%    /usr/obj
+zroot/var/tmp         781M    424K    781M     0%    /var/tmp
+zroot/usr/ports       781M    420K    781M     0%    /usr/ports
+zroot/var/mail        781M    420K    781M     0%    /var/mail
+zroot/var/audit       781M    428K    781M     0%    /var/audit
+zroot/usr/src         781M    420K    781M     0%    /usr/src
+zroot/var/log         781M    508K    781M     0%    /var/log
+root@freebsd:~ # 
+root@freebsd:~ # 
+root@freebsd:~ # 
+root@freebsd:~ # 
+root@freebsd:~ # 
+root@freebsd:~ # 
+root@freebsd:~ # gpart show
+=>      34  12649533  nda0  GPT  (16G) [CORRUPT]
+        34     66584     1  efi  (33M)
+     66618   2097152     2  freebsd-swap  (1.0G)
+   2163770  10485797     3  freebsd-zfs  (5.0G)
+
+root@freebsd:~ # gpart recover nda0
+nda0 recovered
+root@freebsd:~ # gpart show
+=>      34  33621046  nda0  GPT  (16G)
+        34     66584     1  efi  (33M)
+     66618   2097152     2  freebsd-swap  (1.0G)
+   2163770  10485797     3  freebsd-zfs  (5.0G)
+  12649567  20971513        - free -  (10G)
+
+root@freebsd:~ # gpart resize -i 3 nda0
+nda0p3 resized
+root@freebsd:~ # df -h
+Filesystem            Size    Used   Avail Capacity  Mounted on
+zroot/ROOT/default    4.3G    3.6G    781M    82%    /
+devfs                 1.0K      0B    1.0K     0%    /dev
+/dev/gpt/efiesp        32M    836K     31M     3%    /boot/efi
+zroot/tmp             781M    428K    781M     0%    /tmp
+zroot/var/crash       781M    424K    781M     0%    /var/crash
+zroot/home            781M    420K    781M     0%    /home
+zroot/usr/obj         781M    420K    781M     0%    /usr/obj
+zroot/var/tmp         781M    424K    781M     0%    /var/tmp
+zroot/usr/ports       781M    420K    781M     0%    /usr/ports
+zroot/var/mail        781M    420K    781M     0%    /var/mail
+zroot/var/audit       781M    428K    781M     0%    /var/audit
+zroot/usr/src         781M    420K    781M     0%    /usr/src
+zroot/var/log         781M    508K    781M     0%    /var/log
+root@freebsd:~ # 
+root@freebsd:~ # 
+root@freebsd:~ # 
+root@freebsd:~ # 
+root@freebsd:~ # zpool online -e zroot nda0p3
+root@freebsd:~ # 
+root@freebsd:~ # 
+root@freebsd:~ # df -h
+Filesystem            Size    Used   Avail Capacity  Mounted on
+zroot/ROOT/default     14G    3.6G     10G    26%    /
+devfs                 1.0K      0B    1.0K     0%    /dev
+/dev/gpt/efiesp        32M    836K     31M     3%    /boot/efi
+zroot/tmp              10G    428K     10G     0%    /tmp
+zroot/var/crash        10G    424K     10G     0%    /var/crash
+zroot/home             10G    420K     10G     0%    /home
+zroot/usr/obj          10G    420K     10G     0%    /usr/obj
+zroot/var/tmp          10G    424K     10G     0%    /var/tmp
+zroot/usr/ports        10G    420K     10G     0%    /usr/ports
+zroot/var/mail         10G    420K     10G     0%    /var/mail
+zroot/var/audit        10G    428K     10G     0%    /var/audit
+zroot/usr/src          10G    420K     10G     0%    /usr/src
+zroot/var/log          10G    508K     10G     0%    /var/log
+root@freebsd:~ # 
 
 
 
-;slkds;dlkf
-
-
-'';L';L'l;
-
-
-;sdlfk;sdlkf
-
-
-
-
-
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
