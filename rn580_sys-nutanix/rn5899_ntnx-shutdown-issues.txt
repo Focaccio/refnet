@@ -1,0 +1,430 @@
+
+
+
+
+                       ClusterHealth DOWN       []
+2025-09-14 11:14:29,860Z INFO MainThread cluster:2193 Cluster has been stopped via 'cluster stop' command, hence stopping all services.
+2025-09-14 11:14:29,861Z INFO MainThread cluster:3465 Success!
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ cvm_shutdown
+2025-09-14 11:14:39,217Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-09-14 11:14:39,218Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 7222261108900348184, cluster incarnation id: 1745111627151488
+2025-09-14 11:14:39,219Z INFO MainThread zookeeper_session.py:270 cvm_shutdown is attempting to connect to Zookeeper, host port list zk1:9876,zk2:9876,zk3:9876
+2025-09-14 11:14:39,728Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x39855b1941048a6, negotiated timeout=20 secs
+2025-09-14 11:14:39,738Z INFO MainThread leadership.py:256 lcm_leader not prescribed a blueprint for leadership
+2025-09-14 11:14:39,738Z WARNING MainThread leadership.py:600 Found no leadership contenders at /appliance/logical/pyleaders/lcm_leader
+2025-09-14 11:14:39,738Z WARNING MainThread leadership.py:600 Found no leadership contenders at /appliance/logical/pyleaders/lcm_leader
+2025-09-14 11:14:39,738Z ERROR MainThread lcm_helper.py:56 No LCM leader available to check if LCM operation is in progress
+2025-09-14 11:14:39,739Z INFO MainThread cvm_shutdown:272 No upgrade was found to be in progress on the cluster
+2025-09-14 11:14:39,740Z INFO MainThread cvm_shutdown:226 Checking if CVMs other than 192.168.86.61 are in maintenance mode
+2025-09-14 11:14:39,740Z INFO MainThread genesis_utils.py:2481 The CVM 192.168.86.151 was put in maintenance mode for reason CVM shutdown
+2025-09-14 11:14:39,740Z ERROR MainThread cvm_shutdown:292 Failed to shutdown: Check before CVM Shutdown failed. Error: Another CVM 192.168.86.151 was found to be in maintenance. Exiting ...
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ 
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ 
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ cvm_
+cvm_diagnose  cvm_shutdown  
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ cvm_
+cvm_diagnose  cvm_shutdown  
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ cvm_shutdown 
+adonis-pe/                bin/                      config/                   flow/                     lib/                      prism/                    software_downloads/       .vip_service/
+api_artifacts_pe/         certs/                    data/                     .fonts/                   .local/                   .python-eggs/             .ssh/                     
+aplos/                    ce_scripts/               .debug_symbols/           foundation/               .low_water_mark.json      rc.local.d/               ssh_keys/                 
+athena/                   ce_vibs/                  diagnostics/              ikat_control_plane/       .manage_ovs_history       .rnd                      tmp/                      
+.bash_history             .chrony_enabled_marker    displayname               ikat_proxy/               minerva/                  serviceability/           .toprc                    
+.bash_profile             cluster/                  .elinks/                  jaeger-agent/             ncc/                      .snmp/                    tracebacks.log            
+.bashrc                   .cluster_sync_configured  etc/                      lcm/                      observability/            sockets/                  .venvs/                   
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ cvm_shutdown 
+adonis-pe/                bin/                      config/                   flow/                     lib/                      prism/                    software_downloads/       .vip_service/
+api_artifacts_pe/         certs/                    data/                     .fonts/                   .local/                   .python-eggs/             .ssh/                     
+aplos/                    ce_scripts/               .debug_symbols/           foundation/               .low_water_mark.json      rc.local.d/               ssh_keys/                 
+athena/                   ce_vibs/                  diagnostics/              ikat_control_plane/       .manage_ovs_history       .rnd                      tmp/                      
+.bash_history             .chrony_enabled_marker    displayname               ikat_proxy/               minerva/                  serviceability/           .toprc                    
+.bash_profile             cluster/                  .elinks/                  jaeger-agent/             ncc/                      .snmp/                    tracebacks.log            
+.bashrc                   .cluster_sync_configured  etc/                      lcm/                      observability/            sockets/                  .venvs/                   
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ cvm_shutdown 
+2025-09-14 11:15:24,860Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-09-14 11:15:24,862Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 7222261108900348184, cluster incarnation id: 1745111627151488
+2025-09-14 11:15:24,862Z INFO MainThread zookeeper_session.py:270 cvm_shutdown is attempting to connect to Zookeeper, host port list zk1:9876,zk2:9876,zk3:9876
+2025-09-14 11:15:25,176Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x29855b147164d84, negotiated timeout=20 secs
+2025-09-14 11:15:25,188Z INFO MainThread leadership.py:256 lcm_leader not prescribed a blueprint for leadership
+2025-09-14 11:15:25,189Z WARNING MainThread leadership.py:600 Found no leadership contenders at /appliance/logical/pyleaders/lcm_leader
+2025-09-14 11:15:25,189Z WARNING MainThread leadership.py:600 Found no leadership contenders at /appliance/logical/pyleaders/lcm_leader
+2025-09-14 11:15:25,189Z ERROR MainThread lcm_helper.py:56 No LCM leader available to check if LCM operation is in progress
+2025-09-14 11:15:25,190Z INFO MainThread cvm_shutdown:272 No upgrade was found to be in progress on the cluster
+2025-09-14 11:15:25,191Z INFO MainThread cvm_shutdown:226 Checking if CVMs other than 192.168.86.61 are in maintenance mode
+2025-09-14 11:15:25,191Z INFO MainThread genesis_utils.py:2481 The CVM 192.168.86.151 was put in maintenance mode for reason CVM shutdown
+2025-09-14 11:15:25,191Z ERROR MainThread cvm_shutdown:292 Failed to shutdown: Check before CVM Shutdown failed. Error: Another CVM 192.168.86.151 was found to be in maintenance. Exiting ...
+nutanix@NTNX-6669e4a4-A-CVM:192.168.86.61:~$ 
+
+
+
+
+
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ cluster stop
+2025-09-14 11:12:46,949Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-09-14 11:12:46,950Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 7222261108900348184, cluster incarnation id: 1745111627151488
+2025-09-14 11:12:46,950Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876,zk2:9876,zk3:9876
+2025-09-14 11:12:46,957Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x39855b194104887, negotiated timeout=20 secs
+2025-09-14 11:12:46,960Z INFO Dummy-2 zookeeper_session.py:940 Calling c_impl.close() for session 0x39855b194104887
+2025-09-14 11:12:46,962Z INFO Dummy-2 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+2025-09-14 11:12:47,021Z WARNING ThreadPoolExecutor-0_0 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-09-14 11:12:50,221Z WARNING ThreadPoolExecutor-0_0 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-09-14 11:12:53,293Z WARNING ThreadPoolExecutor-0_0 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-09-14 11:12:56,365Z WARNING ThreadPoolExecutor-0_0 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-09-14 11:12:59,437Z WARNING ThreadPoolExecutor-0_0 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-09-14 11:13:02,509Z WARNING ThreadPoolExecutor-0_0 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-09-14 11:13:05,582Z WARNING ThreadPoolExecutor-0_0 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-09-14 11:13:08,653Z WARNING ThreadPoolExecutor-0_0 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-09-14 11:13:11,726Z WARNING ThreadPoolExecutor-0_0 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-09-14 11:13:14,797Z WARNING ThreadPoolExecutor-0_0 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-09-14 11:13:16,965Z WARNING MainThread genesis_utils.py:5875 Could not complete the operation <function NodeManager.destroy_marker_exists at 0x7fe31eefca60> on SVMs ['192.168.86.151'] in required time
+2025-09-14 11:13:17,869Z WARNING ThreadPoolExecutor-0_0 genesis_utils.py:1882 Failed to reach a node where Genesis is up. Ensure Genesis is running on all CVMs. Retrying...(Hit Ctrl-C to abort)
+2025-09-14 11:13:18,870Z ERROR MainThread cluster:3262 Failed to check if destroy is in progress on the CVM: 192.168.86.151, retval: None
+2025-09-14 11:13:18,870Z ERROR MainThread cluster:3270 Could not ascertain if the nodes: ['192.168.86.151'] are being destroyed
+2025-09-14 11:13:18,870Z WARNING MainThread cluster:3275 Checking only for the existence of the node_unconfigure marker on the failed nodes: ['192.168.86.151']
+2025-09-14 11:13:20,942Z INFO MainThread cluster:3290 ret, out, err:
+65280
+b''
+b''
+2025-09-14 11:13:20,942Z INFO MainThread cluster:3302 Executing action stop on SVMs 192.168.86.151,192.168.86.61,192.168.86.181
+2025-09-14 11:13:20,942Z WARNING MainThread genesis_utils.py:348 Deprecated: use util.cluster.info.get_node_uuid() instead
+2025-09-14 11:13:20,942Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-09-14 11:13:20,942Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 7222261108900348184, cluster incarnation id: 1745111627151488
+2025-09-14 11:13:20,942Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876,zk2:9876,zk3:9876
+2025-09-14 11:13:21,457Z INFO Dummy-3 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x39855b19410488a, negotiated timeout=20 secs
+2025-09-14 11:13:21,464Z INFO Dummy-4 zookeeper_session.py:940 Calling c_impl.close() for session 0x39855b19410488a
+2025-09-14 11:13:21,464Z INFO Dummy-4 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+2025-09-14 11:13:24,016Z INFO MainThread cluster:3349 
+
+***** CLUSTER NAME *****
+elefx
+
+This operation will stop the Nutanix storage services and any VMs using Nutanix storage will become unavailable. Do you want to proceed? (I agree/[N]): I agree
+2025-09-14 11:13:37,061Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-09-14 11:13:37,062Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 7222261108900348184, cluster incarnation id: 1745111627151488
+2025-09-14 11:13:37,062Z INFO MainThread zookeeper_session.py:270 cluster is attempting to connect to Zookeeper, host port list zk1:9876,zk2:9876,zk3:9876
+2025-09-14 11:13:37,067Z INFO Dummy-3 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x39855b19410488d, negotiated timeout=20 secs
+2025-09-14 11:13:37,073Z INFO Dummy-5 zookeeper_session.py:941 Calling zookeeper_close and invalidating zhandle
+Waiting on 192.168.86.151 (Down) to stop: 
+
+Waiting on 192.168.86.181 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+Medusa
+VipMonitor
+Prism
+ClusterHealth
+
+Waiting on 192.168.86.61 (Up) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+Medusa
+VipMonitor
+Stargate
+ClusterHealth
+
+
+Waiting on 192.168.86.151 (Down) to stop: 
+
+Waiting on 192.168.86.181 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+Waiting on 192.168.86.61 (Up) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.151 (Down) to stop: 
+
+Waiting on 192.168.86.181 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+Waiting on 192.168.86.61 (Up) to stop: 
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.151 (Down) to stop: 
+
+Waiting on 192.168.86.181 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+Waiting on 192.168.86.61 (Up) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.151 (Down) to stop: 
+
+Waiting on 192.168.86.181 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+
+Waiting on 192.168.86.61 (Up) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.151 (Down) to stop: 
+
+Waiting on 192.168.86.181 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+
+Waiting on 192.168.86.61 (Up) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+ClusterHealth
+
+
+Waiting on 192.168.86.151 (Down) to stop: 
+
+Waiting on 192.168.86.181 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+
+Waiting on 192.168.86.61 (Up) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+
+
+Waiting on 192.168.86.151 (Down) to stop: 
+
+Waiting on 192.168.86.181 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+
+Waiting on 192.168.86.61 (Up) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+
+
+Waiting on 192.168.86.151 (Down) to stop: 
+
+Waiting on 192.168.86.181 (Up, ZeusLeader) to stop: 
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+
+Waiting on 192.168.86.61 (Up) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+
+
+Waiting on 192.168.86.151 (Down) to stop: 
+
+Waiting on 192.168.86.181 (Up, ZeusLeader) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+
+Waiting on 192.168.86.61 (Up) to stop: 
+Xmount
+IkatProxy
+Zeus
+Scavenger
+VipMonitor
+
+
+The state of the cluster: stop
+Lockdown mode: Disabled
+
+        CVM: 192.168.86.151 Down
+
+        CVM: 192.168.86.181 Up, ZeusLeader
+                              Xmount   UP       [4044621, 4044685, 4044686, 4044693]
+                           IkatProxy   UP       [10958, 11069, 11070, 11071]
+                                Zeus   UP       [9938, 9999, 10000, 10001, 10010, 10028]
+                           Scavenger   UP       [11127, 11290, 11291, 11292]
+                    SysStatCollector DOWN       []
+                    IkatControlPlane DOWN       []
+                       SSLTerminator DOWN       []
+                      SecureFileSync DOWN       []
+                              Medusa DOWN       []
+                  DynamicRingChanger DOWN       []
+                              Pithos DOWN       []
+                          InsightsDB DOWN       []
+                              Athena DOWN       []
+                             Mercury DOWN       []
+                              Mantle DOWN       []
+                          VipMonitor   UP       [6076, 6077, 6078, 6079, 6150]
+                            Stargate DOWN       []
+                InsightsDataTransfer DOWN       []
+                             GoErgon DOWN       []
+                             Cerebro DOWN       []
+                             Chronos DOWN       []
+                             Curator DOWN       []
+                               Prism DOWN       []
+                                Hera DOWN       []
+                        AlertManager DOWN       []
+                            Arithmos DOWN       []
+                             Catalog DOWN       []
+                           Acropolis DOWN       []
+                              Castor DOWN       []
+                               Uhura DOWN       []
+                   NutanixGuestTools DOWN       []
+                          MinervaCVM DOWN       []
+                       ClusterConfig DOWN       []
+                         APLOSEngine DOWN       []
+                               APLOS DOWN       []
+                     PlacementSolver DOWN       []
+                               Lazan DOWN       []
+                             Polaris DOWN       []
+                              Delphi DOWN       []
+                            Security DOWN       []
+                                Flow DOWN       []
+                             Anduril DOWN       []
+                              Narsil DOWN       []
+                               XTrim DOWN       []
+                       ClusterHealth DOWN       []
+
+        CVM: 192.168.86.61 Up
+                              Xmount   UP       [22690, 22839, 22840, 22844]
+                           IkatProxy   UP       [10595, 10692, 10693, 10694]
+                                Zeus   UP       [9840, 9900, 9901, 9903, 9912, 9930]
+                           Scavenger   UP       [10734, 11055, 11056, 11058]
+                    SysStatCollector DOWN       []
+                    IkatControlPlane DOWN       []
+                       SSLTerminator DOWN       []
+                      SecureFileSync DOWN       []
+                              Medusa DOWN       []
+                  DynamicRingChanger DOWN       []
+                              Pithos DOWN       []
+                          InsightsDB DOWN       []
+                              Athena DOWN       []
+                             Mercury DOWN       []
+                              Mantle DOWN       []
+                          VipMonitor   UP       [9211, 9212, 9213, 9214, 9216]
+                            Stargate DOWN       []
+                InsightsDataTransfer DOWN       []
+                             GoErgon DOWN       []
+                             Cerebro DOWN       []
+                             Chronos DOWN       []
+                             Curator DOWN       []
+                               Prism DOWN       []
+                                Hera DOWN       []
+                        AlertManager DOWN       []
+                            Arithmos DOWN       []
+                             Catalog DOWN       []
+                           Acropolis DOWN       []
+                              Castor DOWN       []
+                               Uhura DOWN       []
+                   NutanixGuestTools DOWN       []
+                          MinervaCVM DOWN       []
+                       ClusterConfig DOWN       []
+                         APLOSEngine DOWN       []
+                               APLOS DOWN       []
+                     PlacementSolver DOWN       []
+                               Lazan DOWN       []
+                             Polaris DOWN       []
+                              Delphi DOWN       []
+                            Security DOWN       []
+                                Flow DOWN       []
+                             Anduril DOWN       []
+                              Narsil DOWN       []
+                               XTrim DOWN       []
+                       ClusterHealth DOWN       []
+2025-09-14 11:14:22,684Z INFO MainThread cluster:2193 Cluster has been stopped via 'cluster stop' command, hence stopping all services.
+2025-09-14 11:14:22,684Z INFO MainThread cluster:3465 Success!
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ cvm_shutdown -f
+2025-09-14 11:14:45,852Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-09-14 11:14:45,854Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 7222261108900348184, cluster incarnation id: 1745111627151488
+2025-09-14 11:14:45,854Z INFO MainThread zookeeper_session.py:270 cvm_shutdown is attempting to connect to Zookeeper, host port list zk1:9876,zk2:9876,zk3:9876
+2025-09-14 11:14:45,863Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x29855b147164d83, negotiated timeout=20 secs
+2025-09-14 11:14:45,873Z INFO MainThread leadership.py:256 lcm_leader not prescribed a blueprint for leadership
+2025-09-14 11:14:45,874Z WARNING MainThread leadership.py:600 Found no leadership contenders at /appliance/logical/pyleaders/lcm_leader
+2025-09-14 11:14:45,874Z WARNING MainThread leadership.py:600 Found no leadership contenders at /appliance/logical/pyleaders/lcm_leader
+2025-09-14 11:14:45,874Z ERROR MainThread lcm_helper.py:56 No LCM leader available to check if LCM operation is in progress
+2025-09-14 11:14:45,874Z INFO MainThread cvm_shutdown:272 No upgrade was found to be in progress on the cluster
+2025-09-14 11:14:45,876Z INFO MainThread cvm_shutdown:226 Checking if CVMs other than 192.168.86.181 are in maintenance mode
+2025-09-14 11:14:45,876Z INFO MainThread genesis_utils.py:2481 The CVM 192.168.86.151 was put in maintenance mode for reason CVM shutdown
+2025-09-14 11:14:45,876Z ERROR MainThread cvm_shutdown:292 Failed to shutdown: Check before CVM Shutdown failed. Error: Another CVM 192.168.86.151 was found to be in maintenance. Exiting ...
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ cvm_shutdown
+2025-09-14 11:14:54,100Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-09-14 11:14:54,102Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 7222261108900348184, cluster incarnation id: 1745111627151488
+2025-09-14 11:14:54,102Z INFO MainThread zookeeper_session.py:270 cvm_shutdown is attempting to connect to Zookeeper, host port list zk1:9876,zk2:9876,zk3:9876
+2025-09-14 11:14:54,119Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x39855b1941048a7, negotiated timeout=20 secs
+2025-09-14 11:14:54,131Z INFO MainThread leadership.py:256 lcm_leader not prescribed a blueprint for leadership
+2025-09-14 11:14:54,132Z WARNING MainThread leadership.py:600 Found no leadership contenders at /appliance/logical/pyleaders/lcm_leader
+2025-09-14 11:14:54,132Z WARNING MainThread leadership.py:600 Found no leadership contenders at /appliance/logical/pyleaders/lcm_leader
+2025-09-14 11:14:54,133Z ERROR MainThread lcm_helper.py:56 No LCM leader available to check if LCM operation is in progress
+2025-09-14 11:14:54,133Z INFO MainThread cvm_shutdown:272 No upgrade was found to be in progress on the cluster
+2025-09-14 11:14:54,134Z INFO MainThread cvm_shutdown:226 Checking if CVMs other than 192.168.86.181 are in maintenance mode
+2025-09-14 11:14:54,134Z INFO MainThread genesis_utils.py:2481 The CVM 192.168.86.151 was put in maintenance mode for reason CVM shutdown
+2025-09-14 11:14:54,134Z ERROR MainThread cvm_shutdown:292 Failed to shutdown: Check before CVM Shutdown failed. Error: Another CVM 192.168.86.151 was found to be in maintenance. Exiting ...
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ cvm_shutdown 
+2025-09-14 11:16:46,250Z INFO MainThread zookeeper_session.py:136 Using multithreaded Zookeeper client library: 1
+2025-09-14 11:16:46,252Z INFO MainThread zookeeper_session.py:248 Parsed cluster id: 7222261108900348184, cluster incarnation id: 1745111627151488
+2025-09-14 11:16:46,252Z INFO MainThread zookeeper_session.py:270 cvm_shutdown is attempting to connect to Zookeeper, host port list zk1:9876,zk2:9876,zk3:9876
+2025-09-14 11:16:46,258Z INFO Dummy-1 zookeeper_session.py:840 ZK session establishment complete, sessionId=0x29855b147164d85, negotiated timeout=20 secs
+2025-09-14 11:16:46,267Z INFO MainThread leadership.py:256 lcm_leader not prescribed a blueprint for leadership
+2025-09-14 11:16:46,268Z WARNING MainThread leadership.py:600 Found no leadership contenders at /appliance/logical/pyleaders/lcm_leader
+2025-09-14 11:16:46,268Z WARNING MainThread leadership.py:600 Found no leadership contenders at /appliance/logical/pyleaders/lcm_leader
+2025-09-14 11:16:46,268Z ERROR MainThread lcm_helper.py:56 No LCM leader available to check if LCM operation is in progress
+2025-09-14 11:16:46,268Z INFO MainThread cvm_shutdown:272 No upgrade was found to be in progress on the cluster
+2025-09-14 11:16:46,270Z INFO MainThread cvm_shutdown:226 Checking if CVMs other than 192.168.86.181 are in maintenance mode
+2025-09-14 11:16:46,270Z INFO MainThread genesis_utils.py:2481 The CVM 192.168.86.151 was put in maintenance mode for reason CVM shutdown
+2025-09-14 11:16:46,270Z ERROR MainThread cvm_shutdown:292 Failed to shutdown: Check before CVM Shutdown failed. Error: Another CVM 192.168.86.151 was found to be in maintenance. Exiting ...
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+
