@@ -485,4 +485,27 @@ tmux new -s mysession \; set -g mouse on
 tmux new -s mfla3 \; set -g mouse on
 
 
+NOTE: ctrl-c in qemu native kills it / MUST 1. TMUX for process & 2. TMUX for SSH 
+the operations are in TMUX2 ssh
+
+```qpop1 RESULT PASS 
+it worked 
+1. I created tmux -s f16-qemu-fbsd1-1  
+   to launch qemu qcow2 freebsd vm and logged in as root - but to not run any commands
+   because any ctrl-c will break the vm
+   I did netstat -i -n to verify the dhcp ip address on the nic ABCD
+2. I created tmux -s f16-ssh-fbsd1-1 
+   to be inside the vm without breaking it with ctrl-C
+   I was able to detach from this and then
+   put the whole computer to SLEEP
+#
+Upon returning I woke up the computer 
+3. I used tmux a -t f16-ssh-fbsd1-1 to get back to the vm
+   the continuous ping was still running
+
+
+04:56 greg@xcf16 ~ ? tmux ls
+f16-qemu-fbsd1-1: 1 windows (created Mon Sep 15 03:55:00 2025)
+f16-ssh-fbsd1-1: 1 windows (created Mon Sep 15 04:07:07 2025) (attached)
+04:56 greg@xcf16 ~ ? 
 
