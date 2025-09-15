@@ -1,4 +1,7 @@
-
+###############################################################################################
+###############################################################################################
+###############################################################################################
+###############################################################################################
 ###############################################################################################
 ###############################################################################################
 ###############################################################################################
@@ -9,20 +12,26 @@ INDEX
 ###############################################################################################
 ###############################################################################################
 
-&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-^^^access-and-setup
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+^^^qas qemu access-and-setup
 
 ```as1
 
 ```as2 with bigger disk space for packages
 
+```as3 qemu with qcow2 and passthrough of USB wifi dongle
+
 ```clean-shutdown
 sudo pkill -SIGTERM qemu-system-aarch64
 
-&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-^^^OPS qemu-pure-ops aka qpop#-name
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+^^^qpop qemu pure ops aka qpop#-name
 
 ```qpop1-persist
 
@@ -51,6 +60,36 @@ free246: 1 windows (created Fri Jun 13 04:55:59 2025)
 
 
 
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```te tests-and-examples 
+
+```te-qpop1-20250915
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------
@@ -65,13 +104,19 @@ CONTENT - section access and set up ^^^as ```as#-name
 -----------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------
 
+^^^qemu access-and-setup
+...............................................................................................
+...............................................................................................
+...............................................................................................
+^^^qemu access-and-setup
+...............................................................................................
+...............................................................................................
+...............................................................................................
 
-```access-and-setup
-
-...............................................................................................
-...............................................................................................
-...............................................................................................
-```as1-freebsd-demos1 
+_______________________________________________________________________________________________
+_______________________________________________________________________________________________
+_______________________________________________________________________________________________
+```qas1 freebsd-demos1 
 >>> capability1 >>>
 copy and view log files in ufs from netgate ext USB w/ USB moved to mac to read on freebsd vm 
 mac os native can not read ufs 
@@ -118,12 +163,9 @@ qemu-system-aarch64 \
   -no-reboot
 06:10 greg@xcf16 /Users/0-qemu ? 
 
-
-
-...............................................................................................
-...............................................................................................
-...............................................................................................
-
+_______________________________________________________________________________________________
+_______________________________________________________________________________________________
+_______________________________________________________________________________________________
 ```as2-freebsd-demo2
 #!/bin/bash
 
@@ -168,32 +210,122 @@ if [ -f "$ISO" ] && [ ! -f ".vm_initialized" ]; then
 fi
 
 
+_______________________________________________________________________________________________
+_______________________________________________________________________________________________
+_______________________________________________________________________________________________
+```as3 qemu qcow2 set up with USB wifi dongle pass through
+
+03:36 greg@xcf16 /Users/0-qemu ? cat q2f-test6.vm 
+#!/bin/bash
+set -euo pipefail
+
+# -------- Config --------
+IMAGE="${IMAGE:-FreeBSD-14.2-RELEASE-arm64-aarch64-zfs.qcow2}"
+DISK_BUS="${DISK_BUS:-nvme}"   # nvme | scsi
+VENDOR_ID="${VENDOR_ID:-0x0cf3}"
+PRODUCT_ID="${PRODUCT_ID:-0x9271}"
+LOG_ROOT="${LOG_ROOT:-$HOME/qemu-logs}"
+RUN_TAG="$(date +"%Y%m%d-%H%M%S")"
+RUN_DIR="${LOG_ROOT}/run-${RUN_TAG}"
+USB_LOG="${RUN_DIR}/usb.log"
+FULL_LOG="${RUN_DIR}/qemu-full.log"
+EFI_FD="${EFI_FD:-QEMU_EFI.fd}"      # path to AArch64 EDK2 firmware
+IFNAME="${IFNAME:-en18}"             # host NIC for vmnet-bridged
+MON_SOCK="${RUN_DIR}/monitor.sock"   # UNIX monitor socket
+
+mkdir -p "${RUN_DIR}"
+echo "Logs will be in: ${RUN_DIR}"
+
+need(){ command -v "$1" >/dev/null 2>&1 || { echo "Missing '$1'"; exit 1; }; }
+need qemu-system-aarch64
+need ioreg
+
+# Optional tools for monitor:
+command -v nc >/dev/null 2>&1 || echo "Tip: install 'netcat' to use: nc -U ${MON_SOCK}"
+command -v socat >/dev/null 2>&1 || true
+
+# Elevate for USB permissions on macOS
+if [[ $EUID -ne 0 ]]; then
+  echo "Re-execing with sudo for USB access…"
+  exec sudo --preserve-env=IMAGE,DISK_BUS,VENDOR_ID,PRODUCT_ID,LOG_ROOT,EFI_FD,RUN_TAG,RUN_DIR,USB_LOG,FULL_LOG,IFNAME,MON_SOCK "$0" "$@"
+fi
+
+# Check usb-host support
+if ! qemu-system-aarch64 -device help | grep -qi 'usb-host'; then
+  echo "ERROR: QEMU lacks usb-host (libusb). Try: brew reinstall qemu"; exit 1
+fi
+
+# Disk bus args
+DISK_ARGS=()
+if [[ "${DISK_BUS}" == "nvme" ]]; then
+  DISK_ARGS+=(
+    -drive if=none,file="${IMAGE}",format=qcow2,id=hd0
+    -device nvme,serial=nvme0,id=nvme0
+    -device nvme-ns,drive=hd0,bus=nvme0,nsid=1
+  )
+elif [[ "${DISK_BUS}" == "scsi" ]]; then
+  DISK_ARGS+=(
+    -device virtio-scsi-pci,id=scsi0
+    -drive if=none,file="${IMAGE}",format=qcow2,id=hd0
+    -device scsi-hd,drive=hd0
+  )
+else
+  echo "ERROR: Unknown DISK_BUS='${DISK_BUS}'. Use 'nvme' or 'scsi'."; exit 1
+fi
+
+# Best-effort dongle presence hint
+if ioreg -p IOUSB -l | grep -qiE 'idVendor.*3315|0x0cf3'; then
+  echo "✓ Found vendor 0x0cf3 (Atheros) on host"
+else
+  echo "⚠️  Atheros 0x0cf3 not detected via ioreg; ensure the dongle is plugged in."
+fi
+
+# Tail USB log live
+: > "${USB_LOG}"
+echo "Tailing USB debug log: ${USB_LOG}"
+tail -f "${USB_LOG}" &
+TAIL_PID=$!
+trap 'kill ${TAIL_PID} >/dev/null 2>&1 || true' EXIT
+
+echo "Launching QEMU… (monitor socket: ${MON_SOCK})"
+echo "Connect to monitor with:  nc -U ${MON_SOCK}   (then: info pci / info usb)"
+
+set -x
+qemu-system-aarch64 \
+  -machine virt,highmem=off \
+  -cpu host \
+  -accel hvf \
+  -m 2048 \
+  -smp 4 \
+  -nographic \
+  -bios "${EFI_FD}" \
+  "${DISK_ARGS[@]}" \
+  -netdev vmnet-bridged,id=net0,ifname="${IFNAME}" \
+  -device virtio-net-pci,netdev=net0 \
+  -device qemu-xhci,id=xhci \
+  -device usb-host,vendorid=${VENDOR_ID},productid=${PRODUCT_ID} \
+  -monitor unix:"${MON_SOCK}",server,nowait \
+  -d guest_errors \
+  -D "${USB_LOG}" \
+  -no-reboot 2>&1 | tee -a "${FULL_LOG}"
+set +x%
+03:36 greg@xcf16 /Users/0-qemu ? 
 
 
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
-CONTENT - qemu pure operations ^^^qpop ```qpop#-name
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
-
-
-```qemu-pure-ops aka qpop#-name
-
+^^^qpop qemu-pure-ops aka qpop#-name
+...............................................................................................
+...............................................................................................
+...............................................................................................
+^^^qpop qemu-pure-ops aka qpop#-name
 ...............................................................................................
 ...............................................................................................
 ...............................................................................................
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+_______________________________________________________________________________________________
+_______________________________________________________________________________________________
+_______________________________________________________________________________________________
 ```qpop1-persist
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 USE TMUX - package in brew
 tmux new -s NAME  
 ctrl-b d to detach (or computer macos SLEEP and put away for awhile...)
@@ -210,7 +342,9 @@ ALSO create the tmux session with mouse scoll enabled:
 tmux new -s mysession \; set -g mouse on
 tmux new -s mfla3 \; set -g mouse on
 
-
+_______________________________________________________________________________________________
+_______________________________________________________________________________________________
+_______________________________________________________________________________________________
 ```qpop2-resize-raw
 
 qemu-img resize name.raw +10G
@@ -273,3 +407,39 @@ drwxr-xr-x  18 root  admin          576 Jun 17 03:56 ..
 -rwxrwxrwx   1 greg  admin         1118 May 29 03:43 test6vm.sh
 -rwxrwxrwx   1 greg  admin          760 May 28 02:41 testvm.sh
 03:08 greg@xcf16 /Users/1-qemu ? 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+^^^te tests-and-examples 
+^^^te tests-and-examples 
+...............................................................................................
+...............................................................................................
+...............................................................................................
+^^^te tests-and-examples 
+^^^te tests-and-examples 
+...............................................................................................
+...............................................................................................
+...............................................................................................
+
+
+
+
+
+
