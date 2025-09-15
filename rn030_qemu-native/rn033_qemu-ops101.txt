@@ -503,6 +503,9 @@ Upon returning I woke up the computer
 3. I used tmux a -t f16-ssh-fbsd1-1 to get back to the vm
    the continuous ping was still running
 
+4. I was also able to reattach to the "base" qemu session PS with
+   tmux a -t f16-qemu-fbsd1-1
+
 
 04:56 greg@xcf16 ~ ? tmux ls
 f16-qemu-fbsd1-1: 1 windows (created Mon Sep 15 03:55:00 2025)
