@@ -1,0 +1,8 @@
+EC-questions101.txt
+
+
+What about segments on WAN
+KW-10106 (config) # system router kw6 ip 198.15.99.6 segment 1
+% Segment value for wan interface must be 0
+KW-10106 (config) # 
+

@@ -1,0 +1,5 @@
+
+
+EC configs
+
+KW-10106 (config) # system router kw6 create interface wan0 wan
