@@ -1,17 +1,79 @@
 EC-config-notes
 
+
+
+8
+KW-10108 (config) # system router EC8_WAN1-ASLAN create interface wan1 lan
+KW-10108 (config) # system router EC8_WAN1-ASLAN ip 12.0.0.8 /24 nexthop 12.0.0.1 vlan 0 
+KW-10108 (config) # end
+
+   system router EC8_WAN1-ASLAN create interface wan1 lan
+   system router EC8_WAN1-ASLAN ip 12.0.0.8 /24 nexthop 12.0.0.1 vlan 0
+   system router EC8_WAN1-ASLAN ip 12.0.0.8 /24 nexthop 12.0.0.1 vlan 0
+   system router EC8_WAN1-ASLAN ip 12.0.0.8 inbound-max-bw 100
+   system router EC8_WAN1-ASLAN ip 12.0.0.8 outbound-max-bw 100
+   system router EC8_WAN1-ASLAN ip 12.0.0.8 security-mode 0
+   system router EC8_WAN1-ASLAN ip 12.0.0.8 segment 0
+   system router EC8_WAN1-ASLAN ip 12.0.0.8 target-in-thres 95.000000000
+   system router EC8_WAN1-ASLAN ip 12.0.0.8 target-out-thres 95.000000000
+   system router EC8_WAN1-ASLAN ip 12.0.0.8 zone 0
+
+
+
+
+
+EC8
+subnet 10.0.0.0/24 nexthop 12.0.0.1 interface wan1 comment EC8-WAN1-VIA-LOCAL-WAN1
+
+
+EC6
+subnet 12.0.0.0/24 nexthop 10.0.0.1 interface wan1 comment EC6-WAN1-VIA-LOCAL-WAN1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Commands Accepted:
 
 ~~~~~ 6 ~~~~~ TOP  L
+
+
 system router kw6 create interface wan0 wan
 system router kw6 ip 198.15.99.6 255.255.255.0 nexthop 198.15.99.1 
 
-KW-10106 (config) # interface lan1 ip address 172.18.1.1 255.255.255.0
+interface lan1 ip address 172.18.1.1 255.255.255.0
+
+interface tunnel tunnel101 create 198.15.99.6 198.15.99.8
+ip route 172.28.1.0 /24 198.15.99.8 wan0 
 
 
 ~~~~~ 8 ~~~~~ BOT P
 system router kw8 create interface wan0 wan
 system router kw8 ip 198.15.99.8 255.255.255.0 nexthop 198.15.99.1 
+
+interface lan1 ip address 172.28.1.1 255.255.255.0
+
+interface tunnel tunnel101 create 198.15.99.8 198.15.99.6
+
+ip route 172.18.1.0 /24 198.15.99.6 wan0 
+
 
 
 
@@ -48,6 +110,64 @@ Command notes:
    vxlan segment Default vni 4294967295
    vxlan segment Default zone 0
    vxlan vtep-interface ""
+
+
+############################
+# EC6 CONFIG
+############################
+configure terminal
+
+! --- Underlay (WAN0) ---
+system router EC6 create interface wan0 wan
+system router EC6 ip 198.15.99.6 255.255.255.0 vlan 0
+
+! --- LAN (LAN1) ---
+system router EC6 create interface lan1 lan
+system router EC6 ip 172.16.6.1 255.255.255.0 vlan 0
+
+! --- Overlay tunnel to EC8 over WAN0 ---
+tunnel create EC8_TUN
+  local 198.15.99.6
+  remote 198.15.99.8
+  ipsec enable
+  mtu 1400
+  keepalive enable
+exit
+
+! --- Route remote LAN via the tunnel ---
+ip route 172.16.8.0 255.255.255.0 tunnel EC8_TUN
+
+end
+write memory
+
+
+############################
+# EC8 CONFIG
+############################
+configure terminal
+
+! --- Underlay (WAN0) ---
+system router EC8 create interface wan0 wan
+system router EC8 ip 198.15.99.8 255.255.255.0 vlan 0
+
+! --- LAN (LAN1) ---
+system router EC8 create interface lan1 lan
+system router EC8 ip 172.16.8.1 255.255.255.0 vlan 0
+
+! --- Overlay tunnel to EC6 over WAN0 ---
+tunnel create EC6_TUN
+  local 198.15.99.8
+  remote 198.15.99.6
+  ipsec enable
+  mtu 1400
+  keepalive enable
+exit
+
+! --- Route remote LAN via the tunnel ---
+ip route 172.16.6.0 255.255.255.0 tunnel EC6_TUN
+
+end
+write memory
 
 
 
