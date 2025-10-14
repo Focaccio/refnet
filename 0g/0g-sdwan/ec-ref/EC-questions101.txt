@@ -1,8 +1,144 @@
 EC-questions101.txt
 
 
+1 WAN can not be segmented
+
+2 link integrity test
+
+3 
+
+
+
+
+
+
+
 What about segments on WAN
 KW-10106 (config) # system router kw6 ip 198.15.99.6 segment 1
 % Segment value for wan interface must be 0
 KW-10106 (config) # 
+
+   system router rtr100 create interface wan1 wan
+   system router rtr100 ip 12.0.0.8 /24 vlan 0 segment 0 zone 0 security-mode 0
+
+
+      system router rtr2 create interface lan1 lan
+   system router rtr2 ip 172.28.1.1 /24 nexthop 0.0.0.0 vlan 0
+   system router rtr2 ip 172.28.1.1 /24 nexthop 0.0.0.0 vlan 0
+   system router rtr2 ip 172.28.1.1 inbound-max-bw 0
+   system router rtr2 ip 172.28.1.1 label 31
+   system router rtr2 ip 172.28.1.1 outbound-max-bw 0
+   system router rtr2 ip 172.28.1.1 security-mode 0
+   system router rtr2 ip 172.28.1.1 segment 0
+   system router rtr2 ip 172.28.1.1 target-in-thres 95.000000000
+   system router rtr2 ip 172.28.1.1 target-out-thres 95.000000000
+   system router rtr2 ip 172.28.1.1 zone 0
+
+
+KW-10108 # sh ?
+aaa                             Display AAA Authentication settings
+access-list                     Display all ACLs
+alarms                          Display all outstanding alarms detail
+application                     Display all user-defined Applications
+application-builtin             Display all built-in applications
+application-group               Display all Applications Groups
+arp                             Display contents of ARP cache
+banner                          Display banner settings
+bfd                             Display BFD related information
+bgp                             Display BGP related information
+bootvar                         Display installed system images and boot parameters
+branch-nat                      Display all branch-nat maps
+bridge                          Display bridge information
+ca-cert                         Display CA certificate details
+cdp                             CDP information
+cellular                        Show information regarding cellular interfaces
+certificate                     Display certificate related information
+cli                             Display CLI options
+clock                           Display system time and date
+cluster                         Display cluster interface and appliance in cluster
+configuration                   Display commands to recreate active saved configuration
+ddos                            Display DDOS parameters
+denylist                        Display dynamic denylist addresses
+dns                             Show DNS related information
+dns-proxy                       Display all dns proxy configuration
+edgeha                          Display EdgeHA related information
+end-cert-profile                Display end entity certificate profile details
+est-server-profile              Display est server profile details
+excess-flow                     Display excess flow configuration
+files                           List available files or display their contents
+flow-debug                      Display flow-debug summary
+flow-export                     Display flow-export configuration
+flow-redirection                Display flow-redirection state and statistics
+hosts                           Display hostname, DNS configuration, and static host mappings
+idps                            Display IDPS configurations
+iflabels                        Display interface labels
+igmp                            Display igmp information
+image                           Display information about system images and boot parameters
+interfaces                      Display detailed running state for all interfaces
+ip                              Display IP-related information
+ip-tracking                     Display IP Tracking information
+ipsec                           Display ipsec configuration
+licenses                        Display installed licenses and licensed features
+lldp                            LLDP information
+log                             View event logs
+log-files                       Show log listing
+log-list                        Show log listing
+logging                         Display logging configuration
+management                      Display Management IP information
+memory                          Display system memory usage
+nat                             Show NAT related information
+nat-map                         Display all nat maps
+nat-pool                        Display all nat pools
+neighbor                        Display neighbor table
+ntp                             Display NTP settings
+opt-map                         Display all optimization maps
+ospf                            Display OSPF info for all instances on all interfaces
+overlay                         Display configuration for all overlays
+overlay-common                  Display common configuration for overlays
+pass-through                    Display detailed state of pass-through traffic
+pim                             Display subnet debug information
+pimlite                         Display tunneld's multicast information
+proxy-arp                       Show proxy-arp status
+proxy-ip-addresses              Display all Proxy IP Addresses
+qdrc                            Display QoS DRC stats
+qos-map                         Display all QoS maps
+radius                          Display RADIUS settings
+redistribution                  show active redistribution route-maps
+route-map                       Display all route maps
+routing                         Display Common routing information used by routerd
+rtadv                           Display Router Advertisement parameters
+rtm                             Display Route Table Manager routing information
+rtmap                           Display all rt maps
+running-config                  Display commands to recreate current running configuration
+sec-map                         Display all sec maps
+segment                         Display all segment settings
+segmentation                    Display segmentation settings
+selftest                        Show self test results
+shaper                          Display shaper configuration and stats
+snmp                            Display SNMP settings
+ssh                             Display SSH settings
+ssl                             List host certificate data
+stats                           Display statistics
+subif                           Show Sub-interface info
+subnet                          Display subnet related information
+system                          Display system configuration information
+tacacs                          Display TACACS+ settings
+tca                             Display config of stats based TCAs
+terminal                        Display terminal parameters
+tls                             Display TLS settings
+transceiver                     Display brief state for all transceivers
+tunnel                          Display detailed running state for user configured tunnels
+user-profile                    Display user information
+usernames                       Display a list of user accounts
+users                           Display information about user logins
+version                         Display version information for current system image
+vlan                            Show VLAN info
+vrrp                            Display VRRP info for all instances on all interfaces
+vxlan                           Display all vxlan maps
+wccp                            Display WCCP info
+web                             Display Web User Interface configuration and status
+websocket                       Display websocket
+whoami                          Display the identity and capabilities of the current user
+zone                            Display zones
+KW-10108 # sh 
 
