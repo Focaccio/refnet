@@ -1,0 +1,109 @@
+#!/bin/bash
+set -euo pipefail
+
+# -------- Config --------
+IMAGE="${IMAGE:-FreeBSD-14.2-RELEASE-arm64-aarch64-zfs.qcow2}"
+
+# Disk bus: nvme | scsi   (default: nvme; set DISK_BUS=scsi to switch)
+DISK_BUS="${DISK_BUS:-nvme}"
+
+# Atheros AR9271 USB Wi-Fi (Atheros/Qualcomm)
+VENDOR_ID="${VENDOR_ID:-0x0cf3}"
+PRODUCT_ID="${PRODUCT_ID:-0x9271}"
+
+MON_PORT="${MON_PORT:-55555}"
+LOG_ROOT="${LOG_ROOT:-$HOME/qemu-logs}"
+RUN_TAG="$(date +"%Y%m%d-%H%M%S")"
+RUN_DIR="${LOG_ROOT}/run-${RUN_TAG}"
+
+USB_LOG="${RUN_DIR}/usb.log"         # QEMU debug (-D)
+FULL_LOG="${RUN_DIR}/qemu-full.log"  # stdout/stderr via tee
+EFI_FD="${EFI_FD:-QEMU_EFI.fd}"      # Path to AArch64 EDK2 firmware (OVMF for ARM)
+IFNAME="${IFNAME:-en18}"             # Host NIC for vmnet-bridged
+
+# -------- Helpers --------
+need() { command -v "$1" >/dev/null 2>&1 || { echo "Missing '$1'"; exit 1; }; }
+
+# -------- Setup --------
+mkdir -p "${RUN_DIR}"
+echo "Logs will be in: ${RUN_DIR}"
+
+need qemu-system-aarch64
+need ioreg
+command -v telnet >/dev/null 2>&1 || echo "Note: 'telnet' not found; monitor still at ${MON_PORT}"
+
+# Elevate (USB passthrough often needs root on macOS)
+if [[ $EUID -ne 0 ]]; then
+  echo "Re-execing with sudo for USB access…"
+  exec sudo --preserve-env=IMAGE,DISK_BUS,VENDOR_ID,PRODUCT_ID,MON_PORT,LOG_ROOT,EFI_FD,RUN_TAG,RUN_DIR,USB_LOG,FULL_LOG,IFNAME "$0" "$@"
+fi
+
+# Check usb-host support in QEMU
+if ! qemu-system-aarch64 -device help | grep -qi 'usb-host'; then
+  echo "ERROR: This QEMU lacks usb-host (libusb) support. Try: brew reinstall qemu"
+  exit 1
+fi
+
+# Disk bus args
+DISK_ARGS=()
+if [[ "${DISK_BUS}" == "nvme" ]]; then
+  # NVMe: Typically the most UEFI-friendly on aarch64
+  DISK_ARGS+=(
+    -drive if=none,file="${IMAGE}",format=qcow2,id=hd0
+    -device nvme,serial=nvme0,id=nvme0
+    -device nvme-ns,drive=hd0,bus=nvme0,nsid=1
+  )
+elif [[ "${DISK_BUS}" == "scsi" ]]; then
+  # Virtio-SCSI: Very compatible with EDK2
+  DISK_ARGS+=(
+    -device virtio-scsi-pci,id=scsi0
+    -drive if=none,file="${IMAGE}",format=qcow2,id=hd0
+    -device scsi-hd,drive=hd0
+  )
+else
+  echo "ERROR: Unknown DISK_BUS='${DISK_BUS}'. Use 'nvme' or 'scsi'."
+  exit 1
+fi
+
+# Quick host-side presence hint for the dongle (best-effort)
+if ioreg -p IOUSB -l | grep -qiE 'idVendor.*3315|0x0cf3'; then
+  echo "✓ Found vendor 0x0cf3 (Atheros) on host"
+else
+  echo "⚠️  Did not detect vendor 0x0cf3 via ioreg. Ensure the dongle is plugged in."
+fi
+
+# Tail USB log live
+: > "${USB_LOG}"
+echo "Tailing USB debug log: ${USB_LOG}"
+tail -f "${USB_LOG}" &
+TAIL_PID=$!
+trap 'kill ${TAIL_PID} >/dev/null 2>&1 || true' EXIT
+
+echo "Launching QEMU… (monitor: telnet 127.0.0.1:${MON_PORT})"
+echo "> Disk bus: ${DISK_BUS}"
+echo "> After boot: telnet 127.0.0.1 ${MON_PORT}  # then 'info pci' and 'info usb'"
+
+set -x
+qemu-system-aarch64 \
+  -machine virt,highmem=off \
+  -cpu host \
+  -accel hvf \
+  -m 2048 \
+  -smp 4 \
+  -nographic \
+  -bios "${EFI_FD}" \
+  \
+  "${DISK_ARGS[@]}" \
+  \
+  -netdev vmnet-bridged,id=net0,ifname="${IFNAME}" \
+  -device virtio-net-pci,netdev=net0 \
+  \
+  -device qemu-xhci,id=xhci \
+  -device usb-host,vendorid=${VENDOR_ID},productid=${PRODUCT_ID} \
+  \
+  -monitor telnet:127.0.0.1:${MON_PORT},server,nowait \
+  -d guest_errors \
+  -trace events=usb_* \
+  -D "${USB_LOG}" \
+  -no-reboot 2>&1 | tee -a "${FULL_LOG}"
+set +x

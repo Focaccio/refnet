@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Path to your raw disk image
+IMAGE="FreeBSD-14.2-RELEASE-arm64-aarch64-ufs.raw"
+
+# Atheros AR9271 (Atheros/Qualcomm) USB Wi-Fi dongle IDs
+# From ioreg: Vendor 0x0cf3, Product 0x9271
+VENDOR_ID="0x0cf3"
+PRODUCT_ID="0x9271"
+
+# NOTE:
+# - QEMU on macOS needs libusb support for usb-host passthrough.
+#   Verify with:  qemu-system-aarch64 -device help | grep usb-host
+# - You may need sudo for USB access: run this script with sudo if permission errors occur.
+
+qemu-system-aarch64 \
+  -machine virt,highmem=off \
+  -cpu host \
+  -accel hvf \
+  -m 2048 \
+  -smp 4 \
+  -nographic \
+  -bios QEMU_EFI.fd \
+  -drive if=none,file="$IMAGE",format=raw,id=hd0 \
+  -device virtio-blk-device,drive=hd0 \
+  -netdev vmnet-bridged,id=net0,ifname=en18 \
+  -device virtio-net-device,netdev=net0 \
+  \
+  # --- USB passthrough bits ---
+  # Add a USB3 controller on the virt machine
+  -device qemu-xhci,id=xhci \
+  # Pass the Atheros AR9271 through by VID:PID
+  -device usb-host,vendorid=${VENDOR_ID},productid=${PRODUCT_ID} \
+  \
+  -no-reboot

@@ -1,0 +1,1456 @@
+DMVPN HUB cfg
+
+
+
+...............................................................................................
+
+bfd-template single-hop BFD-DMVPN
+ interval min-tx 1000 min-rx 1000 multiplier 5
+
+...............................................................................................
+
+crypto ikev2 proposal DMVPN-PROPOSAL 
+ encryption aes-cbc-256
+ integrity sha512
+ group 19 20 21 24
+
+...............................................................................................
+
+crypto ikev2 policy 10 
+ match fvrf 395831:100
+ proposal DMVPN-PROPOSAL
+
+...............................................................................................
+
+crypto ikev2 keyring DMVPN-KEYRING
+ peer DAL-CORE-1
+  address 74.50.63.41
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer SDG-CORE-2
+  address 38.96.14.157
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer DAL-CORE-2
+  address 74.50.63.42
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer FRA-CORE-1
+  address 84.200.10.61
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer FRA-CORE-2
+  address 84.200.10.62
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer SYD-CORE-1
+  address 45.112.247.20
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer MUN-CORE-1
+  address 108.161.159.204
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer MUN-CORE-2
+  address 108.161.159.205
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer SHA-CORE-1
+  address 38.96.14.134
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer SHA-CORE-2
+  address 38.96.14.138
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer TJN-CORE-1
+  address 74.50.63.81
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer TJN-CORE-2
+  address 74.50.63.82
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer SIN-CORE-1
+  address 209.206.61.253
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer SIN-CORE-2
+  address 209.206.61.254
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer SYD-CORE-1_NEWIP
+  address 209.206.62.129
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer SYD-CORE-2_NEWIP
+  address 209.206.62.130
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer SYD-CORE-2
+  address 125.254.49.115
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer FRA-CORE-1_NEWIP
+  address 209.206.59.1
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer FRA-CORE-2_NEWIP
+  address 209.206.59.2
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer FRE-CORE-1
+  address 69.46.88.234
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer FRE-CORE-2
+  address 69.46.88.238
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !        
+ peer FRA-IERTR-01A
+  address 217.111.116.102
+  pre-shared-key TmLdjtgvfg3Ccxh
+ !
+ peer FRA-IERTR-01B
+  address 216.66.94.246
+  pre-shared-key TmLdjtgvfg3Ccxh
+
+...............................................................................................
+
+crypto ikev2 profile DMVPN-IKEV2-PROFILE
+ match fvrf 395831:100
+ match identity remote any
+ authentication local pre-share
+ authentication remote pre-share
+ keyring local DMVPN-KEYRING
+ dpd 30 10 on-demand
+
+...............................................................................................
+
+
+crypto ipsec security-association replay window-size 1024
+
+crypto ipsec transform-set DMVPN-TRANSFORM esp-aes 256 esp-sha256-hmac 
+ mode tunnel
+
+
+crypto ipsec profile DMVPN-PROFILE
+ set transform-set DMVPN-TRANSFORM 
+ set ikev2-profile DMVPN-IKEV2-PROFILE
+
+...............................................................................................
+
+
+interface Tunnel1 <SPOKE>
+
+_____  ip nhrp authentication m9N3NN4w
+_____  ip nhrp network-id 1
+<key number must match for all hubs and spokes on the same dmvpn network>
+_____  ip nhrp nhs 172.21.1.1 nbma 74.50.63.41 multicast
+_____  ipv6 nhrp authentication m9N3NN4w
+_____  ipv6 nhrp network-id 61
+_____  ipv6 nhrp nhs 2620:12F:C00D:1::1 nbma 74.50.63.41 multicast
+_____  if-state nhrp
+_____  bfd template BFD-DMVPN
+_____  tunnel mode gre multipoint
+_____  tunnel key 1
+_____  tunnel protection ipsec profile DMVPN-PROFILE shared
+<no ip nhrp redirect b/c this is a spoke interface>
+ vrf forwarding 395831:200
+ ip address 172.21.1.11 255.255.255.0
+ no ip redirects
+ ip mtu 1440
+ ip tcp adjust-mss 1360
+ ipv6 address FE80:0:0:1::11 link-local
+ ipv6 address 2620:12F:C00D:1::11/64
+ ipv6 mtu 1400
+ no ipv6 redirects
+ ipv6 tcp adjust-mss 1360
+ tunnel source Port-channel5.320
+ tunnel vrf 395831:100
+
+
+
+interface Tunnel2 <HUB>
+
+_____ ip nhrp authentication fJWsHKzt
+_____ ip nhrp network-id 2
+<key number must match for all hubs and spokes on the same dmvpn network>
+_____ ip nhrp redirect
+_____ ipv6 nhrp authentication fJWsHKzt
+_____ ipv6 nhrp network-id 62
+_____ ipv6 nhrp redirect
+_____ if-state nhrp
+_____ bfd template BFD-DMVPN
+_____ tunnel mode gre multipoint
+_____ tunnel key 2
+_____ tunnel protection ipsec profile DMVPN-PROFILE shared
+<no nhrp nhs b/c this is the NHS interface>
+ vrf forwarding 395831:200
+ ip address 172.21.2.11 255.255.255.0
+ no ip redirects
+ ip mtu 1440
+ ip tcp adjust-mss 1360
+ ipv6 address FE80:0:0:2::11 link-local
+ ipv6 address 2620:12F:C00D:2::11/64
+ ipv6 mtu 1400
+ no ipv6 redirects
+ ipv6 tcp adjust-mss 1360
+ tunnel source Port-channel5.320
+ tunnel vrf 395831:100
+
+
+
+interface Tunnel3
+ vrf forwarding 395831:100
+ ip address 172.21.3.11 255.255.255.0
+ no ip redirects
+ ip mtu 1440
+ ip nhrp authentication jPnjL4x4
+ ip nhrp network-id 3
+ ip nhrp nhs 172.21.3.1 nbma 74.50.63.41 multicast
+ ip tcp adjust-mss 1360
+ ipv6 address FE80:0:0:3::11 link-local
+ ipv6 address 2620:12F:C00D:3::11/64
+ ipv6 mtu 1400
+ no ipv6 redirects
+ ipv6 tcp adjust-mss 1360
+ ipv6 nhrp authentication jPnjL4x4
+ ipv6 nhrp network-id 63
+ ipv6 nhrp nhs 2620:12F:C00D:3::1 nbma 74.50.63.41 multicast
+ if-state nhrp
+ bfd template BFD-DMVPN
+ tunnel source Port-channel5.320
+ tunnel mode gre multipoint
+ tunnel key 3
+ tunnel vrf 395831:100
+ tunnel protection ipsec profile DMVPN-PROFILE shared
+!
+interface Tunnel4
+ vrf forwarding 395831:100
+ ip address 172.21.4.11 255.255.255.0
+ no ip redirects
+ ip mtu 1440
+ ip nhrp authentication bmqRqrWw
+ ip nhrp network-id 4
+ ip nhrp redirect
+ ip tcp adjust-mss 1360
+ ipv6 address FE80:0:0:4::11 link-local
+ ipv6 address 2620:12F:C00D:4::11/64
+ ipv6 mtu 1400
+ no ipv6 redirects
+ ipv6 tcp adjust-mss 1360
+ ipv6 nhrp authentication bmqRqrWw
+ ipv6 nhrp network-id 64
+ ipv6 nhrp redirect
+ if-state nhrp
+ bfd template BFD-DMVPN
+ tunnel source Port-channel5.320
+ tunnel mode gre multipoint
+ tunnel key 4
+ tunnel vrf 395831:100
+ tunnel protection ipsec profile DMVPN-PROFILE shared
+!
+interface GigabitEthernet0/0/0
+ description SHA-CORE-1 [Level3 CID:1E/KFFN/003076/LVLC]
+ vrf forwarding 395831:100
+ ip address 38.96.14.133 255.255.255.252
+ negotiation auto
+!
+interface GigabitEthernet0/0/1
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet0/0/2
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet0/0/3
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet0/0/4
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet0/0/5
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet0/0/6
+ no ip address
+ shutdown 
+ negotiation auto
+!
+interface GigabitEthernet0/0/7
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface TenGigabitEthernet0/1/0
+ description TC-CORE-SP1 [Te1/0/7] [ETH Link]
+ no ip address
+ channel-group 5 mode active
+!
+interface TenGigabitEthernet0/1/1
+ description TC-CORE-SP2 [Te2/0/7] [ETH Link]
+ no ip address
+ channel-group 5 mode active
+!
+interface TenGigabitEthernet0/1/2
+ description TC-10GDIST-LF11 [Te11/0/43] [ETH Link]
+ no ip address
+ channel-group 7 mode active
+!
+interface TenGigabitEthernet0/1/3
+ description TC-10GDIST-LF12 [Te12/0/43] [ETH Link]
+ no ip address
+ channel-group 7 mode active
+!
+interface TenGigabitEthernet0/1/4
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet0/1/5
+ description SDG-CORE-2 [Te0/1/5] [ETH Link]
+ no ip address
+ channel-group 4 mode active
+!
+interface TenGigabitEthernet0/1/6
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet0/1/7
+ no ip address
+ shutdown
+!
+interface HundredGigE0/2/0
+ description SDG-SW-1 [Eth1/33] [ETH Link]
+ no ip address
+ cdp enable
+!
+interface HundredGigE0/2/0.114
+ description Meraki Router Global Routable LAN
+ encapsulation dot1Q 114
+ vrf forwarding 395831:100
+ ip address 209.206.48.249 255.255.255.0 secondary
+ ip address 108.161.147.249 255.255.255.0 secondary
+ ip address 209.206.51.253 255.255.255.0 secondary
+ ip address 209.206.49.253 255.255.255.0
+ no ip proxy-arp
+ standby version 2
+ standby 14 ip 209.206.49.1
+ standby 14 priority 250
+ standby 14 preempt
+ standby 14 authentication md5 key-string 7 10461A0B15373F5E
+ standby 14 track 200 decrement 30
+ standby 114 ip 108.161.147.1
+ standby 114 ip 209.206.48.1 secondary
+ standby 114 ip 209.206.51.1 secondary
+ standby 114 priority 250
+ standby 114 preempt
+ standby 114 track 200 decrement 30
+ standby 1141 ipv6 2620:12F:C000::1/64
+ standby 1141 priority 230
+ standby 1141 preempt
+ standby 1141 authentication md5 key-string 7 000C0014147B2653
+ standby 1141 track 200 decrement 30
+ ipv6 address 2620:12F:C000::2/64
+ ipv6 nd ra suppress all
+ no ipv6 mld router
+!
+interface HundredGigE0/2/0.304
+ description [Vlan304] [Meraki Network Management] 
+ encapsulation dot1Q 304
+ vrf forwarding 395831:300
+ ipv6 address 2620:12F:C000:300::5/64
+ ipv6 nd ra suppress all
+!
+interface HundredGigE0/2/0.314
+ description Meraki OOB network
+ encapsulation dot1Q 314
+ vrf forwarding 395831:200
+ ip address 172.18.32.5 255.255.255.248 secondary
+ ip address 172.18.253.253 255.255.255.0 secondary
+ ip address 172.18.254.253 255.255.255.0 secondary
+ ip address 172.18.255.253 255.255.255.0
+ no ip proxy-arp
+ standby version 2
+ standby 314 ip 172.18.255.252
+ standby 314 ip 172.18.253.252 secondary
+ standby 314 ip 172.18.254.1 secondary
+ standby 314 ip 172.18.255.1 secondary
+ standby 314 priority 110
+ standby 314 preempt
+ standby 314 authentication md5 key-string 7 10461A0B15373F5E
+ standby 314 track 200 decrement 30
+ standby 1314 ipv6 2620:12F:C000:200::1/64
+ standby 1314 priority 110
+ standby 1314 preempt
+ standby 1314 authentication md5 key-string 7 000C0014147B2653
+ standby 1314 track 200 decrement 30
+ ipv6 address 2620:12F:C000:200::2/64
+ ipv6 nd ra suppress all
+ no ipv6 mld router
+!
+interface HundredGigE0/2/0.352
+ description Legacy EGI LAN
+ encapsulation dot1Q 352
+ vrf forwarding 395831:100
+ ip address 64.62.142.2 255.255.255.224
+ standby version 2
+ standby 64 ip 64.62.142.1
+ standby 64 priority 230
+ standby 64 preempt
+ standby 64 authentication md5 key-string 7 10461A0B15373F5E
+ ip policy route-map IPV4-EGI-NETWORK-FUNNEL
+!
+interface HundredGigE0/2/0.420
+ description Provisioning VLAN
+ encapsulation dot1Q 420
+ vrf forwarding 395831:200
+ ip address 172.18.64.2 255.255.252.0
+ no ip proxy-arp
+ ip access-group ACL-PROVISIONING-IN in
+ ip access-group ACL-PROVISIONING-OUT out
+ standby version 2
+ standby 420 ip 172.18.64.1
+ standby 420 priority 90
+ standby 420 preempt
+ standby 420 authentication md5 key-string 7 10461A0B15373F5E
+ ipv6 nd ra suppress all
+ no ipv6 mld router
+!
+interface HundredGigE0/2/0.523
+ description Meraki_OpenStack_Production_Provisioning
+ encapsulation dot1Q 523
+ vrf forwarding 395831:200
+ ip address 172.18.70.253 255.255.255.0
+ ip access-group ACL-OPENSTACK-PRODUCTION-IN in
+ standby version 2
+ standby 70 ip 172.18.70.1
+ standby 70 priority 230
+ standby 70 preempt
+!
+interface HundredGigE0/2/0.531
+ description Meraki_OpenStack_PROD_Public
+ encapsulation dot1Q 531
+ vrf forwarding 395831:100
+ ip address 209.206.50.253 255.255.255.128
+ standby version 2
+ standby 50 ip 209.206.50.129
+ standby 50 priority 230
+ standby 50 preempt
+ standby 50 authentication md5 key-string 7 002C2034347B26031D204747
+ standby 1050 ipv6 2620:12F:C000:531::1/64
+ standby 1050 priority 230
+ standby 1050 preempt
+ standby 1050 authentication md5 key-string 7 000C0014147B2653
+ standby 1050 track 200 decrement 30
+ ipv6 address 2620:12F:C000:531::2/64
+ no ipv6 mld router
+!
+interface HundredGigE0/2/0.532
+ description Meraki_OpenStack_Production_Private
+ encapsulation dot1Q 532
+ vrf forwarding 395831:200
+ ip address 172.18.12.253 255.255.255.0
+ standby version 2
+ standby 12 ip 172.18.12.1
+ standby 12 priority 230
+ standby 12 preempt
+!
+interface HundredGigE0/2/0.601
+ description AWS_RTR_Internet
+ encapsulation dot1Q 601
+ vrf forwarding 395831:100
+ ip address 172.18.34.2 255.255.255.248
+ standby version 2
+ standby 50 ip 172.18.34.1
+ standby 50 priority 230
+ standby 50 preempt
+ standby 50 authentication md5 key-string 7 143F21393C24072E3629383C
+ standby 1050 ipv6 2620:12F:C000:EE:600::1/125
+ standby 1050 priority 230
+ standby 1050 preempt
+ standby 1050 authentication md5 key-string 7 000C0014147B2653
+ standby 1050 track 200 decrement 30
+ ipv6 address 2620:12F:C000:EE:600::2/125
+!
+interface HundredGigE0/2/0.800
+ description [Vlan800] [Meraki_SDG_PROD_IEFW_01_VRF400]
+ encapsulation dot1Q 800
+ vrf forwarding 395831:100
+ ip address 172.18.33.1 255.255.255.248
+ ipv6 address 2620:12F:C000:EE::11/125
+!
+interface HundredGigE0/2/0.802
+ description [Vlan802] [Meraki_SDG_SPINE_1_VRF400]
+ encapsulation dot1Q 802
+ vrf forwarding 395831:400
+ ip address 172.18.33.20 255.255.255.254
+ ipv6 address 2620:12F:C000:EE::20/127
+!
+interface HundredGigE0/2/0.806
+ description [Vlan806] [Meraki_SDG_PROD_IEFW_01_VRF200]
+ encapsulation dot1Q 806
+ vrf forwarding 395831:200
+ ip address 172.18.33.33 255.255.255.248
+ ipv6 address 2620:12F:C000:EE::29/125
+!
+interface HundredGigE0/2/0.1000
+ description DAL-CORE-1 [Hu0/2/0.1000] [ETH Link]
+ encapsulation dot1Q 1000
+ vrf forwarding 395831:100
+ ip address 209.206.50.70 255.255.255.254
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 7 09611D1B4D0E1E392E35
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+ ip ospf cost 500
+ ipv6 address 2620:12F:C000:EE::6/127
+ ospfv3 network point-to-point
+ ospfv3 cost 500
+ ospfv3 authentication key-chain OSPFV3
+ bfd interval 750 min_rx 750 multiplier 3
+!
+interface HundredGigE0/2/0.1001
+ description DAL-CORE-1 [Hu0/2/0.1001] [ETH Link]
+ encapsulation dot1Q 1001
+ vrf forwarding 395831:200
+ ip address 172.21.255.0 255.255.255.254
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 7 09611D1B4D0E1E392E35
+ ip ospf network point-to-point
+ ip ospf 200 area 0
+ ip ospf cost 500
+ ipv6 address 2620:12F:C00D:FFFF::/127
+ ospfv3 network point-to-point
+ ospfv3 cost 500
+ ospfv3 authentication key-chain OSPFV3
+ bfd interval 750 min_rx 750 multiplier 3
+!         
+interface GigabitEthernet0
+ description ASC3B2 [g35] [ETH Link]
+ vrf forwarding Mgmt-intf
+ ip address 172.22.23.235 255.255.255.0
+ negotiation auto
+!
+router ospfv3 100
+ router-id 209.206.50.1
+ max-metric router-lsa on-startup wait-for-bgp
+ prefix-suppression
+ bfd all-interfaces
+ !
+ address-family ipv6 unicast vrf 395831:200
+ exit-address-family
+ !
+ address-family ipv6 unicast vrf 395831:100
+ exit-address-family
+!
+router ospf 100 vrf 395831:100
+ router-id 209.206.50.1
+ max-metric router-lsa on-startup wait-for-bgp
+ prefix-suppression
+ bfd all-interfaces
+!
+router ospf 200 vrf 395831:200
+ max-metric router-lsa on-startup wait-for-bgp
+ prefix-suppression
+ bfd all-interfaces
+!
+router bgp 395831
+ bgp router-id 38.96.14.156
+ bgp log-neighbor-changes
+ bgp listen range 172.21.4.0/24 peer-group TUN4
+ bgp listen range 172.21.2.0/24 peer-group TUN2
+ bgp listen range 2620:12F:C00D:4::/64 peer-group TUN4-V6
+ bgp listen range 2620:12F:C00D:2::/64 peer-group TUN2-V6
+ bgp maxas-limit 40
+ no bgp default ipv4-unicast
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+ !
+ address-family ipv4 vrf 395831:100
+  network 209.206.48.0 mask 255.255.240.0
+  redistribute connected
+  redistribute static route-map IPV4-VRF100-STATIC-TO-BGP
+  neighbor TUN4 peer-group
+  neighbor TUN4 remote-as 395831
+  neighbor TUN4 description TUN4 PEER GROUP
+  neighbor TUN4 password 7 1515211B3673190A323D3B121D001C54176E5768417E573535
+  neighbor TUN4 fall-over bfd
+  neighbor TUN4 send-community both
+  neighbor TUN4 route-reflector-client
+  neighbor TUN4 soft-reconfiguration inbound
+  neighbor TUN4 prefix-list RX-RR-CLIENT in
+  neighbor TUN4 prefix-list TX-RR-CLIENT out
+  neighbor TUN4 route-map RX-RR-CLIENT-MAP in
+  neighbor TUN4 route-map TX-RR-CLIENT-MAP out
+  neighbor 38.96.14.146 remote-as 21581
+  neighbor 38.96.14.146 description TC-EDGE-RTR1 [Be1.320]
+  neighbor 38.96.14.146 password 7 002940145050022D2A18
+  neighbor 38.96.14.146 activate
+  neighbor 38.96.14.146 advertise-map TX-ANYCAST-V4 exist-map RX-ANYCAST-EXIST-V4
+  neighbor 38.96.14.146 allowas-in 1
+  neighbor 38.96.14.146 soft-reconfiguration inbound
+  neighbor 38.96.14.146 prefix-list TC-EDGE-RTR1-RX-V4 in
+  neighbor 38.96.14.146 prefix-list TC-EDGE-RTR1-TX-V4 out
+  neighbor 38.96.14.146 route-map IPV4-TC-EDGE-RTR-1-RX in
+  neighbor 172.18.33.6 remote-as 65210
+  neighbor 172.18.33.6 description EBGP_TO_SDG_PROD_IEFW_01
+  neighbor 172.18.33.6 password 7 143A4119580F23000111
+  neighbor 172.18.33.6 activate
+  neighbor 172.18.33.6 soft-reconfiguration inbound
+  neighbor 172.18.33.6 route-map RM_IPV4_EBGP_VRF100_SDG_PROD_IEFW_01_IN in
+  neighbor 172.18.33.6 route-map RM_IPV4_EBGP_VRF100_SDG_PROD_IEFW_01_OUT out
+  neighbor 172.21.3.1 remote-as 395831
+  neighbor 172.21.3.1 description DAL-CORE-1[Tun3][hub]
+  neighbor 172.21.3.1 password 7 110E3312254B39221E24251426343F75053F1833137C006E7E
+  neighbor 172.21.3.1 timers 10 30
+  neighbor 172.21.3.1 activate
+  neighbor 172.21.3.1 send-community both
+  neighbor 172.21.3.1 soft-reconfiguration inbound
+  neighbor 172.21.3.1 prefix-list TX-RR-SERVER out
+  neighbor 209.206.49.6 remote-as 65011
+  neighbor 209.206.49.6 description SDG367[anycast V4]
+  neighbor 209.206.49.6 password 7 00334255104113513916141739233C1325
+  neighbor 209.206.49.6 activate
+  neighbor 209.206.49.6 prefix-list RX-ANYCAST-HOST-V4 in
+  neighbor 209.206.49.6 prefix-list TX-ANYCAST-HOST-V4 out
+  neighbor 209.206.49.252 remote-as 395831
+  neighbor 209.206.49.252 description SDG-FW-1 [Po9.114]
+  neighbor 209.206.49.252 password 7 080C1F5C5D120C3C3732
+  neighbor 209.206.49.252 activate
+  neighbor 209.206.49.252 send-community both
+  neighbor 209.206.49.252 soft-reconfiguration inbound
+  neighbor 209.206.50.2 remote-as 395831
+  neighbor 209.206.50.2 description SDG-CORE-2 [Lo0]
+  neighbor 209.206.50.2 password 7 080C1F5C5D120C3C3732
+  neighbor 209.206.50.2 update-source Loopback0
+  neighbor 209.206.50.2 activate
+  neighbor 209.206.50.2 send-community both
+  neighbor 209.206.50.2 next-hop-self
+  neighbor 209.206.50.2 soft-reconfiguration inbound
+ exit-address-family
+ !
+ address-family ipv6 vrf 395831:100
+  redistribute connected
+  redistribute static
+  network 2620:12F:C000::/44
+  network 2620:12F:C000::/48
+  neighbor TUN4-V6 peer-group
+  neighbor TUN4-V6 remote-as 395831
+  neighbor TUN4-V6 description TUN4-V6 PEER GROUP
+  neighbor TUN4-V6 password 7 07080B5B7C502B2B0D1C053C0A2D21733E0B3B12012D4F352C
+  neighbor TUN4-V6 send-community both
+  neighbor TUN4-V6 route-reflector-client
+  neighbor TUN4-V6 soft-reconfiguration inbound
+  neighbor TUN4-V6 prefix-list RX-RR-CLIENT-V6 in
+  neighbor TUN4-V6 prefix-list TX-RR-CLIENT-V6 out
+  neighbor TUN4-V6 route-map RX-RR-CLIENT-MAP-V6 in
+  neighbor TUN4-V6 route-map TX-RR-CLIENT-MAP-V6 out
+  neighbor 2606:7100:1:140::11 remote-as 21581
+  neighbor 2606:7100:1:140::11 description TC-EDGE-RTR1
+  neighbor 2606:7100:1:140::11 password 7 09611D1B4D0E1E392E35
+  neighbor 2606:7100:1:140::11 activate
+  neighbor 2606:7100:1:140::11 advertise-map TX-ANYCAST-V6 exist-map RX-ANYCAST-EXIST-V6
+  neighbor 2606:7100:1:140::11 soft-reconfiguration inbound
+  neighbor 2606:7100:1:140::11 prefix-list RX-UPSTREAM-V6 in
+  neighbor 2606:7100:1:140::11 prefix-list TX-UPSTREAM-V6 out
+  neighbor 2606:7100:1:140::22 remote-as 395831
+  neighbor 2606:7100:1:140::22 description SDG-CORE-2
+  neighbor 2606:7100:1:140::22 password 7 0526551D754747223C3C
+  neighbor 2606:7100:1:140::22 activate
+  neighbor 2606:7100:1:140::22 send-community both
+  neighbor 2606:7100:1:140::22 next-hop-self
+  neighbor 2606:7100:1:140::22 soft-reconfiguration inbound
+  neighbor 2620:12F:C000:0:92E2:BAFF:FEE6:A4E8 remote-as 65011
+  neighbor 2620:12F:C000:0:92E2:BAFF:FEE6:A4E8 description SDG367[anycast V6]
+  neighbor 2620:12F:C000:0:92E2:BAFF:FEE6:A4E8 password 7 1079584A110D0A5C3A33727214120A3115
+  neighbor 2620:12F:C000:0:92E2:BAFF:FEE6:A4E8 activate
+  neighbor 2620:12F:C000:0:92E2:BAFF:FEE6:A4E8 prefix-list RX-ANYCAST-HOST-V6 in
+  neighbor 2620:12F:C000:0:92E2:BAFF:FEE6:A4E8 prefix-list TX-ANYCAST-HOST-V6 out
+  neighbor 2620:12F:C000:EE::16 remote-as 65210
+  neighbor 2620:12F:C000:EE::16 description EBGP_TO_SDG_PROD_IEFW_01
+  neighbor 2620:12F:C000:EE::16 password 7 10635A0B511C1B20293D
+  neighbor 2620:12F:C000:EE::16 activate
+  neighbor 2620:12F:C000:EE::16 soft-reconfiguration inbound
+  neighbor 2620:12F:C000:EE::16 prefix-list RM_IPV4_EBGP_SDG_PROD_IEFW_01_IN in
+  neighbor 2620:12F:C000:EE::16 prefix-list RM_IPV4_EBGP_SDG_PROD_IEFW_01_OUT out
+  neighbor 2620:12F:C00D:3::1 remote-as 395831
+  neighbor 2620:12F:C00D:3::1 description DAL-CORE-1[Tun3][hub]
+  neighbor 2620:12F:C00D:3::1 password 7 082666593B40373908050234242C2E7F250D2C23153C5A377B
+  neighbor 2620:12F:C00D:3::1 timers 10 30
+  neighbor 2620:12F:C00D:3::1 activate
+  neighbor 2620:12F:C00D:3::1 send-community both
+  neighbor 2620:12F:C00D:3::1 soft-reconfiguration inbound
+  neighbor 2620:12F:C00D:3::1 prefix-list TX-RR-SERVER-V6 out
+ exit-address-family
+ !
+ address-family ipv4 vrf 395831:200
+  network 10.92.144.245 mask 255.255.255.255
+  network 10.92.144.253 mask 255.255.255.255
+  network 10.92.147.128 mask 255.255.255.128
+  network 10.92.156.0 mask 255.255.254.0
+  network 10.92.158.0 mask 255.255.254.0
+  network 10.138.76.0 mask 255.255.254.0
+  network 10.138.192.0 mask 255.255.252.0
+  network 10.138.196.0 mask 255.255.252.0
+  network 10.138.200.0 mask 255.255.252.0
+  network 10.138.224.0 mask 255.255.252.0
+  network 10.200.0.0 mask 255.255.0.0
+  network 10.239.128.212 mask 255.255.255.252
+  network 10.239.130.0 mask 255.255.254.0
+  network 10.239.131.0 mask 255.255.255.0
+  network 10.239.131.64 mask 255.255.255.255
+  network 10.239.176.0 mask 255.255.240.0
+  network 52.8.136.83 mask 255.255.255.255
+  network 64.102.106.0 mask 255.255.254.0
+  network 171.68.0.0 mask 255.255.128.0
+  network 171.70.168.0 mask 255.255.255.0
+  network 172.18.0.0
+  network 172.18.32.0 mask 255.255.255.248
+  network 172.18.70.0 mask 255.255.255.0
+  network 172.18.252.1 mask 255.255.255.255
+  network 172.18.253.0 mask 255.255.255.0
+  network 172.18.254.0 mask 255.255.255.0
+  network 172.18.255.0 mask 255.255.255.0
+  neighbor TUN2 peer-group
+  neighbor TUN2 remote-as 395831
+  neighbor TUN2 timers 10 30
+  neighbor TUN2 fall-over bfd
+  neighbor TUN2 send-community both
+  neighbor TUN2 route-reflector-client
+  neighbor TUN2 soft-reconfiguration inbound
+  neighbor 10.239.128.213 remote-as 109
+  neighbor 10.239.128.213 description SJC12-CCI-GW1
+  neighbor 10.239.128.213 activate
+  neighbor 10.239.128.213 soft-reconfiguration inbound
+  neighbor 10.239.128.213 prefix-list CISCO-TUN0-RX-V4 in
+  neighbor 10.239.128.213 prefix-list CISCO-TUN0-TX-V4 out
+  neighbor 172.18.32.1 remote-as 65000
+  neighbor 172.18.32.1 local-as 65001
+  neighbor 172.18.32.1 description SDG-FW-1[Po9.314]
+  neighbor 172.18.32.1 activate
+  neighbor 172.18.32.1 send-community both
+  neighbor 172.18.32.1 allowas-in 1
+  neighbor 172.18.32.1 soft-reconfiguration inbound
+  neighbor 172.18.33.37 remote-as 65210
+  neighbor 172.18.33.37 description EBGP_VRF200_TO_SDG_PROD_IEFW_01
+  neighbor 172.18.33.37 password 7 062B5C3318450032202E
+  neighbor 172.18.33.37 activate
+  neighbor 172.18.33.37 soft-reconfiguration inbound
+  neighbor 172.18.33.37 route-map RM_IPV4_EBGP_VRF200_SDG_PROD_IEFW_01_IN in
+  neighbor 172.18.33.37 route-map RM_IPV4_EBGP_VRF200_SDG_PROD_IEFW_01_OUT out
+  neighbor 172.21.1.1 remote-as 395831
+  neighbor 172.21.1.1 description DAL-CORE-1[Tun1][hub]
+  neighbor 172.21.1.1 fall-over bfd
+  neighbor 172.21.1.1 activate
+  neighbor 172.21.1.1 send-community both
+  neighbor 172.21.1.1 soft-reconfiguration inbound
+ exit-address-family
+ !
+ address-family ipv6 vrf 395831:200
+  network 2001:420:44:400::/56
+  network 2620:12F:C000:FF::252:1/128
+  network 2620:12F:C000:200::/64
+  neighbor TUN2-V6 peer-group
+  neighbor TUN2-V6 remote-as 395831
+  neighbor TUN2-V6 timers 10 30
+  neighbor TUN2-V6 send-community both
+  neighbor TUN2-V6 route-reflector-client
+  neighbor TUN2-V6 soft-reconfiguration inbound
+  neighbor 2001:420:44:A:: remote-as 109
+  neighbor 2001:420:44:A:: description SJC12-CCI-GW1
+  neighbor 2001:420:44:A:: activate
+  neighbor 2001:420:44:A:: soft-reconfiguration inbound
+  neighbor 2001:420:44:A:: prefix-list CISCO-TUN0-RX-V6 in
+  neighbor 2001:420:44:A:: prefix-list CISCO-TUN0-TX-V6 out
+  neighbor 2620:12F:C00D:1::1 remote-as 395831
+  neighbor 2620:12F:C00D:1::1 description DAL-CORE-1[Tun1][hub]
+  neighbor 2620:12F:C00D:1::1 activate
+  neighbor 2620:12F:C00D:1::1 send-community both
+  neighbor 2620:12F:C00D:1::1 soft-reconfiguration inbound
+ exit-address-family
+ !
+ address-family ipv4 vrf 395831:400
+  neighbor 172.18.33.21 remote-as 65110
+  neighbor 172.18.33.21 local-as 64604
+  neighbor 172.18.33.21 description EBGP_TO_SDG_SPINE-1
+  neighbor 172.18.33.21 password 7 11244A17431902272113
+  neighbor 172.18.33.21 activate
+  neighbor 172.18.33.21 soft-reconfiguration inbound
+  neighbor 172.18.33.21 prefix-list RM_IPV6_EBGP_SDG_SPINE_1_IN in
+  neighbor 172.18.33.21 prefix-list RM_IPV6_EBGP_SDG_SPINE_1_OUT out
+ exit-address-family
+ !
+ address-family ipv6 vrf 395831:400
+  neighbor 2620:12F:C000:EE::21 remote-as 65110
+  neighbor 2620:12F:C000:EE::21 local-as 64604
+  neighbor 2620:12F:C000:EE::21 description EBGP_TO_SDG_SPINE_1
+  neighbor 2620:12F:C000:EE::21 password 7 09611D1B4D0E1E392E35
+  neighbor 2620:12F:C000:EE::21 activate
+  neighbor 2620:12F:C000:EE::21 soft-reconfiguration inbound
+  neighbor 2620:12F:C000:EE::21 prefix-list RM_IPV6_EBGP_SDG_SPINE_1_IN in
+  neighbor 2620:12F:C000:EE::21 prefix-list RM_IPV6_EBGP_SDG_SPINE_1_OUT out
+ exit-address-family
+!
+ip forward-protocol nd
+!
+no ip http server
+ip http authentication local
+no ip http secure-server
+ip route static bfd HundredGigE0/2/0.1000 209.206.50.71
+ip route static bfd HundredGigE0/2/0.1001 172.21.255.1
+ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 172.22.23.1
+ip route vrf 395831:100 0.0.0.0 0.0.0.0 38.96.14.146 220 name TC-EDGE-RTR1[Be1.320][default_route]
+ip route vrf 395831:100 38.96.14.136 255.255.255.252 GigabitEthernet0/0/0 38.96.14.134 name SHA-CORE-1[p2p_route_SHA-CORE-2]
+ip route vrf 395831:100 171.70.192.192 255.255.255.240 38.96.14.146 name TICKET50748
+ip route vrf 395831:100 171.70.203.160 255.255.255.240 38.96.14.146 name TICKET50748
+ip route vrf 395831:100 172.21.255.8 255.255.255.252 HundredGigE0/2/0.1000 209.206.50.71 name [via_100G]
+ip route vrf 395831:100 172.31.255.12 255.255.255.252 Port-channel4.100 209.206.50.65 name SDG208-iPerf-Testing
+ip route vrf 395831:100 173.36.246.121 255.255.255.255 38.96.14.146 name TC-EDGE-RTR1[Be1.320]
+ip route vrf 395831:100 199.231.78.0 255.255.255.0 HundredGigE0/2/0.1000 209.206.50.71 name [via_100G]
+ip route vrf 395831:100 209.206.48.0 255.255.240.0 Null0 254 name SDG-CORE-1[Null0][supernet_route]
+ip route vrf 395831:100 209.206.48.0 255.255.254.0 Null0 254 name SDG-CORE-1[Null0][supernet_route]
+ip route vrf 395831:100 209.206.50.0 255.255.255.0 Null0 254 name SDG-CORE-1[Null0][supernet_route]
+ip route vrf 395831:100 209.206.50.24 255.255.255.252 HundredGigE0/2/0.601 172.18.34.4 name AWS_RTR_IPv4s
+ip route vrf 395831:100 209.206.52.0 255.255.255.0 HundredGigE0/2/0.1000 209.206.50.71 name [dal0_via_100G]
+ip route vrf 395831:100 209.206.53.0 255.255.255.0 HundredGigE0/2/0.1000 209.206.50.71 name [via_100G]
+ip route vrf 395831:100 209.206.54.128 255.255.255.128 HundredGigE0/2/0.1000 209.206.50.71 name [via_100G]
+ip route vrf 395831:100 209.206.55.0 255.255.255.0 Null0 254 name SDG-CORE-1[Null0][supernet_route]
+ip route vrf 395831:100 209.206.55.10 255.255.255.255 HundredGigE0/2/0.114 209.206.49.6 name ANYCAST-IP[Hu0_2_0.114]
+ip route vrf 395831:100 209.206.63.0 255.255.255.0 HundredGigE0/2/0.1000 209.206.50.71 name [DAL_via_100G]
+ip route vrf 395831:200 10.92.144.245 255.255.255.255 Tunnel0 10.239.128.213 name CCI-IT-KAFKA
+ip route vrf 395831:200 10.92.144.253 255.255.255.255 Tunnel0 10.239.128.213 name CCI-IT-KAFKA
+ip route vrf 395831:200 10.92.147.128 255.255.255.128 HundredGigE0/2/0.314 172.18.255.1 name MX100[Hu0_2_0.314][cimc_mgmt]
+ip route vrf 395831:200 10.92.156.0 255.255.254.0 HundredGigE0/2/0.314 172.18.255.1 name MX100[Hu0_2_0.314][cimc_mgmt]
+ip route vrf 395831:200 10.92.158.0 255.255.254.0 HundredGigE0/2/0.314 172.18.255.1 name MX100[Hu0_2_0.314][cimc_mgmt]
+ip route vrf 395831:200 10.138.76.0 255.255.254.0 Tunnel0 10.239.128.213 name SDG-CORE-1[TEMP_STATIC_to_SSBR_SIN_LAN]
+ip route vrf 395831:200 10.138.192.0 255.255.252.0 Tunnel0 10.239.128.213 name CISCO-SECURITY[SNG15_VLAN300]
+ip route vrf 395831:200 10.138.196.0 255.255.252.0 Tunnel0 10.239.128.213 name CISCO-SECURITY[SNG15_VLAN301]
+ip route vrf 395831:200 10.138.200.0 255.255.252.0 Tunnel0 10.239.128.213 name CISCO-SECURITY[SNG15_VLAN302]
+ip route vrf 395831:200 10.138.224.0 255.255.252.0 Tunnel0 10.239.128.213 name CISCO-SECURITY[SNG15_VLAN250]
+ip route vrf 395831:200 10.200.0.0 255.255.0.0 HundredGigE0/2/0.314 172.18.255.1 name MX100[Hu0_2_0.314][cimc_mgmt]
+ip route vrf 395831:200 10.239.130.0 255.255.254.0 Null0 254 name SDG-CORE-1[Null0][supernet_route]
+ip route vrf 395831:200 10.239.131.0 255.255.255.0 Null0 254 name SDG-CORE-1[Null0][supernet_route]
+ip route vrf 395831:200 10.239.176.0 255.255.240.0 Null0 name CISCO_CCI-SUPERNET[Null0][supernet_route]
+ip route vrf 395831:200 52.8.136.83 255.255.255.255 HundredGigE0/2/0.806 172.18.33.37 name [MASTER.LDAP_VIA_SDG_PROD_IEFW_01]
+ip route vrf 395831:200 64.102.106.0 255.255.254.0 Tunnel0 10.239.128.213 name CISCO-CORP_PUBLIC
+ip route vrf 395831:200 171.68.0.0 255.255.128.0 Tunnel0 10.239.128.213 name CISCO-CORP_PUBLIC
+ip route vrf 395831:200 171.70.168.0 255.255.255.0 Tunnel0 10.239.128.213 name CISCO-CORP_PUBLIC
+ip route vrf 395831:200 172.16.0.0 255.255.0.0 HundredGigE0/2/0.1001 172.21.255.1 name DAL[supernet_route][via_100G]
+ip route vrf 395831:200 172.18.0.0 255.255.0.0 Null0 name SDG[Null0][supernet_route]
+ip route vrf 395831:200 172.18.0.0 255.255.255.0 HundredGigE0/2/0.314 172.18.255.2 name RA-VPN
+ip ssh source-interface GigabitEthernet0
+ip ssh version 2
+ip ssh pubkey-chain
+  username meraki
+   key-hash ssh-rsa EE6C3F210755E3DA99F2B47E8241FB0E 
+  username service-provider-m5
+   key-hash ssh-rsa F7B3A9959626B759171786E8282D82A7 geeks@m5hosting.com
+  username service-provider-rimu
+   key-hash ssh-rsa 338805B4806B831BA3F2C8822C9F8766 
+  username stel
+   key-hash ssh-rsa CFBB0F710CAFAA79C7D80DEAE0DEF892 stelica.dragnia@merak.net
+  username almclean
+   key-hash ssh-rsa 09D2ECA9BE13AD1F69E815DB31E3AE95 
+  username jrenwick
+   key-hash ssh-rsa 6D1DA897C3038781A6492CA5F1C4D078 jrenwick@ca1-infra-jump.m5cloud.com
+  username xavergig
+   key-hash ssh-rsa 0F9B2B3C56C786701F143D50B623F8B2 xaver.giggenbach@Xavers-MacBook-Pro.local
+  username mdobosz
+   key-hash ssh-rsa DA801BAAC7AF7B149D2629A4BEE5ED1E mdobosz@Marcin-Dobosz-T490s
+!
+ip access-list standard ACL-SNMP-Meraki-IPv4
+ deny   any log
+ip access-list standard SNMP-Access
+ remark ca1-infra-librenms
+ permit 172.22.23.181
+ remark cirrus.m5hosting.com
+ permit 172.22.23.150
+ remark ca1-netflow.m5hosting.com
+ permit 172.22.23.234
+ permit 207.158.37.21
+ remark cacti.m5hosting.com
+ permit 209.216.206.183
+ permit 207.158.37.6
+ remark uberapp03.m5hosting.com
+ permit 172.22.23.10
+ip access-list standard SSH-Access
+ remark jump2.m5hosting.com
+ permit 64.156.195.2
+ remark mun0.meraki.com
+ permit 209.206.56.4
+ remark syd0.meraki.com
+ permit 209.206.62.4
+ remark sdg0.meraki.com
+ permit 209.206.49.8
+ remark sin0.meraki.com
+ permit 209.206.60.5
+ remark dal0.meraki.com
+ permit 209.206.53.13
+ remark jump.m5hosting.com
+ permit 38.96.14.114
+ remark staff.rimuhosting.com
+ permit 65.99.223.183
+ remark management-dal0.rimuhosting.com
+ permit 174.136.31.73
+ remark fra0.meraki.com
+ permit 209.206.58.81
+ remark M5-CA1-INFRA-TOOLS
+ permit 172.22.23.0 0.0.0.255
+!
+ip access-list extended ACL-OPENSTACK-PRODUCTION-IN
+ permit ip host 172.18.70.254 any
+ permit ip host 172.18.70.253 any
+ permit udp host 172.18.70.10 any eq 623
+ permit tcp host 172.18.70.20 eq 443 any
+ permit tcp host 172.18.70.21 eq 8776 any
+ permit tcp host 172.18.70.22 eq 9292 any
+ permit tcp host 172.18.70.23 eq 5000 any
+ permit tcp host 172.18.70.23 eq 35357 any
+ permit tcp host 172.18.70.25 eq 9696 any
+ permit tcp host 172.18.70.26 eq 8774 any
+ permit tcp host 172.18.70.26 eq 8778 any
+ permit tcp host 172.18.70.26 eq 6080 any
+ permit tcp host 172.18.70.27 eq 443 any
+ permit tcp host 172.18.70.28 eq 443 any
+ permit icmp any any
+ permit tcp any any eq 10636
+ permit tcp any any eq 5044
+ permit tcp any any eq 5055
+ permit tcp any any eq 5056
+ permit tcp any any eq www
+ permit tcp any any eq 443
+ permit tcp any any eq domain
+ permit udp any any eq domain
+ permit udp any any eq ntp
+ip access-list extended ACL-PROVISIONING-
+ permit tcp host 172.18.64.10 172.18.253.0 0.0.0.255 established
+ deny   ip any any log
+ip access-list extended ACL-PROVISIONING-IN
+ permit ip host 172.18.64.2 any
+ permit ip host 172.18.64.3 any
+ permit ip 172.18.64.0 0.0.3.255 172.18.64.0 0.0.3.255
+ permit icmp any any
+ permit tcp host 172.18.64.10 172.18.253.0 0.0.0.255 established
+ permit tcp host 172.18.64.10 172.18.254.0 0.0.0.255 established
+ permit tcp host 172.18.64.10 172.18.255.0 0.0.0.255 established
+ permit tcp host 172.18.64.10 172.18.253.0 0.0.0.255 eq 22
+ permit tcp host 172.18.64.10 172.18.254.0 0.0.0.255 eq 22
+ permit tcp host 172.18.64.10 172.18.255.0 0.0.0.255 eq 22
+ permit tcp host 172.18.64.10 172.18.253.0 0.0.0.255 eq www
+ permit tcp host 172.18.64.10 172.18.254.0 0.0.0.255 eq www
+ permit tcp host 172.18.64.10 172.18.255.0 0.0.0.255 eq www
+ permit tcp host 172.18.64.10 172.18.253.0 0.0.0.255 eq 443
+ permit tcp host 172.18.64.10 172.18.254.0 0.0.0.255 eq 443
+ permit tcp host 172.18.64.10 172.18.255.0 0.0.0.255 eq 443
+ deny   udp any any eq domain
+ deny   ip any any log
+ip access-list extended ACL-PROVISIONING-OUT
+ permit ip host 172.18.64.2 any
+ permit ip host 172.18.64.3 any
+ permit ip 172.18.64.0 0.0.3.255 172.18.64.0 0.0.3.255
+ permit icmp any any
+ permit tcp 172.18.253.0 0.0.0.255 host 172.18.64.10 eq www
+ permit tcp 172.18.254.0 0.0.0.255 host 172.18.64.10 eq www
+ permit tcp 172.18.253.0 0.0.0.255 host 172.18.64.10 eq 443
+ permit tcp 172.18.254.0 0.0.0.255 host 172.18.64.10 eq 443
+ permit tcp 172.18.255.0 0.0.0.255 host 172.18.64.10 eq www
+ permit tcp 172.18.255.0 0.0.0.255 host 172.18.64.10 eq 443
+ permit tcp 172.18.253.0 0.0.0.255 host 172.18.64.10 established
+ permit tcp 172.18.254.0 0.0.0.255 host 172.18.64.10 established
+ permit tcp 172.18.255.0 0.0.0.255 host 172.18.64.10 established
+ permit tcp 172.18.253.0 0.0.0.255 host 172.18.64.10 eq 22
+ permit tcp 172.18.254.0 0.0.0.255 host 172.18.64.10 eq 22
+ permit tcp 172.18.255.0 0.0.0.255 host 172.18.64.10 eq 22
+ deny   ip any any log
+ip access-list extended ACL_INTERNET-ACCESS-IN
+ remark =====Deny Unecessary Traffic from Internet to Internal VLAN=====
+ permit udp object-group MERAKI_IPV4_RANGES eq domain object-group OG-OPENSTACK-SERVERS-SDG
+ permit udp object-group MERAKI_IPV4_RANGES eq ntp object-group OG-OPENSTACK-SERVERS-SDG
+ permit udp host 8.8.8.8 eq domain object-group OG-OPENSTACK-SERVERS-SDG
+ permit udp host 8.8.4.4 eq domain object-group OG-OPENSTACK-SERVERS-SDG
+ permit udp host 192.42.93.30 eq domain object-group OG-OPENSTACK-SERVERS-SDG
+ remark =====Match the basic IPtables rules in Cisco ACL for Openstack Hosts=====
+ deny   icmp any object-group OG-OPENSTACK-SERVERS-SDG timestamp-request
+ permit icmp any object-group OG-OPENSTACK-SERVERS-SDG
+ permit tcp any object-group OG-OPENSTACK-SERVERS-SDG established
+ deny   udp any object-group OG-OPENSTACK-SERVERS-SDG range 33434 33534
+ permit tcp object-group OG-JUMP-SERVERS object-group OG-OPENSTACK-SERVERS-SDG eq 22
+ permit tcp object-group MERAKI_IPV4_RANGES object-group OG-OPENSTACK-SERVERS-SDG eq 5001
+ deny   udp any object-group OG-OPENSTACK-SERVERS-SDG eq 8126
+ deny   ip any object-group OG-OPENSTACK-SERVERS-SDG
+ deny   udp any object-group OG-VLAN114-Interface-IPs eq snmp
+ deny   udp any object-group OG-VLAN114-Interface-IPs eq ntp
+ deny   udp any object-group OG-VLAN114-Interface-IPs eq isakmp
+ remark =====permit all other traffic=====
+ permit ip any any
+ip access-list extended IPV4-EGI-NETWORK-FUNNEL
+ deny   ip any 64.62.142.0 0.0.0.31
+ permit ip any any
+!
+!
+ip prefix-list ANYCAST-IP-V4 seq 10 permit 209.206.55.20/32
+ip prefix-list ANYCAST-IP-V4 seq 1000 deny 0.0.0.0/0 le 32
+!
+ip prefix-list ANYCAST-NETBLOCK-V4 seq 10 permit 209.206.55.0/24
+ip prefix-list ANYCAST-NETBLOCK-V4 seq 1000 deny 0.0.0.0/0 le 32
+!
+ip prefix-list CISCO-TUN0-RX-V4 seq 40 permit 173.36.128.0/18
+ip prefix-list CISCO-TUN0-RX-V4 seq 50 permit 173.39.192.0/20
+ip prefix-list CISCO-TUN0-RX-V4 seq 60 permit 72.163.192.0/19
+ip prefix-list CISCO-TUN0-RX-V4 seq 70 permit 173.36.240.160/27
+ip prefix-list CISCO-TUN0-RX-V4 seq 80 permit 10.138.76.0/23
+ip prefix-list CISCO-TUN0-RX-V4 seq 90 permit 171.68.0.0/14
+ip prefix-list CISCO-TUN0-RX-V4 seq 1000 deny 0.0.0.0/0 le 32
+!
+ip prefix-list CISCO-TUN0-TX-V4 seq 10 permit 10.239.130.0/23
+ip prefix-list CISCO-TUN0-TX-V4 seq 20 permit 10.239.131.0/24
+ip prefix-list CISCO-TUN0-TX-V4 seq 30 permit 10.239.176.0/20
+ip prefix-list CISCO-TUN0-TX-V4 seq 1000 deny 0.0.0.0/0 le 32
+!
+ip prefix-list EGI-NETWORKS seq 10 permit 64.62.142.0/27 le 32
+ip prefix-list EGI-NETWORKS seq 15 permit 64.62.142.24/30
+!
+ip prefix-list IPV4-DEFAULT seq 5 permit 0.0.0.0/0
+!
+ip prefix-list IPV4-RDIST-STATIC-TO-BGP seq 5 deny 199.231.78.0/24
+ip prefix-list IPV4-RDIST-STATIC-TO-BGP seq 10 deny 209.206.52.0/24
+ip prefix-list IPV4-RDIST-STATIC-TO-BGP seq 15 deny 209.206.53.0/24
+ip prefix-list IPV4-RDIST-STATIC-TO-BGP seq 20 permit 0.0.0.0/0 le 32
+!
+ip prefix-list PL_EBGP_SDG_PROD_IEFW_01_IN seq 1000 permit 209.206.50.28/30 le 32
+!
+ip prefix-list PL_EBGP_SDG_PROD_IEFW_01_OUT seq 10 permit 171.68.0.0/14
+ip prefix-list PL_EBGP_SDG_PROD_IEFW_01_OUT seq 1000 permit 0.0.0.0/0
+ip prefix-list PL_EBGP_SDG_PROD_IEFW_01_OUT seq 2000 permit 171.68.0.0/17
+!
+ip prefix-list PL_EBGP_SDG_SPINE_1_IN seq 1000 permit 0.0.0.0/0
+!
+ip prefix-list PL_EBGP_SDG_SPINE_1_OUT seq 1010 permit 172.19.100.0/24
+ip prefix-list PL_EBGP_SDG_SPINE_1_OUT seq 1015 permit 172.22.100.0/24
+ip prefix-list PL_EBGP_SDG_SPINE_1_OUT seq 1020 permit 172.23.100.0/24
+ip prefix-list PL_EBGP_SDG_SPINE_1_OUT seq 1025 permit 172.24.100.0/24
+ip prefix-list PL_EBGP_SDG_SPINE_1_OUT seq 1030 permit 172.25.100.0/24
+ip prefix-list PL_EBGP_SDG_SPINE_1_OUT seq 1035 permit 172.26.100.0/24
+!
+ip prefix-list PL_IPV4_EBGP_VRF100_SDG_PROD_IEFW_01_IN seq 1000 permit 209.206.50.28/30 le 32
+!
+ip prefix-list PL_IPV4_EBGP_VRF100_SDG_PROD_IEFW_01_OUT seq 1000 permit 0.0.0.0/0
+ip prefix-list PL_IPV4_EBGP_VRF100_SDG_PROD_IEFW_01_OUT seq 2000 permit 171.68.0.0/17
+ip prefix-list PL_IPV4_EBGP_VRF100_SDG_PROD_IEFW_01_OUT seq 2005 permit 171.68.0.0/14
+!
+ip prefix-list PL_IPV4_EBGP_VRF200_SDG_PROD_IEFW_01_IN seq 1000 permit 172.18.40.0/24
+!
+ip prefix-list PL_IPV4_EBGP_VRF200_SDG_PROD_IEFW_01_OUT seq 1000 permit 172.18.32.0/29
+ip prefix-list PL_IPV4_EBGP_VRF200_SDG_PROD_IEFW_01_OUT seq 1005 permit 172.18.253.0/24
+ip prefix-list PL_IPV4_EBGP_VRF200_SDG_PROD_IEFW_01_OUT seq 1010 permit 172.18.254.0/24
+ip prefix-list PL_IPV4_EBGP_VRF200_SDG_PROD_IEFW_01_OUT seq 1015 permit 172.18.255.0/24
+ip prefix-list PL_IPV4_EBGP_VRF200_SDG_PROD_IEFW_01_OUT seq 1020 permit 172.23.254.0/23
+ip prefix-list PL_IPV4_EBGP_VRF200_SDG_PROD_IEFW_01_OUT seq 1025 permit 172.25.254.0/23
+ip prefix-list PL_IPV4_EBGP_VRF200_SDG_PROD_IEFW_01_OUT seq 1050 permit 172.18.70.0/24
+!
+ip prefix-list RX-ANYCAST-HOST-V4 seq 10 permit 209.206.55.20/32
+ip prefix-list RX-ANYCAST-HOST-V4 seq 1000 deny 0.0.0.0/0 le 32
+!
+ip prefix-list RX-RR-CLIENT seq 110 permit 103.204.73.160/27
+ip prefix-list RX-RR-CLIENT seq 120 permit 172.25.251.1/32
+ip prefix-list RX-RR-CLIENT seq 121 permit 172.26.251.1/32
+ip prefix-list RX-RR-CLIENT seq 130 permit 172.25.251.2/32
+ip prefix-list RX-RR-CLIENT seq 131 permit 172.26.251.2/32
+ip prefix-list RX-RR-CLIENT seq 140 permit 139.220.242.192/27
+ip prefix-list RX-RR-CLIENT seq 150 permit 172.23.251.1/32
+ip prefix-list RX-RR-CLIENT seq 160 permit 172.23.251.2/32
+ip prefix-list RX-RR-CLIENT seq 210 permit 209.206.52.0/24
+ip prefix-list RX-RR-CLIENT seq 220 permit 209.206.53.0/24
+ip prefix-list RX-RR-CLIENT seq 225 permit 209.206.62.0/25
+ip prefix-list RX-RR-CLIENT seq 230 permit 172.16.251.1/32
+ip prefix-list RX-RR-CLIENT seq 240 permit 172.16.251.2/32
+ip prefix-list RX-RR-CLIENT seq 250 permit 172.23.253.0/24
+ip prefix-list RX-RR-CLIENT seq 260 permit 172.25.253.0/24
+ip prefix-list RX-RR-CLIENT seq 270 permit 10.70.0.0/24
+ip prefix-list RX-RR-CLIENT seq 280 permit 10.80.0.0/24
+ip prefix-list RX-RR-CLIENT seq 290 permit 172.18.251.3/32
+ip prefix-list RX-RR-CLIENT seq 1000 deny 0.0.0.0/0 le 32
+!         
+ip prefix-list TC-EDGE-RTR1-RX-V4 seq 10 permit 0.0.0.0/0
+ip prefix-list TC-EDGE-RTR1-RX-V4 seq 20 permit 209.206.48.0/20 le 24
+ip prefix-list TC-EDGE-RTR1-RX-V4 seq 1000 deny 0.0.0.0/0 le 32
+!
+ip prefix-list TC-EDGE-RTR1-TX-V4 seq 5 permit 108.161.147.0/24
+ip prefix-list TC-EDGE-RTR1-TX-V4 seq 10 permit 209.206.48.0/20
+ip prefix-list TC-EDGE-RTR1-TX-V4 seq 15 permit 209.206.48.0/23
+ip prefix-list TC-EDGE-RTR1-TX-V4 seq 16 permit 209.206.48.0/24
+ip prefix-list TC-EDGE-RTR1-TX-V4 seq 20 permit 209.206.49.0/24
+ip prefix-list TC-EDGE-RTR1-TX-V4 seq 21 permit 209.206.50.0/24
+ip prefix-list TC-EDGE-RTR1-TX-V4 seq 22 permit 209.206.51.0/24
+ip prefix-list TC-EDGE-RTR1-TX-V4 seq 30 permit 209.206.55.0/24
+ip prefix-list TC-EDGE-RTR1-TX-V4 seq 1000 deny 0.0.0.0/0 le 32
+!
+ip prefix-list TX-ANYCAST-HOST-V4 seq 1000 deny 0.0.0.0/0 le 32
+!
+ip prefix-list TX-RR-CLIENT seq 5 permit 209.206.48.0/24
+ip prefix-list TX-RR-CLIENT seq 10 permit 209.206.49.0/24
+ip prefix-list TX-RR-CLIENT seq 15 permit 209.206.50.0/24
+ip prefix-list TX-RR-CLIENT seq 16 permit 209.206.51.0/24
+ip prefix-list TX-RR-CLIENT seq 20 permit 172.18.251.1/32
+ip prefix-list TX-RR-CLIENT seq 30 permit 172.18.251.2/32
+ip prefix-list TX-RR-CLIENT seq 110 permit 103.204.73.160/27
+ip prefix-list TX-RR-CLIENT seq 120 permit 172.25.251.1/32
+ip prefix-list TX-RR-CLIENT seq 130 permit 172.25.251.2/32
+ip prefix-list TX-RR-CLIENT seq 210 permit 209.206.52.0/24
+ip prefix-list TX-RR-CLIENT seq 220 permit 209.206.53.0/24
+ip prefix-list TX-RR-CLIENT seq 225 permit 209.206.62.0/25
+ip prefix-list TX-RR-CLIENT seq 230 permit 172.16.251.1/32
+ip prefix-list TX-RR-CLIENT seq 240 permit 172.16.251.2/32
+ip prefix-list TX-RR-CLIENT seq 250 permit 173.36.128.0/18
+ip prefix-list TX-RR-CLIENT seq 260 permit 64.102.0.0/16
+ip prefix-list TX-RR-CLIENT seq 265 permit 64.102.106.0/23
+ip prefix-list TX-RR-CLIENT seq 270 permit 171.68.0.0/14
+ip prefix-list TX-RR-CLIENT seq 280 permit 172.23.253.0/24
+ip prefix-list TX-RR-CLIENT seq 290 permit 172.25.253.0/24
+ip prefix-list TX-RR-CLIENT seq 300 permit 10.70.0.0/24
+ip prefix-list TX-RR-CLIENT seq 310 permit 10.80.0.0/24
+ip prefix-list TX-RR-CLIENT seq 320 permit 139.220.242.192/27
+ip prefix-list TX-RR-CLIENT seq 330 permit 171.68.0.0/17
+ip prefix-list TX-RR-CLIENT seq 340 permit 171.70.168.0/24
+ip prefix-list TX-RR-CLIENT seq 350 permit 64.62.142.24/30
+ip prefix-list TX-RR-CLIENT seq 355 permit 64.62.142.0/27 le 32
+ip prefix-list TX-RR-CLIENT seq 1000 deny 0.0.0.0/0 le 32
+!
+ip prefix-list TX-RR-SERVER seq 5 permit 209.206.48.0/24
+ip prefix-list TX-RR-SERVER seq 10 permit 209.206.49.0/24
+ip prefix-list TX-RR-SERVER seq 15 permit 209.206.50.0/24
+ip prefix-list TX-RR-SERVER seq 16 permit 209.206.51.0/24
+ip prefix-list TX-RR-SERVER seq 20 permit 172.18.251.1/32
+ip prefix-list TX-RR-SERVER seq 25 permit 64.62.142.0/27 le 32
+ip prefix-list TX-RR-SERVER seq 1000 deny 0.0.0.0/0 le 32
+ip radius source-interface GigabitEthernet0 vrf Mgmt-intf
+logging source-interface GigabitEthernet0 vrf Mgmt-intf
+logging source-interface Loopback0 vrf 395831:100
+logging host 38.96.14.123 vrf 395831:100
+logging host 172.22.23.110 vrf Mgmt-intf
+ipv6 route static bfd vrf 395831:100 HundredGigE0/2/0.1000 2620:12F:C000:EE::7
+ipv6 route vrf 395831:200 2001:420:44:400::/56 Null0 254 name SDG-CORE-1[Null0][supernet_route]
+ipv6 route vrf 395831:100 2620:12F:C000:20::/64 HundredGigE0/2/0.601 2620:12F:C002:EE:600::4 name AWS_K8s_IPv6_NAT
+ipv6 route vrf 395831:100 2620:12F:C000::/48 Null0 254 name SDG-CORE-1[Null0][supernet_route]
+ipv6 route vrf 395831:100 2620:12F:C000::/47 Null0 254 name SDG-CORE-1[Null0][sdg_supernet_route]
+ipv6 route vrf 395831:100 2620:12F:C002::/64 HundredGigE0/2/0.1000 2620:12F:C000:EE::7 name DAL[LAN][via_100G]
+ipv6 route vrf 395831:100 2620:12F:C002:531::/64 HundredGigE0/2/0.1000 2620:12F:C000:EE::7 name DAL[LAN][via_100G]
+ipv6 route vrf 395831:100 2620:12F:C00C::A/128 HundredGigE0/2/0.114 2620:12F:C000:0:92E2:BAFF:FEE6:A4E8 name ANYCAST-IP[Hu0_2_0.114]
+ipv6 route vrf 395831:100 2620:12F:C00C::/48 Null0 254 name SDG-CORE-1[Null0][supernet_route]
+ipv6 route vrf 395831:100 2620:12F:C000::/44 Null0 254 name SDG-CORE-1[Null0][supernet_route]
+ipv6 route vrf 395831:300 ::/0 HundredGigE0/2/0.304 2620:12F:C000:300::1 name [Default_via_Spines]
+ipv6 route vrf 395831:100 ::/0 2606:7100:1:140::11 name TC-EDGE-RTR1[Be1.320]
+!
+!
+ipv6 prefix-list ANYCAST-IP-V6 seq 10 permit 2620:12F:C00C::1A/128
+ipv6 prefix-list ANYCAST-IP-V6 seq 1000 deny ::/0 le 128
+!
+ipv6 prefix-list ANYCAST-NETBLOCK-V6 seq 10 permit 2620:12F:C00C::/48
+ipv6 prefix-list ANYCAST-NETBLOCK-V6 seq 1000 deny ::/0 le 128
+!
+ipv6 prefix-list CISCO-TUN0-RX-V6 seq 1000 deny ::/0 le 128
+!
+ipv6 prefix-list CISCO-TUN0-TX-V6 seq 10 permit 2001:420:44:400::/56
+ipv6 prefix-list CISCO-TUN0-TX-V6 seq 1000 deny ::/0 le 128
+!
+ipv6 prefix-list PL_EBGP_SDG_PROD_IEFW_01_IN seq 1000 permit 2620:12F:C000:400::/64
+ipv6 prefix-list PL_EBGP_SDG_PROD_IEFW_01_IN seq 1005 permit 2620:12F:C002:400::/64
+ipv6 prefix-list PL_EBGP_SDG_PROD_IEFW_01_IN seq 1010 permit 2620:12F:C004:400::/64
+ipv6 prefix-list PL_EBGP_SDG_PROD_IEFW_01_IN seq 1015 permit 2620:12F:C006:400::/64
+ipv6 prefix-list PL_EBGP_SDG_PROD_IEFW_01_IN seq 1020 permit 2620:12F:C008:400::/64
+ipv6 prefix-list PL_EBGP_SDG_PROD_IEFW_01_IN seq 1025 permit 2620:12F:C00A:400::/64
+ipv6 prefix-list PL_EBGP_SDG_PROD_IEFW_01_IN seq 1030 permit 2620:12F:C00E:400::/64
+ipv6 prefix-list PL_EBGP_SDG_PROD_IEFW_01_IN seq 1035 permit 2620:12F:C00F:400::/64
+!
+ipv6 prefix-list PL_EBGP_SDG_PROD_IEFW_01_OUT seq 1000 permit ::/0
+!
+ipv6 prefix-list PL_EBGP_SDG_SPINE_1_IN seq 1000 permit ::/0
+!
+ipv6 prefix-list PL_EBGP_SDG_SPINE_1_OUT seq 1000 permit 2620:12F:C004:400::/64
+ipv6 prefix-list PL_EBGP_SDG_SPINE_1_OUT seq 1005 permit 2620:12F:C006:400::/64
+ipv6 prefix-list PL_EBGP_SDG_SPINE_1_OUT seq 1010 permit 2620:12F:C008:400::/64
+ipv6 prefix-list PL_EBGP_SDG_SPINE_1_OUT seq 1015 permit 2620:12F:C00A:400::/64
+ipv6 prefix-list PL_EBGP_SDG_SPINE_1_OUT seq 1020 permit 2620:12F:C00E:400::/64
+ipv6 prefix-list PL_EBGP_SDG_SPINE_1_OUT seq 1025 permit 2620:12F:C00F:400::/64
+!
+ipv6 prefix-list RX-ANYCAST-HOST-V6 seq 10 permit 2620:12F:C00C::1A/128
+ipv6 prefix-list RX-ANYCAST-HOST-V6 seq 1000 deny ::/0 le 128
+!
+ipv6 prefix-list RX-RR-CLIENT-V6 seq 10 permit 2620:12F:C000::/44 le 128
+ipv6 prefix-list RX-RR-CLIENT-V6 seq 1000 deny ::/0 le 128
+!
+ipv6 prefix-list RX-UPSTREAM-V6 seq 5 permit ::/0
+ipv6 prefix-list RX-UPSTREAM-V6 seq 10 permit 2620:12F:C000::/44 le 48
+ipv6 prefix-list RX-UPSTREAM-V6 seq 1000 deny ::/0 le 128
+!
+ipv6 prefix-list TX-ANYCAST-HOST-V6 seq 1000 deny ::/0 le 128
+!
+ipv6 prefix-list TX-RR-CLIENT-V6 seq 10 permit 2620:12F:C000::/44 le 128
+ipv6 prefix-list TX-RR-CLIENT-V6 seq 1000 deny ::/0 le 128
+!
+ipv6 prefix-list TX-RR-SERVER-V6 seq 10 permit 2620:12F:C000::/44 le 128
+ipv6 prefix-list TX-RR-SERVER-V6 seq 1000 deny ::/0 le 128
+!
+ipv6 prefix-list TX-UPSTREAM-V6 seq 5 permit 2620:12F:C000::/44
+ipv6 prefix-list TX-UPSTREAM-V6 seq 7 permit 2620:12F:C000::/47
+ipv6 prefix-list TX-UPSTREAM-V6 seq 10 permit 2620:12F:C000::/48
+ipv6 prefix-list TX-UPSTREAM-V6 seq 20 permit 2620:12F:C00C::/48
+ipv6 prefix-list TX-UPSTREAM-V6 seq 1000 deny ::/0 le 128
+!
+route-map RM_IPV4_EBGP_VRF100_SDG_PROD_IEFW_01_OUT permit 1000
+ match ip address prefix-list PL_IPV4_EBGP_VRF100_SDG_PROD_IEFW_01_OUT
+!
+route-map RM_IPV4_EBGP_VRF100_SDG_PROD_IEFW_01_OUT deny 9000
+!
+route-map RM_IPV4_EBGP_VRF200_SDG_PROD_IEFW_01_OUT permit 5
+ match ip address prefix-list PL_IPV4_EBGP_VRF200_SDG_PROD_IEFW_01_OUT
+!
+route-map RM_IPV4_EBGP_VRF200_SDG_PROD_IEFW_01_OUT deny 1000
+!
+route-map TX-RR-CLIENT permit 10
+ set local-preference 500
+!
+route-map RM_IPV6_EBGP_SDG_SPINE_1_OUT permit 10
+ match ipv6 address prefix-list PL_EBGP_SDG_SPINE_1_OUT
+!
+route-map RM_IPV6_EBGP_SDG_SPINE_1_OUT deny 1000
+!
+route-map RM_IPV4_EBGP_SDG_SPINE_1_OUT permit 10
+ match ip address prefix-list PL_EBGP_SDG_SPINE_1_OUT
+!
+route-map RM_IPV4_EBGP_SDG_SPINE_1_OUT deny 1000
+!
+route-map RM_IPV4_EBGP_SDG_PROD_IEFW_01_OUT permit 10
+ match ip address prefix-list PL_EBGP_SDG_PROD_IEFW_01_OUT
+!
+route-map RM_IPV4_EBGP_SDG_PROD_IEFW_01_OUT deny 1000
+!
+route-map RM_IPV6_EBGP_SDG_PROD_IEFW_01_OUT permit 10
+ match ipv6 address prefix-list PL_EBGP_SDG_PROD_IEFW_01_OUT
+!
+route-map RM_IPV6_EBGP_SDG_PROD_IEFW_01_OUT deny 1000
+!
+route-map TX-RR-CLIENT-MAP-V6 permit 10
+ set local-preference 500
+ set community no-export
+!
+route-map TX-RR-CLIENT-MAP-V6 deny 1000
+!
+route-map IPV4-TC-EDGE-RTR-1-RX permit 10
+ match ip address prefix-list IPV4-DEFAULT
+ set local-preference 500
+ set weight 500
+!
+route-map IPV4-TC-EDGE-RTR-1-RX permit 20
+ match ip address prefix-list TC-EDGE-RTR1-RX-V4
+!
+route-map IPV4-TC-EDGE-RTR-1-RX deny 30
+!
+route-map RX-RR-CLIENT-MAP-V6 permit 10
+ set local-preference 500
+ set community no-export
+!
+route-map RX-RR-CLIENT-MAP-V6 deny 1000
+!
+route-map TX-ANYCAST-V4 permit 10
+ match ip address prefix-list ANYCAST-NETBLOCK-V4
+!
+route-map TX-ANYCAST-V4 deny 100
+!
+route-map TX-ANYCAST-V6 permit 10
+ match ipv6 address prefix-list ANYCAST-NETBLOCK-V6
+!
+route-map TX-ANYCAST-V6 deny 100
+!
+route-map RX-ANYCAST-EXIST-V4 permit 10
+ match ip address prefix-list ANYCAST-IP-V4
+!
+route-map RX-ANYCAST-EXIST-V4 deny 100
+!
+route-map RM_IPV4_EBGP_VRF100_SDG_PROD_IEFW_01_IN permit 1000
+ match ip address PL_IPV4_EBGP_VRF100_SDG_PROD_IEFW_01_IN
+!
+route-map RM_IPV4_EBGP_VRF200_SDG_PROD_IEFW_01_IN permit 5
+ match ip address prefix-list PL_IPV4_EBGP_VRF200_SDG_PROD_IEFW_01_IN
+!
+route-map RM_IPV4_EBGP_VRF200_SDG_PROD_IEFW_01_IN deny 1000
+!
+route-map PL_IPV4_EBGP_VRF100_SDG_PROD_IEFW_01_IN deny 9000
+!
+route-map RX-ANYCAST-EXIST-V6 permit 10
+ match ipv6 address prefix-list ANYCAST-IP-V6
+!
+route-map RX-ANYCAST-EXIST-V6 deny 100
+!
+route-map RM_IPV6_EBGP_SDG_SPINE_1_IN permit 10
+ match ipv6 address prefix-list PL_EBGP_SDG_SPINE_1_IN
+!
+route-map RM_IPV6_EBGP_SDG_SPINE_1_IN deny 1000
+!
+route-map RM_IPV4_EBGP_SDG_SPINE_1_IN permit 10
+ match ip address prefix-list PL_EBGP_SDG_SPINE_1_IN
+!
+route-map RM_IPV4_EBGP_SDG_SPINE_1_IN deny 1000
+!
+route-map IPV4-EGI-NETWORK-FUNNEL permit 10
+ match ip address IPV4-EGI-NETWORK-FUNNEL
+ set ip next-hop recursive vrf 395831:100 172.18.251.3
+!
+route-map IPV4-VRF100-STATIC-TO-BGP permit 10
+ match ip address prefix-list IPV4-RDIST-STATIC-TO-BGP
+!
+route-map RX-RR-CLIENT-MAP permit 10
+ set local-preference 500
+ set community no-export
+!
+route-map RX-RR-CLIENT-MAP deny 100
+!
+route-map TX-RR-CLIENT-MAP permit 5
+ match ip address prefix-list EGI-NETWORKS
+ set local-preference 500
+!
+route-map TX-RR-CLIENT-MAP permit 10
+ set local-preference 500
+ set community no-export
+!
+route-map TX-RR-CLIENT-MAP deny 100
+!
+route-map RM_IPV4_EBGP_SDG_PROD_IEFW_01_IN permit 10
+ match ip address prefix-list PL_EBGP_SDG_PROD_IEFW_01_IN
+!
+route-map RM_IPV4_EBGP_SDG_PROD_IEFW_01_IN deny 1000
+!
+route-map RM_IPV6_EBGP_SDG_PROD_IEFW_01_IN permit 10
+ match ipv6 address prefix-list PL_EBGP_SDG_PROD_IEFW_01_IN
+!
+route-map RM_IPV6_EBGP_SDG_PROD_IEFW_01_IN deny 1000
+!
+snmp-server group meraki-group v3 priv access ipv6 ACL-SNMP-Meraki-IPv6 ACL-SNMP-Meraki-IPv4
+snmp-server community 8675309 RO SNMP-Access
+snmp-server community zopeeZaeY9 RO SNMP-Access
+snmp-server location TC - 9725 Scranton Road,San Diego
+snmp-server contact alerts@m5hosting.com
+snmp ifmib ifindex persist
+!
+!
+radius-server retry method reorder
+radius-server transaction max-tries 3
+radius-server retransmit 1
+!
+radius server 172.22.23.34
+ address ipv4 172.22.23.34 auth-port 1812 acct-port 1813
+ key 7 0203014C5A070706444F01
+!
+radius server 172.22.23.35
+ address ipv4 172.22.23.35 auth-port 1812 acct-port 1813
+ key 7 09494B1E48041F35030D0C
+!
+!
+ipv6 access-list ACL-SNMP-Meraki-IPv6
+ permit ipv6 2620:12F:C000:1::/64 any
+ permit ipv6 2620:12F:C002:1::/64 any
+ deny ipv6 any any log
+!
+ipv6 access-list ACL-SSH-Meraki-IPv6
+ remark Meraki IPv6 Range
+ permit ipv6 2620:12F:C000::/44 any
+!
+control-plane
+!
+ !
+ !
+ !
+ !
+!
+!
+!
+!
+privilege exec all level 7 traceroute
+privilege exec all level 7 ping
+privilege exec all level 7 show startup-config
+privilege exec all level 7 show running-config
+privilege exec all level 7 show configuration
+privilege exec level 7 show interfaces
+privilege exec level 15 show
+alias exec cimcarp show ip arp vrf 395831:200 Port-channel7.314
+alias exec wha sh run | i alias
+alias exec siib show ip int brie
+alias exec ses show etherchannel sum
+alias exec sid show int des
+alias exec 6p100 ping vrf 395831:100 ipv6 
+alias exec sirv100 show ip route vrf 395831:100
+alias exec p100 ping vrf 395831:100
+alias exec p200 ping vrf 395831:200
+alias exec sirv200 show ip route vrf 395831:200
+alias exec si6rv200 show ipv6 route vrf 395831:200
+alias exec srint show run int
+alias exec sri sh run | i 
+alias exec sibs100 sh ip bgp vpnv4 vrf 395831:100 sum
+alias exec sibs200 sh ip bgp vpnv4 vrf 395831:200 sum
+alias exec sibn200 sh ip bgp vpnv4 vrf 395831:200 neighbors 
+alias exec sibn100 sh ip bgp vpnv4 vrf 395831:100 neighbors 
+alias exec si6bs100 show ip bgp vpnv6 unicast vrf 395831:100 sum
+alias exec si6bs200 show ip bgp vpnv6 unicast vrf 395831:200 sum
+alias exec sarv100 show ip arp vrf 395831:100
+alias exec sarv200 show ip arp vrf 395831:200
+alias exec sarv600 show ip arp vrf 395831:600
+alias exec srsb show run | sec bgp
+alias exec sivi show ip vrf interface
+alias exec sibs400 sh ip bgp vpnv4 vrf 395831:400 sum
+alias exec si6bs400 show ip bgp vpnv6 unicast vrf 395831:400 sum
+alias exec sirv400 show ip route vrf 395831:400
+alias exec si6rv400 show ipv6 route vrf 395831:400
+alias exec sibs6100 show ip bgp vpnv6 unicast vrf 395831:100 sum
+alias exec sibs6200 show ip bgp vpnv6 unicast vrf 395831:200 sum
+alias exec sibn6100 show bgp vrf 395831:100 all neighbors 
+alias exec sibn6200 show bgp vrf 395831:200 all neighbors 
+alias exec sib100 show ip bgp vpnv4 vrf 395831:100
+alias exec sib200 show ip bgp vpnv4 vrf 395831:200
+alias exec sib300 show ip bgp vpnv4 vrf 395831:300
+alias exec sib6100 show ip bgp vpnv6 unicast vrf 395831:100
+alias exec sib6200 show ip bgp vpnv6 unicast vrf 395831:200
+alias exec sib6300 show ip bgp vpnv6 unicast vrf 395831:300
+alias exec pv200 ping vrf 395831:200 
+alias exec sibn400 sh ip bgp vpnv4 vrf 395831:400 neighbors 
+alias exec sbr200 sh bgp vpnv4 unicast vrf  395831:200
+alias exec sbr100 sh bgp vpnv4 unicast vrf  395831:100
+alias exec siib6 show ipv6 interface brief
+alias exec sirv6100 show ipv6 route vrf 395831:100
+alias exec pv6100 ping vrf 395831:100 ipv6
+!
+line con 0
+ exec-timeout 5 0
+ logging synchronous
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ access-class SSH-Access in vrf-also
+ exec-timeout 60 0
+ ipv6 access-class ACL-SSH-Meraki-IPv6 in
+ transport input ssh
+!
+ntp logging
+ntp server vrf Mgmt-intf 209.216.206.189
+!
+!
+!
+!
+!
+end
+
+SDG-CORE-1#     

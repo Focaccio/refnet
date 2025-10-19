@@ -1,0 +1,3192 @@
+Last login: Sun Oct 12 18:55:22 2025
+
+07:11 greg@xcf16 ~ ? 
+07:11 greg@xcf16 ~ ? res
+Script started, output file is /Users/f16/16sessions/251013-071154-term-session.session
+07:11 greg@xcf16 ~ ? 
+07:11 greg@xcf16 ~ ? 
+07:11 greg@xcf16 ~ ? 
+07:11 greg@xcf16 ~ ? 
+07:11 greg@xcf16 ~ ? 
+07:11 greg@xcf16 ~ ? 
+07:11 greg@xcf16 ~ ? 
+07:11 greg@xcf16 ~ ? 
+07:11 greg@xcf16 ~ ? 
+07:11 greg@xcf16 ~ ? 
+07:11 greg@xcf16 ~ ? 
+07:11 greg@xcf16 ~ ? 
+07:11 greg@xcf16 ~ ? ssh 172.18.250.1 -llbucsadmin
+
+Unauthorized access prohibited.  This product or the use of this
+product is covered by one or more of the following U.S. Patents:
+9,626,224; 9,613,071; 9,584,403; 9,549,048; 9,438,538; 9,397,951;
+9,363,309; 9,363,248; 9,253,277; 9,191,342; 9,152,574; 9,143,455;
+9,130,991; 9,092,342; 9,036,662; 8,930,650; 8,929,402; 8,929,380;
+8,885,632; 8,811,431; 8,755,381; 8,743,683; 8,738,865; 8,732,423;
+8,725,988; 8,595,314; 8,489,562; 8,473,714; 8,442,052; 8,392,684;
+8,370,583; 8,312,226; 8,307,115; 8,225,072; 8,171,238; 8,095,774;
+7,948,921; 7,945,736; 7,698,431; 7,644,230; 7,630,295; 7,571,344.
+By using this product, you agree to be bound by the terms of Silver
+Peak Systems Inc. End User License Agreement.
+
+The End User License Agreement can be viewed at
+http://www.silver-peak.com/download/latest/EULA.html
+
+----------------------------------------------------------------------
+You are accessing a HPE Aruba Networking Information System (IS) that is provided for HPE Aruba Networking Simulated-authorized use only. 
+ 
+By using this IS (which includes any device attached to this IS), you consent to the following conditions: 
+-HPE Aruba Networking routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, network operations and defense, and personnel misconduct (PM). 
+-At any time, HPE Aruba Networking may inspect and seize data stored on this IS. 
+-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any HPE Aruba Networking-authorized purpose. 
+-This IS includes security measures (e.g., authentication and access controls) to protect HPE Aruba Networking interests--not for your personal benefit or privacy. 
+-Notwithstanding the above, using this IS does not constitute consent to PM investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.
+
+(lbucsadmin@172.18.250.1) Password: 
+Last login: Mon Oct 13 01:40:53 2025 from 172.18.250.2
+You are accessing a HPE Aruba Networking Information System (IS) that is provided for HPE Aruba Networking Simulated-authorized use only. 
+ 
+By using this IS (which includes any device attached to this IS), you consent to the following conditions: 
+-HPE Aruba Networking routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, network operations and defense, and personnel misconduct (PM). 
+-At any time, HPE Aruba Networking may inspect and seize data stored on this IS. 
+-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any HPE Aruba Networking-authorized purpose. 
+-This IS includes security measures (e.g., authentication and access controls) to protect HPE Aruba Networking interests--not for your personal benefit or privacy. 
+-Notwithstanding the above, using this IS does not constitute consent to PM investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.
+
+KW-10106 > 
+KW-10106 > en
+KW-10106 # sh interfaces 
+Interface cpkt_datapath state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::a8ce:61ff:fe2e:18a1/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         AA:CE:61:2E:18:A1
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface ids_tap0 state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::64d8:8eff:fe67:7bea/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1526
+   HW address:         66:D8:8E:67:7B:EA
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface ids_tap1 state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::a8a6:94ff:fe25:ad8d/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1526
+   HW address:         AA:A6:94:25:AD:8D
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface ids_tap4096 state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::18c1:ebff:fe9c:b78b/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                9000
+   HW address:         1A:C1:EB:9C:B7:8B
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface ids_tap_out0 state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::e035:d3ff:fe9b:5833/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1526
+   HW address:         E2:35:D3:9B:58:33
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface ids_tap_out1 state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::c8c1:dcff:fe93:f3ca/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1526
+   HW address:         CA:C1:DC:93:F3:CA
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface ids_tap_out4096 state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::8cea:c9ff:fec9:919e/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                9000
+   HW address:         8E:EA:C9:C9:91:9E
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface ips_tap0 state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::3496:dff:fe80:221f/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1526
+   HW address:         36:96:0D:80:22:1F
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface ips_tap1 state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::90de:b5ff:fe93:da80/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1526
+   HW address:         92:DE:B5:93:DA:80
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface ips_tap4096 state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::c826:a7ff:fe76:98d0/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                9000
+   HW address:         CA:26:A7:76:98:D0
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface ips_tap_out0 state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::4c11:e8ff:fe97:b8c1/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1526
+   HW address:         4E:11:E8:97:B8:C1
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface ips_tap_out1 state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::3821:5eff:fe64:4e9/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1526
+   HW address:         3A:21:5E:64:04:E9
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface ips_tap_out4096 state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::fc44:f7ff:fecf:8/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                9000
+   HW address:         FE:44:F7:CF:00:08
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface ipsec_decrypt state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::c4c0:c8ff:fe01:dc17/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         C6:C0:C8:01:DC:17
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface ipsec_encrypt state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::fc32:65ff:fe61:316a/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         FE:32:65:61:31:6A
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface lan0 state
+   Admin up:           yes
+   Link up:            no
+   IPv4 address:       192.168.21.1
+   Netmask:            255.255.255.0
+   Speed:              UNKNOWN
+   Duplex:             UNKNOWN
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         00:1B:BC:29:35:4A
+
+   PoE enabled:        yes
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface lan1 state
+   Admin up:           yes
+   Link up:            yes
+   IPv4 address:       172.18.1.1
+   Netmask:            255.255.255.0
+   IPv6 address:       fe80::21b:bcff:fe29:354b/64
+   Speed:              100Mb/s
+   Duplex:             full
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         00:1B:BC:29:35:4B
+
+   PoE enabled:        yes
+
+   RX bytes:           35304577
+   RX packets:         94453
+   RX mcast packets:   48525
+   RX discards:        48481
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           30741546
+   TX packets:         45108
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface lan2 state
+   Admin up:           yes
+   Link up:            no
+   Speed:              UNKNOWN
+   Duplex:             UNKNOWN
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         00:1B:BC:29:35:4C
+
+   Combo port type:    RJ45
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface lo state
+   Admin up:           yes
+   Link up:            yes
+   IPv4 address:       127.0.0.1
+   Netmask:            255.0.0.0
+   IPv6 address:       ::1/128
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     loopback
+   MTU:                16436
+   HW address:         N/A
+
+   RX bytes:           168163
+   RX packets:         1011
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           168163
+   TX packets:         1011
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface lo20000 state
+   Admin up:           yes
+   Link up:            yes
+   IPv4 address:       10.250.28.131
+   Netmask:            255.255.255.255
+   IPv6 address:       fe80::90c5:f3ff:fe48:6255/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         92:C5:F3:48:62:55
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface mgmt0 state
+   Admin up:           yes
+   Link up:            yes
+   IPv4 address:       172.18.250.1
+   Netmask:            255.255.255.0
+   IPv6 address:       fe80::21b:bcff:fe29:3548/64
+   Speed:              1000Mb/s
+   Duplex:             full
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         00:1B:BC:29:35:48
+
+   RX bytes:           425782
+   RX packets:         5189
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           439269
+   TX packets:         2968
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface mgmt1 state
+   Admin up:           yes
+   Link up:            no
+   IPv4 address:       169.254.0.1
+   Netmask:            255.255.0.0
+   Speed:              UNKNOWN
+   Duplex:             UNKNOWN
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         00:1B:BC:29:35:49
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface pim0 state
+   Admin up:           yes
+   Link up:            yes
+   IPv4 address:       169.254.124.1
+   Netmask:            255.255.255.0
+   IPv6 address:       fe80::84f4:17ff:fe82:9a9b/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         86:F4:17:82:9A:9B
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface pim1 state
+   Admin up:           yes
+   Link up:            yes
+   IPv4 address:       169.254.125.1
+   Netmask:            255.255.255.0
+   IPv6 address:       fe80::b844:8cff:fe9d:a5a6/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         BA:44:8C:9D:A5:A6
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface pim2 state
+   Admin up:           yes
+   Link up:            yes
+   IPv4 address:       169.254.126.1
+   Netmask:            255.255.255.0
+   IPv6 address:       fe80::b053:72ff:fe5d:77d9/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         B2:53:72:5D:77:D9
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface pimreg state
+   Admin up:           yes
+   Link up:            yes
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     pim-register
+   MTU:                1472
+   HW address:         00:00:00:00:00:00
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface proxy_wan0 state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::4031:6dff:feb7:12d6/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         42:31:6D:B7:12:D6
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface sp_lan state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::942c:34ff:feb8:7f59/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         96:2C:34:B8:7F:59
+
+   RX bytes:           156664270
+   RX packets:         443867
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           121315655
+   TX packets:         412033
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface sp_wan state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::d858:8dff:fec7:dbf0/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         DA:58:8D:C7:DB:F0
+
+   RX bytes:           124293705
+   RX packets:         412033
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           159769534
+   TX packets:         443837
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface tpepd_lan0 state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::4cba:2aff:fe3e:9e39/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         4E:BA:2A:3E:9E:39
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface tpepd_wan0 state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::fc54:c2ff:fee0:976e/64
+   Speed:              N/A
+   Duplex:             N/A
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         FE:54:C2:E0:97:6E
+
+   RX bytes:           0
+   RX packets:         0
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           0
+   TX packets:         0
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface wan0 state
+   Admin up:           yes
+   Link up:            yes
+   IPv6 address:       fe80::21b:bcff:fe29:354d/64
+   Speed:              1000Mb/s
+   Duplex:             full
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         00:1B:BC:29:35:4D
+
+   RX bytes:           461832
+   RX packets:         2866
+   RX mcast packets:   0
+   RX discards:        0
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           3026089
+   TX packets:         11219
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface wan1 state
+   Admin up:           yes
+   Link up:            yes
+   IPv4 address:       10.0.0.6
+   Netmask:            255.255.255.0
+   IPv6 address:       fe80::21b:bcff:fe29:354e/64
+   Speed:              1000Mb/s
+   Duplex:             full
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         00:1B:BC:29:35:4E
+
+   RX bytes:           2669260
+   RX packets:         15624
+   RX mcast packets:   4511
+   RX discards:        4511
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           1730893
+   TX packets:         13713
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+
+Interface wan2 state
+   Admin up:           yes
+   Link up:            yes
+   IPv4 address:       192.168.86.28
+   Netmask:            255.255.255.0
+   IPv6 address:       fe80::21b:bcff:fe29:354f/64
+   Speed:              100Mb/s
+   Duplex:             full
+   Interface type:     ethernet
+   MTU:                1500
+   HW address:         00:1B:BC:29:35:4F
+
+   Combo port type:    RJ45
+
+   RX bytes:           247528745
+   RX packets:         1121619
+   RX mcast packets:   46592
+   RX discards:        46398
+   RX errors:          0
+   RX overruns:        0
+   RX frame:           0
+
+   TX bytes:           283009592
+   TX packets:         1058451
+   TX discards:        0
+   TX errors:          0
+   TX overruns:        0
+   TX carrier:         0
+   TX collisions:      0
+KW-10106 # sh sub
+subif   subnet  
+KW-10106 # sh subnet 
+Auto-subnet : enabled (use system auto-subnet to change)
+Add-local   : disabled, metric 50
+OSPF Redistribution - disabled, metric 50, redist filter 0, local filter 0
+Admin Distance : Local = 1, IBGP = 200, EBGP = 20, Sub-Shared = 10, BGP-Rem = 15, OSPF = 110, OSPF-REM = 15, System Default = 251
+Route Table: 24/95536 entries
+          prefix/len              nexthop     metric peer id    saas   community            AS path              details
+      172.17.43.0/32                              50 2074338    0      N/A                  N/A                  LRN_SPS_HUB,107.215.36.181
+    10.250.28.139/32                             100 2074338    0      N/A                  N/A                  LRN_SPS_HUB,107.215.36.181
+    10.250.28.132/32                              50 2074338    0      N/A                  N/A                  LRN_SPS_HUB,107.215.36.181
+    10.250.28.131/32                              50 2700616    0      N/A                  N/A                  AUTO ADV LOCAL
+    10.250.28.130/32                             100 2074338    0      N/A                  N/A                  LRN_SPS_HUB,107.215.36.181
+     192.168.86.0/24                              50 2700616    0      N/A                  N/A                  AUTO LOCAL
+     192.168.86.0/24                             100 2074338    0      N/A                  N/A                  LRN_SPS_HUB,107.215.36.181
+     192.168.21.0/24                              50 2700616    0      N/A                  N/A                  AUTO ADV LOCAL
+       172.28.1.0/24          198.15.99.8          1 2700616    0      N/A                  N/A                  AUTO ADV MGMT
+       172.28.1.0/24                             100 2074338    0      N/A                  N/A                  LRN_SPS_HUB,107.215.36.181
+       172.18.1.0/24                              50 2700616    0      N/A                  N/A                  AUTO ADV LOCAL
+      172.16.33.0/24                              50 2074338    0      N/A                  N/A                  LRN_SPS_HUB,107.215.36.181
+    169.254.126.0/24                              50 2700616    0      N/A                  N/A                  AUTO LOCAL
+    169.254.125.0/24                              50 2700616    0      N/A                  N/A                  AUTO LOCAL
+    169.254.124.0/24                              50 2700616    0      N/A                  N/A                  AUTO LOCAL
+         12.0.0.0/24             10.0.0.1         50 2700616    0      N/A                  N/A                  CFG ADV LOCAL
+         12.0.0.0/24                             100 2074338    0      N/A                  N/A                  LRN_SPS_HUB,107.215.36.181
+        10.0.16.0/24                             100 2074338    0      N/A                  N/A                  LRN_SPS_HUB,107.215.36.181
+         10.0.0.0/24                             100 2074338    0      N/A                  N/A                  LRN_SPS_HUB,107.215.36.181
+         10.0.0.0/24                              50 2700616    0      N/A                  N/A                  AUTO ADV LOCAL
+           0.0.0.0/0         192.168.86.1       1251 2700616    0      N/A                  N/A                  AUTO FROM_LAN
+           0.0.0.0/0                              50 2074338    0      N/A                  N/A                  LRN_SPS_HUB,107.215.36.181
+           0.0.0.0/0             10.0.0.1       3655 2700616    0      N/A                  N/A                  AUTO FROM_WAN
+            fd::/128                              50 2074338    0      N/A                  N/A                  LRN_SPS_HUB,107.215.36.181
+KW-10106 # sh tunnel 
+Tunnel to_Baton-Rouge-EC_CaptWhite(bondedTunnel_208) state
+  Admin:               up
+  Oper:                Up - Idle
+  Uptime:              1d 1h 50m 56s
+  Type:                Bonded
+  MTU:                 1488
+  Tag name:            CaptWhite
+  ID:                  16
+  Bonded ID:           7
+  Peer ID:             2074338
+  Bound tunnels:       
+                       to_Baton-Rouge-EC_INET2-INET1(tunnel_222)(*)($)
+  Tunnel black list     0x0
+  Tunnel brown list     0x0
+  Tunnel green list     0x1
+  Tunnel current list   0x1
+  Tunnel curr ids list  ( 15 )
+  Bonded tunnel state brown 0
+  Bonded tunnel state brown Latency 0
+  Bonded tunnel state brown Loss 0
+  Bonded tunnel state brown Jitter 0
+LAN Rx Bytes:          260
+    Tx Bytes:          0
+    Rx Pkts:           5
+    Tx Pkts:           0
+    Tx Invalid Pkts:   0
+
+WAN Rx Bytes:          0
+    Tx Bytes:          720
+    Rx Pkts:           0
+    Tx Pkts:           5
+    Rx Invalid Pkts:   0
+    Rx Lost Pkts:      0
+    Rx Duplicate Pkts: 0
+
+Tunnel to_Baton-Rouge-EC_DefaultOverlay(bondedTunnel_27) state
+  Admin:               up
+  Oper:                Up - Active
+  Uptime:              1d 1h 50m 56s
+  Type:                Bonded
+  MTU:                 1488
+  Tag name:            DefaultOverlay
+  ID:                  20
+  Bonded ID:           4
+  Peer ID:             2074338
+  Bound tunnels:       
+                       to_Baton-Rouge-EC_INET2-INET1(tunnel_222)(*)($)
+  Tunnel black list     0x0
+  Tunnel brown list     0x0
+  Tunnel green list     0x1
+  Tunnel current list   0x1
+  Tunnel curr ids list  ( 15 )
+  Bonded tunnel state brown 0
+  Bonded tunnel state brown Latency 0
+  Bonded tunnel state brown Loss 0
+  Bonded tunnel state brown Jitter 0
+LAN Rx Bytes:          29990560
+    Tx Bytes:          29974134
+    Rx Pkts:           43183
+    Tx Pkts:           43181
+    Tx Invalid Pkts:   0
+
+WAN Rx Bytes:          32771808
+    Tx Bytes:          33101440
+    Rx Pkts:           41418
+    Tx Pkts:           43083
+    Rx Invalid Pkts:   0
+    Rx Lost Pkts:      0
+    Rx Duplicate Pkts: 0
+
+
+Tunnel to_Baton-Rouge-EC_CriticalApps(bondedTunnel_28) state
+  Admin:               up
+  Oper:                Up - Idle
+  Uptime:              1d 1h 50m 56s
+  Type:                Bonded
+  MTU:                 1488
+  Tag name:            CriticalApps
+  ID:                  21
+  Bonded ID:           2
+  Peer ID:             2074338
+  Bound tunnels:       
+                       to_Baton-Rouge-EC_INET2-INET1(tunnel_222)(*)($)
+  Tunnel black list     0x0
+  Tunnel brown list     0x0
+  Tunnel green list     0x1
+  Tunnel current list   0x1
+  Tunnel curr ids list  ( 15 )
+  Bonded tunnel state brown 0
+  Bonded tunnel state brown Latency 0
+  Bonded tunnel state brown Loss 0
+  Bonded tunnel state brown Jitter 0
+LAN Rx Bytes:          0
+    Tx Bytes:          0
+    Rx Pkts:           0
+    Tx Pkts:           0
+    Tx Invalid Pkts:   0
+
+WAN Rx Bytes:          0
+    Tx Bytes:          0
+    Rx Pkts:           0
+    Tx Pkts:           0
+    Rx Invalid Pkts:   0
+    Rx Lost Pkts:      0
+    Rx Duplicate Pkts: 0
+
+
+Tunnel to_Baton-Rouge-EC_RealTime(bondedTunnel_29) state
+  Admin:               up
+  Oper:                Up - Idle
+  Uptime:              1d 1h 50m 56s
+  Type:                Bonded
+  MTU:                 1488
+  Tag name:            RealTime
+  ID:                  22
+  Bonded ID:           1
+  Peer ID:             2074338
+  Bound tunnels:       
+                       to_Baton-Rouge-EC_INET2-INET1(tunnel_222)(*)($)
+  Tunnel black list     0x0
+  Tunnel brown list     0x0
+  Tunnel green list     0x1
+  Tunnel current list   0x1
+  Tunnel curr ids list  ( 15 )
+  Bonded tunnel state brown 0
+  Bonded tunnel state brown Latency 0
+  Bonded tunnel state brown Loss 0
+  Bonded tunnel state brown Jitter 0
+LAN Rx Bytes:          0
+    Tx Bytes:          0
+    Rx Pkts:           0
+    Tx Pkts:           0
+    Tx Invalid Pkts:   0
+
+WAN Rx Bytes:          0
+    Tx Bytes:          0
+    Rx Pkts:           0
+    Tx Pkts:           0
+    Rx Invalid Pkts:   0
+    Rx Lost Pkts:      0
+    Rx Duplicate Pkts: 0
+
+
+Tunnel to_Baton-Rouge-EC_BulkApps(bondedTunnel_30) state
+  Admin:               up
+  Oper:                Up - Idle
+  Uptime:              1d 1h 50m 56s
+  Type:                Bonded
+  MTU:                 1488
+  Tag name:            BulkApps
+  ID:                  23
+  Bonded ID:           3
+  Peer ID:             2074338
+  Bound tunnels:       
+                       to_Baton-Rouge-EC_INET2-INET1(tunnel_222)(*)($)
+  Tunnel black list     0x0
+  Tunnel brown list     0x0
+  Tunnel green list     0x1
+  Tunnel current list   0x1
+  Tunnel curr ids list  ( 15 )
+  Bonded tunnel state brown 0
+  Bonded tunnel state brown Latency 0
+  Bonded tunnel state brown Loss 0
+  Bonded tunnel state brown Jitter 0
+LAN Rx Bytes:          0
+    Tx Bytes:          0
+    Rx Pkts:           0
+    Tx Pkts:           0
+    Tx Invalid Pkts:   0
+
+WAN Rx Bytes:          0
+    Tx Bytes:          0
+    Rx Pkts:           0
+    Tx Pkts:           0
+    Rx Invalid Pkts:   0
+    Rx Lost Pkts:      0
+    Rx Duplicate Pkts: 0
+
+
+
+
+
+Tunnel Passthrough_INET2_CaptWhite(passThrough_216) state
+  Admin:               up
+  Oper:                Up - Active
+  Uptime:              1d 1h 51m 17s
+  Tunnel ID:           2
+  Local IP address:    192.168.86.28
+  Remote IP address:   0.0.0.0
+  Remote Appliance ID: 1
+  MTU:                 1500
+
+LAN Rx Bytes:          0
+    Tx Bytes:          0
+    Rx Pkts:           0
+    Tx Pkts:           0
+    Tx Invalid Pkts:   0
+
+WAN Rx Bytes:          0
+    Tx Bytes:          0
+    Rx Pkts:           0
+    Tx Pkts:           0
+    Rx Invalid Pkts:   0
+    Rx Lost Pkts:      0
+    Rx Duplicate Pkts: 0
+
+
+Tunnel Passthrough_INET2_wan2(passThrough_217) state
+  Admin:               up
+  Oper:                Up - Active
+  Uptime:              1d 1h 51m 17s
+  Tunnel ID:           4
+  Local IP address:    192.168.86.28
+  Remote IP address:   0.0.0.0
+  Remote Appliance ID: 1
+  MTU:                 1500
+
+LAN Rx Bytes:          0
+    Tx Bytes:          0
+    Rx Pkts:           0
+    Tx Pkts:           0
+    Tx Invalid Pkts:   0
+
+WAN Rx Bytes:          0
+    Tx Bytes:          0
+    Rx Pkts:           0
+    Tx Pkts:           0
+    Rx Invalid Pkts:   0
+    Rx Lost Pkts:      0
+    Rx Duplicate Pkts: 0
+
+
+Tunnel Passthrough_INET2_RealTime(passThrough_218) state
+  Admin:               up
+  Oper:                Up - Active
+  Uptime:              1d 1h 51m 17s
+  Tunnel ID:           5
+  Local IP address:    192.168.86.28
+  Remote IP address:   0.0.0.0
+  Remote Appliance ID: 2
+  MTU:                 1500
+
+LAN Rx Bytes:          28120
+    Tx Bytes:          35328
+    Rx Pkts:           370
+    Tx Pkts:           368
+    Tx Invalid Pkts:   0
+
+WAN Rx Bytes:          35328
+    Tx Bytes:          28120
+    Rx Pkts:           368
+    Tx Pkts:           370
+    Rx Invalid Pkts:   0
+    Rx Lost Pkts:      0
+    Rx Duplicate Pkts: 0
+
+
+Tunnel Passthrough_INET2_CriticalApps(passThrough_219) state
+  Admin:               up
+  Oper:                Up - Active
+  Uptime:              1d 1h 51m 17s
+  Tunnel ID:           6
+  Local IP address:    192.168.86.28
+  Remote IP address:   0.0.0.0
+  Remote Appliance ID: 3
+  MTU:                 1500
+
+LAN Rx Bytes:          66547545
+    Tx Bytes:          25420586
+    Rx Pkts:           116810
+    Tx Pkts:           85050
+    Tx Invalid Pkts:   0
+
+WAN Rx Bytes:          25420586
+    Tx Bytes:          66547545
+    Rx Pkts:           85050
+    Tx Pkts:           116810
+    Rx Invalid Pkts:   0
+    Rx Lost Pkts:      0
+    Rx Duplicate Pkts: 0
+
+
+Tunnel Passthrough_INET2_BulkApps(passThrough_220) state
+  Admin:               up
+  Oper:                Up - Active
+  Uptime:              1d 1h 51m 17s
+  Tunnel ID:           8
+  Local IP address:    192.168.86.28
+  Remote IP address:   0.0.0.0
+  Remote Appliance ID: 4
+  MTU:                 1500
+
+LAN Rx Bytes:          0
+    Tx Bytes:          0
+    Rx Pkts:           0
+    Tx Pkts:           0
+    Tx Invalid Pkts:   0
+
+WAN Rx Bytes:          0
+    Tx Bytes:          0
+    Rx Pkts:           0
+    Tx Pkts:           0
+    Rx Invalid Pkts:   0
+    Rx Lost Pkts:      0
+    Rx Duplicate Pkts: 0
+
+
+Tunnel Passthrough_INET2_DefaultOverlay(passThrough_221) state
+  Admin:               up
+  Oper:                Up - Active
+  Uptime:              1d 1h 51m 17s
+  Tunnel ID:           14
+  Local IP address:    192.168.86.28
+  Remote IP address:   0.0.0.0
+  Remote Appliance ID: 1
+  MTU:                 1500
+
+LAN Rx Bytes:          0
+    Tx Bytes:          0
+    Rx Pkts:           0
+    Tx Pkts:           0
+    Tx Invalid Pkts:   0
+
+WAN Rx Bytes:          0
+    Tx Bytes:          0
+    Rx Pkts:           0
+    Tx Pkts:           0
+    Rx Invalid Pkts:   0
+    Rx Lost Pkts:      0
+    Rx Duplicate Pkts: 0
+
+
+Tunnel Passthrough_FSE_lan0(passThrough_225) state
+  Admin:               up
+  Oper:                Down
+  Uptime:              0s
+  Tunnel ID:           19
+  Local IP address:    192.168.21.1
+  Remote IP address:   0.0.0.0
+  Remote Appliance ID: 1
+  MTU:                 1500
+
+LAN Rx Bytes:          0
+    Tx Bytes:          0
+    Rx Pkts:           0
+    Tx Pkts:           0
+    Tx Invalid Pkts:   0
+
+WAN Rx Bytes:          0
+    Tx Bytes:          0
+    Rx Pkts:           0
+    Tx Pkts:           0
+    Rx Invalid Pkts:   0
+    Rx Lost Pkts:      0
+    Rx Duplicate Pkts: 0
+
+
+Tunnel Passthrough_OVERLAY_L1_lan1(passThrough_232) state
+  Admin:               up
+  Oper:                Up - Active
+  Uptime:              1d 1h 51m 15s
+  Tunnel ID:           31
+  Local IP address:    172.18.1.1
+  Remote IP address:   0.0.0.0
+  Remote Appliance ID: 1
+  MTU:                 1500
+
+LAN Rx Bytes:          168
+    Tx Bytes:          208
+    Rx Pkts:           2
+    Tx Pkts:           2
+    Tx Invalid Pkts:   0
+
+WAN Rx Bytes:          208
+    Tx Bytes:          168
+    Rx Pkts:           2
+    Tx Pkts:           2
+    Rx Invalid Pkts:   0
+    Rx Lost Pkts:      0
+    Rx Duplicate Pkts: 0
+
+
+Tunnel Passthrough_wan1(passThrough_239) state
+  Admin:               up
+  Oper:                Up - Active
+  Uptime:              21h 3m 10s
+  Tunnel ID:           24
+  Local IP address:    10.0.0.6
+  Remote IP address:   0.0.0.0
+  Remote Appliance ID: 1
+  MTU:                 1500
+
+LAN Rx Bytes:          84
+    Tx Bytes:          104
+    Rx Pkts:           1
+    Tx Pkts:           1
+    Tx Invalid Pkts:   0
+
+WAN Rx Bytes:          104
+    Tx Bytes:          84
+    Rx Pkts:           1
+    Tx Pkts:           1
+    Rx Invalid Pkts:   0
+    Rx Lost Pkts:      0
+    Rx Duplicate Pkts: 0
+
+
+Tunnel to_Baton-Rouge-EC_INET2-INET1(tunnel_222) state
+  Admin:               up
+  Oper:                Up - Active
+  Uptime:              1d 1h 50m 58s
+  Tunnel ID:           15
+  Local IP address:    192.168.86.28
+  Remote IP address:   107.215.36.181
+  Remote Appliance ID: 2074338
+  MTU:                 1488
+
+LAN Rx Bytes:          29990820
+    Tx Bytes:          29790886
+    Rx Pkts:           43188
+    Tx Pkts:           41419
+    Tx Invalid Pkts:   0
+
+WAN Rx Bytes:          32771808
+    Tx Bytes:          33102160
+    Rx Pkts:           41418
+    Tx Pkts:           43088
+    Rx Invalid Pkts:   0
+    Rx Lost Pkts:      0
+    Rx Duplicate Pkts: 0
+
+
+KW-10106 # sh management riu
+% Unrecognized command "riu".
+Type "sh management ?" for help.
+KW-10106 # sh management route 
+Destination     Mask  Gateway         Interface Metric  Source          
+default         /0    192.168.86.1    wan2      251     10.250.28.131   
+10.0.0.0        /24   0.0.0.0         wan1      100     0.0.0.0         
+10.250.28.131   /32   0.0.0.0         lo20000   100     0.0.0.0         
+169.254.0.0     /16   0.0.0.0         mgmt1     0       169.254.0.1     
+169.254.124.0   /24   0.0.0.0         pim0      100     0.0.0.0         
+169.254.125.0   /24   0.0.0.0         pim1      100     0.0.0.0         
+169.254.126.0   /24   0.0.0.0         pim2      100     0.0.0.0         
+172.16.33.1     /32   192.168.86.1    wan2      100     0.0.0.0         
+172.18.1.0      /24   0.0.0.0         lan1      100     0.0.0.0         
+172.18.250.0    /24   0.0.0.0         mgmt0     0       172.18.250.1    
+192.168.21.0    /24   0.0.0.0         lan0      100     0.0.0.0         
+192.168.86.0    /24   0.0.0.0         wan2      100     0.0.0.0         
+KW-10106 # sh running-config ?
+<cr>                            
+full                            Do not exclude commands that set default values
+KW-10106 # sh running-config full ?
+<cr>                            
+KW-10106 # sh running-config full 
+##
+## Network interface configuration
+##
+no interface lan0 dhcp
+   interface lan0 label ""
+   interface lan0 mtu 1500
+   interface lan0 poe
+   interface lan0 poe priority 0
+   interface lan0 port-type RJ45
+   interface lan0 security-mode 0
+no interface lan0 shutdown
+   interface lan0 speed-duplex auto/auto
+   interface lan0 zone 0
+no interface lan1 dhcp
+   interface lan1 ip address 172.18.1.1 /24
+   interface lan1 label ""
+   interface lan1 mtu 1500
+   interface lan1 poe
+   interface lan1 poe priority 0
+   interface lan1 port-type RJ45
+   interface lan1 security-mode 0
+no interface lan1 shutdown
+   interface lan1 speed-duplex auto/auto
+   interface lan1 zone 0
+no interface lan2 dhcp
+   interface lan2 label ""
+   interface lan2 mtu 1500
+no interface lan2 poe
+   interface lan2 poe priority 0
+   interface lan2 port-type RJ45
+   interface lan2 security-mode 0
+no interface lan2 shutdown
+   interface lan2 speed-duplex auto/auto
+   interface lan2 zone 0
+no interface lo dhcp
+   interface lo ip address 127.0.0.1 /8
+   interface lo label ""
+   interface lo mtu 16436
+no interface lo poe
+   interface lo poe priority 0
+   interface lo port-type NONE
+   interface lo security-mode 0
+no interface lo shutdown
+   interface lo speed-duplex auto/auto
+   interface lo zone 0
+no interface mgmt0 dhcp
+   interface mgmt0 ip address 172.18.250.1 /24
+   interface mgmt0 label ""
+   interface mgmt0 mtu 1500
+no interface mgmt0 poe
+   interface mgmt0 poe priority 0
+   interface mgmt0 port-type RJ45
+   interface mgmt0 security-mode 0
+no interface mgmt0 shutdown
+   interface mgmt0 speed-duplex auto/auto
+   interface mgmt0 zone 0
+no interface mgmt1 dhcp
+   interface mgmt1 ip address 169.254.0.1 /16
+   interface mgmt1 label ""
+   interface mgmt1 mtu 1500
+no interface mgmt1 poe
+   interface mgmt1 poe priority 0
+   interface mgmt1 port-type RJ45
+   interface mgmt1 security-mode 0
+no interface mgmt1 shutdown
+   interface mgmt1 speed-duplex auto/auto
+   interface mgmt1 zone 0
+no interface wan0 dhcp
+   interface wan0 label ""
+   interface wan0 mtu 1500
+no interface wan0 poe
+   interface wan0 poe priority 0
+   interface wan0 port-type SFP
+   interface wan0 security-mode 0
+no interface wan0 shutdown
+   interface wan0 speed-duplex 10000/full
+   interface wan0 zone 0
+no interface wan1 dhcp
+   interface wan1 ip address 10.0.0.6 /24
+   interface wan1 label ""
+   interface wan1 mtu 1500
+no interface wan1 poe
+   interface wan1 poe priority 0
+   interface wan1 port-type SFP
+   interface wan1 security-mode 0
+no interface wan1 shutdown
+   interface wan1 speed-duplex 10000/full
+   interface wan1 zone 0
+no interface wan2 dhcp
+   interface wan2 label ""
+   interface wan2 mtu 1500
+no interface wan2 poe
+   interface wan2 poe priority 0
+   interface wan2 port-type RJ45
+   interface wan2 security-mode 0
+no interface wan2 shutdown
+   interface wan2 speed-duplex auto/auto
+   interface wan2 zone 0
+   
+##
+## Routing configuration
+##
+   ip route 12.0.0.0 /24 10.0.0.1 wan1 1 0.0.0.0
+   ip route 172.28.1.0 /24 198.15.99.8 wan0 1 0.0.0.0
+   
+##
+## Other IP configuration
+##
+   ip name-server 1.1.1.3
+   ip name-server 1.1.1.2
+   ip name-server 9.9.9.9
+   hostname KW-10106
+   ip host localhost 127.0.0.1
+   ip mgmt-ip 10.250.28.131
+   
+##
+## Logging configuration
+##
+   logging trap notice
+   logging facility auditlog local0
+   logging facility firewall local2
+   logging facility ids local3
+   logging facility system local1
+   logging files rotation criteria size 50
+   logging files rotation disklimit 2000
+   logging files rotation max-num 30
+   logging local notice
+   logging privacy-mask disable
+   logging privacy-mask ipv4 prefix-length 24
+   logging stateful-wan-drops disable
+   
+##
+## Local user account configuration
+##
+   username admin capability admin
+no username admin disable
+   username lbucsadmin capability admin
+no username lbucsadmin disable
+   username monitor capability monitor
+   username monitor disable
+   
+##
+## AAA configuration
+##
+   aaa authentication login default local 
+   aaa authentication login password min-len 8
+   aaa authorization map default-group admin
+   aaa authorization map order remote-first
+   radius-server key 
+   radius-server retransmit 1
+   radius-server timeout 3
+   tacacs-server key 
+   tacacs-server retransmit 1
+   tacacs-server timeout 3
+   
+##
+## System Config
+##
+   system stateful-snat-exceptions enable ""
+   
+##
+## System Network Config
+##
+   dns cache iter 10
+   system aggressive-path-fail disable
+   system auto-ipid disable
+   system auto-policy-lookup interval 60
+no system auto-subnet add-lcl-communities
+   system auto-subnet add-local metric 50
+   system auto-subnet add-local-asn
+   system auto-subnet add-local-lan enable
+   system auto-subnet add-local-wan disable
+   system auto-subnet enable
+   system auto-subnet local-asn-filter
+no system auto-subnet local-communities
+   system auto-subnet local-communities ""
+   system auto-subnet route-map default_rtmap_to_subsh outbound
+no system auto-subnet segment 0 add-lcl-communities
+   system auto-subnet segment 0 add-local metric 50
+   system auto-subnet segment 0 add-local-asn
+   system auto-subnet segment 0 add-local-lan enable
+   system auto-subnet segment 0 add-local-wan disable
+   system auto-subnet segment 0 local-asn-filter
+no system auto-subnet segment 0 local-communities
+   system auto-subnet segment 0 local-communities ""
+   system auto-subnet segment 0 route-map default_rtmap_to_subsh outbound
+   system auto-syn disable
+   system bandwidth if-rx-target disable
+   system bandwidth inbound-max 100000
+   system bandwidth outbound-max 35000
+   system bandwidth wan0 max 35000
+   system brnat-outif-number 24
+   system brnat-rules-per-oif 256
+   system contact ,
+   system disk encryption enable
+   system dpc tunnel-fail-behavior fail-stick
+   system eclicense boost bandwidth 0
+   system eclicense boost disable
+   system eclicense plus disable
+   system edgeha hasync enable
+   system end2end-zfw enable
+   system enforce-overlay enable
+   system flow-del-wait-time 1000
+   system int-hairpin enable
+   system intersegment internal nat-subnet 129.127.0.1/24
+no system ip-broadcast enable
+   system ip-header-compression enable
+   system ipsec-sa-delay-delete-time 5000
+   system ipv6-frag enable
+   system ipv6-frag-reassembly enable
+   system kernel-icmpv4-err-gen disable
+   system kernel-icmpv6-err-gen disable
+   system location "San Diego,California,92101,US"
+   system max-tcp-mss 1328
+   system network-memory media ram-and-disk
+   system node-dns enable
+   system node-dns ip 8.8.8.8
+   system orch-id e5fd9f27e8f0488c858fcdb5dbe205c4
+   system passthru-to-sender disable
+   system poe power-mode 2
+   system qdrc adj-slope 80
+   system qdrc adj-slope-low 5
+   system qdrc congestion-duration 60000
+   system qdrc disable
+   system qdrc mavg-weight 8
+   system qdrc messages-interval 1000
+   system qdrc min-flow-rate 100
+   system qdrc mode smooth
+   system qdrc qos-drop-threshold 5
+   system qdrc queue-wait-threshold 5
+   system qdrc restriction-duration 10000
+   system quies-tun-ka-intvl 60
+   system router EC6_WAN1-ASLAN create interface wan1 lan
+   system router EC6_WAN1-ASLAN ip 10.0.0.6 /24 nexthop 10.0.0.1 vlan 0
+   system router EC6_WAN1-ASLAN ip 10.0.0.6 /24 nexthop 10.0.0.1 vlan 0
+   system router EC6_WAN1-ASLAN ip 10.0.0.6 inbound-max-bw 0
+   system router EC6_WAN1-ASLAN ip 10.0.0.6 outbound-max-bw 0
+   system router EC6_WAN1-ASLAN ip 10.0.0.6 security-mode 0
+   system router EC6_WAN1-ASLAN ip 10.0.0.6 segment 0
+   system router EC6_WAN1-ASLAN ip 10.0.0.6 target-in-thres 95.000000000
+   system router EC6_WAN1-ASLAN ip 10.0.0.6 target-out-thres 95.000000000
+   system router EC6_WAN1-ASLAN ip 10.0.0.6 zone 0
+   system router rtr1 create interface lan0 lan
+   system router rtr1 ip 192.168.21.1 /24 nexthop 0.0.0.0 vlan 0
+   system router rtr1 ip 192.168.21.1 /24 nexthop 0.0.0.0 vlan 0
+   system router rtr1 ip 192.168.21.1 inbound-max-bw 0
+   system router rtr1 ip 192.168.21.1 label 25
+   system router rtr1 ip 192.168.21.1 outbound-max-bw 0
+   system router rtr1 ip 192.168.21.1 security-mode 0
+   system router rtr1 ip 192.168.21.1 segment 0
+   system router rtr1 ip 192.168.21.1 target-in-thres 95.000000000
+   system router rtr1 ip 192.168.21.1 target-out-thres 95.000000000
+   system router rtr1 ip 192.168.21.1 zone 0
+   system router rtr2 create interface lan1 lan
+   system router rtr2 ip 172.18.1.1 /24 nexthop 0.0.0.0 vlan 0
+   system router rtr2 ip 172.18.1.1 /24 nexthop 0.0.0.0 vlan 0
+   system router rtr2 ip 172.18.1.1 inbound-max-bw 0
+   system router rtr2 ip 172.18.1.1 label 31
+   system router rtr2 ip 172.18.1.1 outbound-max-bw 0
+   system router rtr2 ip 172.18.1.1 security-mode 0
+   system router rtr2 ip 172.18.1.1 segment 0
+   system router rtr2 ip 172.18.1.1 target-in-thres 95.000000000
+   system router rtr2 ip 172.18.1.1 target-out-thres 95.000000000
+   system router rtr2 ip 172.18.1.1 zone 0
+   system router rtr3 create interface wan2 wan
+   system router rtr3 dhcp vlan 0 inbound-max-bw 100000
+   system router rtr3 dhcp vlan 0 label 6
+   system router rtr3 dhcp vlan 0 outbound-max-bw 35000
+   system router rtr3 dhcp vlan 0 security-mode 3
+   system router rtr3 dhcp vlan 0 segment 0
+   system router rtr3 dhcp vlan 0 target-in-thres 95.000000000
+   system router rtr3 dhcp vlan 0 target-out-thres 95.000000000
+   system router rtr3 dhcp vlan 0 zone 0
+   system routing inline
+   system routing redundancy lan-native-vlan
+   system smb-signing disable
+   system smbv2-downgrade disable
+   system ssl-ipsec-override disable
+   system subnet allow-mgmt-routes
+   system subnet redistribute enable
+   system subnet redistribute enable
+   system subnet redistribute increment 50
+   system tcp-flow-inact-tout 1800
+   system tcp-flow-rst-tout 1000
+   system udp-flow-inact-tout 120
+   
+##
+## Subnet Config
+##
+   subnet 12.0.0.0/24  segment Default nexthop 10.0.0.1 interface wan1 mac 00:00:00:00:00:00 vni 16777216
+   subnet 12.0.0.0/24  segment Default nexthop 10.0.0.1 interface wan1 metric 50
+   subnet 12.0.0.0/24 segment Default nexthop 10.0.0.1 interface wan1
+   subnet 12.0.0.0/24 segment Default nexthop 10.0.0.1 interface wan1 comment "EC6-WAN1-VIA-LOCAL-WAN1"
+   subnet 12.0.0.0/24 segment Default nexthop 10.0.0.1 interface wan1 dir any
+   subnet 12.0.0.0/24 segment Default nexthop 10.0.0.1 interface wan1 zone 65534
+   
+##
+## Shaper Config
+##
+   shaper inbound wan accuracy 5000
+   shaper inbound wan dynamic-bandwidth disable
+   shaper inbound wan enable
+   shaper inbound wan max-bandwidth 100000
+   shaper inbound wan traffic-class 1 excess-weight 100
+   shaper inbound wan traffic-class 1 flow-rate-limit 0
+   shaper inbound wan traffic-class 1 max-bandwidth 100
+   shaper inbound wan traffic-class 1 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 1 max-wait 250
+   shaper inbound wan traffic-class 1 min-bandwidth 25
+   shaper inbound wan traffic-class 1 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 1 priority 1
+   shaper inbound wan traffic-class 10 excess-weight 100
+   shaper inbound wan traffic-class 10 flow-rate-limit 0
+   shaper inbound wan traffic-class 10 max-bandwidth 100
+   shaper inbound wan traffic-class 10 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 10 max-wait 500
+   shaper inbound wan traffic-class 10 min-bandwidth 0
+   shaper inbound wan traffic-class 10 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 10 priority 10
+   shaper inbound wan traffic-class 2 excess-weight 100
+   shaper inbound wan traffic-class 2 flow-rate-limit 0
+   shaper inbound wan traffic-class 2 max-bandwidth 100
+   shaper inbound wan traffic-class 2 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 2 max-wait 500
+   shaper inbound wan traffic-class 2 min-bandwidth 25
+   shaper inbound wan traffic-class 2 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 2 priority 2
+   shaper inbound wan traffic-class 3 excess-weight 100
+   shaper inbound wan traffic-class 3 flow-rate-limit 0
+   shaper inbound wan traffic-class 3 max-bandwidth 80
+   shaper inbound wan traffic-class 3 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 3 max-wait 500
+   shaper inbound wan traffic-class 3 min-bandwidth 0
+   shaper inbound wan traffic-class 3 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 3 priority 3
+   shaper inbound wan traffic-class 4 excess-weight 100
+   shaper inbound wan traffic-class 4 flow-rate-limit 0
+   shaper inbound wan traffic-class 4 max-bandwidth 100
+   shaper inbound wan traffic-class 4 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 4 max-wait 500
+   shaper inbound wan traffic-class 4 min-bandwidth 0
+   shaper inbound wan traffic-class 4 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 4 priority 4
+   shaper inbound wan traffic-class 5 excess-weight 100
+   shaper inbound wan traffic-class 5 flow-rate-limit 0
+   shaper inbound wan traffic-class 5 max-bandwidth 100
+   shaper inbound wan traffic-class 5 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 5 max-wait 500
+   shaper inbound wan traffic-class 5 min-bandwidth 0
+   shaper inbound wan traffic-class 5 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 5 priority 5
+   shaper inbound wan traffic-class 6 excess-weight 100
+   shaper inbound wan traffic-class 6 flow-rate-limit 0
+   shaper inbound wan traffic-class 6 max-bandwidth 100
+   shaper inbound wan traffic-class 6 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 6 max-wait 500
+   shaper inbound wan traffic-class 6 min-bandwidth 0
+   shaper inbound wan traffic-class 6 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 6 priority 6
+   shaper inbound wan traffic-class 7 excess-weight 100
+   shaper inbound wan traffic-class 7 flow-rate-limit 0
+   shaper inbound wan traffic-class 7 max-bandwidth 100
+   shaper inbound wan traffic-class 7 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 7 max-wait 500
+   shaper inbound wan traffic-class 7 min-bandwidth 0
+   shaper inbound wan traffic-class 7 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 7 priority 7
+   shaper inbound wan traffic-class 8 excess-weight 100
+   shaper inbound wan traffic-class 8 flow-rate-limit 0
+   shaper inbound wan traffic-class 8 max-bandwidth 100
+   shaper inbound wan traffic-class 8 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 8 max-wait 500
+   shaper inbound wan traffic-class 8 min-bandwidth 0
+   shaper inbound wan traffic-class 8 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 8 priority 8
+   shaper inbound wan traffic-class 9 excess-weight 100
+   shaper inbound wan traffic-class 9 flow-rate-limit 0
+   shaper inbound wan traffic-class 9 max-bandwidth 100
+   shaper inbound wan traffic-class 9 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 9 max-wait 500
+   shaper inbound wan traffic-class 9 min-bandwidth 0
+   shaper inbound wan traffic-class 9 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 9 priority 9
+   shaper outbound default accuracy 1000
+   shaper outbound default disable
+   shaper outbound default dynamic-bandwidth disable
+   shaper outbound default max-bandwidth 0
+   shaper outbound default traffic-class 1 excess-weight 100
+   shaper outbound default traffic-class 1 flow-rate-limit 0
+   shaper outbound default traffic-class 1 max-bandwidth 100
+   shaper outbound default traffic-class 1 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 1 max-wait 500
+   shaper outbound default traffic-class 1 min-bandwidth 30
+   shaper outbound default traffic-class 1 min-bandwidth-abs 0
+   shaper outbound default traffic-class 1 priority 5
+   shaper outbound default traffic-class 10 excess-weight 100
+   shaper outbound default traffic-class 10 flow-rate-limit 0
+   shaper outbound default traffic-class 10 max-bandwidth 100
+   shaper outbound default traffic-class 10 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 10 max-wait 500
+   shaper outbound default traffic-class 10 min-bandwidth 30
+   shaper outbound default traffic-class 10 min-bandwidth-abs 0
+   shaper outbound default traffic-class 10 priority 5
+   shaper outbound default traffic-class 2 excess-weight 1000
+   shaper outbound default traffic-class 2 flow-rate-limit 0
+   shaper outbound default traffic-class 2 max-bandwidth 100
+   shaper outbound default traffic-class 2 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 2 max-wait 100
+   shaper outbound default traffic-class 2 min-bandwidth 30
+   shaper outbound default traffic-class 2 min-bandwidth-abs 0
+   shaper outbound default traffic-class 2 priority 1
+   shaper outbound default traffic-class 3 excess-weight 1000
+   shaper outbound default traffic-class 3 flow-rate-limit 0
+   shaper outbound default traffic-class 3 max-bandwidth 100
+   shaper outbound default traffic-class 3 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 3 max-wait 200
+   shaper outbound default traffic-class 3 min-bandwidth 20
+   shaper outbound default traffic-class 3 min-bandwidth-abs 0
+   shaper outbound default traffic-class 3 priority 2
+   shaper outbound default traffic-class 4 excess-weight 100
+   shaper outbound default traffic-class 4 flow-rate-limit 0
+   shaper outbound default traffic-class 4 max-bandwidth 100
+   shaper outbound default traffic-class 4 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 4 max-wait 500
+   shaper outbound default traffic-class 4 min-bandwidth 20
+   shaper outbound default traffic-class 4 min-bandwidth-abs 0
+   shaper outbound default traffic-class 4 priority 8
+   shaper outbound default traffic-class 5 excess-weight 100
+   shaper outbound default traffic-class 5 flow-rate-limit 0
+   shaper outbound default traffic-class 5 max-bandwidth 100
+   shaper outbound default traffic-class 5 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 5 max-wait 500
+   shaper outbound default traffic-class 5 min-bandwidth 30
+   shaper outbound default traffic-class 5 min-bandwidth-abs 0
+   shaper outbound default traffic-class 5 priority 5
+   shaper outbound default traffic-class 6 excess-weight 100
+   shaper outbound default traffic-class 6 flow-rate-limit 0
+   shaper outbound default traffic-class 6 max-bandwidth 100
+   shaper outbound default traffic-class 6 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 6 max-wait 500
+   shaper outbound default traffic-class 6 min-bandwidth 30
+   shaper outbound default traffic-class 6 min-bandwidth-abs 0
+   shaper outbound default traffic-class 6 priority 5
+   shaper outbound default traffic-class 7 excess-weight 100
+   shaper outbound default traffic-class 7 flow-rate-limit 0
+   shaper outbound default traffic-class 7 max-bandwidth 100
+   shaper outbound default traffic-class 7 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 7 max-wait 500
+   shaper outbound default traffic-class 7 min-bandwidth 30
+   shaper outbound default traffic-class 7 min-bandwidth-abs 0
+   shaper outbound default traffic-class 7 priority 5
+   shaper outbound default traffic-class 8 excess-weight 100
+   shaper outbound default traffic-class 8 flow-rate-limit 0
+   shaper outbound default traffic-class 8 max-bandwidth 100
+   shaper outbound default traffic-class 8 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 8 max-wait 500
+   shaper outbound default traffic-class 8 min-bandwidth 30
+   shaper outbound default traffic-class 8 min-bandwidth-abs 0
+   shaper outbound default traffic-class 8 priority 5
+   shaper outbound default traffic-class 9 excess-weight 100
+   shaper outbound default traffic-class 9 flow-rate-limit 0
+   shaper outbound default traffic-class 9 max-bandwidth 100
+   shaper outbound default traffic-class 9 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 9 max-wait 500
+   shaper outbound default traffic-class 9 min-bandwidth 30
+   shaper outbound default traffic-class 9 min-bandwidth-abs 0
+   shaper outbound default traffic-class 9 priority 5
+   shaper outbound wan accuracy 5000
+   shaper outbound wan dynamic-bandwidth disable
+   shaper outbound wan enable
+   shaper outbound wan max-bandwidth 35000
+   shaper outbound wan traffic-class 1 excess-weight 100
+   shaper outbound wan traffic-class 1 flow-rate-limit 0
+   shaper outbound wan traffic-class 1 max-bandwidth 100
+   shaper outbound wan traffic-class 1 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 1 max-wait 250
+   shaper outbound wan traffic-class 1 min-bandwidth 25
+   shaper outbound wan traffic-class 1 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 1 priority 1
+   shaper outbound wan traffic-class 10 excess-weight 100
+   shaper outbound wan traffic-class 10 flow-rate-limit 0
+   shaper outbound wan traffic-class 10 max-bandwidth 100
+   shaper outbound wan traffic-class 10 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 10 max-wait 500
+   shaper outbound wan traffic-class 10 min-bandwidth 0
+   shaper outbound wan traffic-class 10 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 10 priority 10
+   shaper outbound wan traffic-class 2 excess-weight 100
+   shaper outbound wan traffic-class 2 flow-rate-limit 0
+   shaper outbound wan traffic-class 2 max-bandwidth 100
+   shaper outbound wan traffic-class 2 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 2 max-wait 500
+   shaper outbound wan traffic-class 2 min-bandwidth 25
+   shaper outbound wan traffic-class 2 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 2 priority 2
+   shaper outbound wan traffic-class 3 excess-weight 100
+   shaper outbound wan traffic-class 3 flow-rate-limit 0
+   shaper outbound wan traffic-class 3 max-bandwidth 80
+   shaper outbound wan traffic-class 3 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 3 max-wait 500
+   shaper outbound wan traffic-class 3 min-bandwidth 0
+   shaper outbound wan traffic-class 3 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 3 priority 3
+   shaper outbound wan traffic-class 4 excess-weight 100
+   shaper outbound wan traffic-class 4 flow-rate-limit 0
+   shaper outbound wan traffic-class 4 max-bandwidth 100
+   shaper outbound wan traffic-class 4 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 4 max-wait 500
+   shaper outbound wan traffic-class 4 min-bandwidth 0
+   shaper outbound wan traffic-class 4 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 4 priority 4
+   shaper outbound wan traffic-class 5 excess-weight 100
+   shaper outbound wan traffic-class 5 flow-rate-limit 0
+   shaper outbound wan traffic-class 5 max-bandwidth 100
+   shaper outbound wan traffic-class 5 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 5 max-wait 500
+   shaper outbound wan traffic-class 5 min-bandwidth 0
+   shaper outbound wan traffic-class 5 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 5 priority 5
+   shaper outbound wan traffic-class 6 excess-weight 100
+   shaper outbound wan traffic-class 6 flow-rate-limit 0
+   shaper outbound wan traffic-class 6 max-bandwidth 100
+   shaper outbound wan traffic-class 6 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 6 max-wait 500
+   shaper outbound wan traffic-class 6 min-bandwidth 0
+   shaper outbound wan traffic-class 6 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 6 priority 6
+   shaper outbound wan traffic-class 7 excess-weight 100
+   shaper outbound wan traffic-class 7 flow-rate-limit 0
+   shaper outbound wan traffic-class 7 max-bandwidth 100
+   shaper outbound wan traffic-class 7 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 7 max-wait 500
+   shaper outbound wan traffic-class 7 min-bandwidth 0
+   shaper outbound wan traffic-class 7 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 7 priority 7
+   shaper outbound wan traffic-class 8 excess-weight 100
+   shaper outbound wan traffic-class 8 flow-rate-limit 0
+   shaper outbound wan traffic-class 8 max-bandwidth 100
+   shaper outbound wan traffic-class 8 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 8 max-wait 500
+   shaper outbound wan traffic-class 8 min-bandwidth 0
+   shaper outbound wan traffic-class 8 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 8 priority 8
+   shaper outbound wan traffic-class 9 excess-weight 100
+   shaper outbound wan traffic-class 9 flow-rate-limit 0
+   shaper outbound wan traffic-class 9 max-bandwidth 100
+   shaper outbound wan traffic-class 9 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 9 max-wait 500
+   shaper outbound wan traffic-class 9 min-bandwidth 0
+   shaper outbound wan traffic-class 9 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 9 priority 9
+   traffic-class 1 name RealTime
+   traffic-class 10 name UNUSED10
+   traffic-class 2 name CriticalApps
+   traffic-class 3 name BulkApps
+   traffic-class 4 name Default
+   traffic-class 5 name UNUSED5
+   traffic-class 6 name UNUSED6
+   traffic-class 7 name UNUSED7
+   traffic-class 8 name UNUSED8
+   traffic-class 9 name UNUSED9
+   
+##
+## Tunnel Creation
+##
+   interface tunnel bondedTunnel_208 create bonded-tunnel tag-name CaptWhite bonded-id 7
+   interface tunnel bondedTunnel_27 create bonded-tunnel tag-name DefaultOverlay bonded-id 4
+   interface tunnel bondedTunnel_28 create bonded-tunnel tag-name CriticalApps bonded-id 2
+   interface tunnel bondedTunnel_29 create bonded-tunnel tag-name RealTime bonded-id 1
+   interface tunnel bondedTunnel_30 create bonded-tunnel tag-name BulkApps bonded-id 3
+   interface tunnel passThrough_216 create 192.168.86.28 0.0.0.0 100 auto no_encap
+   interface tunnel passThrough_217 create 192.168.86.28 0.0.0.0 100 auto no_encap
+   interface tunnel passThrough_218 create 192.168.86.28 0.0.0.0 100 auto no_encap
+   interface tunnel passThrough_219 create 192.168.86.28 0.0.0.0 100 auto no_encap
+   interface tunnel passThrough_220 create 192.168.86.28 0.0.0.0 100 auto no_encap
+   interface tunnel passThrough_221 create 192.168.86.28 0.0.0.0 100 auto no_encap
+   interface tunnel passThrough_225 create 192.168.21.1 0.0.0.0 100 auto no_encap
+   interface tunnel passThrough_232 create 172.18.1.1 0.0.0.0 100 auto no_encap
+   interface tunnel passThrough_239 create 10.0.0.6 0.0.0.0 100 auto no_encap
+   interface tunnel tunnel_222 create 192.168.86.28 107.215.36.181 100 auto udp_sp
+   
+##
+## Tunnel Config
+##
+   interface tunnel bondedTunnel_208 admin up
+   interface tunnel bondedTunnel_208 alias to_Baton-Rouge-EC_CaptWhite
+   interface tunnel bondedTunnel_208 bind-tunnel tunnel_222
+   interface tunnel bondedTunnel_208 control-packet dscp be
+   interface tunnel bondedTunnel_208 gms-marked
+   interface tunnel bondedTunnel_208 gre-protocol 2048
+   interface tunnel bondedTunnel_208 max-bandwidth 35000
+   interface tunnel bondedTunnel_208 nat-mode none
+   interface tunnel bondedTunnel_208 packet coalesce enable
+   interface tunnel bondedTunnel_208 packet coalesce wait 0
+   interface tunnel bondedTunnel_208 packet fec disable
+   interface tunnel bondedTunnel_208 packet fec ratio 1:10
+   interface tunnel bondedTunnel_208 packet reorder wait 100
+   interface tunnel bondedTunnel_208 peer-name ""
+   interface tunnel bondedTunnel_208 threshold fastfail disable
+   interface tunnel bondedTunnel_208 threshold fastfail-wait base-ms 150
+   interface tunnel bondedTunnel_208 threshold fastfail-wait rtt-x 2
+   interface tunnel bondedTunnel_208 threshold jitter 0
+   interface tunnel bondedTunnel_208 threshold latency 0
+   interface tunnel bondedTunnel_208 threshold loss 0.000000
+   interface tunnel bondedTunnel_208 threshold retry-count 30
+   interface tunnel bondedTunnel_27 admin up
+   interface tunnel bondedTunnel_27 alias to_Baton-Rouge-EC_DefaultOverlay
+   interface tunnel bondedTunnel_27 bind-tunnel tunnel_222
+   interface tunnel bondedTunnel_27 control-packet dscp be
+   interface tunnel bondedTunnel_27 gms-marked
+   interface tunnel bondedTunnel_27 gre-protocol 2048
+   interface tunnel bondedTunnel_27 max-bandwidth 35000
+   interface tunnel bondedTunnel_27 nat-mode none
+   interface tunnel bondedTunnel_27 packet coalesce enable
+   interface tunnel bondedTunnel_27 packet coalesce wait 0
+   interface tunnel bondedTunnel_27 packet fec disable
+   interface tunnel bondedTunnel_27 packet fec ratio 1:10
+   interface tunnel bondedTunnel_27 packet reorder wait 100
+   interface tunnel bondedTunnel_27 peer-name ""
+   interface tunnel bondedTunnel_27 threshold fastfail disable
+   interface tunnel bondedTunnel_27 threshold fastfail-wait base-ms 150
+   interface tunnel bondedTunnel_27 threshold fastfail-wait rtt-x 2
+   interface tunnel bondedTunnel_27 threshold jitter 0
+   interface tunnel bondedTunnel_27 threshold latency 0
+   interface tunnel bondedTunnel_27 threshold loss 0.000000
+   interface tunnel bondedTunnel_27 threshold retry-count 30
+   interface tunnel bondedTunnel_28 admin up
+   interface tunnel bondedTunnel_28 alias to_Baton-Rouge-EC_CriticalApps
+   interface tunnel bondedTunnel_28 bind-tunnel tunnel_222
+   interface tunnel bondedTunnel_28 control-packet dscp be
+   interface tunnel bondedTunnel_28 gms-marked
+   interface tunnel bondedTunnel_28 gre-protocol 2048
+   interface tunnel bondedTunnel_28 max-bandwidth 35000
+   interface tunnel bondedTunnel_28 nat-mode none
+   interface tunnel bondedTunnel_28 packet coalesce enable
+   interface tunnel bondedTunnel_28 packet coalesce wait 0
+   interface tunnel bondedTunnel_28 packet fec disable
+   interface tunnel bondedTunnel_28 packet fec ratio 1:10
+   interface tunnel bondedTunnel_28 packet reorder wait 100
+   interface tunnel bondedTunnel_28 peer-name ""
+   interface tunnel bondedTunnel_28 threshold fastfail disable
+   interface tunnel bondedTunnel_28 threshold fastfail-wait base-ms 150
+   interface tunnel bondedTunnel_28 threshold fastfail-wait rtt-x 2
+   interface tunnel bondedTunnel_28 threshold jitter 0
+   interface tunnel bondedTunnel_28 threshold latency 0
+   interface tunnel bondedTunnel_28 threshold loss 0.000000
+   interface tunnel bondedTunnel_28 threshold retry-count 30
+   interface tunnel bondedTunnel_29 admin up
+   interface tunnel bondedTunnel_29 alias to_Baton-Rouge-EC_RealTime
+   interface tunnel bondedTunnel_29 bind-tunnel tunnel_222
+   interface tunnel bondedTunnel_29 control-packet dscp be
+   interface tunnel bondedTunnel_29 gms-marked
+   interface tunnel bondedTunnel_29 gre-protocol 2048
+   interface tunnel bondedTunnel_29 max-bandwidth 35000
+   interface tunnel bondedTunnel_29 nat-mode none
+   interface tunnel bondedTunnel_29 packet coalesce enable
+   interface tunnel bondedTunnel_29 packet coalesce wait 0
+   interface tunnel bondedTunnel_29 packet fec disable
+   interface tunnel bondedTunnel_29 packet fec ratio 1:10
+   interface tunnel bondedTunnel_29 packet reorder wait 100
+   interface tunnel bondedTunnel_29 peer-name ""
+   interface tunnel bondedTunnel_29 threshold fastfail disable
+   interface tunnel bondedTunnel_29 threshold fastfail-wait base-ms 150
+   interface tunnel bondedTunnel_29 threshold fastfail-wait rtt-x 2
+   interface tunnel bondedTunnel_29 threshold jitter 0
+   interface tunnel bondedTunnel_29 threshold latency 0
+   interface tunnel bondedTunnel_29 threshold loss 0.000000
+   interface tunnel bondedTunnel_29 threshold retry-count 30
+   interface tunnel bondedTunnel_30 admin up
+   interface tunnel bondedTunnel_30 alias to_Baton-Rouge-EC_BulkApps
+   interface tunnel bondedTunnel_30 bind-tunnel tunnel_222
+   interface tunnel bondedTunnel_30 control-packet dscp be
+   interface tunnel bondedTunnel_30 gms-marked
+   interface tunnel bondedTunnel_30 gre-protocol 2048
+   interface tunnel bondedTunnel_30 max-bandwidth 35000
+   interface tunnel bondedTunnel_30 nat-mode none
+   interface tunnel bondedTunnel_30 packet coalesce enable
+   interface tunnel bondedTunnel_30 packet coalesce wait 0
+   interface tunnel bondedTunnel_30 packet fec disable
+   interface tunnel bondedTunnel_30 packet fec ratio 1:10
+   interface tunnel bondedTunnel_30 packet reorder wait 100
+   interface tunnel bondedTunnel_30 peer-name ""
+   interface tunnel bondedTunnel_30 threshold fastfail disable
+   interface tunnel bondedTunnel_30 threshold fastfail-wait base-ms 150
+   interface tunnel bondedTunnel_30 threshold fastfail-wait rtt-x 2
+   interface tunnel bondedTunnel_30 threshold jitter 0
+   interface tunnel bondedTunnel_30 threshold latency 0
+   interface tunnel bondedTunnel_30 threshold loss 0.000000
+   interface tunnel bondedTunnel_30 threshold retry-count 30
+   interface tunnel passThrough_216 admin up
+   interface tunnel passThrough_216 alias Passthrough_INET2_CaptWhite
+   interface tunnel passThrough_216 control-packet dscp be
+   interface tunnel passThrough_216 gms-marked
+   interface tunnel passThrough_216 gre-protocol 2048
+   interface tunnel passThrough_216 max-bandwidth 0
+   interface tunnel passThrough_216 nat-mode none
+   interface tunnel passThrough_216 packet coalesce enable
+   interface tunnel passThrough_216 packet coalesce wait 0
+   interface tunnel passThrough_216 packet fec disable
+   interface tunnel passThrough_216 packet fec ratio 1:10
+   interface tunnel passThrough_216 packet reorder wait 100
+   interface tunnel passThrough_216 peer-name unassigned
+   interface tunnel passThrough_216 tag-name 6-7
+   interface tunnel passThrough_216 threshold fastfail disable
+   interface tunnel passThrough_216 threshold fastfail-wait base-ms 150
+   interface tunnel passThrough_216 threshold fastfail-wait rtt-x 2
+   interface tunnel passThrough_216 threshold jitter 0
+   interface tunnel passThrough_216 threshold latency 0
+   interface tunnel passThrough_216 threshold loss 0.000000
+   interface tunnel passThrough_216 threshold retry-count 30
+   interface tunnel passThrough_216 udp-flow 256
+   interface tunnel passThrough_216 udp-port 4163
+   interface tunnel passThrough_217 admin up
+   interface tunnel passThrough_217 alias Passthrough_INET2_wan2
+   interface tunnel passThrough_217 control-packet dscp be
+   interface tunnel passThrough_217 gms-marked
+   interface tunnel passThrough_217 gre-protocol 2048
+   interface tunnel passThrough_217 max-bandwidth 0
+   interface tunnel passThrough_217 nat-mode none
+   interface tunnel passThrough_217 packet coalesce enable
+   interface tunnel passThrough_217 packet coalesce wait 0
+   interface tunnel passThrough_217 packet fec disable
+   interface tunnel passThrough_217 packet fec ratio 1:10
+   interface tunnel passThrough_217 packet reorder wait 100
+   interface tunnel passThrough_217 peer-name unassigned
+   interface tunnel passThrough_217 tag-name wan2
+   interface tunnel passThrough_217 threshold fastfail disable
+   interface tunnel passThrough_217 threshold fastfail-wait base-ms 150
+   interface tunnel passThrough_217 threshold fastfail-wait rtt-x 2
+   interface tunnel passThrough_217 threshold jitter 0
+   interface tunnel passThrough_217 threshold latency 0
+   interface tunnel passThrough_217 threshold loss 0.000000
+   interface tunnel passThrough_217 threshold retry-count 30
+   interface tunnel passThrough_217 udp-flow 256
+   interface tunnel passThrough_217 udp-port 4163
+   interface tunnel passThrough_218 admin up
+   interface tunnel passThrough_218 alias Passthrough_INET2_RealTime
+   interface tunnel passThrough_218 control-packet dscp be
+   interface tunnel passThrough_218 gms-marked
+   interface tunnel passThrough_218 gre-protocol 2048
+   interface tunnel passThrough_218 max-bandwidth 0
+   interface tunnel passThrough_218 nat-mode none
+   interface tunnel passThrough_218 packet coalesce enable
+   interface tunnel passThrough_218 packet coalesce wait 0
+   interface tunnel passThrough_218 packet fec disable
+   interface tunnel passThrough_218 packet fec ratio 1:10
+   interface tunnel passThrough_218 packet reorder wait 100
+   interface tunnel passThrough_218 peer-name Overlay_RealTime_Primary
+   interface tunnel passThrough_218 tag-name 6-1
+   interface tunnel passThrough_218 threshold fastfail disable
+   interface tunnel passThrough_218 threshold fastfail-wait base-ms 150
+   interface tunnel passThrough_218 threshold fastfail-wait rtt-x 2
+   interface tunnel passThrough_218 threshold jitter 0
+   interface tunnel passThrough_218 threshold latency 0
+   interface tunnel passThrough_218 threshold loss 0.000000
+   interface tunnel passThrough_218 threshold retry-count 30
+   interface tunnel passThrough_218 udp-flow 256
+   interface tunnel passThrough_218 udp-port 4163
+   interface tunnel passThrough_219 admin up
+   interface tunnel passThrough_219 alias Passthrough_INET2_CriticalApps
+   interface tunnel passThrough_219 control-packet dscp be
+   interface tunnel passThrough_219 gms-marked
+   interface tunnel passThrough_219 gre-protocol 2048
+   interface tunnel passThrough_219 max-bandwidth 0
+   interface tunnel passThrough_219 nat-mode none
+   interface tunnel passThrough_219 packet coalesce enable
+   interface tunnel passThrough_219 packet coalesce wait 0
+   interface tunnel passThrough_219 packet fec disable
+   interface tunnel passThrough_219 packet fec ratio 1:10
+   interface tunnel passThrough_219 packet reorder wait 100
+   interface tunnel passThrough_219 peer-name Overlay_CriticalApps_Primary
+   interface tunnel passThrough_219 tag-name 6-2
+   interface tunnel passThrough_219 threshold fastfail disable
+   interface tunnel passThrough_219 threshold fastfail-wait base-ms 150
+   interface tunnel passThrough_219 threshold fastfail-wait rtt-x 2
+   interface tunnel passThrough_219 threshold jitter 0
+   interface tunnel passThrough_219 threshold latency 0
+   interface tunnel passThrough_219 threshold loss 0.000000
+   interface tunnel passThrough_219 threshold retry-count 30
+   interface tunnel passThrough_219 udp-flow 256
+   interface tunnel passThrough_219 udp-port 4163
+   interface tunnel passThrough_220 admin up
+   interface tunnel passThrough_220 alias Passthrough_INET2_BulkApps
+   interface tunnel passThrough_220 control-packet dscp be
+   interface tunnel passThrough_220 gms-marked
+   interface tunnel passThrough_220 gre-protocol 2048
+   interface tunnel passThrough_220 max-bandwidth 0
+   interface tunnel passThrough_220 nat-mode none
+   interface tunnel passThrough_220 packet coalesce enable
+   interface tunnel passThrough_220 packet coalesce wait 0
+   interface tunnel passThrough_220 packet fec disable
+   interface tunnel passThrough_220 packet fec ratio 1:10
+   interface tunnel passThrough_220 packet reorder wait 100
+   interface tunnel passThrough_220 peer-name Overlay_BulkApps_Primary
+   interface tunnel passThrough_220 tag-name 6-3
+   interface tunnel passThrough_220 threshold fastfail disable
+   interface tunnel passThrough_220 threshold fastfail-wait base-ms 150
+   interface tunnel passThrough_220 threshold fastfail-wait rtt-x 2
+   interface tunnel passThrough_220 threshold jitter 0
+   interface tunnel passThrough_220 threshold latency 0
+   interface tunnel passThrough_220 threshold loss 0.000000
+   interface tunnel passThrough_220 threshold retry-count 30
+   interface tunnel passThrough_220 udp-flow 256
+   interface tunnel passThrough_220 udp-port 4163
+   interface tunnel passThrough_221 admin up
+   interface tunnel passThrough_221 alias Passthrough_INET2_DefaultOverlay
+   interface tunnel passThrough_221 control-packet dscp be
+   interface tunnel passThrough_221 gms-marked
+   interface tunnel passThrough_221 gre-protocol 2048
+   interface tunnel passThrough_221 max-bandwidth 0
+   interface tunnel passThrough_221 nat-mode none
+   interface tunnel passThrough_221 packet coalesce enable
+   interface tunnel passThrough_221 packet coalesce wait 0
+   interface tunnel passThrough_221 packet fec disable
+   interface tunnel passThrough_221 packet fec ratio 1:10
+   interface tunnel passThrough_221 packet reorder wait 100
+   interface tunnel passThrough_221 peer-name unassigned
+   interface tunnel passThrough_221 tag-name 6-4
+   interface tunnel passThrough_221 threshold fastfail disable
+   interface tunnel passThrough_221 threshold fastfail-wait base-ms 150
+   interface tunnel passThrough_221 threshold fastfail-wait rtt-x 2
+   interface tunnel passThrough_221 threshold jitter 0
+   interface tunnel passThrough_221 threshold latency 0
+   interface tunnel passThrough_221 threshold loss 0.000000
+   interface tunnel passThrough_221 threshold retry-count 30
+   interface tunnel passThrough_221 udp-flow 256
+   interface tunnel passThrough_221 udp-port 4163
+   interface tunnel passThrough_225 admin up
+   interface tunnel passThrough_225 alias Passthrough_FSE_lan0
+   interface tunnel passThrough_225 control-packet dscp be
+   interface tunnel passThrough_225 gms-marked
+   interface tunnel passThrough_225 gre-protocol 2048
+   interface tunnel passThrough_225 max-bandwidth 0
+   interface tunnel passThrough_225 nat-mode none
+   interface tunnel passThrough_225 packet coalesce enable
+   interface tunnel passThrough_225 packet coalesce wait 0
+   interface tunnel passThrough_225 packet fec disable
+   interface tunnel passThrough_225 packet fec ratio 1:10
+   interface tunnel passThrough_225 packet reorder wait 100
+   interface tunnel passThrough_225 peer-name unassigned
+   interface tunnel passThrough_225 tag-name lan0
+   interface tunnel passThrough_225 threshold fastfail disable
+   interface tunnel passThrough_225 threshold fastfail-wait base-ms 150
+   interface tunnel passThrough_225 threshold fastfail-wait rtt-x 2
+   interface tunnel passThrough_225 threshold jitter 0
+   interface tunnel passThrough_225 threshold latency 0
+   interface tunnel passThrough_225 threshold loss 0.000000
+   interface tunnel passThrough_225 threshold retry-count 30
+   interface tunnel passThrough_225 udp-flow 256
+   interface tunnel passThrough_225 udp-port 4163
+   interface tunnel passThrough_232 admin up
+   interface tunnel passThrough_232 alias Passthrough_OVERLAY_L1_lan1
+   interface tunnel passThrough_232 control-packet dscp be
+   interface tunnel passThrough_232 gms-marked
+   interface tunnel passThrough_232 gre-protocol 2048
+   interface tunnel passThrough_232 max-bandwidth 0
+   interface tunnel passThrough_232 nat-mode none
+   interface tunnel passThrough_232 packet coalesce enable
+   interface tunnel passThrough_232 packet coalesce wait 0
+   interface tunnel passThrough_232 packet fec disable
+   interface tunnel passThrough_232 packet fec ratio 1:10
+   interface tunnel passThrough_232 packet reorder wait 100
+   interface tunnel passThrough_232 peer-name unassigned
+   interface tunnel passThrough_232 tag-name lan1
+   interface tunnel passThrough_232 threshold fastfail disable
+   interface tunnel passThrough_232 threshold fastfail-wait base-ms 150
+   interface tunnel passThrough_232 threshold fastfail-wait rtt-x 2
+   interface tunnel passThrough_232 threshold jitter 0
+   interface tunnel passThrough_232 threshold latency 0
+   interface tunnel passThrough_232 threshold loss 0.000000
+   interface tunnel passThrough_232 threshold retry-count 30
+   interface tunnel passThrough_232 udp-flow 256
+   interface tunnel passThrough_232 udp-port 4163
+   interface tunnel passThrough_239 admin up
+   interface tunnel passThrough_239 alias Passthrough_wan1
+   interface tunnel passThrough_239 control-packet dscp be
+   interface tunnel passThrough_239 gms-marked
+   interface tunnel passThrough_239 gre-protocol 2048
+   interface tunnel passThrough_239 max-bandwidth 0
+   interface tunnel passThrough_239 nat-mode none
+   interface tunnel passThrough_239 packet coalesce enable
+   interface tunnel passThrough_239 packet coalesce wait 0
+   interface tunnel passThrough_239 packet fec disable
+   interface tunnel passThrough_239 packet fec ratio 1:10
+   interface tunnel passThrough_239 packet reorder wait 100
+   interface tunnel passThrough_239 peer-name unassigned
+   interface tunnel passThrough_239 tag-name wan1
+   interface tunnel passThrough_239 threshold fastfail disable
+   interface tunnel passThrough_239 threshold fastfail-wait base-ms 150
+   interface tunnel passThrough_239 threshold fastfail-wait rtt-x 2
+   interface tunnel passThrough_239 threshold jitter 0
+   interface tunnel passThrough_239 threshold latency 0
+   interface tunnel passThrough_239 threshold loss 0.000000
+   interface tunnel passThrough_239 threshold retry-count 30
+   interface tunnel passThrough_239 udp-flow 256
+   interface tunnel passThrough_239 udp-port 4163
+   interface tunnel tunnel_222 admin up
+   interface tunnel tunnel_222 alias to_Baton-Rouge-EC_INET2-INET1
+   interface tunnel tunnel_222 control-packet dscp be
+   interface tunnel tunnel_222 gms-marked
+   interface tunnel tunnel_222 gre-protocol 2048
+   interface tunnel tunnel_222 max-bandwidth 35000
+   interface tunnel tunnel_222 nat-mode none
+   interface tunnel tunnel_222 packet coalesce enable
+   interface tunnel tunnel_222 packet coalesce wait 0
+   interface tunnel tunnel_222 packet fec auto
+   interface tunnel tunnel_222 packet fec ratio 1:10
+   interface tunnel tunnel_222 packet reorder wait 100
+   interface tunnel tunnel_222 peer-name unassigned
+   interface tunnel tunnel_222 tag-name 6-2
+   interface tunnel tunnel_222 threshold fastfail enable
+   interface tunnel tunnel_222 threshold fastfail-wait base-ms 150
+   interface tunnel tunnel_222 threshold fastfail-wait rtt-x 5
+   interface tunnel tunnel_222 threshold jitter 0
+   interface tunnel tunnel_222 threshold latency 0
+   interface tunnel tunnel_222 threshold loss 0.000000
+   interface tunnel tunnel_222 threshold retry-count 30
+   interface tunnel tunnel_222 udp-flow 256
+   interface tunnel tunnel_222 udp-port 4163
+   interface tunnel tunnel_222 ipsec enable
+   interface tunnel tunnel_222 ipsec auth-algorithm default
+   interface tunnel tunnel_222 ipsec crypto-algorithm aes128
+   interface tunnel tunnel_222 ipsec dhgroup 14
+   interface tunnel tunnel_222 ipsec dpd-delay 10
+   interface tunnel tunnel_222 ipsec esn enable
+   interface tunnel tunnel_222 ipsec exchange-mode default
+   interface tunnel tunnel_222 ipsec ike-auth-algo default
+   interface tunnel tunnel_222 ipsec ike-crypto-algo default
+   interface tunnel tunnel_222 ipsec ike-id-local 
+   interface tunnel tunnel_222 ipsec ike-id-remote 
+   interface tunnel tunnel_222 ipsec ike-lifetime 360
+   interface tunnel tunnel_222 ipsec ike-prf auto
+   interface tunnel tunnel_222 ipsec ike-version 1
+   interface tunnel tunnel_222 ipsec lifebyte 0
+   interface tunnel tunnel_222 ipsec lifetime 360
+   interface tunnel tunnel_222 ipsec pfs enable
+   interface tunnel tunnel_222 ipsec pfsgroup 14
+   interface tunnel tunnel_222 ipsec replay-check-window 1024
+   
+##
+## Pass-Through Config
+##
+   interface pass-through max-bandwidth 1000000000
+   interface pass-through min-bandwidth 1000000000
+   
+##
+## Application Config
+##
+   application-group citrix citrix-bcast,citrix-cgp,citrix-ica,citrix-ima
+   application-group encrypted ddm_ssl,https,imap4s,ipsec,nntps,pop3s,smtps,ssh,telnets
+   application-group interactive pcanywhere,pcoip,ssh,telnet,telnets,vnc,xwindows
+   application-group real-time cisco_skinny,h_323,rtcp,rtp,rtp_mux,rtp_video,rtp_voice,rtsp,sip,sip_tls,t_120
+   application-group replication app_assure_replication,app_assure_svr_backup,aspera,avamar,bluearc,celerra,centera,commvault,datadomain,doubletake,netvault_replication,recoverpoint,snapmirror,vplex,vsphere_replication_ini,vsphere_replication_ong,vvr,zerto_mgmt,zerto_replication
+   
+##
+## DNS Config
+##
+   dns cache dns-snoop enable
+   dns cache http enable
+   dns cache src-ip disable
+   
+##
+## Access-List Config
+##
+   access-list Overlay_BulkApps 1000 comment ""
+   access-list Overlay_BulkApps 1000 permit matchstr application:Box
+   access-list Overlay_BulkApps 1010 comment ""
+   access-list Overlay_BulkApps 1010 permit matchstr application:Dropbox
+   access-list Overlay_BulkApps 1020 comment ""
+   access-list Overlay_BulkApps 1020 permit matchstr application:Github
+   access-list Overlay_BulkApps 1030 comment ""
+   access-list Overlay_BulkApps 1030 permit matchstr app_group:Replication
+   access-list Overlay_BulkApps 1040 comment ""
+   access-list Overlay_BulkApps 1040 permit matchstr application:Ftp
+   access-list Overlay_BulkApps 1050 comment ""
+   access-list Overlay_BulkApps 1050 permit matchstr application:Sftp
+   access-list Overlay_BulkApps 1060 comment ""
+   access-list Overlay_BulkApps 1060 permit matchstr application:Rsync-file-synchronization
+   access-list Overlay_CriticalApps 1000 comment ""
+   access-list Overlay_CriticalApps 1000 permit matchstr application:Webex
+   access-list Overlay_CriticalApps 1010 comment ""
+   access-list Overlay_CriticalApps 1010 permit matchstr application:Salesforce
+   access-list Overlay_CriticalApps 1020 comment ""
+   access-list Overlay_CriticalApps 1020 permit matchstr application:SharePointOnline
+   access-list Overlay_CriticalApps 1030 comment ""
+   access-list Overlay_CriticalApps 1030 permit matchstr application:Office365Exchange
+   access-list Overlay_CriticalApps 1040 comment ""
+   access-list Overlay_CriticalApps 1040 permit matchstr application:Slack
+   access-list Overlay_CriticalApps 1050 comment ""
+   access-list Overlay_CriticalApps 1050 permit matchstr application:Workday
+   access-list Overlay_CriticalApps 1060 comment ""
+   access-list Overlay_CriticalApps 1060 permit matchstr application:Adp
+   access-list Overlay_CriticalApps 1070 comment ""
+   access-list Overlay_CriticalApps 1070 permit matchstr application:ServiceNow
+   access-list Overlay_CriticalApps 1080 comment ""
+   access-list Overlay_CriticalApps 1080 permit matchstr application:GoToMeeting
+   access-list Overlay_CriticalApps 1090 comment ""
+   access-list Overlay_CriticalApps 1090 permit matchstr application:Atlassian
+   access-list Overlay_CriticalApps 1100 comment ""
+   access-list Overlay_CriticalApps 1100 permit matchstr application:Marketo
+   access-list Overlay_CriticalApps 1110 comment ""
+   access-list Overlay_CriticalApps 1110 permit matchstr application:Tableau
+   access-list Overlay_CriticalApps 1120 comment ""
+   access-list Overlay_CriticalApps 1120 permit matchstr application:Citrix
+   access-list Overlay_CriticalApps 1130 comment ""
+   access-list Overlay_CriticalApps 1130 permit matchstr application:SAP
+   access-list Overlay_CriticalApps 1140 comment ""
+   access-list Overlay_CriticalApps 1140 permit matchstr application:Ms_terminal_services
+   access-list Overlay_CriticalApps 1150 comment ""
+   access-list Overlay_CriticalApps 1150 permit matchstr application:Pcoip
+   access-list Overlay_CriticalApps 1160 comment ""
+   access-list Overlay_CriticalApps 1160 permit matchstr app_group:SilverPeak
+   access-list Overlay_CriticalApps 1170 comment ""
+   access-list Overlay_CriticalApps 1170 permit matchstr application:Dns
+   access-list Overlay_DefaultOverlay 1000 comment "Default overlay for all other traffic."
+   access-list Overlay_DefaultOverlay 1000 permit matchstr any
+   access-list Overlay_RealTime 1010 comment ""
+   access-list Overlay_RealTime 1010 permit matchstr dscp:ef
+   access-list Overlay_RealTime 1020 comment ""
+   access-list Overlay_RealTime 1020 permit matchstr application:RingCentral
+   access-list Overlay_RealTime 1030 comment ""
+   access-list Overlay_RealTime 1030 permit matchstr application:8X8
+   access-list Overlay_RealTime 1040 comment ""
+   access-list Overlay_RealTime 1040 permit matchstr application:SkypeForBusiness
+   access-list Overlay_RealTime 1050 comment ""
+   access-list Overlay_RealTime 1050 permit matchstr application:BlueJeans
+   access-list Overlay_RealTime 1060 comment ""
+   access-list Overlay_RealTime 1060 permit matchstr application:Zoom
+   access-list Overlay_RealTime 1070 comment ""
+   access-list Overlay_RealTime 1070 permit matchstr application:Rtp
+   access-list Overlay_RealTime 1080 comment ""
+   access-list Overlay_RealTime 1080 permit matchstr application:Rtp_mux
+   access-list Overlay_RealTime 1090 comment ""
+   access-list Overlay_RealTime 1090 permit matchstr application:Rtp_video
+   access-list Overlay_RealTime 1100 comment ""
+   access-list Overlay_RealTime 1100 permit matchstr application:Rtp_voice
+   access-list Overlay_RealTime 1110 comment ""
+   access-list Overlay_RealTime 1110 permit matchstr application:Sip
+   access-list Overlay_RealTime 1120 comment ""
+   access-list Overlay_RealTime 1120 permit matchstr application:Sip_tls
+   access-list Overlay_RealTime 1130 comment ""
+   access-list Overlay_RealTime 1130 permit matchstr application:H_323
+   access-list Overlay_RealTime 1140 comment ""
+   access-list Overlay_RealTime 1140 permit matchstr application:Rtcp
+   access-list Overlay_RealTime 1150 comment ""
+   access-list Overlay_RealTime 1150 permit matchstr app_group:Voice
+   access-list Overlay_RealTime 1160 comment ""
+   access-list Overlay_RealTime 1160 permit matchstr app_group:Real-Time
+   
+##
+## Policy Config
+##
+   nat-map map1 65535 comment ""
+   nat-map map1 65535 set nat-type no-nat direction none nat-ip auto fallback disable
+   nat-map map1 activate
+no opt-map map1 10000
+no opt-map map1 10010
+   opt-map map1 10020 comment ""
+   opt-map map1 10020 match matchstr protocol:tcp,either_port:443
+no opt-map map1 10021
+no opt-map map1 10030
+no opt-map map1 10040
+   opt-map map1 10070 comment ""
+   opt-map map1 10070 match matchstr protocol:tcp,either_port:9100
+   opt-map map1 10070 set advanced-tcp e2e-fin-handling 0
+   opt-map map1 10070 set advanced-tcp max-l2w-buffer 256
+   opt-map map1 10070 set advanced-tcp max-w2l-buffer 256
+no opt-map map1 10071
+   opt-map map1 65535 comment ""
+   opt-map map1 activate
+   qos-map map1 20000 comment "Generated by system for overlay: RealTime"
+   qos-map map1 20000 match matchstr overlay:1
+   qos-map map1 20000 set traffic-class 1 lan-qos trust-lan wan-qos trust-lan
+   qos-map map1 20001 comment "Generated by system for overlay: CaptWhite"
+   qos-map map1 20001 match matchstr overlay:7
+   qos-map map1 20001 set traffic-class 1 lan-qos trust-lan wan-qos be
+   qos-map map1 20002 comment "Generated by system for overlay: CriticalApps"
+   qos-map map1 20002 match matchstr overlay:2
+   qos-map map1 20002 set traffic-class 2 lan-qos trust-lan wan-qos trust-lan
+   qos-map map1 20003 comment "Generated by system for overlay: BulkApps"
+   qos-map map1 20003 match matchstr overlay:3
+   qos-map map1 20003 set traffic-class 3 lan-qos trust-lan wan-qos trust-lan
+   qos-map map1 20004 comment "Generated by system for overlay: DefaultOverlay"
+   qos-map map1 20004 match matchstr overlay:4
+   qos-map map1 20004 set traffic-class 4 lan-qos trust-lan wan-qos trust-lan
+   qos-map map1 20005 comment "RealTime overlay"
+   qos-map map1 20005 match acl Overlay_RealTime
+   qos-map map1 20005 set traffic-class 1 lan-qos trust-lan wan-qos trust-lan
+   qos-map map1 20006 comment "CaptWhite overlay"
+   qos-map map1 20006 match matchstr vlan:25
+   qos-map map1 20006 set traffic-class 1 lan-qos trust-lan wan-qos be
+   qos-map map1 20007 comment "CriticalApps overlay"
+   qos-map map1 20007 match acl Overlay_CriticalApps
+   qos-map map1 20007 set traffic-class 2 lan-qos trust-lan wan-qos trust-lan
+   qos-map map1 20008 comment "BulkApps overlay"
+   qos-map map1 20008 match acl Overlay_BulkApps
+   qos-map map1 20008 set traffic-class 3 lan-qos trust-lan wan-qos trust-lan
+   qos-map map1 20009 comment "DefaultOverlay overlay"
+   qos-map map1 20009 match acl Overlay_DefaultOverlay
+   qos-map map1 20009 set traffic-class 4 lan-qos trust-lan wan-qos trust-lan
+   qos-map map1 65535 comment ""
+   qos-map map1 65535 set traffic-class 1 lan-qos trust-lan wan-qos trust-lan
+   qos-map map1 activate
+   route-map map1 20000 comment "Generated by system for overlay: RealTime"
+   route-map map1 20000 match matchstr overlay:1
+   route-map map1 20000 set auto-opt-overlay 1 if-down pass-through
+   route-map map1 20001 comment "Generated by system for overlay: CaptWhite"
+   route-map map1 20001 match matchstr overlay:7
+   route-map map1 20001 set auto-opt-overlay 7 if-down pass-through
+   route-map map1 20002 comment "Generated by system for overlay: CriticalApps"
+   route-map map1 20002 match matchstr overlay:2
+   route-map map1 20002 set auto-opt-overlay 2 if-down pass-through
+   route-map map1 20003 comment "Generated by system for overlay: BulkApps"
+   route-map map1 20003 match matchstr overlay:3
+   route-map map1 20003 set auto-opt-overlay 3 if-down pass-through
+   route-map map1 20004 comment "Generated by system for overlay: DefaultOverlay"
+   route-map map1 20004 match matchstr overlay:4
+   route-map map1 20004 set auto-opt-overlay 4 if-down pass-through
+   route-map map1 20005 comment "RealTime overlay"
+   route-map map1 20005 match acl Overlay_RealTime
+   route-map map1 20005 set auto-opt-overlay 1 if-down pass-through
+   route-map map1 20006 comment "CaptWhite overlay"
+   route-map map1 20006 match matchstr vlan:25
+   route-map map1 20006 set auto-opt-overlay 7 if-down pass-through
+   route-map map1 20007 comment "CriticalApps overlay"
+   route-map map1 20007 match acl Overlay_CriticalApps
+   route-map map1 20007 set auto-opt-overlay 2 if-down pass-through
+   route-map map1 20008 comment "BulkApps overlay"
+   route-map map1 20008 match acl Overlay_BulkApps
+   route-map map1 20008 set auto-opt-overlay 3 if-down pass-through
+   route-map map1 20009 comment "DefaultOverlay overlay"
+   route-map map1 20009 match acl Overlay_DefaultOverlay
+   route-map map1 20009 set auto-opt-overlay 4 if-down pass-through
+   route-map map1 65535 comment ""
+   route-map map1 65535 set auto-optimize if-down pass-through
+   route-map map1 activate
+   rtmap default_rtmap_bgp_inbound_br 65535 comment ""
+   rtmap default_rtmap_bgp_inbound_br 65535 enable
+   rtmap default_rtmap_bgp_inbound_br 65535 match matchstr src_proto:bgp
+   rtmap default_rtmap_bgp_inbound_br 65535 set setstr action:permit,bgp_lcl_pref:100
+   rtmap default_rtmap_bgp_inbound_pe 65535 comment ""
+   rtmap default_rtmap_bgp_inbound_pe 65535 enable
+   rtmap default_rtmap_bgp_inbound_pe 65535 match matchstr src_proto:bgp
+   rtmap default_rtmap_bgp_inbound_pe 65535 set setstr action:permit,bgp_lcl_pref:100
+   rtmap default_rtmap_bgp_outbound_br 65485 comment ""
+   rtmap default_rtmap_bgp_outbound_br 65485 enable
+   rtmap default_rtmap_bgp_outbound_br 65485 match matchstr src_proto:ss-ospf
+   rtmap default_rtmap_bgp_outbound_br 65485 set setstr action:permit
+   rtmap default_rtmap_bgp_outbound_br 65495 comment ""
+   rtmap default_rtmap_bgp_outbound_br 65495 enable
+   rtmap default_rtmap_bgp_outbound_br 65495 match matchstr src_proto:ss-bgp
+   rtmap default_rtmap_bgp_outbound_br 65495 set setstr action:permit
+   rtmap default_rtmap_bgp_outbound_br 65505 comment ""
+   rtmap default_rtmap_bgp_outbound_br 65505 enable
+   rtmap default_rtmap_bgp_outbound_br 65505 match matchstr src_proto:local
+   rtmap default_rtmap_bgp_outbound_br 65505 set setstr action:permit
+   rtmap default_rtmap_bgp_outbound_br 65515 comment ""
+   rtmap default_rtmap_bgp_outbound_br 65515 enable
+   rtmap default_rtmap_bgp_outbound_br 65515 match matchstr src_proto:subshare
+   rtmap default_rtmap_bgp_outbound_br 65515 set setstr action:permit
+   rtmap default_rtmap_bgp_outbound_br 65525 comment ""
+   rtmap default_rtmap_bgp_outbound_br 65525 enable
+   rtmap default_rtmap_bgp_outbound_br 65525 match matchstr src_proto:ospf
+   rtmap default_rtmap_bgp_outbound_br 65525 set setstr action:permit
+   rtmap default_rtmap_bgp_outbound_br 65535 comment ""
+   rtmap default_rtmap_bgp_outbound_br 65535 enable
+   rtmap default_rtmap_bgp_outbound_br 65535 match matchstr src_proto:bgp
+   rtmap default_rtmap_bgp_outbound_br 65535 set setstr action:permit
+   rtmap default_rtmap_bgp_outbound_pe 65485 comment ""
+   rtmap default_rtmap_bgp_outbound_pe 65485 enable
+   rtmap default_rtmap_bgp_outbound_pe 65485 match matchstr src_proto:ss-ospf
+   rtmap default_rtmap_bgp_outbound_pe 65485 set setstr action:deny
+   rtmap default_rtmap_bgp_outbound_pe 65495 comment ""
+   rtmap default_rtmap_bgp_outbound_pe 65495 enable
+   rtmap default_rtmap_bgp_outbound_pe 65495 match matchstr src_proto:ss-bgp
+   rtmap default_rtmap_bgp_outbound_pe 65495 set setstr action:deny
+   rtmap default_rtmap_bgp_outbound_pe 65505 comment ""
+   rtmap default_rtmap_bgp_outbound_pe 65505 enable
+   rtmap default_rtmap_bgp_outbound_pe 65505 match matchstr src_proto:local
+   rtmap default_rtmap_bgp_outbound_pe 65505 set setstr action:permit
+   rtmap default_rtmap_bgp_outbound_pe 65515 comment ""
+   rtmap default_rtmap_bgp_outbound_pe 65515 enable
+   rtmap default_rtmap_bgp_outbound_pe 65515 match matchstr src_proto:subshare
+   rtmap default_rtmap_bgp_outbound_pe 65515 set setstr action:deny
+   rtmap default_rtmap_bgp_outbound_pe 65525 comment ""
+   rtmap default_rtmap_bgp_outbound_pe 65525 enable
+   rtmap default_rtmap_bgp_outbound_pe 65525 match matchstr src_proto:ospf
+   rtmap default_rtmap_bgp_outbound_pe 65525 set setstr action:permit
+   rtmap default_rtmap_bgp_outbound_pe 65535 comment ""
+   rtmap default_rtmap_bgp_outbound_pe 65535 enable
+   rtmap default_rtmap_bgp_outbound_pe 65535 match matchstr src_proto:bgp
+   rtmap default_rtmap_bgp_outbound_pe 65535 set setstr action:permit
+   rtmap default_rtmap_to_ospf 65505 comment ""
+   rtmap default_rtmap_to_ospf 65505 enable
+   rtmap default_rtmap_to_ospf 65505 match matchstr src_proto:local
+   rtmap default_rtmap_to_ospf 65505 set setstr action:deny
+   rtmap default_rtmap_to_ospf 65515 comment ""
+   rtmap default_rtmap_to_ospf 65515 enable
+   rtmap default_rtmap_to_ospf 65515 match matchstr src_proto:subshare
+   rtmap default_rtmap_to_ospf 65515 set setstr action:permit
+   rtmap default_rtmap_to_ospf 65535 comment ""
+   rtmap default_rtmap_to_ospf 65535 enable
+   rtmap default_rtmap_to_ospf 65535 match matchstr src_proto:bgp
+   rtmap default_rtmap_to_ospf 65535 set setstr action:deny
+   rtmap default_rtmap_to_subsh 65505 comment ""
+   rtmap default_rtmap_to_subsh 65505 enable
+   rtmap default_rtmap_to_subsh 65505 match matchstr src_proto:local
+   rtmap default_rtmap_to_subsh 65505 set setstr action:permit
+   rtmap default_rtmap_to_subsh 65525 comment ""
+   rtmap default_rtmap_to_subsh 65525 enable
+   rtmap default_rtmap_to_subsh 65525 match matchstr src_proto:ospf
+   rtmap default_rtmap_to_subsh 65525 set setstr action:deny
+   rtmap default_rtmap_to_subsh 65535 comment ""
+   rtmap default_rtmap_to_subsh 65535 enable
+   rtmap default_rtmap_to_subsh 65535 match matchstr src_proto:bgp
+   rtmap default_rtmap_to_subsh 65535 set setstr action:deny
+   
+##
+## Cluster and Flow-Redirection Config
+##
+   cluster interface mgmt1
+   flow-redirection disable
+   flow-redirection wait-time 50
+   
+##
+## Flow-debug Config
+##
+   flow-debug disable
+   
+##
+## Excess Flow Config
+##
+   excess-flow drop
+   
+##
+## Redundancy Server Config
+##
+   vrrp vmac enable
+   
+##
+## WCCP Service Config
+##
+   wccp disable
+   wccp multicast-ttl 5
+   
+##
+## CDP Configuration
+##
+   cdp holdtime 180
+   cdp timer 60
+   interface lan1 cdp enable
+   interface wan1 cdp enable
+   
+##
+## LLDP Configuration
+##
+   interface lan1 cdp enable
+   interface wan0 cdp enable
+   interface wan1 cdp enable
+   lldp holdtime 120
+   lldp timer 60
+   
+##
+## TCA Configuration
+##
+   tca appliance-capacity total-flows rising raise-threshold 95 clear-threshold 0
+   tca total-flows default rising raise-threshold 90 clear-threshold 85 sample-count 5
+   tca appliance-capacity total-flows enable
+   tca total-flows default enable
+   
+##
+## SaaS Configuration
+##
+   saas disable
+   saas ping-src-interface none
+   saas rtt-interval 3600
+   saas rtt-num-req-per-host 5
+   
+##
+## SSL Configuration
+##
+   ssl builtin-signing enable
+   ssl cert-substitution disable
+   
+##
+## Interface Labels Configuration
+##
+   iflabel add lan-label 24
+   iflabel add lan-label 25
+   iflabel add lan-label 31
+   iflabel add lan-label 4
+   iflabel add lan-label 5
+   iflabel add lan-label 9
+   iflabel add wan-label 1
+   iflabel add wan-label 16
+   iflabel add wan-label 17
+   iflabel add wan-label 18
+   iflabel add wan-label 19
+   iflabel add wan-label 2
+   iflabel add wan-label 20
+   iflabel add wan-label 21
+   iflabel add wan-label 28
+   iflabel add wan-label 29
+   iflabel add wan-label 3
+   iflabel add wan-label 30
+   iflabel add wan-label 32
+   iflabel add wan-label 6
+   iflabel add wan-label 7
+   
+##
+## Overlay Configuration
+##
+   overlay BulkApps bonding-policy high-quality
+   overlay BulkApps disqualify-behavior on-overlay-brownout
+   overlay BulkApps fec-wait-time 80
+   overlay BulkApps internet-traffic policy local-breakout backup 
+   overlay BulkApps internet-traffic policy local-breakout primary passThrough_220
+   overlay BulkApps internet-traffic policy-list 0
+   overlay BulkApps internet-traffic policy-list 0
+   overlay BulkApps internet-traffic policy-list 0.000000000
+   overlay BulkApps internet-traffic policy-list 1
+   overlay BulkApps internet-traffic policy-list 1
+   overlay BulkApps internet-traffic policy-list 80
+   overlay BulkApps internet-traffic policy-list false
+   overlay BulkApps internet-traffic policy-list local_breakout,backhaul_via_overlay,drop
+   overlay BulkApps load-balance-policy waterfall-by-quality
+   overlay BulkApps max-fec-pct 20.000000000
+   overlay BulkApps min-fec-pct 2.000000000
+   overlay BulkApps poc-wait-time-max 100
+   overlay BulkApps poc-wait-time-min 5
+   overlay BulkApps reorder-speed 2
+   overlay BulkApps topo node_type non-hub
+   overlay BulkApps wan-label INET1 boundary-behavior on-brownout
+   overlay BulkApps wan-label INET1 cost 0
+   overlay BulkApps wan-label INET1 priority 0
+   overlay BulkApps wan-label INET2 boundary-behavior on-brownout
+   overlay BulkApps wan-label INET2 cost 0
+   overlay BulkApps wan-label INET2 priority 0
+   overlay BulkApps wan-label LTE boundary-behavior on-blackout
+   overlay BulkApps wan-label LTE cost 0
+   overlay BulkApps wan-label LTE priority 2
+   overlay BulkApps wan-label MPLS1 boundary-behavior on-brownout
+   overlay BulkApps wan-label MPLS1 cost 0
+   overlay BulkApps wan-label MPLS1 priority 0
+   overlay BulkApps wan-label MPLS2 boundary-behavior on-brownout
+   overlay BulkApps wan-label MPLS2 cost 0
+   overlay BulkApps wan-label MPLS2 priority 0
+   overlay BulkApps zone add 0
+   overlay CaptWhite bonding-policy high-quality
+   overlay CaptWhite disqualify-behavior on-overlay-brownout
+   overlay CaptWhite fec-wait-time 80
+   overlay CaptWhite internet-traffic policy local-breakout backup 
+   overlay CaptWhite internet-traffic policy local-breakout primary 
+   overlay CaptWhite internet-traffic policy-list 0
+   overlay CaptWhite internet-traffic policy-list 0
+   overlay CaptWhite internet-traffic policy-list 0.000000000
+   overlay CaptWhite internet-traffic policy-list 1
+   overlay CaptWhite internet-traffic policy-list 1
+   overlay CaptWhite internet-traffic policy-list 80
+   overlay CaptWhite internet-traffic policy-list backhaul_via_overlay,drop
+   overlay CaptWhite internet-traffic policy-list false
+   overlay CaptWhite load-balance-policy waterfall-by-quality
+   overlay CaptWhite max-fec-pct 20.000000000
+   overlay CaptWhite min-fec-pct 2.000000000
+   overlay CaptWhite poc-wait-time-max 100
+   overlay CaptWhite poc-wait-time-min 5
+   overlay CaptWhite reorder-speed 2
+   overlay CaptWhite topo node_type non-hub
+   overlay CaptWhite wan-label INET1 boundary-behavior on-brownout
+   overlay CaptWhite wan-label INET1 cost 0
+   overlay CaptWhite wan-label INET1 priority 0
+   overlay CaptWhite wan-label INET2 boundary-behavior on-brownout
+   overlay CaptWhite wan-label INET2 cost 0
+   overlay CaptWhite wan-label INET2 priority 0
+   overlay CaptWhite wan-label Starlink1 boundary-behavior on-blackout
+   overlay CaptWhite wan-label Starlink1 cost 0
+   overlay CaptWhite wan-label Starlink1 priority 1
+   overlay CaptWhite wan-label Starlink2 boundary-behavior on-blackout
+   overlay CaptWhite wan-label Starlink2 cost 0
+   overlay CaptWhite wan-label Starlink2 priority 1
+   overlay CaptWhite wan-label Starlink3 boundary-behavior on-brownout
+   overlay CaptWhite wan-label Starlink3 cost 0
+   overlay CaptWhite wan-label Starlink3 priority 0
+   overlay CaptWhite wan-label Starlink4 boundary-behavior on-brownout
+   overlay CaptWhite wan-label Starlink4 cost 0
+   overlay CaptWhite wan-label Starlink4 priority 0
+   overlay CaptWhite wan-label Starlink5 boundary-behavior on-brownout
+   overlay CaptWhite wan-label Starlink5 cost 0
+   overlay CaptWhite wan-label Starlink5 priority 0
+   overlay CaptWhite wan-label Starlink6 boundary-behavior on-brownout
+   overlay CaptWhite wan-label Starlink6 cost 0
+   overlay CaptWhite wan-label Starlink6 priority 0
+   overlay CaptWhite zone add 0
+   overlay CriticalApps bonding-policy high-quality
+   overlay CriticalApps disqualify-behavior on-overlay-brownout
+   overlay CriticalApps fec-wait-time 80
+   overlay CriticalApps internet-traffic policy local-breakout backup 
+   overlay CriticalApps internet-traffic policy local-breakout primary passThrough_219
+   overlay CriticalApps internet-traffic policy-list 0
+   overlay CriticalApps internet-traffic policy-list 0
+   overlay CriticalApps internet-traffic policy-list 0.000000000
+   overlay CriticalApps internet-traffic policy-list 1
+   overlay CriticalApps internet-traffic policy-list 1
+   overlay CriticalApps internet-traffic policy-list 80
+   overlay CriticalApps internet-traffic policy-list false
+   overlay CriticalApps internet-traffic policy-list local_breakout,backhaul_via_overlay,drop
+   overlay CriticalApps load-balance-policy waterfall-by-quality
+   overlay CriticalApps max-fec-pct 20.000000000
+   overlay CriticalApps min-fec-pct 2.000000000
+   overlay CriticalApps poc-wait-time-max 100
+   overlay CriticalApps poc-wait-time-min 5
+   overlay CriticalApps reorder-speed 2
+   overlay CriticalApps topo node_type non-hub
+   overlay CriticalApps wan-label INET1 boundary-behavior on-brownout
+   overlay CriticalApps wan-label INET1 cost 0
+   overlay CriticalApps wan-label INET1 priority 0
+   overlay CriticalApps wan-label INET2 boundary-behavior on-brownout
+   overlay CriticalApps wan-label INET2 cost 0
+   overlay CriticalApps wan-label INET2 priority 0
+   overlay CriticalApps wan-label LTE boundary-behavior on-blackout
+   overlay CriticalApps wan-label LTE cost 0
+   overlay CriticalApps wan-label LTE priority 2
+   overlay CriticalApps wan-label MPLS1 boundary-behavior on-brownout
+   overlay CriticalApps wan-label MPLS1 cost 0
+   overlay CriticalApps wan-label MPLS1 priority 0
+   overlay CriticalApps wan-label MPLS2 boundary-behavior on-brownout
+   overlay CriticalApps wan-label MPLS2 cost 0
+   overlay CriticalApps wan-label MPLS2 priority 0
+   overlay CriticalApps zone add 0
+   overlay DefaultOverlay bonding-policy high-quality
+   overlay DefaultOverlay disqualify-behavior on-overlay-brownout
+   overlay DefaultOverlay fec-wait-time 80
+   overlay DefaultOverlay internet-traffic policy local-breakout backup 
+   overlay DefaultOverlay internet-traffic policy local-breakout primary 
+   overlay DefaultOverlay internet-traffic policy-list 0
+   overlay DefaultOverlay internet-traffic policy-list 0
+   overlay DefaultOverlay internet-traffic policy-list 0.000000000
+   overlay DefaultOverlay internet-traffic policy-list 1
+   overlay DefaultOverlay internet-traffic policy-list 1
+   overlay DefaultOverlay internet-traffic policy-list 80
+   overlay DefaultOverlay internet-traffic policy-list backhaul_via_overlay,drop
+   overlay DefaultOverlay internet-traffic policy-list false
+   overlay DefaultOverlay load-balance-policy waterfall-by-quality
+   overlay DefaultOverlay max-fec-pct 20.000000000
+   overlay DefaultOverlay min-fec-pct 2.000000000
+   overlay DefaultOverlay poc-wait-time-max 100
+   overlay DefaultOverlay poc-wait-time-min 5
+   overlay DefaultOverlay reorder-speed 2
+   overlay DefaultOverlay topo node_type non-hub
+   overlay DefaultOverlay wan-label INET1 boundary-behavior on-brownout
+   overlay DefaultOverlay wan-label INET1 cost 0
+   overlay DefaultOverlay wan-label INET1 priority 0
+   overlay DefaultOverlay wan-label INET2 boundary-behavior on-brownout
+   overlay DefaultOverlay wan-label INET2 cost 0
+   overlay DefaultOverlay wan-label INET2 priority 0
+   overlay DefaultOverlay wan-label LTE boundary-behavior on-blackout
+   overlay DefaultOverlay wan-label LTE cost 0
+   overlay DefaultOverlay wan-label LTE priority 2
+   overlay DefaultOverlay wan-label MPLS1 boundary-behavior on-brownout
+   overlay DefaultOverlay wan-label MPLS1 cost 0
+   overlay DefaultOverlay wan-label MPLS1 priority 0
+   overlay DefaultOverlay wan-label MPLS2 boundary-behavior on-brownout
+   overlay DefaultOverlay wan-label MPLS2 cost 0
+   overlay DefaultOverlay wan-label MPLS2 priority 0
+   overlay DefaultOverlay zone add 0
+   overlay RealTime bonding-policy high-availability
+   overlay RealTime disqualify-behavior on-overlay-brownout
+   overlay RealTime fec-wait-time 2
+   overlay RealTime internet-traffic policy local-breakout backup 
+   overlay RealTime internet-traffic policy local-breakout primary passThrough_218
+   overlay RealTime internet-traffic policy-list 0
+   overlay RealTime internet-traffic policy-list 0
+   overlay RealTime internet-traffic policy-list 0.000000000
+   overlay RealTime internet-traffic policy-list 1
+   overlay RealTime internet-traffic policy-list 1
+   overlay RealTime internet-traffic policy-list 80
+   overlay RealTime internet-traffic policy-list false
+   overlay RealTime internet-traffic policy-list local_breakout,backhaul_via_overlay,drop
+   overlay RealTime load-balance-policy waterfall-by-quality
+   overlay RealTime max-fec-pct 100.000000000
+   overlay RealTime min-fec-pct 100.000000000
+   overlay RealTime poc-wait-time-max 100
+   overlay RealTime poc-wait-time-min 5
+   overlay RealTime reorder-speed 2
+   overlay RealTime topo node_type non-hub
+   overlay RealTime wan-label INET1 boundary-behavior on-brownout
+   overlay RealTime wan-label INET1 cost 0
+   overlay RealTime wan-label INET1 priority 0
+   overlay RealTime wan-label INET2 boundary-behavior on-brownout
+   overlay RealTime wan-label INET2 cost 0
+   overlay RealTime wan-label INET2 priority 0
+   overlay RealTime wan-label LTE boundary-behavior on-blackout
+   overlay RealTime wan-label LTE cost 0
+   overlay RealTime wan-label LTE priority 2
+   overlay RealTime wan-label MPLS1 boundary-behavior on-brownout
+   overlay RealTime wan-label MPLS1 cost 0
+   overlay RealTime wan-label MPLS1 priority 0
+   overlay RealTime wan-label MPLS2 boundary-behavior on-brownout
+   overlay RealTime wan-label MPLS2 cost 0
+   overlay RealTime wan-label MPLS2 priority 0
+   overlay RealTime zone add 0
+   overlay add BulkApps 3
+   overlay add CaptWhite 7
+   overlay add CriticalApps 2
+   overlay add DefaultOverlay 4
+   overlay add RealTime 1
+   overlay common internal-subnets 224.0.0.0/4,169.254.0.0/16,192.168.0.0/16,172.16.0.0/12,10.0.0.0/8
+   overlay common internal-subnetsv6 ""
+   overlay common route-match enable
+   
+##
+##  
+##
+   bfd segment 0 detect-multiplier 3
+no bfd segment 0 enable
+   bfd segment 0 rx-interval 300
+   bfd segment 0 tx-interval 300
+   
+##
+## BGP Router Configuration
+##
+   bgp ecmp enable
+no bgp segment 0 as-path-advertise enable
+   bgp segment 0 asn 65534
+no bgp segment 0 graceful-restart enable
+   bgp segment 0 graceful-restart max-restart-time 120
+   bgp segment 0 graceful-restart stale-path-time 150
+   bgp segment 0 log-nbr-msgs enable
+   bgp segment 0 router-id 0.0.0.0
+   router adv-loop count 10
+   router adv-loop interval 900
+   
+##
+## OSPF Router Configuration
+##
+   ospf disable
+   ospf opaque enable
+   ospf redistribute route-map default_rtmap_to_ospf outbound
+   ospf segment 0 opaque enable
+   ospf segment 0 redistribute route-map default_rtmap_to_ospf outbound
+   ospf segment 0 router-id 0.0.0.0
+   
+##
+## IP Tracking Operation Configuration
+##
+   ip-tracking action DN_ACTION_tun-dn_om_passThrough_218 attributes type=tun-dn;tun-alias=Passthrough_INET2_RealTime
+   ip-tracking action DN_ACTION_tun-dn_om_passThrough_219 attributes type=tun-dn;tun-alias=Passthrough_INET2_CriticalApps
+   ip-tracking action DN_ACTION_tun-dn_om_passThrough_220 attributes type=tun-dn;tun-alias=Passthrough_INET2_BulkApps
+   ip-tracking action UP_ACTION_tun-up_om_passThrough_218 attributes type=tun-up;tun-alias=Passthrough_INET2_RealTime
+   ip-tracking action UP_ACTION_tun-up_om_passThrough_219 attributes type=tun-up;tun-alias=Passthrough_INET2_CriticalApps
+   ip-tracking action UP_ACTION_tun-up_om_passThrough_220 attributes type=tun-up;tun-alias=Passthrough_INET2_BulkApps
+   ip-tracking manager MGR_ip-monitor_om_passThrough_218 attributes operation=OPERATION_om_passThrough_218;up-action=UP_ACTION_tun-up_om_passThrough_218;dn-action=DN_ACTION_tun-dn_om_passThrough_218;interval=30
+   ip-tracking manager MGR_ip-monitor_om_passThrough_218 comment generated by overlay manager
+   ip-tracking manager MGR_ip-monitor_om_passThrough_219 attributes operation=OPERATION_om_passThrough_219;up-action=UP_ACTION_tun-up_om_passThrough_219;dn-action=DN_ACTION_tun-dn_om_passThrough_219;interval=30
+   ip-tracking manager MGR_ip-monitor_om_passThrough_219 comment generated by overlay manager
+   ip-tracking manager MGR_ip-monitor_om_passThrough_220 attributes operation=OPERATION_om_passThrough_220;up-action=UP_ACTION_tun-up_om_passThrough_220;dn-action=DN_ACTION_tun-dn_om_passThrough_220;interval=30
+   ip-tracking manager MGR_ip-monitor_om_passThrough_220 comment generated by overlay manager
+   ip-tracking operation OPERATION_om_passThrough_218 attributes type=ip-monitor;ka=1;ip-monitor-ip=sp-ipsla.silverpeak.cloud,8.8.8.8,8.8.4.4;up-thresh=3;dn-thresh=30;port-label=6;sample-int=300;loss-up-thresh=0;loss-dn-thresh=0;rtt-up-thresh=0;rtt-dn-thresh=0;metric-combination=metric-or
+   ip-tracking operation OPERATION_om_passThrough_219 attributes type=ip-monitor;ka=1;ip-monitor-ip=sp-ipsla.silverpeak.cloud,8.8.8.8,8.8.4.4;up-thresh=3;dn-thresh=30;port-label=6;sample-int=300;loss-up-thresh=0;loss-dn-thresh=0;rtt-up-thresh=0;rtt-dn-thresh=0;metric-combination=metric-or
+   ip-tracking operation OPERATION_om_passThrough_220 attributes type=ip-monitor;ka=1;ip-monitor-ip=sp-ipsla.silverpeak.cloud,8.8.8.8,8.8.4.4;up-thresh=3;dn-thresh=30;port-label=6;sample-int=300;loss-up-thresh=0;loss-dn-thresh=0;rtt-up-thresh=0;rtt-dn-thresh=0;metric-combination=metric-or
+   
+##
+## Virtual Interface Configuration
+##
+   interface lo20000 virtual loopback ipaddress 10.250.28.131 netmask 255.255.255.255
+   interface pim0 virtual pim ipaddress 169.254.124.1 netmask 255.255.255.0
+   interface pim1 virtual pim ipaddress 169.254.125.1 netmask 255.255.255.0
+   interface pim2 virtual pim ipaddress 169.254.126.1 netmask 255.255.255.0
+   
+##
+## PIM SM Configuration
+##
+   igmp interface lan0 enable
+   multicast enable
+   multicast filtername ""
+   pim interface lan0 enable
+   pim rp ip 172.16.33.1
+   
+##
+## Segment Configuration
+##
+   segment id 0 Default
+   segment id 0 zone 0 idx 0
+   segment id 0 zone 1 idx 1
+   segment id 0 zone 2 idx 2
+   segment id 0 zone 65535 idx 255
+   segmentation enable
+   vxlan port 4789
+   vxlan segment Default role-id 0
+   vxlan segment Default vni 4294967295
+   vxlan segment Default zone 0
+   vxlan vtep-interface ""
+   
+##
+## Express apps configuration
+##
+   app express * tunnel * add real cost ""
+   app express * tunnel * add synthetic cost ""
+   app express * tunnel * deduct real cost ""
+   app express * tunnel * deduct synthetic cost ""
+   
+##
+##  
+##
+   
+   
+   system auto-mac-configure disable
+   system bypass mode default
+   
+##
+## Network management configuration
+##
+   banner login "You are accessing a HPE Aruba Networking Information System (IS) that is provided for HPE Aruba Networking Simulated-authorized use only. 
+ 
+By using this IS (which includes any device attached to this IS), you consent to the following conditions: 
+-HPE Aruba Networking routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, network operations and defense, and personnel misconduct (PM). 
+-At any time, HPE Aruba Networking may inspect and seize data stored on this IS. 
+-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any HPE Aruba Networking-authorized purpose. 
+-This IS includes security measures (e.g., authentication and access controls) to protect HPE Aruba Networking interests--not for your personal benefit or privacy. 
+-Notwithstanding the above, using this IS does not constitute consent to PM investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."
+   banner motd "You are accessing a HPE Aruba Networking Information System (IS) that is provided for HPE Aruba Networking Simulated-authorized use only. 
+ 
+By using this IS (which includes any device attached to this IS), you consent to the following conditions: 
+-HPE Aruba Networking routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, network operations and defense, and personnel misconduct (PM). 
+-At any time, HPE Aruba Networking may inspect and seize data stored on this IS. 
+-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any HPE Aruba Networking-authorized purpose. 
+-This IS includes security measures (e.g., authentication and access controls) to protect HPE Aruba Networking interests--not for your personal benefit or privacy. 
+-Notwithstanding the above, using this IS does not constitute consent to PM investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."
+   cli default allow-all-show disable
+   cli default auto-logout 15.0
+   clock timezone UTC
+   flow-export active-flow-timeout 1
+   flow-export destination 1 0.0.0.0 2055 netflow5
+   flow-export destination 2 0.0.0.0 2055 netflow5
+   flow-export disable
+   flow-export engine-id 1
+   flow-export engine-type 1
+   flow-export ipfix template refresh-timeout 10
+   flow-export optional-ies app-perf disable
+   flow-export optional-ies zbf disable
+   flow-export privacy-mask disable
+   flow-export privacy-mask ipv4 prefix-length 24
+no flow-export traffic-type lan-rx
+no flow-export traffic-type lan-tx
+no flow-export traffic-type wan-rx
+   flow-export traffic-type wan-tx
+no ntp disable
+no ntp server pool.ntp.org disable
+   ntp server pool.ntp.org version 4
+no ntp server time.nist.gov disable
+   ntp server time.nist.gov version 4
+   portal airgap mode disable
+   portal websocket enable
+no security certificate verify orchestrator
+   security certificate verify portal
+no security certificate verify stats-collector
+   security csrf enable
+   snmp-server community public ro
+no snmp-server enable
+no snmp-server enable traps
+   snmp-server listen enable
+   snmp-server traps event raise-alarm
+   snmp-server user admin
+no snmp-server user admin v3 enable
+   snmp-server user admin v3 encrypted auth sha "" priv aes-128 ""
+   web apidocs disable
+   web appliance-tag 1  
+   web appliance-tag 2  
+   web appliance-tag 3  
+   web appliance-tag 4  
+   web appliance-tag 5  
+   web appliance-tag 6  
+   web appliance-tag 7  
+   web appliance-tag 8  
+   web auto-logout 15
+   web http disable
+   web https enable
+   web session max 10
+   web ssl-cipher-list TLSv1.2+FIPS:!kRSA:!eNULL:!aNULL:!3DES
+   websocket orchestrator 50.211.133.114
+   websocket orchestrator 50.211.133.114 options {\"type\":\"Orchestrator\",\"ws_count\":1,\"wsPingTime\":20000,\"wsIdleTime\":120000,\"wsFailoverMode\":\"c\"}
+   
+##
+## SSH and Key configuration
+##
+   ssh client global host-key-check no
+   ssh client global known-hosts-file /dev/null
+   ssh server ca-sign-algos-accepted ecdsa-sha2-nistp256 ecdsa-sha2-nistp384 ecdsa-sha2-nistp521 ssh-ed25519 rsa-sha2-512 rsa-sha2-256
+   ssh server enable
+   ssh server encryption-algos aes128-cbc aes192-cbc aes256-cbc aes128-gcm@openssh.com aes256-gcm@openssh.com
+   ssh server host-key-algos ecdsa-sha2-nistp256-cert-v01@openssh.com ecdsa-sha2-nistp384-cert-v01@openssh.com ecdsa-sha2-nistp521-cert-v01@openssh.com ssh-ed25519-cert-v01@openssh.com rsa-sha2-512-cert-v01@openssh.com rsa-sha2-256-cert-v01@openssh.com ecdsa-sha2-nistp256 ecdsa-sha2-nistp384 ecdsa-sha2-nistp521 ssh-ed25519 rsa-sha2-512 rsa-sha2-256
+   ssh server key-exchange-algos diffie-hellman-group14-sha256 diffie-hellman-group16-sha512 diffie-hellman-group18-sha512 diffie-hellman-group-exchange-sha256 ecdh-sha2-nistp256 ecdh-sha2-nistp384 ecdh-sha2-nistp521 curve25519-sha256 curve25519-sha256@libssh.org
+   ssh server mac-algos hmac-sha2-256 hmac-sha2-512
+   ssh server ports 22 
+   ssh server pub-key-algos-accepted ecdsa-sha2-nistp256-cert-v01@openssh.com ecdsa-sha2-nistp384-cert-v01@openssh.com ecdsa-sha2-nistp521-cert-v01@openssh.com ssh-ed25519-cert-v01@openssh.com rsa-sha2-512-cert-v01@openssh.com rsa-sha2-256-cert-v01@openssh.com ecdsa-sha2-nistp256 ecdsa-sha2-nistp384 ecdsa-sha2-nistp521 ssh-ed25519 rsa-sha2-512 rsa-sha2-256
+   
+##
+##  
+##
+   ipsec authentication-algos sha1,sha256,sha384,sha512,aes128gmac,aes256gmac
+   ipsec dh-groups 1,2,5,14,15,16,17,18,19,20,21,26,31
+   ipsec encryption-algos aes256,aes128,aes128gcm16,aes256gcm16
+   ipsec ike-authentication-algos sha1,sha256,sha384,sha512
+   ipsec ike-encryption-algos aes256,aes128,aes128gcm16,aes256gcm16
+   ipsec ike-prf-algos prfsha256,prfsha384,prfsha512
+   ipsec pfs-groups 1,2,5,14,15,16,17,18,19,20,21,26,31
+   
+##
+## Miscellaneous other settings
+##
+   internal set modify - /cn/mrtrd/config/pim/intf/lan0/dr_priority value uint32 1
+   internal set modify - /cn/mrtrd/config/pim/intf/lan0/hello_interval value uint32 30
+   internal set modify - /cn/mrtrd/config/pim/intf/lan0/join_prune_interval value uint32 30
+   internal set modify - /cn/tunneld/user_profile/config/defer_secmap_for_unknown_role value bool false
+   internal set modify - /cn/user_role/config/id/0 value uint8 0
+   internal set modify - /cn/user_role/config/id/0/gpid value uint16 0
+   internal set modify - /cn/user_role/config/id/0/role_str value string default
+   internal set modify - /cn/user_role/config/id/1 value uint8 1
+   internal set modify - /cn/user_role/config/id/1/gpid value uint16 65535
+   internal set modify - /cn/user_role/config/id/1/role_str value string unknown
+   internal set modify - /cn/user_role/config/id/2 value uint8 2
+   internal set modify - /cn/user_role/config/id/2/gpid value uint16 1
+   internal set modify - /cn/user_role/config/id/2/role_str value string VIP
+   internal set modify - /mgmt/config/vrf/apps/other/displayname value string "Other VRF mgmt Apps"
+   internal set modify - /net/if2/config/virtual/loopback/lo20000 value string lo20000
+   internal set modify - /net/if2/config/virtual/loopback/lo20000/admin value bool true
+   internal set modify - /net/if2/config/virtual/loopback/lo20000/label value string 9
+   internal set modify - /net/if2/config/virtual/loopback/lo20000/vrf_id value uint16 0
+   internal set modify - /net/if2/config/virtual/loopback/lo20000/zone value uint16 0
+   internal set modify - /ntp/auth_algs value string SHA256,SHA384,SHA512
+   internal set modify - /ntp/selkey value uint32 1
+   internal set modify - /pm/process/certd/launch_path value string /sbin/certd_wrapper.sh
+   internal set modify - /pm/process/mrtrd/launch_enabled value bool true
+   internal set modify - /pm/process/snmpd/launch_enabled value bool true
+   internal set modify - /tls/config/tls_server/cipher_suite value string TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_AES_128_CCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_AES_256_GCM_SHA384
+KW-10106 # 

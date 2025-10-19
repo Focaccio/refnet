@@ -1,0 +1,6 @@
+[servers.liberachat]
+nickname = "gregsd"
+server = "irc.libera.chat"
+channels = ["#halloy","openvswitch"]
+[buffer.channel.topic]
+enabled = true

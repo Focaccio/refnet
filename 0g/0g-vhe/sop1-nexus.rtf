@@ -1,0 +1,103 @@
+ifconfig mgmt0 198.18.225.102 255.255.255.0 198.18.225.68
+
+```1```
+loader>
+set ip 198.18.225.101 255.255.255.0
+set gw 198.18.225.68
+
+```2```
+boot tftp://198.18.225.68/n3000-uk9-kickstart.6.0.2.U6.10.bin
+copy ftp: bootflash:
+n3000-uk9-kickstart.6.0.2.U6.10.bin
+
+
+```3```
+copy ftp: bootflash:
+n3000-uk9.6.0.2.U6.10.bin
+
+```4```
+load bootflash:n3000-uk9.6.0.2.U6.10.bin
+
+```5```
+sp1a# install all kickstart n3000-uk9-kickstart.6.0.2.U6.10.bin system n3000-uk9.6.0.2.U6.10.bin
+
+install all kickstart n3000-uk9-kickstart.6.0.2.U6.10.bin system n3000-uk9.6.0.2.U6.10.bin
+
+install all nxos bootflash:nxos.7.0.3.I7.8.bin compact
+
+703i78
+82a013ffb8ce475023516cc160610108
+
+install all nxos bootflash:nxos.7.0.3.I7.8.bin
+
+
+```6``` scp compact
+copy scp://greg@198.18.225.68/Users/f16/16scp/nxos.9.2.2.bin bootflash: compact vrf management
+
+
+issue with sp1a
+"allow delete boot-image" requires additional steps to work as expected
+CSCvp00678  
+Customer Visible
+Notifications
+Save Bug
+Open Support Case
+Description
+
+
+Symptom:
+The "allow delete boot-image" EXEC mode command that allows users to delete the NX-OS software binary image file that a Nexus switch is currently booted from requires additional steps to work as expected. As shown below, simply enabling "allow delete boot-image" and attempting to delete the file from the switch's bootflash does not work as expected.
+
+switch# allow delete boot-image
+Delete/overwriting of current boot images is allowed. Please be aware that this could affect HA.
+switch# del bootflash:nxos.9.3.6.bin
+Destination file is a boot image.Cannot overwrite/delete. Check 'Show Boot'.
+switch#
+
+
+Conditions:
+This issue is observed on all Nexus 3000 and 9000 series switches.
+
+Workaround:
+To delete the NX-OS software binary image file that a Nexus switch is currently booted from, follow the below workaround:
+
+1. Enable the "allow delete boot-image" command within EXEC mode.
+
+switch# allow delete boot-image
+Delete/overwriting of current boot images is allowed. Please be aware that this could affect HA.
+switch# 
+
+
+2. Remove the NX-OS boot statement from the switch's configuration with the "no boot nxos" global configuration command.
+
+switch# configure terminal
+switch(config)# no boot nxos
+switch(config)# end
+switch#
+
+
+3. Save the switch's configuration with the "copy running-config startup-config".
+
+switch# copy running-config startup-config
+[########################################] 100%
+switch#
+
+
+4. Delete the NX-OS software binary image file that the Nexus switch is currently booted from with the "delete" command.
+
+switch# delete bootflash:nxos.9.3.7a.bin
+Do you want to delete "/nxos.9.3.7a.bin" ? (yes/no/abort)   [y] y
+switch#
+
+
+Further Problem Description:
+None.
+
+PSIRT Evaluation:
+The Cisco PSIRT has evaluated this issue and does not meet the criteria for PSIRT ownership or involvement. This issue will be addressed via normal resolution channels.
+ 
+If you believe that there is new information that would cause a change in the severity of this issue, please contact psirt@cisco.com for another evaluation.
+ 
+Additional information on Cisco's security vulnerability policy can be found at the following URL:
+ 
+https://tools.cisco.com/security/center/resources/security_vulnerability_policy.html

@@ -1,0 +1,218 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"theme",
+				"UI: Select Color Scheme"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/refnet/refnet/0g/0g-sdwan/0g-wave1/10106-full-config-20251012.rtf",
+		"/Users/f16/16refnet/refnet/refnet/0g/0g-sdwan/0g-wave1/ec6-bio1-20241014a.rtf",
+		"/Users/refnet/refnet/0g/0g-sdwan/0g-wave1/08-cfg-20251013-tbd.rtf",
+		"/Users/f16/16refnet/refnet/refnet/0g/0g-sdwan/0g-wave1/EC-questions101.txt",
+		"/Users/refnet/refnet/0g/0g-sdwan/0g-wave1/08-cfg-20251013.rtf",
+		"/Users/refnet/refnet/0g/0g-sdwan/0g-wave1/06-cfg-20251012.rtf",
+		"/Users/refnet/refnet/0g/0g-sdwan/0g-wave1/EC-config-notes.txt",
+		"/Users/0-qemu/q2f-test6.vm",
+		"/Users/0-qemu/q2f-test4.vm",
+		"/Users/0-qemu/q2f-test2.vm",
+		"/Users/0-qemu/q2f-test3.vm",
+		"/Users/0-qemu/q2f14-test2.vm",
+		"/Users/0-qemu/q2f-test1.vm",
+		"/Users/0-qemu/ftest3.vm",
+		"/Users/2-qemu/qemu-fbsd-launch-test.sh",
+		"/Users/0-qemu/ftest7.vm",
+		"/Users/0-qemu/ftest6.vm",
+		"/Users/0-qemu/ftest5.vm",
+		"/Users/0-qemu/ftest4.vm",
+		"/Users/greg/Desktop/scratch.txt",
+		"/Users/greg/Desktop/ntnx/questions-bonds-in-ovs-vsctl-v0.txt",
+		"/Users/greg/Desktop/ntnx/full-show-ovs-vsctl-output",
+		"/Users/greg/Desktop/ntnx/LACP-question",
+		"/Users/f16/16refnet/refnet/refnet/rn376_net-iosxe/rn376_iosxe-ipsec_ACTR-CURSOR/acta-cfg-xrtr2-ipsec-ikev2-v1.txt",
+		"/Users/f16/0builder/sop-upgrade-nexus3048-20241101.txt",
+		"/Users/f16/16vmshare/sources.txt",
+		"/Users/greg/Desktop/lo-ops/9.3.13.txt",
+		"/Users/greg/Desktop/lo-ops/sp1b.txt",
+		"/Users/greg/Desktop/lo-ops/sp1a.txt",
+		"/Users/f16/16refnet/refnet/refnet/rn900-fmsec/rn909-fmsec-pattern-tools.txt",
+		"/Users/f16/16refnet/refnet/refnet/rn500_sys/rn505_net-linux_bridge-bond-ovs_set-up.txt",
+		"/Users/f16/1616/1616purchases.txt",
+		"/Users/f16/16HB/brew installs.txt",
+		"/Users/f16/16LABS/16GNS3/console-script-gns3.txt",
+		"/Users/f16/16g101/see.creosote.net/focaccio.github.io/index.html",
+		"/Users/f16/16GIT101/git-notes-st.txt",
+		"/Users/f16/16DEVASC/DEVASC-NOTES-ST.txt",
+		"/Users/f16/16g101/manual/manual-pracitce/manual-git-flow.txt",
+		"/Users/f16/16CODE/MAKE SESIONS READABLE.txt"
+	],
+	"find":
+	{
+		"height": 27.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"192.168.21.1",
+			"rtr1",
+			"jessie"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"198.15.99.6",
+			"kw6",
+			"bookworm"
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"pinned_build_system": "",
+	"project": "0g-wave1-set1.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 173.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
