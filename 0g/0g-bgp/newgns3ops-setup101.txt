@@ -1,0 +1,108 @@
+
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ACTION 1 / QUESTION 1 answer
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+03:15 greg@xcf16 ~ ? 
+03:15 greg@xcf16 ~ ? 
+03:15 greg@xcf16 ~ ? sudo xattr -dr com.apple.quarantine "/Applications/GNS3.app"
+
+Password:
+03:16 greg@xcf16 ~ ? sudo chown root:admin "/Applications/GNS3.app/Contents/MacOS/ubridge"
+
+03:16 greg@xcf16 ~ ? sudo chmod 4750 "/Applications/GNS3.app/Contents/MacOS/ubridge"
+03:16 greg@xcf16 ~ ? sudo chown root:wheel "/Applications/GNS3.app/Contents/MacOS/ubridge"
+
+03:16 greg@xcf16 ~ ? sudo chmod 4755 "/Applications/GNS3.app/Contents/MacOS/ubridge"
+03:16 greg@xcf16 ~ ? 
+03:16 greg@xcf16 ~ ? 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+QUESTION 1 / gns3 launch setup error
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+can this be solved:
+WaitForCommandWorker thread stopping with an error: Could not execute command "osascript -e 'do shell script "chown root:admin /Applications/GNS3.app/Contents/MacOS/ubridge && chmod 4750 /Applications/GNS3.app/Contents/MacOS/ubridge" with administrator privileges'": Command '['osascript', '-e', 'do shell script "chown root:admin /Applications/GNS3.app/Contents/MacOS/ubridge && chmod 4750 /Applications/GNS3.app/Contents/MacOS/ubridge" with administrator privileges']' returned non-zero exit status 1.
+Could not execute command "osascript -e 'do shell script "chown root:admin /Applications/GNS3.app/Contents/MacOS/ubridge && chmod 4750 /Applications/GNS3.app/Contents/MacOS/ubridge" with administrator privileges'": Command '['osascript', '-e', 'do shell script "chown root:admin /Applications/GNS3.app/Contents/MacOS/ubridge && chmod 4750 /Applications/GNS3.app/Contents/MacOS/ubridge" with administrator privileges']' returned non-zero exit status 1.
+error while deleting R1: Timeout error for DELETE call to http://localhost:3080/v2/compute/projects/356c7a39-1e8c-48f5-8cb1-10ef24068ffb/dynamips/nodes/39345a10-8515-48c4-af4f-17cd20bba5e9 after 20s
+Timeout error for DELETE call to http://localhost:3080/v2/compute/projects/356c7a39-1e8c-48f5-8cb1-10ef24068ffb/dynamips/nodes/39345a10-8515-48c4-af4f-17cd20bba5e9 after 20s
+uBridge requires root access or the capability to interact with Ethernet and TAP adapters
+
+
+
+
+
+Yes—this is fixable. The error means GNS3 couldn’t give uBridge the root-owned, set-uid permissions it needs to access Ethernet/TAP. The AppleScript failed, so do it manually.
+
+Quick fix (Terminal)
+	1.	Quit GNS3.
+	2.	Open Terminal and run:
+
+# remove Gatekeeper quarantine on the app bundle (prevents odd failures)
+sudo xattr -dr com.apple.quarantine "/Applications/GNS3.app"
+
+# give ubridge the right owner/group and setuid bit
+sudo chown root:admin "/Applications/GNS3.app/Contents/MacOS/ubridge"
+sudo chmod 4750 "/Applications/GNS3.app/Contents/MacOS/ubridge"
+
+If your macOS user is not in the admin group, use a broader permission:
+
+sudo chown root:wheel "/Applications/GNS3.app/Contents/MacOS/ubridge"
+sudo chmod 4755 "/Applications/GNS3.app/Contents/MacOS/ubridge"
+
+	3.	Reopen GNS3 → Preferences → uBridge and confirm the path points to:
+
+/Applications/GNS3.app/Contents/MacOS/ubridge
+
+	4.	Try your action again (start/stop a node, or attach a Cloud).
+If a node is “stuck” from the earlier failure, close the project and re-open it; worst case: GNS3 → File → New Project, then re-add the device.
+
+⸻
+
+Why this works
+	•	uBridge must be owned by root and have the set-uid bit so it can open raw sockets / tap devices.
+	•	The GUI tried to do this via osascript ... with administrator privileges, but that failed (exit status 1). Doing it in Terminal achieves the same end.
+
+⸻
+
+If you still see errors
+	•	Make sure you’re using a wired NIC (Wi-Fi bridging is flaky on macOS).
+	•	Verify your user is in the admin group: id -Gn (should list admin).
+	•	Restart the local GNS3 server: GNS3 → Preferences → Server → Stop/Start, or simply reboot.
+	•	On updates of GNS3, macOS may strip these bits; re-run the commands after upgrading.
+
+⸻
+
+Alternative: Homebrew ubridge
+
+If you installed GNS3 via Homebrew and want to use that ubridge:
+
+# after `brew install gns3 ubridge` (paths may vary)
+sudo chown root:wheel /opt/homebrew/bin/ubridge
+sudo chmod 4755 /opt/homebrew/bin/ubridge
+
+Then in GNS3 Preferences → uBridge, set the path to /opt/homebrew/bin/ubridge.
+
+⸻
+
+Ping me if you want me to tailor this to your exact macOS version/NIC setup—I’ll adapt the commands accordingly.
+
+
+
+
+
+
+
