@@ -1,0 +1,95 @@
+vpc OCT25
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+leaf1a# sh running-config vpc all
+
+!Command: show running-config vpc all
+!No configuration change since last restart
+!Time: Sat Oct 25 10:38:30 2025
+
+version 9.2(4) Bios:version 4.5.0 
+feature vpc
+
+vpc domain 101
+  peer-switch
+  role priority 2
+  system-priority 32667
+  peer-keepalive destination 100.64.0.1 source 100.64.0.2 udp-port 3200 vrf VPC-KEEPALIVE interval 1000 timeout 5 precedence 6  hold-timeout 3
+  delay restore 30
+  no delay peer-link
+  no dual-active exclude interface-vlan
+  peer-gateway
+  layer3 peer-router
+  layer3 peer-router syslog interval 3600
+  graceful consistency-check
+  auto-recovery reload-delay 60
+  delay restore interface-vlan 10
+  delay restore orphan-port 0
+  no fast-convergence
+  port-channel limit
+  no shutdown
+  ip arp synchronize
+
+interface port-channel7
+  vpc 7
+
+interface port-channel20
+  vpc 20
+
+interface port-channel101
+  vpc peer-link
+
+leaf1a# 
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+leaf1b# sh running-config vpc all 
+
+!Command: show running-config vpc all
+!No configuration change since last restart
+!Time: Sat Oct 25 10:53:31 2025
+
+version 9.2(4) Bios:version 5.0.0 
+feature vpc
+
+vpc domain 101
+  peer-switch
+  role priority 1
+  system-priority 32667
+  peer-keepalive destination 100.64.0.2 source 100.64.0.1 udp-port 3200 vrf VPC-KEEPALIVE interval 1000 timeout 5 precedence 6  hold-timeout 3
+  delay restore 30
+  no delay peer-link
+  no dual-active exclude interface-vlan
+  peer-gateway
+  layer3 peer-router
+  layer3 peer-router syslog interval 3600
+  graceful consistency-check
+  auto-recovery reload-delay 60
+  delay restore interface-vlan 10
+  delay restore orphan-port 0
+  no fast-convergence
+  port-channel limit
+  no shutdown
+  ip arp synchronize
+
+interface port-channel7
+  vpc 7
+
+interface port-channel20
+  vpc 20
+
+interface port-channel101
+  vpc peer-link
+
+leaf1b# 
