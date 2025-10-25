@@ -1,0 +1,84 @@
+
+https://community.cisco.com/t5/switching/nexus-3048-fails-from-switch-boot-load-with-init-cannot-execute/td-p/5215574
+
+
+Greg Focaccio
+ Greg Focaccio Level 1Level 1
+‎11-15-2024 03:51 AM
+
+Another switch I used the following process successfully:
+
+
+1. Break into loader>
+
+2. set IP on mgmt0
+
+3. connect tftp server to mgmt0
+
+4. from loader> TFTP boot a kickstart to get to switch(boot)#
+e.g.
+loader> boot tftp://198.18.225.68/n3000-uk9-kickstart.6.0.2.U6.10.bin
+
+5. delete file to make room for 9.x
+switch(boot)# delete bootflash:nxos.7.0.3.I7.9.bin
+
+6. ftp to bootflash the new compact 9.x version
+
+switch(boot)# copy ftp: bootflash:
+Enter source filename: n3000-compact.9.2.4.bin
+Enter hostname for the ftp server: 198.18.225.68
+Enter username: lab
+
+Connected to 198.18.225.68.
+220 Transfer 2.2.3 (20) ready
+200 Type set to I
+331 Login OK, please enter password
+Password:
+230 OK
+Remote system type is UNIX.
+Using binary mode to transfer files.
+local: /bootflash/n3000-compact.9.2.4.bin remote: n3000-compact.9.2.4.bin
+229 Entering Extended Passive Mode (|||52555|)
+150 Data connection opened; transfer starting
+15% |***** | 80397 KiB 11.21 MiB/s 00:39 ETA
+
+7. Power off/on
+
+8. Break into loader>
+
+9. boot to new compact image
+loader> boot bootflash:n3000-compact.9.2.4.bin
+Booting kickstart image: bootflash:n3000-compact.9.2.4.bin
+CardIndex = 11056
+Image valid
+
+10.loads 9.x successfully
+Software
+BIOS: version 4.5.0
+NXOS: version 9.2(4)
+BIOS compile time: 11/09/2017
+NXOS image file is: bootflash:///n3000-compact.9.2.4.bin
+NXOS compile time: 8/20/2019 7:00:00 [08/20/2019 15:52:22]
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
