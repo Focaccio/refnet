@@ -1,0 +1,1163 @@
+
+
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+
+
+
+
+owned by other third parties and used and distributed under their own
+licenses, such as open source.  This software is provided "as is," and unless
+otherwise stated, there is no warranty, express or implied, including but not
+limited to warranties of merchantability and fitness for a particular purpose.
+Certain components of this software are licensed under
+the GNU General Public License (GPL) version 2.0 or 
+GNU General Public License (GPL) version 3.0  or the GNU
+Lesser General Public License (LGPL) Version 2.1 or 
+Lesser General Public License (LGPL) Version 2.0. 
+A copy of each such license is available at
+http://www.opensource.org/licenses/gpl-2.0.php and
+http://opensource.org/licenses/gpl-3.0.html and
+http://www.opensource.org/licenses/lgpl-2.1.php and
+http://www.gnu.org/licenses/old-licenses/library.txt.
+leaf1a# 
+leaf1a# 
+leaf1a# 
+leaf1a# 
+leaf1a# terminal length 0
+leaf1a# sh running-config vpc all 
+
+!Command: show running-config vpc all
+!No configuration change since last restart
+!Time: Mon Oct 27 10:23:23 2025
+
+version 9.2(4) Bios:version 4.5.0 
+feature vpc
+
+vpc domain 101
+  peer-switch
+  role priority 2
+  system-priority 32667
+  peer-keepalive destination 100.64.0.1 source 100.64.0.2 udp-port 3200 vrf VPC-KEEPALIVE interval 1000 timeout 5 precedence 6  hold-timeout 3
+  delay restore 30
+  no delay peer-link
+  no dual-active exclude interface-vlan
+  peer-gateway
+  layer3 peer-router
+  layer3 peer-router syslog interval 3600
+  graceful consistency-check
+  auto-recovery reload-delay 60
+  delay restore interface-vlan 10
+  delay restore orphan-port 0
+  no fast-convergence
+  port-channel limit
+  no shutdown
+  ip arp synchronize
+
+interface port-channel7
+  vpc 7
+
+interface port-channel20
+  vpc 20
+
+interface port-channel101
+  vpc peer-link
+
+leaf1a# sh running-config 
+
+!Command: show running-config
+!No configuration change since last restart
+!Time: Mon Oct 27 10:23:27 2025
+
+version 9.2(4) Bios:version 4.5.0 
+hostname leaf1a
+vdc leaf1a id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 104
+  limit-resource u4route-mem minimum 128 maximum 128
+  limit-resource u6route-mem minimum 96 maximum 96
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature privilege
+feature telnet
+feature bash-shell
+feature scp-server
+feature sftp-server
+feature tacacs+
+cfs eth distribute
+feature ospf
+feature port-security
+feature interface-vlan
+feature hsrp
+feature lacp
+feature vpc
+feature lldp
+feature sflow
+feature openflow
+
+no password strength-check
+username admin password 5 $5$7UYQJ6O3$FPy8WNkJBmJxGEr0by1E0G5MclLu7KyOvazsn.8Yei.  role network-admin
+username lab password 5 $5$ZutC/RHv$wiSTpIa4IlUDAnvaDWw7wYvOFeTCmQQpqTdY80xnjVB  role network-admin
+username lab passphrase  lifetime 99999 warntime 7
+ssh ciphers all
+
+ip domain-lookup
+ip domain-name tst.areaf.net
+feature password encryption aes
+crypto key param rsa label leaf1a.tst.areaf.net modulus 2048 
+service unsupported-transceiver
+ip access-list copp-system-acl-eigrp
+  10 permit eigrp any 224.0.0.10/32 
+ipv6 access-list copp-system-acl-eigrp6
+  10 permit eigrp any ff02::a/128 
+ip access-list copp-system-acl-icmp
+  10 permit icmp any any 
+ip access-list copp-system-acl-igmp
+  10 permit igmp any any 
+ip access-list copp-system-acl-ntp
+  10 permit udp any any eq ntp 
+  20 permit udp any eq ntp any 
+ip access-list copp-system-acl-pimreg
+  10 permit pim any any 
+ip access-list copp-system-acl-ping
+  10 permit icmp any any echo 
+  20 permit icmp any any echo-reply 
+ip access-list copp-system-acl-routingproto1
+  10 permit tcp any gt 1024 any eq bgp 
+  20 permit tcp any eq bgp any gt 1024 
+  30 permit udp any 224.0.0.0/24 eq rip 
+  40 permit tcp any gt 1024 any eq 639 
+  50 permit tcp any eq 639 any gt 1024 
+  70 permit ospf any any 
+  80 permit ospf any 224.0.0.5/32 
+  90 permit ospf any 224.0.0.6/32 
+ip access-list copp-system-acl-routingproto2
+  10 permit udp any 224.0.0.0/24 eq 1985 
+  20 permit 112 any 224.0.0.0/24 
+ip access-list copp-system-acl-snmp
+  10 permit udp any any eq snmp 
+  20 permit udp any any eq snmptrap 
+ip access-list copp-system-acl-ssh
+  10 permit tcp any any eq 22 
+  20 permit tcp any eq 22 any 
+ip access-list copp-system-acl-stftp
+  10 permit udp any any eq tftp 
+  20 permit udp any any eq 1758 
+  30 permit udp any eq tftp any 
+  40 permit udp any eq 1758 any 
+  50 permit tcp any any eq 115 
+  60 permit tcp any eq 115 any 
+ip access-list copp-system-acl-tacacsradius
+  10 permit tcp any any eq tacacs 
+  20 permit tcp any eq tacacs any 
+  30 permit udp any any eq 1812 
+  40 permit udp any any eq 1813 
+  50 permit udp any any eq 1645 
+  60 permit udp any any eq 1646 
+  70 permit udp any eq 1812 any 
+  80 permit udp any eq 1813 any 
+  90 permit udp any eq 1645 any 
+  100 permit udp any eq 1646 any 
+ip access-list copp-system-acl-telnet
+  10 permit tcp any any eq telnet 
+  20 permit tcp any any eq 107 
+  30 permit tcp any eq telnet any 
+  40 permit tcp any eq 107 any 
+ipv6 access-list copp-system-acl-v6routingProto2
+  10 permit udp any ff02::66/128 eq 2029 
+  20 permit udp any ff02::fb/128 eq 5353 
+  30 permit 112 any ff02::12/128 
+  40 permit pim any ff02::d/128 
+ipv6 access-list copp-system-acl-v6routingproto1
+  10 permit 89 any ff02::5/128 
+  20 permit 89 any ff02::6/128 
+  30 permit udp any ff02::9/128 eq 521 
+ip access-list copp-system-dhcp-relay
+  10 permit udp any eq bootps any eq bootps 
+diagnostic monitor syslog
+class-map type control-plane match-any copp-icmp
+  match access-group name copp-system-acl-icmp
+class-map type control-plane match-any copp-ntp
+  match access-group name copp-system-acl-ntp
+class-map type control-plane match-any copp-s-arp
+class-map type control-plane match-any copp-s-bfd
+class-map type control-plane match-any copp-s-bpdu
+class-map type control-plane match-any copp-s-dai
+class-map type control-plane match-any copp-s-default
+class-map type control-plane match-any copp-s-dhcpreq
+class-map type control-plane match-any copp-s-dhcpresp
+  match access-group name copp-system-dhcp-relay
+class-map type control-plane match-any copp-s-dpss
+class-map type control-plane match-any copp-s-eigrp
+  match access-group name copp-system-acl-eigrp
+  match access-group name copp-system-acl-eigrp6
+class-map type control-plane match-any copp-s-glean
+class-map type control-plane match-any copp-s-igmp
+  match access-group name copp-system-acl-igmp
+class-map type control-plane match-any copp-s-ipmcmiss
+class-map type control-plane match-any copp-s-l2switched
+class-map type control-plane match-any copp-s-l3destmiss
+class-map type control-plane match-any copp-s-l3mtufail
+class-map type control-plane match-any copp-s-l3slowpath
+class-map type control-plane match-any copp-s-mpls
+class-map type control-plane match-any copp-s-pimautorp
+class-map type control-plane match-any copp-s-pimreg
+  match access-group name copp-system-acl-pimreg
+class-map type control-plane match-any copp-s-ping
+  match access-group name copp-system-acl-ping
+class-map type control-plane match-any copp-s-ptp
+class-map type control-plane match-any copp-s-routingProto1
+  match access-group name copp-system-acl-routingproto1
+  match access-group name copp-system-acl-v6routingproto1
+class-map type control-plane match-any copp-s-routingProto2
+  match access-group name copp-system-acl-routingproto2
+class-map type control-plane match-any copp-s-selfIp
+class-map type control-plane match-any copp-s-ttl1
+class-map type control-plane match-any copp-s-v6routingProto2
+  match access-group name copp-system-acl-v6routingProto2
+class-map type control-plane match-any copp-s-vxlan
+class-map type control-plane match-any copp-snmp
+  match access-group name copp-system-acl-snmp
+class-map type control-plane match-any copp-ssh
+  match access-group name copp-system-acl-ssh
+class-map type control-plane match-any copp-stftp
+  match access-group name copp-system-acl-stftp
+class-map type control-plane match-any copp-tacacsradius
+  match access-group name copp-system-acl-tacacsradius
+class-map type control-plane match-any copp-telnet
+  match access-group name copp-system-acl-telnet
+policy-map type control-plane copp-system-policy 
+  class copp-s-default
+    police pps 400 
+  class copp-s-l2switched
+    police pps 200 
+  class copp-s-ping
+    police pps 100 
+  class copp-s-l3destmiss
+    police pps 100 
+  class copp-s-glean
+    police pps 500 
+  class copp-s-selfIp
+    police pps 500 
+  class copp-s-l3mtufail
+    police pps 100 
+  class copp-s-ttl1
+    police pps 100 
+  class copp-s-ipmcmiss
+    police pps 400 
+  class copp-s-l3slowpath
+    police pps 100 
+  class copp-s-dhcpreq
+    police pps 300 
+  class copp-s-dhcpresp
+    police pps 300 
+  class copp-s-dai
+    police pps 300 
+  class copp-s-igmp
+    police pps 400 
+  class copp-s-eigrp
+    police pps 200 
+  class copp-s-pimreg
+    police pps 200 
+  class copp-s-pimautorp
+    police pps 200 
+  class copp-s-routingProto2
+    police pps 1300 
+  class copp-s-v6routingProto2
+    police pps 1300 
+  class copp-s-routingProto1
+    police pps 1000 
+  class copp-s-arp
+    police pps 200 
+  class copp-s-ptp
+    police pps 1000 
+  class copp-s-vxlan
+    police pps 1000 
+  class copp-s-bfd
+    police pps 350 
+  class copp-s-bpdu
+    police pps 12000 
+  class copp-s-dpss
+    police pps 1000 
+  class copp-s-mpls
+    police pps 100 
+  class copp-icmp
+    police pps 200 
+  class copp-telnet
+    police pps 500 
+  class copp-ssh
+    police pps 500 
+  class copp-snmp
+    police pps 500 
+  class copp-ntp
+    police pps 100 
+  class copp-tacacsradius
+    police pps 400 
+  class copp-stftp
+    police pps 400 
+control-plane
+  service-policy input copp-system-policy 
+snmp-server user lab network-admin auth md5 0x66062c3ba8d4722579704dc832efe75a priv 0x66062c3ba8d4722579704dc832efe75a localizedkey
+snmp-server user admin network-admin auth md5 0x66062c3ba8d4722579704dc832efe75a priv 0x66062c3ba8d4722579704dc832efe75a localizedkey
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+ntp server 198.18.225.7 prefer use-vrf management
+ntp source-interface  mgmt0
+
+vlan 1
+vlan 7
+  name V7-TST-LAN
+vlan 101
+  name V-V101-TEST
+vlan 172
+  name V-V172_SERVICES-X
+vlan 202
+  name V202-198-19-202-X
+vlan 909
+  name V-V909_NO-VPC-VLAN-EXAMPLE
+vlan 3000
+  name V-V3000_VPC-KEEPALIVE
+vlan 3003
+  name TEST
+spanning-tree vlan 1-3967,4048-4093 priority 8192
+vrf context VPC-KEEPALIVE
+  description VPC-KEEPALIVE
+vrf context management
+  ip route 0.0.0.0/0 172.30.30.254
+no port-channel load-balance resilient
+
+no hardware profile ecmp resilient
+vpc domain 101
+  peer-switch
+  role priority 2
+  peer-keepalive destination 100.64.0.1 source 100.64.0.2 vrf VPC-KEEPALIVE
+  peer-gateway
+  layer3 peer-router
+  auto-recovery reload-delay 60
+  ip arp synchronize
+
+
+interface Vlan1
+
+interface Vlan172
+  description V172-SERVICES-X
+  no shutdown
+  ip address 172.16.16.103/24
+  hsrp 172 
+    preempt 
+    priority 103
+    ip 172.16.16.1
+
+interface Vlan202
+  description V202-198-19-202-X
+  no shutdown
+  ip address 198.19.202.103/24
+  hsrp 202 
+    preempt 
+    priority 102
+    ip 198.19.202.1
+
+interface Vlan3000
+  description V-V3000_VPC-KEEPALIVE
+  no shutdown
+  no autostate
+  vrf member VPC-KEEPALIVE
+  no ip redirects
+  ip address 10.0.0.2/30
+
+interface Vlan3003
+  no shutdown
+  no autostate
+  ip address 100.100.0.2/24
+
+interface port-channel7
+  switchport mode trunk
+  switchport trunk allowed vlan 7,202
+  vpc 7
+
+interface port-channel20
+  switchport access vlan 172
+  vpc 20
+
+interface port-channel101
+  description V-PO101-VPC-PL
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-3002,3004-4094
+  spanning-tree port type network
+  vpc peer-link
+
+interface port-channel1024
+  description V-PO1024-VPC-KA
+  no switchport
+  vrf member VPC-KEEPALIVE
+  ip address 100.64.0.2/24
+
+interface Ethernet1/1
+  description P-TRUNK_NON-VPC-VLANS
+  switchport mode trunk
+  switchport trunk allowed vlan 909
+  speed 1000
+  duplex full
+
+interface Ethernet1/2
+
+interface Ethernet1/3
+
+interface Ethernet1/4
+
+interface Ethernet1/5
+
+interface Ethernet1/6
+
+interface Ethernet1/7
+  switchport mode trunk
+  switchport trunk allowed vlan 7,202
+  channel-group 7 mode active
+
+interface Ethernet1/8
+
+interface Ethernet1/9
+
+interface Ethernet1/10
+
+interface Ethernet1/11
+
+interface Ethernet1/12
+
+interface Ethernet1/13
+
+interface Ethernet1/14
+
+interface Ethernet1/15
+
+interface Ethernet1/16
+
+interface Ethernet1/17
+
+interface Ethernet1/18
+
+interface Ethernet1/19
+
+interface Ethernet1/20
+  switchport access vlan 172
+  channel-group 20 mode active
+
+interface Ethernet1/21
+
+interface Ethernet1/22
+
+interface Ethernet1/23
+
+interface Ethernet1/24
+
+interface Ethernet1/25
+  switchport access vlan 3003
+
+interface Ethernet1/26
+
+interface Ethernet1/27
+
+interface Ethernet1/28
+
+interface Ethernet1/29
+  no switchport
+  vrf member VPC-KEEPALIVE
+  ip address 100.101.0.2/24
+
+interface Ethernet1/30
+
+interface Ethernet1/31
+
+interface Ethernet1/32
+
+interface Ethernet1/33
+
+interface Ethernet1/34
+
+interface Ethernet1/35
+  description P-trunk-xrtr1-g0-0-0
+  switchport mode trunk
+  switchport trunk allowed vlan 101
+
+interface Ethernet1/36
+
+interface Ethernet1/37
+
+interface Ethernet1/38
+
+interface Ethernet1/39
+
+interface Ethernet1/40
+
+interface Ethernet1/41
+
+interface Ethernet1/42
+
+interface Ethernet1/43
+
+interface Ethernet1/44
+
+interface Ethernet1/45
+  description P-PO1024-VPC-KA-1of2
+  no switchport
+  channel-group 1024 mode active
+
+interface Ethernet1/46
+  description P-PO1024-VPC-KA-2of2
+  no switchport
+  channel-group 1024 mode active
+
+interface Ethernet1/47
+
+interface Ethernet1/48
+
+interface Ethernet1/49
+
+interface Ethernet1/50
+
+interface Ethernet1/51
+  description P-PO101-VPC-PL-1of2
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-3002,3004-4094
+  channel-group 101 mode active
+
+interface Ethernet1/52
+  description P-PO101-VPC-PL-2of2
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-3002,3004-4094
+  channel-group 101 mode active
+
+interface mgmt0
+  vrf member management
+  ip address 198.18.225.101/24
+cli alias name sps show port-channel sum
+cli alias name sit show int trunk
+cli alias name sfi show feature | i
+cli alias name wha sh run | i alias
+cli alias name sis show int status
+cli alias name spcs show port-channel sum
+cli alias name sri show run | i 
+cli alias name siib show ip int brie
+cli alias name sf show run | i feature
+cli alias name srs show run | sec
+cli alias name srint show run int
+cli alias name sid show int des
+cli alias name siibv show ip int brie vrf 
+cli alias name shb show hsrp brief
+cli alias name siibva show ip int brie vrf all
+cli alias name sisic show int status | i connected
+cli alias name sided show int des | ex --
+cli alias name sln show lacp nei
+cli alias name sisdis show int status | i disabled
+cli alias name crs copy ru st
+cli alias name sisi show int status | i
+cli alias name srb show run | begin
+cli alias name siava show ip arp vrf all
+cli alias name srsv show run | sec vpc
+cli alias name svb show vpc brief
+cli alias name srv show run vpc
+cli alias name crf copy ru bootflash:cfg-manual-backup
+line console
+  exec-timeout 0
+line vty
+  exec-timeout 120
+boot nxos bootflash:/n3000-compact.9.2.4.bin 
+
+
+
+leaf1a# 
+
+
+
+
+
+
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+
+
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+===============================================================================================
+
+
+the GNU General Public License (GPL) version 2.0 or 
+GNU General Public License (GPL) version 3.0  or the GNU
+Lesser General Public License (LGPL) Version 2.1 or 
+Lesser General Public License (LGPL) Version 2.0. 
+A copy of each such license is available at
+http://www.opensource.org/licenses/gpl-2.0.php and
+http://opensource.org/licenses/gpl-3.0.html and
+http://www.opensource.org/licenses/lgpl-2.1.php and
+http://www.gnu.org/licenses/old-licenses/library.txt.
+leaf1b# 
+leaf1b# 
+leaf1b# 
+leaf1b# terminal length 0
+leaf1b# sh con
+config-profile        config-replace        config-template       configuration         consistency-checker   
+leaf1b# sh running-config vpc all 
+
+!Command: show running-config vpc all
+!No configuration change since last restart
+!Time: Mon Oct 27 10:23:47 2025
+
+version 9.2(4) Bios:version 5.0.0 
+feature vpc
+
+vpc domain 101
+  peer-switch
+  role priority 1
+  system-priority 32667
+  peer-keepalive destination 100.64.0.2 source 100.64.0.1 udp-port 3200 vrf VPC-KEEPALIVE interval 1000 timeout 5 precedence 6  hold-timeout 3
+  delay restore 30
+  no delay peer-link
+  no dual-active exclude interface-vlan
+  peer-gateway
+  layer3 peer-router
+  layer3 peer-router syslog interval 3600
+  graceful consistency-check
+  auto-recovery reload-delay 60
+  delay restore interface-vlan 10
+  delay restore orphan-port 0
+  no fast-convergence
+  port-channel limit
+  no shutdown
+  ip arp synchronize
+
+interface port-channel7
+  vpc 7
+
+interface port-channel20
+  vpc 20
+
+interface port-channel101
+  vpc peer-link
+
+leaf1b# sh run
+
+!Command: show running-config
+!No configuration change since last restart
+!Time: Mon Oct 27 10:23:51 2025
+
+version 9.2(4) Bios:version 5.0.0 
+hostname leaf1b
+vdc leaf1b id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 104
+  limit-resource u4route-mem minimum 128 maximum 128
+  limit-resource u6route-mem minimum 96 maximum 96
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature privilege
+feature bash-shell
+feature scp-server
+feature sftp-server
+feature tacacs+
+cfs eth distribute
+feature ospf
+feature port-security
+feature interface-vlan
+feature hsrp
+feature lacp
+feature vpc
+feature lldp
+feature sflow
+feature openflow
+
+no password strength-check
+username admin password 5 $5$67VMnpi9$AXi7cX5ToxKS/m5iqNBxyp3JzrdzAA5mA9XP95YnR89  role network-admin
+username lab password 5 $5$9eT4lJlx$FXuU.OxZS5NYLBS2DavITZL0ilEG2.vCZs4KLN38Dm/  role network-admin
+username lab passphrase  lifetime 99999 warntime 14 gracetime 3
+
+banner motd #Nexus 3000 Switch
+#
+
+ssh ciphers all
+
+ip domain-lookup
+ip domain-name tst.areaf.net
+crypto key param rsa label leaf1b.tst.areaf.net modulus 2048 
+service unsupported-transceiver
+ip access-list copp-system-acl-eigrp
+  10 permit eigrp any 224.0.0.10/32 
+ipv6 access-list copp-system-acl-eigrp6
+  10 permit eigrp any ff02::a/128 
+ip access-list copp-system-acl-icmp
+  10 permit icmp any any 
+ip access-list copp-system-acl-igmp
+  10 permit igmp any any 
+ip access-list copp-system-acl-ntp
+  10 permit udp any any eq ntp 
+  20 permit udp any eq ntp any 
+ip access-list copp-system-acl-pimreg
+  10 permit pim any any 
+ip access-list copp-system-acl-ping
+  10 permit icmp any any echo 
+  20 permit icmp any any echo-reply 
+ip access-list copp-system-acl-routingproto1
+  10 permit tcp any gt 1024 any eq bgp 
+  20 permit tcp any eq bgp any gt 1024 
+  30 permit udp any 224.0.0.0/24 eq rip 
+  40 permit tcp any gt 1024 any eq 639 
+  50 permit tcp any eq 639 any gt 1024 
+  70 permit ospf any any 
+  80 permit ospf any 224.0.0.5/32 
+  90 permit ospf any 224.0.0.6/32 
+ip access-list copp-system-acl-routingproto2
+  10 permit udp any 224.0.0.0/24 eq 1985 
+  20 permit 112 any 224.0.0.0/24 
+ip access-list copp-system-acl-snmp
+  10 permit udp any any eq snmp 
+  20 permit udp any any eq snmptrap 
+ip access-list copp-system-acl-ssh
+  10 permit tcp any any eq 22 
+  20 permit tcp any eq 22 any 
+ip access-list copp-system-acl-stftp
+  10 permit udp any any eq tftp 
+  20 permit udp any any eq 1758 
+  30 permit udp any eq tftp any 
+  40 permit udp any eq 1758 any 
+  50 permit tcp any any eq 115 
+  60 permit tcp any eq 115 any 
+ip access-list copp-system-acl-tacacsradius
+  10 permit tcp any any eq tacacs 
+  20 permit tcp any eq tacacs any 
+  30 permit udp any any eq 1812 
+  40 permit udp any any eq 1813 
+  50 permit udp any any eq 1645 
+  60 permit udp any any eq 1646 
+  70 permit udp any eq 1812 any 
+  80 permit udp any eq 1813 any 
+  90 permit udp any eq 1645 any 
+  100 permit udp any eq 1646 any 
+ip access-list copp-system-acl-telnet
+  10 permit tcp any any eq telnet 
+  20 permit tcp any any eq 107 
+  30 permit tcp any eq telnet any 
+  40 permit tcp any eq 107 any 
+ipv6 access-list copp-system-acl-v6routingProto2
+  10 permit udp any ff02::66/128 eq 2029 
+  20 permit udp any ff02::fb/128 eq 5353 
+  30 permit 112 any ff02::12/128 
+ipv6 access-list copp-system-acl-v6routingproto1
+  10 permit 89 any ff02::5/128 
+  20 permit 89 any ff02::6/128 
+  30 permit udp any ff02::9/128 eq 521 
+ip access-list copp-system-dhcp-relay
+  10 permit udp any eq bootps any eq bootps 
+class-map type control-plane match-any copp-icmp
+  match access-group name copp-system-acl-icmp
+class-map type control-plane match-any copp-ntp
+  match access-group name copp-system-acl-ntp
+class-map type control-plane match-any copp-s-arp
+class-map type control-plane match-any copp-s-bfd
+class-map type control-plane match-any copp-s-bpdu
+class-map type control-plane match-any copp-s-dai
+class-map type control-plane match-any copp-s-default
+class-map type control-plane match-any copp-s-dhcpreq
+class-map type control-plane match-any copp-s-dhcpresp
+  match access-group name copp-system-dhcp-relay
+class-map type control-plane match-any copp-s-dpss
+class-map type control-plane match-any copp-s-eigrp
+  match access-group name copp-system-acl-eigrp
+  match access-group name copp-system-acl-eigrp6
+class-map type control-plane match-any copp-s-glean
+class-map type control-plane match-any copp-s-igmp
+  match access-group name copp-system-acl-igmp
+class-map type control-plane match-any copp-s-ipmcmiss
+class-map type control-plane match-any copp-s-l2switched
+class-map type control-plane match-any copp-s-l3destmiss
+class-map type control-plane match-any copp-s-l3mtufail
+class-map type control-plane match-any copp-s-l3slowpath
+class-map type control-plane match-any copp-s-mpls
+class-map type control-plane match-any copp-s-pimautorp
+class-map type control-plane match-any copp-s-pimreg
+  match access-group name copp-system-acl-pimreg
+class-map type control-plane match-any copp-s-ping
+  match access-group name copp-system-acl-ping
+class-map type control-plane match-any copp-s-ptp
+class-map type control-plane match-any copp-s-routingProto1
+  match access-group name copp-system-acl-routingproto1
+  match access-group name copp-system-acl-v6routingproto1
+class-map type control-plane match-any copp-s-routingProto2
+  match access-group name copp-system-acl-routingproto2
+class-map type control-plane match-any copp-s-selfIp
+class-map type control-plane match-any copp-s-ttl1
+class-map type control-plane match-any copp-s-v6routingProto2
+  match access-group name copp-system-acl-v6routingProto2
+class-map type control-plane match-any copp-s-vxlan
+class-map type control-plane match-any copp-snmp
+  match access-group name copp-system-acl-snmp
+class-map type control-plane match-any copp-ssh
+  match access-group name copp-system-acl-ssh
+class-map type control-plane match-any copp-stftp
+  match access-group name copp-system-acl-stftp
+class-map type control-plane match-any copp-tacacsradius
+  match access-group name copp-system-acl-tacacsradius
+class-map type control-plane match-any copp-telnet
+  match access-group name copp-system-acl-telnet
+policy-map type control-plane copp-system-policy 
+  class copp-s-default
+    police pps 400 
+  class copp-s-l2switched
+    police pps 200 
+  class copp-s-ping
+    police pps 100 
+  class copp-s-l3destmiss
+    police pps 100 
+  class copp-s-glean
+    police pps 500 
+  class copp-s-selfIp
+    police pps 500 
+  class copp-s-l3mtufail
+    police pps 100 
+  class copp-s-ttl1
+    police pps 100 
+  class copp-s-ipmcmiss
+    police pps 400 
+  class copp-s-l3slowpath
+    police pps 100 
+  class copp-s-dhcpreq
+    police pps 300 
+  class copp-s-dhcpresp
+    police pps 300 
+  class copp-s-dai
+    police pps 300 
+  class copp-s-igmp
+    police pps 400 
+  class copp-s-eigrp
+    police pps 200 
+  class copp-s-pimreg
+    police pps 200 
+  class copp-s-pimautorp
+    police pps 200 
+  class copp-s-routingProto2
+    police pps 1300 
+  class copp-s-v6routingProto2
+    police pps 1300 
+  class copp-s-routingProto1
+    police pps 1000 
+  class copp-s-arp
+    police pps 200 
+  class copp-s-ptp
+    police pps 1000 
+  class copp-s-vxlan
+    police pps 1000 
+  class copp-s-bfd
+    police pps 350 
+  class copp-s-bpdu
+    police pps 12000 
+  class copp-s-dpss
+    police pps 1000 
+  class copp-s-mpls
+    police pps 100 
+  class copp-icmp
+    police pps 200 
+  class copp-telnet
+    police pps 500 
+  class copp-ssh
+    police pps 500 
+  class copp-snmp
+    police pps 500 
+  class copp-ntp
+    police pps 100 
+  class copp-tacacsradius
+    police pps 400 
+  class copp-stftp
+    police pps 400 
+control-plane
+  service-policy input copp-system-policy 
+snmp-server user lab network-admin auth md5 0x5cc56638be833af5fc22ed47273ef98a priv 0x5cc56638be833af5fc22ed47273ef98a localizedkey
+snmp-server user admin network-admin auth md5 0x5cc56638be833af5fc22ed47273ef98a priv 0x5cc56638be833af5fc22ed47273ef98a localizedkey
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+ntp server 198.18.225.7 prefer use-vrf management
+ntp source-interface  mgmt0
+
+vlan 1
+vlan 7
+  name V7-TST-LAN
+vlan 101
+  name V-V101-TEST
+vlan 172
+  name V-172_VPC_Services-MGMT
+vlan 202
+  name V202-198-19-202-X
+vlan 909
+  name V-909_NO-VPC_Test
+vlan 3000
+  name V3000-VPC-KEEPALIVE
+vlan 3003
+  name TEST
+spanning-tree vlan 1-3967,4048-4093 priority 8192
+vrf context VPC-KEEPALIVE
+  description VPC-KEEPALIVE
+vrf context management
+  ip route 0.0.0.0/0 198.18.225.68
+no port-channel load-balance resilient
+
+no hardware profile ecmp resilient
+vpc domain 101
+  peer-switch
+  role priority 1
+  peer-keepalive destination 100.64.0.2 source 100.64.0.1 vrf VPC-KEEPALIVE
+  peer-gateway
+  layer3 peer-router
+  auto-recovery reload-delay 60
+  ip arp synchronize
+
+
+interface Vlan1
+
+interface Vlan172
+  description V172-SERVICES-X
+  no shutdown
+  ip address 172.16.16.102/24
+  hsrp 172 
+    preempt 
+    priority 102
+    ip 172.16.16.1
+
+interface Vlan202
+  description V202-198-19-202-X
+  no shutdown
+  ip address 198.19.202.102/24
+  hsrp 202 
+    preempt 
+    priority 101
+    ip 198.19.202.1
+
+interface Vlan3000
+  description V-V3000_VPC-KEEPALIVE
+  no shutdown
+  no autostate
+  vrf member VPC-KEEPALIVE
+  no ip redirects
+  ip address 10.0.0.1/30
+
+interface Vlan3003
+  no shutdown
+  no autostate
+  ip address 100.100.0.1/24
+
+interface port-channel7
+  switchport mode trunk
+  switchport trunk allowed vlan 7,202
+  vpc 7
+
+interface port-channel20
+  switchport access vlan 172
+  vpc 20
+
+interface port-channel101
+  description V-PO101-VPC-PL
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-3002,3004-4094
+  spanning-tree port type network
+  vpc peer-link
+
+interface port-channel1024
+  description V-PO1024-VPC-KA
+  no switchport
+  vrf member VPC-KEEPALIVE
+  ip address 100.64.0.1/24
+
+interface Ethernet1/1
+  description P-TRUNK_NON-VPC-VLANS
+  switchport mode trunk
+  switchport trunk allowed vlan 909
+  speed 1000
+  duplex full
+
+interface Ethernet1/2
+
+interface Ethernet1/3
+
+interface Ethernet1/4
+
+interface Ethernet1/5
+
+interface Ethernet1/6
+
+interface Ethernet1/7
+  switchport mode trunk
+  switchport trunk allowed vlan 7,202
+  channel-group 7 mode active
+
+interface Ethernet1/8
+
+interface Ethernet1/9
+
+interface Ethernet1/10
+
+interface Ethernet1/11
+
+interface Ethernet1/12
+
+interface Ethernet1/13
+
+interface Ethernet1/14
+
+interface Ethernet1/15
+
+interface Ethernet1/16
+
+interface Ethernet1/17
+
+interface Ethernet1/18
+
+interface Ethernet1/19
+
+interface Ethernet1/20
+  switchport access vlan 172
+  channel-group 20 mode active
+
+interface Ethernet1/21
+
+interface Ethernet1/22
+
+interface Ethernet1/23
+
+interface Ethernet1/24
+
+interface Ethernet1/25
+  switchport access vlan 3003
+
+interface Ethernet1/26
+
+interface Ethernet1/27
+
+interface Ethernet1/28
+
+interface Ethernet1/29
+  no switchport
+  vrf member VPC-KEEPALIVE
+  ip address 100.101.0.1/24
+
+interface Ethernet1/30
+
+interface Ethernet1/31
+
+interface Ethernet1/32
+
+interface Ethernet1/33
+
+interface Ethernet1/34
+
+interface Ethernet1/35
+  description P-trunk-xrtr1-g0-0-0
+  switchport mode trunk
+  switchport trunk allowed vlan 101
+
+interface Ethernet1/36
+
+interface Ethernet1/37
+
+interface Ethernet1/38
+
+interface Ethernet1/39
+
+interface Ethernet1/40
+
+interface Ethernet1/41
+
+interface Ethernet1/42
+
+interface Ethernet1/43
+
+interface Ethernet1/44
+
+interface Ethernet1/45
+  description P-PO1024-VPC-KA-1of2
+  no switchport
+  channel-group 1024 mode active
+
+interface Ethernet1/46
+  description P-PO1024-VPC-KA-2of2
+  no switchport
+  channel-group 1024 mode active
+
+interface Ethernet1/47
+
+interface Ethernet1/48
+
+interface Ethernet1/49
+
+interface Ethernet1/50
+
+interface Ethernet1/51
+  description P-PO101-VPC-PL-1of2
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-3002,3004-4094
+  channel-group 101 mode active
+
+interface Ethernet1/52
+  description P-PO101-VPC-PL-2of2
+  switchport mode trunk
+  switchport trunk allowed vlan 1-908,910-2999,3001-3002,3004-4094
+  channel-group 101 mode active
+
+interface mgmt0
+  vrf member management
+  ip address 198.18.225.102/24
+
+interface loopback686
+cli alias name sisi show int status | i
+cli alias name sri show run | i 
+cli alias name sfi show feature | i
+cli alias name wha sh run | i alias
+cli alias name sis show int status
+cli alias name spcs show port-channel sum
+cli alias name siib show ip int brie
+cli alias name sf show run | i feature
+cli alias name sit show int trunk
+cli alias name srs show run | sec
+cli alias name srint show run int
+cli alias name sid show int des
+cli alias name siibv show ip int brie vrf 
+cli alias name srb show run | begin
+cli alias name shb show hsrp brief
+cli alias name sisic show int status | i connected
+cli alias name sided show int des | ex --
+cli alias name siibva show ip int brie vrf all
+cli alias name sln show lacp nei
+cli alias name sisdis show int status | i disabled
+cli alias name crs copy ru st
+cli alias name sps show port-channel sum
+cli alias name siav show ip arp vrf 
+cli alias name siava show ip arp vrf all
+cli alias name srsv show run | sec vpc
+cli alias name svb show vpc brief
+cli alias name srv show run vpc
+cli alias name crf copy ru bootflash:cfg-manual-backup
+line console
+  exec-timeout 0
+line vty
+  exec-timeout 120
+boot nxos bootflash:/n3000-compact.9.2.4.bin 
+feature analytics
+
+
+
+leaf1b# 
+
+
