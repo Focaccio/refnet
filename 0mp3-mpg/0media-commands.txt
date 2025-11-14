@@ -1,0 +1,9 @@
+
+
+
+working commands:
+test3
+ffmpeg -loop 1 -framerate 1 -i dalton-rainbow-2023-640x480.jpg -i named_how-weird-2015_FRESH-MOODS-MY-FACE.mp3 -vf format=yuv420p -c:v mpeg2video -q:v 5 -c:a mp2 -b:a 160k -ar 32000 -shortest foca-music_HW2015_Fresh-Moods.mpg
+
+Test commands:
+
