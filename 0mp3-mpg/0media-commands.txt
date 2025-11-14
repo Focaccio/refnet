@@ -1,9 +1,24 @@
 
 
-
+===============================================================================================
 working commands:
 test3
 ffmpeg -loop 1 -framerate 1 -i dalton-rainbow-2023-640x480.jpg -i named_how-weird-2015_FRESH-MOODS-MY-FACE.mp3 -vf format=yuv420p -c:v mpeg2video -q:v 5 -c:a mp2 -b:a 160k -ar 32000 -shortest foca-music_HW2015_Fresh-Moods.mpg
+
+===============================================================================================
+m4a-conversion:
+ffmpeg -loop 1 -framerate 1 -i bright-blurs-bkf_mod-640x480.jpg -i 06-third-eye.m4a -vf format=yuv420p -c:v mpeg2video -q:v 5 -c:a mp2 -b:a 160k -ar 32000 -shortest foca-music_06-third-eye.mpg
+
+
+
+===============================================================================================
+reframe:
+re-frame
+ffmpeg -loop 1 -framerate 1 -i new-image.jpg -i oldvideo.mpg -map 0:v -map 1:a -vf format=yuv420p -c:v mpeg2video -q:v 5 -c:a copy -shortest new-with-frame.mpg
+
+ffmpeg -loop 1 -framerate 1 -i bright-blurs-bkf_mod-640x480.jpg -i foca-music_06-third-eye-edit.mpg -map 0:v -map 1:a -vf format=yuv420p -c:v mpeg2video -q:v 5 -c:a copy -shortest nfoca-music_06-third-eye-edit2.mpg
+
+
 
 Test commands:
 
