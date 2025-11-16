@@ -1,0 +1,38 @@
+===============================================================================================
+CONCEPTS
+
+
+
+
+===============================================================================================
+REVISITS:
++Use templates to deploy with STIGs
+
+
+
+
+===============================================================================================
+OPS
+vec3
+1. qcow EC from silver peak
+2. import to image store in nutanix
+3. create vm with disk from image pool
+4. three NICs V202 (mgmt), V33 (lan0), V93 (wano)
++prism show which MAC is associated to which NIC
+5. switch with LACP L2 PO to node eth4 and 4
++shows ! the same mac addresses at #4
+...Problem is what guest nic are they? eth0 lan0 wan0?
+6. from virsh i see the 3 taps 0, 1, 2 with matching MACs 
+...but how do i check which interface mgmt0, lan0, wan0 they are pinned to?
+
+//// CHANGE COURSE ///
+USE GUI in CONSOLE - allows assigning MAC to interface mgmt0 as needed
+after this run web console to attach other MACs to other interfaces perfectly
+lan0 >>> 5f tap1
+wan0 >>> 94 tap2
+
+Add ORCH ip from portal  
+Add DNS ip from portal  
+
+
+
