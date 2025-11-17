@@ -1,0 +1,558 @@
+vec2
+Last login: Mon Nov 17 02:54:14 2025 from ::1
+
+02:55 greg@xcf16 ~ ? 
+02:55 greg@xcf16 ~ ? res
+Script started, output file is /Users/f16/16sessions/251117-025557-term-session.session
+02:55 greg@xcf16 ~ ? ssh 198.19.202.222 -ladmin
+
+Unauthorized access prohibited.  This product or the use of this
+product is covered by one or more of the following U.S. Patents:
+9,626,224; 9,613,071; 9,584,403; 9,549,048; 9,438,538; 9,397,951;
+9,363,309; 9,363,248; 9,253,277; 9,191,342; 9,152,574; 9,143,455;
+9,130,991; 9,092,342; 9,036,662; 8,930,650; 8,929,402; 8,929,380;
+8,885,632; 8,811,431; 8,755,381; 8,743,683; 8,738,865; 8,732,423;
+8,725,988; 8,595,314; 8,489,562; 8,473,714; 8,442,052; 8,392,684;
+8,370,583; 8,312,226; 8,307,115; 8,225,072; 8,171,238; 8,095,774;
+7,948,921; 7,945,736; 7,698,431; 7,644,230; 7,630,295; 7,571,344.
+By using this product, you agree to be bound by the terms of Silver
+Peak Systems Inc. End User License Agreement.
+
+The End User License Agreement can be viewed at
+http://www.silver-peak.com/download/latest/EULA.html
+
+(admin@198.19.202.222) Password: 
+Last login: Mon Nov 17 10:53:19 2025 from 198.19.202.188
+vec2 > en
+vec2 # sh configuration ?
+<cr>                            Display commands to recreate active saved configuration
+download                        Display a configuration file download status
+files                           Display a list of configuration files, or the contents of one
+full                            Do not exclude commands that set default values
+running                         Display commands to recreate current running configuration
+upload                          Display a configuration file upload status
+vec2 # sh configuration full
+# Depends on the configuration this may take a while to print commands...
+##
+## System Config
+##
+   system stateful-snat-exceptions enable ""
+   
+##
+## System Network Config
+##
+   system aggressive-path-fail disable
+   system auto-ipid enable
+   system auto-policy-lookup interval 60
+no system auto-subnet add-lcl-communities
+   system auto-subnet add-local metric 50
+   system auto-subnet add-local-asn
+   system auto-subnet add-local-lan enable
+   system auto-subnet add-local-wan disable
+   system auto-subnet enable
+   system auto-subnet local-asn-filter
+no system auto-subnet local-communities
+   system auto-subnet local-communities ""
+   system auto-subnet route-map default_rtmap_to_subsh outbound
+no system auto-subnet segment 0 add-lcl-communities
+   system auto-subnet segment 0 add-local metric 50
+   system auto-subnet segment 0 add-local-asn
+   system auto-subnet segment 0 add-local-lan enable
+   system auto-subnet segment 0 add-local-wan disable
+   system auto-subnet segment 0 local-asn-filter
+no system auto-subnet segment 0 local-communities
+   system auto-subnet segment 0 local-communities ""
+   system auto-subnet segment 0 route-map default_rtmap_to_subsh outbound
+   system auto-syn enable
+   system bandwidth if-rx-target disable
+   system bandwidth inbound-max 4000
+   system bandwidth outbound-max 4000
+   system bandwidth wan0 max 4000
+   system brnat-outif-number 24
+   system brnat-rules-per-oif 256
+   system disk encryption enable
+   system dpc tunnel-fail-behavior fail-stick
+   system edgeha hasync enable
+   system end2end-zfw enable
+   system enforce-overlay enable
+   system flow-del-wait-time 1000
+   system int-hairpin enable
+   system intersegment internal nat-subnet 129.127.0.1/24
+no system ip-broadcast enable
+   system ip-header-compression enable
+   system ipsec-sa-delay-delete-time 5000
+   system ipv6-frag enable
+   system ipv6-frag-reassembly enable
+   system max-tcp-mss 1328
+   system network-memory media ram-and-disk
+   system node-dns enable
+   system node-dns ip 8.8.8.8
+   system orch-id 2e374ada2c5547799aefc78ef02c4740
+   system passthru-to-sender disable
+   system qdrc adj-slope 80
+   system qdrc adj-slope-low 5
+   system qdrc congestion-duration 60000
+   system qdrc disable
+   system qdrc mavg-weight 8
+   system qdrc messages-interval 1000
+   system qdrc min-flow-rate 100
+   system qdrc mode smooth
+   system qdrc qos-drop-threshold 5
+   system qdrc queue-wait-threshold 5
+   system qdrc restriction-duration 10000
+   system quies-tun-ka-intvl 60
+   system router rtr1 create interface lan0 lan
+   system router rtr1 ip 100.100.0.1 /24 nexthop 0.0.0.0 vlan 0
+   system router rtr1 ip 100.100.0.1 /24 nexthop 0.0.0.0 vlan 0
+   system router rtr1 ip 100.100.0.1 inbound-max-bw 0
+   system router rtr1 ip 100.100.0.1 outbound-max-bw 0
+   system router rtr1 ip 100.100.0.1 security-mode 0
+   system router rtr1 ip 100.100.0.1 segment 0
+   system router rtr1 ip 100.100.0.1 target-in-thres 95.000000000
+   system router rtr1 ip 100.100.0.1 target-out-thres 95.000000000
+   system router rtr1 ip 100.100.0.1 zone 0
+   system router rtr2 create interface wan0 wan
+   system router rtr2 dhcp vlan 0 inbound-max-bw 40000
+   system router rtr2 dhcp vlan 0 outbound-max-bw 4000
+   system router rtr2 dhcp vlan 0 security-mode 0
+   system router rtr2 dhcp vlan 0 segment 0
+   system router rtr2 dhcp vlan 0 target-in-thres 95.000000000
+   system router rtr2 dhcp vlan 0 target-out-thres 95.000000000
+   system router rtr2 dhcp vlan 0 zone 0
+   system routing inline
+   system routing redundancy lan-native-vlan
+   system smb-signing disable
+   system ssl-ipsec-override disable
+   system tcp-flow-inact-tout 1800
+   system tcp-flow-rst-tout 1000
+   system udp-flow-inact-tout 120
+   
+##
+## Shaper Config
+##
+   shaper inbound wan accuracy 5000
+   shaper inbound wan dynamic-bandwidth disable
+   shaper inbound wan enable
+   shaper inbound wan max-bandwidth 4000
+   shaper inbound wan traffic-class 1 excess-weight 10
+   shaper inbound wan traffic-class 1 flow-rate-limit 0
+   shaper inbound wan traffic-class 1 max-bandwidth 100
+   shaper inbound wan traffic-class 1 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 1 max-wait 250
+   shaper inbound wan traffic-class 1 min-bandwidth 25
+   shaper inbound wan traffic-class 1 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 1 priority 1
+   shaper inbound wan traffic-class 10 excess-weight 1
+   shaper inbound wan traffic-class 10 flow-rate-limit 0
+   shaper inbound wan traffic-class 10 max-bandwidth 100
+   shaper inbound wan traffic-class 10 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 10 max-wait 500
+   shaper inbound wan traffic-class 10 min-bandwidth 0
+   shaper inbound wan traffic-class 10 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 10 priority 10
+   shaper inbound wan traffic-class 2 excess-weight 10
+   shaper inbound wan traffic-class 2 flow-rate-limit 0
+   shaper inbound wan traffic-class 2 max-bandwidth 100
+   shaper inbound wan traffic-class 2 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 2 max-wait 500
+   shaper inbound wan traffic-class 2 min-bandwidth 25
+   shaper inbound wan traffic-class 2 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 2 priority 2
+   shaper inbound wan traffic-class 3 excess-weight 10
+   shaper inbound wan traffic-class 3 flow-rate-limit 0
+   shaper inbound wan traffic-class 3 max-bandwidth 80
+   shaper inbound wan traffic-class 3 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 3 max-wait 500
+   shaper inbound wan traffic-class 3 min-bandwidth 0
+   shaper inbound wan traffic-class 3 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 3 priority 3
+   shaper inbound wan traffic-class 4 excess-weight 10
+   shaper inbound wan traffic-class 4 flow-rate-limit 0
+   shaper inbound wan traffic-class 4 max-bandwidth 100
+   shaper inbound wan traffic-class 4 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 4 max-wait 500
+   shaper inbound wan traffic-class 4 min-bandwidth 0
+   shaper inbound wan traffic-class 4 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 4 priority 4
+   shaper inbound wan traffic-class 5 excess-weight 1
+   shaper inbound wan traffic-class 5 flow-rate-limit 0
+   shaper inbound wan traffic-class 5 max-bandwidth 100
+   shaper inbound wan traffic-class 5 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 5 max-wait 500
+   shaper inbound wan traffic-class 5 min-bandwidth 0
+   shaper inbound wan traffic-class 5 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 5 priority 5
+   shaper inbound wan traffic-class 6 excess-weight 1
+   shaper inbound wan traffic-class 6 flow-rate-limit 0
+   shaper inbound wan traffic-class 6 max-bandwidth 100
+   shaper inbound wan traffic-class 6 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 6 max-wait 500
+   shaper inbound wan traffic-class 6 min-bandwidth 0
+   shaper inbound wan traffic-class 6 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 6 priority 6
+   shaper inbound wan traffic-class 7 excess-weight 1
+   shaper inbound wan traffic-class 7 flow-rate-limit 0
+   shaper inbound wan traffic-class 7 max-bandwidth 100
+   shaper inbound wan traffic-class 7 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 7 max-wait 500
+   shaper inbound wan traffic-class 7 min-bandwidth 0
+   shaper inbound wan traffic-class 7 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 7 priority 7
+   shaper inbound wan traffic-class 8 excess-weight 1
+   shaper inbound wan traffic-class 8 flow-rate-limit 0
+   shaper inbound wan traffic-class 8 max-bandwidth 100
+   shaper inbound wan traffic-class 8 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 8 max-wait 500
+   shaper inbound wan traffic-class 8 min-bandwidth 0
+   shaper inbound wan traffic-class 8 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 8 priority 8
+   shaper inbound wan traffic-class 9 excess-weight 1
+   shaper inbound wan traffic-class 9 flow-rate-limit 0
+   shaper inbound wan traffic-class 9 max-bandwidth 100
+   shaper inbound wan traffic-class 9 max-bandwidth-abs 25000000
+   shaper inbound wan traffic-class 9 max-wait 500
+   shaper inbound wan traffic-class 9 min-bandwidth 0
+   shaper inbound wan traffic-class 9 min-bandwidth-abs 0
+   shaper inbound wan traffic-class 9 priority 9
+   shaper outbound default accuracy 1000
+   shaper outbound default disable
+   shaper outbound default dynamic-bandwidth disable
+   shaper outbound default max-bandwidth 0
+   shaper outbound default traffic-class 1 excess-weight 100
+   shaper outbound default traffic-class 1 flow-rate-limit 0
+   shaper outbound default traffic-class 1 max-bandwidth 100
+   shaper outbound default traffic-class 1 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 1 max-wait 500
+   shaper outbound default traffic-class 1 min-bandwidth 30
+   shaper outbound default traffic-class 1 min-bandwidth-abs 0
+   shaper outbound default traffic-class 1 priority 5
+   shaper outbound default traffic-class 10 excess-weight 100
+   shaper outbound default traffic-class 10 flow-rate-limit 0
+   shaper outbound default traffic-class 10 max-bandwidth 100
+   shaper outbound default traffic-class 10 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 10 max-wait 500
+   shaper outbound default traffic-class 10 min-bandwidth 30
+   shaper outbound default traffic-class 10 min-bandwidth-abs 0
+   shaper outbound default traffic-class 10 priority 5
+   shaper outbound default traffic-class 2 excess-weight 1000
+   shaper outbound default traffic-class 2 flow-rate-limit 0
+   shaper outbound default traffic-class 2 max-bandwidth 100
+   shaper outbound default traffic-class 2 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 2 max-wait 100
+   shaper outbound default traffic-class 2 min-bandwidth 30
+   shaper outbound default traffic-class 2 min-bandwidth-abs 0
+   shaper outbound default traffic-class 2 priority 1
+   shaper outbound default traffic-class 3 excess-weight 1000
+   shaper outbound default traffic-class 3 flow-rate-limit 0
+   shaper outbound default traffic-class 3 max-bandwidth 100
+   shaper outbound default traffic-class 3 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 3 max-wait 200
+   shaper outbound default traffic-class 3 min-bandwidth 20
+   shaper outbound default traffic-class 3 min-bandwidth-abs 0
+   shaper outbound default traffic-class 3 priority 2
+   shaper outbound default traffic-class 4 excess-weight 100
+   shaper outbound default traffic-class 4 flow-rate-limit 0
+   shaper outbound default traffic-class 4 max-bandwidth 100
+   shaper outbound default traffic-class 4 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 4 max-wait 500
+   shaper outbound default traffic-class 4 min-bandwidth 20
+   shaper outbound default traffic-class 4 min-bandwidth-abs 0
+   shaper outbound default traffic-class 4 priority 8
+   shaper outbound default traffic-class 5 excess-weight 100
+   shaper outbound default traffic-class 5 flow-rate-limit 0
+   shaper outbound default traffic-class 5 max-bandwidth 100
+   shaper outbound default traffic-class 5 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 5 max-wait 500
+   shaper outbound default traffic-class 5 min-bandwidth 30
+   shaper outbound default traffic-class 5 min-bandwidth-abs 0
+   shaper outbound default traffic-class 5 priority 5
+   shaper outbound default traffic-class 6 excess-weight 100
+   shaper outbound default traffic-class 6 flow-rate-limit 0
+   shaper outbound default traffic-class 6 max-bandwidth 100
+   shaper outbound default traffic-class 6 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 6 max-wait 500
+   shaper outbound default traffic-class 6 min-bandwidth 30
+   shaper outbound default traffic-class 6 min-bandwidth-abs 0
+   shaper outbound default traffic-class 6 priority 5
+   shaper outbound default traffic-class 7 excess-weight 100
+   shaper outbound default traffic-class 7 flow-rate-limit 0
+   shaper outbound default traffic-class 7 max-bandwidth 100
+   shaper outbound default traffic-class 7 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 7 max-wait 500
+   shaper outbound default traffic-class 7 min-bandwidth 30
+   shaper outbound default traffic-class 7 min-bandwidth-abs 0
+   shaper outbound default traffic-class 7 priority 5
+   shaper outbound default traffic-class 8 excess-weight 100
+   shaper outbound default traffic-class 8 flow-rate-limit 0
+   shaper outbound default traffic-class 8 max-bandwidth 100
+   shaper outbound default traffic-class 8 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 8 max-wait 500
+   shaper outbound default traffic-class 8 min-bandwidth 30
+   shaper outbound default traffic-class 8 min-bandwidth-abs 0
+   shaper outbound default traffic-class 8 priority 5
+   shaper outbound default traffic-class 9 excess-weight 100
+   shaper outbound default traffic-class 9 flow-rate-limit 0
+   shaper outbound default traffic-class 9 max-bandwidth 100
+   shaper outbound default traffic-class 9 max-bandwidth-abs 25000000
+   shaper outbound default traffic-class 9 max-wait 500
+   shaper outbound default traffic-class 9 min-bandwidth 30
+   shaper outbound default traffic-class 9 min-bandwidth-abs 0
+   shaper outbound default traffic-class 9 priority 5
+   shaper outbound wan accuracy 5000
+   shaper outbound wan dynamic-bandwidth disable
+   shaper outbound wan enable
+   shaper outbound wan max-bandwidth 4000
+   shaper outbound wan traffic-class 1 excess-weight 10
+   shaper outbound wan traffic-class 1 flow-rate-limit 0
+   shaper outbound wan traffic-class 1 max-bandwidth 100
+   shaper outbound wan traffic-class 1 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 1 max-wait 250
+   shaper outbound wan traffic-class 1 min-bandwidth 25
+   shaper outbound wan traffic-class 1 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 1 priority 1
+   shaper outbound wan traffic-class 10 excess-weight 1
+   shaper outbound wan traffic-class 10 flow-rate-limit 0
+   shaper outbound wan traffic-class 10 max-bandwidth 100
+   shaper outbound wan traffic-class 10 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 10 max-wait 500
+   shaper outbound wan traffic-class 10 min-bandwidth 0
+   shaper outbound wan traffic-class 10 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 10 priority 10
+   shaper outbound wan traffic-class 2 excess-weight 10
+   shaper outbound wan traffic-class 2 flow-rate-limit 0
+   shaper outbound wan traffic-class 2 max-bandwidth 100
+   shaper outbound wan traffic-class 2 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 2 max-wait 500
+   shaper outbound wan traffic-class 2 min-bandwidth 25
+   shaper outbound wan traffic-class 2 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 2 priority 2
+   shaper outbound wan traffic-class 3 excess-weight 10
+   shaper outbound wan traffic-class 3 flow-rate-limit 0
+   shaper outbound wan traffic-class 3 max-bandwidth 80
+   shaper outbound wan traffic-class 3 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 3 max-wait 500
+   shaper outbound wan traffic-class 3 min-bandwidth 0
+   shaper outbound wan traffic-class 3 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 3 priority 3
+   shaper outbound wan traffic-class 4 excess-weight 10
+   shaper outbound wan traffic-class 4 flow-rate-limit 0
+   shaper outbound wan traffic-class 4 max-bandwidth 100
+   shaper outbound wan traffic-class 4 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 4 max-wait 500
+   shaper outbound wan traffic-class 4 min-bandwidth 0
+   shaper outbound wan traffic-class 4 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 4 priority 4
+   shaper outbound wan traffic-class 5 excess-weight 1
+   shaper outbound wan traffic-class 5 flow-rate-limit 0
+   shaper outbound wan traffic-class 5 max-bandwidth 100
+   shaper outbound wan traffic-class 5 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 5 max-wait 500
+   shaper outbound wan traffic-class 5 min-bandwidth 0
+   shaper outbound wan traffic-class 5 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 5 priority 5
+   shaper outbound wan traffic-class 6 excess-weight 1
+   shaper outbound wan traffic-class 6 flow-rate-limit 0
+   shaper outbound wan traffic-class 6 max-bandwidth 100
+   shaper outbound wan traffic-class 6 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 6 max-wait 500
+   shaper outbound wan traffic-class 6 min-bandwidth 0
+   shaper outbound wan traffic-class 6 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 6 priority 6
+   shaper outbound wan traffic-class 7 excess-weight 1
+   shaper outbound wan traffic-class 7 flow-rate-limit 0
+   shaper outbound wan traffic-class 7 max-bandwidth 100
+   shaper outbound wan traffic-class 7 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 7 max-wait 500
+   shaper outbound wan traffic-class 7 min-bandwidth 0
+   shaper outbound wan traffic-class 7 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 7 priority 7
+   shaper outbound wan traffic-class 8 excess-weight 1
+   shaper outbound wan traffic-class 8 flow-rate-limit 0
+   shaper outbound wan traffic-class 8 max-bandwidth 100
+   shaper outbound wan traffic-class 8 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 8 max-wait 500
+   shaper outbound wan traffic-class 8 min-bandwidth 0
+   shaper outbound wan traffic-class 8 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 8 priority 8
+   shaper outbound wan traffic-class 9 excess-weight 1
+   shaper outbound wan traffic-class 9 flow-rate-limit 0
+   shaper outbound wan traffic-class 9 max-bandwidth 100
+   shaper outbound wan traffic-class 9 max-bandwidth-abs 25000000
+   shaper outbound wan traffic-class 9 max-wait 500
+   shaper outbound wan traffic-class 9 min-bandwidth 0
+   shaper outbound wan traffic-class 9 min-bandwidth-abs 0
+   shaper outbound wan traffic-class 9 priority 9
+   traffic-class 1 name RealTime
+   traffic-class 10 name UNUSED10
+   traffic-class 2 name CriticalApps
+   traffic-class 3 name BulkApps
+   traffic-class 4 name Default
+   traffic-class 5 name UNUSED5
+   traffic-class 6 name UNUSED6
+   traffic-class 7 name UNUSED7
+   traffic-class 8 name UNUSED8
+   traffic-class 9 name UNUSED9
+   
+##
+## Excess Flow Config
+##
+   excess-flow drop
+   
+##
+##  
+##
+   
+   
+   
+##
+## Miscellaneous other settings
+##
+   internal set modify - /cn/cdpd/config/if/mgmt0/enable value bool true
+   internal set modify - /cn/cdpd/config/if/mgmt1/enable value bool true
+   internal set modify - /cn/cdpd/config/if/wan12/enable value bool false
+   internal set modify - /cn/jsond/config/security/ssl_cert/verify_orchestrator value bool false
+   internal set modify - /cn/jsond/config/security/ssl_cert/verify_portal value bool false
+   internal set modify - /cn/lldp/config/if/mgmt0/enable value bool true
+   internal set modify - /cn/lldp/config/if/mgmt1/enable value bool true
+   internal set modify - /cn/lldp/config/if/wan12/enable value bool false
+   internal set modify - /cn/tunneld/acl/config/mgmt0_allow-all/entry/10/comment value string "apply to mgmt 0"
+   internal set modify - /cn/tunneld/acl/config/mgmt0_allow-all/entry/10/matchstr value string any
+   internal set modify - /cn/tunneld/acl/config/mgmt0_allow-all/entry/10/permit value bool true
+   internal set modify - /cn/tunneld/overlay/config/1/bonding_policy value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/1/disqualify_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/1/fec_wait_time value uint32 2
+   internal set modify - /cn/tunneld/overlay/config/1/load_balance_policy value uint32 3
+   internal set modify - /cn/tunneld/overlay/config/1/max_fec_pct value float32 100.000000000
+   internal set modify - /cn/tunneld/overlay/config/1/max_poc_wait_time value uint32 100
+   internal set modify - /cn/tunneld/overlay/config/1/min_fec_pct value float32 100.000000000
+   internal set modify - /cn/tunneld/overlay/config/1/min_poc_wait_time value uint32 5
+   internal set modify - /cn/tunneld/overlay/config/1/name value string RealTime
+   internal set modify - /cn/tunneld/overlay/config/1/reorder_speed value uint32 2
+   internal set modify - /cn/tunneld/overlay/config/1/wan_label/1/boundary_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/1/wan_label/1/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/1/wan_label/1/priority value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/1/wan_label/2/boundary_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/1/wan_label/2/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/1/wan_label/2/priority value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/1/wan_label/3/boundary_behavior value uint32 2
+   internal set modify - /cn/tunneld/overlay/config/1/wan_label/3/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/1/wan_label/3/priority value uint32 2
+   internal set modify - /cn/tunneld/overlay/config/1/wan_label/6/boundary_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/1/wan_label/6/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/1/wan_label/6/priority value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/1/wan_label/7/boundary_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/1/wan_label/7/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/1/wan_label/7/priority value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/1/zone_id value uint16 0
+   internal set modify - /cn/tunneld/overlay/config/2/bonding_policy value uint32 2
+   internal set modify - /cn/tunneld/overlay/config/2/disqualify_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/2/fec_wait_time value uint32 80
+   internal set modify - /cn/tunneld/overlay/config/2/load_balance_policy value uint32 3
+   internal set modify - /cn/tunneld/overlay/config/2/max_fec_pct value float32 20.000000000
+   internal set modify - /cn/tunneld/overlay/config/2/max_poc_wait_time value uint32 100
+   internal set modify - /cn/tunneld/overlay/config/2/min_fec_pct value float32 2.000000000
+   internal set modify - /cn/tunneld/overlay/config/2/min_poc_wait_time value uint32 5
+   internal set modify - /cn/tunneld/overlay/config/2/name value string CriticalApps
+   internal set modify - /cn/tunneld/overlay/config/2/reorder_speed value uint32 2
+   internal set modify - /cn/tunneld/overlay/config/2/wan_label/1/boundary_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/2/wan_label/1/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/2/wan_label/1/priority value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/2/wan_label/2/boundary_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/2/wan_label/2/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/2/wan_label/2/priority value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/2/wan_label/3/boundary_behavior value uint32 2
+   internal set modify - /cn/tunneld/overlay/config/2/wan_label/3/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/2/wan_label/3/priority value uint32 2
+   internal set modify - /cn/tunneld/overlay/config/2/wan_label/6/boundary_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/2/wan_label/6/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/2/wan_label/6/priority value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/2/wan_label/7/boundary_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/2/wan_label/7/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/2/wan_label/7/priority value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/2/zone_id value uint16 0
+   internal set modify - /cn/tunneld/overlay/config/3/bonding_policy value uint32 2
+   internal set modify - /cn/tunneld/overlay/config/3/disqualify_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/3/fec_wait_time value uint32 80
+   internal set modify - /cn/tunneld/overlay/config/3/load_balance_policy value uint32 3
+   internal set modify - /cn/tunneld/overlay/config/3/max_fec_pct value float32 20.000000000
+   internal set modify - /cn/tunneld/overlay/config/3/max_poc_wait_time value uint32 100
+   internal set modify - /cn/tunneld/overlay/config/3/min_fec_pct value float32 2.000000000
+   internal set modify - /cn/tunneld/overlay/config/3/min_poc_wait_time value uint32 5
+   internal set modify - /cn/tunneld/overlay/config/3/name value string BulkApps
+   internal set modify - /cn/tunneld/overlay/config/3/reorder_speed value uint32 2
+   internal set modify - /cn/tunneld/overlay/config/3/wan_label/1/boundary_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/3/wan_label/1/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/3/wan_label/1/priority value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/3/wan_label/2/boundary_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/3/wan_label/2/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/3/wan_label/2/priority value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/3/wan_label/3/boundary_behavior value uint32 2
+   internal set modify - /cn/tunneld/overlay/config/3/wan_label/3/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/3/wan_label/3/priority value uint32 2
+   internal set modify - /cn/tunneld/overlay/config/3/wan_label/6/boundary_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/3/wan_label/6/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/3/wan_label/6/priority value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/3/wan_label/7/boundary_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/3/wan_label/7/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/3/wan_label/7/priority value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/3/zone_id value uint16 0
+   internal set modify - /cn/tunneld/overlay/config/4/bonding_policy value uint32 2
+   internal set modify - /cn/tunneld/overlay/config/4/disqualify_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/4/fec_wait_time value uint32 80
+   internal set modify - /cn/tunneld/overlay/config/4/load_balance_policy value uint32 3
+   internal set modify - /cn/tunneld/overlay/config/4/max_fec_pct value float32 20.000000000
+   internal set modify - /cn/tunneld/overlay/config/4/max_poc_wait_time value uint32 100
+   internal set modify - /cn/tunneld/overlay/config/4/min_fec_pct value float32 2.000000000
+   internal set modify - /cn/tunneld/overlay/config/4/min_poc_wait_time value uint32 5
+   internal set modify - /cn/tunneld/overlay/config/4/name value string DefaultOverlay
+   internal set modify - /cn/tunneld/overlay/config/4/reorder_speed value uint32 2
+   internal set modify - /cn/tunneld/overlay/config/4/wan_label/1/boundary_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/4/wan_label/1/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/4/wan_label/1/priority value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/4/wan_label/2/boundary_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/4/wan_label/2/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/4/wan_label/2/priority value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/4/wan_label/3/boundary_behavior value uint32 2
+   internal set modify - /cn/tunneld/overlay/config/4/wan_label/3/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/4/wan_label/3/priority value uint32 2
+   internal set modify - /cn/tunneld/overlay/config/4/wan_label/6/boundary_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/4/wan_label/6/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/4/wan_label/6/priority value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/4/wan_label/7/boundary_behavior value uint32 1
+   internal set modify - /cn/tunneld/overlay/config/4/wan_label/7/cost value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/4/wan_label/7/priority value uint32 0
+   internal set modify - /cn/tunneld/overlay/config/4/zone_id value uint16 0
+   internal set modify - /cn/tunneld/subnet/config/redistribute value bool true
+   internal set modify - /cn/tunneld/system/config/mode/bridge/bvi0/target_in_thres value float32 95.000000000
+   internal set modify - /cn/tunneld/system/config/mode/bridge/bvi0/target_out_thres value float32 95.000000000
+   internal set modify - /cn/tunneld/system/config/router/rtr2/dhcp/0/intf_mode value string dhcpv4
+   internal set modify - /cn/vrf/config/enable value bool true
+   internal set modify - /cn/vrf/config/id/0/default_role_id value uint8 0
+   internal set modify - /cn/vrf/config/id/0/name value string Default
+   internal set modify - /cn/vrf/config/id/0/vni/id value uint32 4294967295
+   internal set modify - /cn/vrf/config/id/0/vni/zone value uint16 0
+   internal set modify - /cn/vrf/config/id/0/zone_index/0/id value uint16 0
+   internal set modify - /cn/vrf/config/id/0/zone_index/255/id value uint16 65535
+   internal set modify - /net/if2/config/virtual/loopback/lo255 value string lo255
+   internal set modify - /net/if2/config/virtual/loopback/lo255/admin value bool true
+   internal set modify - /net/if2/config/virtual/loopback/lo255/ipaddr value ipaddr 100.100.255.254
+   internal set modify - /net/if2/config/virtual/loopback/lo255/label value string ""
+   internal set modify - /net/if2/config/virtual/loopback/lo255/nmask value ipaddr 255.255.255.252
+   internal set modify - /net/if2/config/virtual/loopback/lo255/vrf_id value uint16 0
+   internal set modify - /net/if2/config/virtual/loopback/lo255/zone value uint16 0
+   internal set modify - /net/interface/config/mgmt0/addr/ipv4/dhcp value bool false
+   internal set modify - /net/interface/config/mgmt0/addr/ipv4/static/1/ip value ipaddr 198.19.202.222
+   internal set modify - /net/interface/config/mgmt0/addr/ipv4/static/1/mask_len value uint8 24
+   internal set modify - /net/mac/config/mgmt0/address value macaddr802 50:6B:8D:B5:B0:A7
+   internal set modify - /ntp/enable value bool true
+   internal set modify - /ntp/server/address/time.nist.gov/version value uint32 4
+   internal set modify - /pm/process/certd/launch_path value string /sbin/certd_wrapper.sh
+   internal set modify - /pm/process/snmpd/auto_launch value bool false
+   internal set modify - /pm/process/snmpd/launch_enabled value bool true
+   internal set modify - /resolver/nameserver/1/address value ipaddr 8.8.8.8
+   internal set modify - /resolver/nameserver/2/address value ipaddr 8.8.4.4
+   internal set modify - /snmp/syscontact value string GREG-FOCACCIO
+   internal set modify - /snmp/syslocation value string "San Diego, California, 92101, US"
+   internal set modify - /snmp/traps/enable value bool false
+   internal set modify - /system/hostname value hostname vec2
+vec2 # 
