@@ -1,0 +1,19 @@
+Goals for demo:
+
+
+
+1. Show 50baud stream in TCP across 5G pub inet
+1a. PCAP show payload X inside
+1b. PCAP show payload Y ouside encrypted
+     filter for ipsec
+
+2. Show fail between 5G and simulated local INET cross-connect
+
+3. GET-IPERF on RPIs - run traffic
+3a. ACL permit
+3b. ACL block
+
+
+
+Action items:
+	+	Add PCAP on Tunnel side (show ipsec) / get ipsec filter
