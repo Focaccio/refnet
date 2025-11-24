@@ -1,4 +1,30 @@
 EC-config-notes
+===============================================================================================
+===============================================================================================
+EC_concepts and questions
+===============================================================================================
+===============================================================================================
+
+...............................................................................................
+...............................................................................................
+NO SPCIFIC NATs...
+from chat:
+1.
+You cannot enter a specific source IP in EdgeConnect NAT rules
+
+Because EdgeConnect only performs NAT on traffic it classifies as LAN-side flows, and NAT rules in Orchestrator only allow LAN Interface–level source selection — not per-host source IPs.
+This is by design and is documented behavior.
+
+EdgeConnect is not a firewall and does not support per-IP NAT rules the way a router or firewall does.
+Instead, it treats NAT as an interface-level policy, not an address-level policy.
+...............................................................................................
+...............................................................................................
+
+
+
+
+
+
 
 
 
