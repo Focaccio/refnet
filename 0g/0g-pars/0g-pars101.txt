@@ -1,0 +1,75 @@
+online-vps servers / online parcels
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Persistent SSH reverse tunnel
+
+
+# ============================
+# 1. Install autossh
+# ============================
+sudo apt update
+sudo apt install autossh
+
+# ============================
+# 2. Create SSH keypair
+# ============================
+ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
+
+# ============================
+# 3. Copy key to VPS
+# ============================
+ssh-copy-id vpsuser@140.0.0.123
+# (Replace vpsuser with your actual VPS username)
+
+# ============================
+# 4. Test autossh reverse tunnel manually
+# ============================
+AUTOSSH_GATETIME=0 autossh -M 0 \
+  -o "ServerAliveInterval=30" \
+  -o "ServerAliveCountMax=3" \
+  -N -R 2222:localhost:22 vpsuser@140.0.0.123
+
+# After it is working, you can SSH back into hidden host using:
+# ssh -p 2222 serveruser@140.0.0.123
+
+# ============================
+# 5. Create systemd service for persistent autossh
+# ============================
+sudo tee /etc/systemd/system/reverse-ssh-tunnel.service >/dev/null << 'EOF'
+[Unit]
+Description=Persistent reverse SSH tunnel to VPS
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Environment="AUTOSSH_GATETIME=0"
+ExecStart=/usr/bin/autossh -M 0 \
+  -o ServerAliveInterval=30 \
+  -o ServerAliveCountMax=3 \
+  -N -R 2222:localhost:22 vpsuser@140.0.0.123
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# ============================
+# 6. Enable & start service
+# ============================
+sudo systemctl daemon-reload
+sudo systemctl enable --now reverse-ssh-tunnel.service
+
+# ============================
+# 7. To SSH into the hidden host from anywhere:
+# ============================
+# ssh -p 2222 serveruser@140.0.0.123
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
