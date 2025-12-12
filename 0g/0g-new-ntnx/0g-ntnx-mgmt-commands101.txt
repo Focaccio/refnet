@@ -1,0 +1,104 @@
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+NTNX MGMT Show Command Reference
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+===============================================================================================
+```CMDCMD
+get mac addresses created for VM by QEMU
+```qemu-preented MACs
+
+pgrep -fa qemu-kvm | grep -o 'virtio-net-pci[^ ]*' | sed 's/,/\n/g' | egrep 'mac=|netdev='
+pgrep -fa qemu-kvm | grep "guest=<YOUR_VM_NAME>" | while read -r line; do echo "VM: $(echo "$line" | grep -o 'guest=[^,]*' | cut -d= -f2)"; echo "$line" | grep -o 'virtio-net-pci[^ ]*' | sed 's/,/\n/g' | egrep 'mac=|netdev='; echo; done
+
+!!! GOOD !!!
+pgrep -fa qemu-kvm | grep "guest=<YOUR_VM_NAME>" | while read -r pid line; do echo "PID: $pid  VM: $(echo "$line" | grep -o 'guest=[^,]*' | cut -d= -f2)"; echo "$line" | grep -o 'virtio-net-pci[^ ]*' | sed 's/,/\n/g' | egrep 'mac=|netdev='; echo; done
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+EXEX
+
+
+d131a = 
+169adac5-b993-42c8-8923-82c8b9cefd0d
+
+pgrep -fa qemu-kvm | grep "guest=<YOUR_VM_NAME>" | while read -r pid line; do echo "PID: $pid  VM: $(echo "$line" | grep -o 'guest=[^,]*' | cut -d= -f2)"; echo "$line" | grep -o 'virtio-net-pci[^ ]*' | sed 's/,/\n/g' | egrep 'mac=|netdev='; echo; done
+pgrep -fa qemu-kvm | grep "169adac5-b993-42c8-8923-82c8b9cefd0d" | while read -r pid line; do echo "PID: $pid  VM: $(echo "$line" | grep -o 'guest=[^,]*' | cut -d= -f2)"; echo "$line" | grep -o 'virtio-net-pci[^ ]*' | sed 's/,/\n/g' | egrep 'mac=|netdev='; echo; done
+
+
+[root@NTNX-92877dc4-A ~]# pgrep -fa qemu-kvm | grep "169adac5-b993-42c8-8923-82c8b9cefd0d" | while read -r pid line; do echo "PID: $pid  VM: $(echo "$line" | grep -o 'guest=[^,]*' | cut -d= -f2)"; echo "$line" | grep -o 'virtio-net-pci[^ ]*' | sed 's/,/\n/g' | egrep 'mac=|netdev='; echo; done
+PID: 336762  VM: 169adac5-b993-42c8-8923-82c8b9cefd0d
+netdev=hostua-9b52a495-115f-4b68-a9b9-226dcee85f94
+mac=50:6b:8d:82:ca:55
+
+[root@NTNX-92877dc4-A ~]# 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
