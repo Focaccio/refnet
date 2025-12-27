@@ -1,0 +1,110 @@
+sudo qemu-system-x86_64 -m 8192 -smp 4 -machine q35,accel=tcg -cpu qemu64 -drive file=debian-13-genericcloud-amd64-20250814-2204.qcow2,if=virtio,format=qcow2,cache=writeback -device virtio-net-pci,netdev=net0 -netdev vmnet-bridged,id=net0,ifname=en9 -display default -serial mon:stdio
+
+
+sudo qemu-system-x86_64 -m 8192 -smp 4 -machine q35,accel=tcg -cpu qemu64 -drive file=debian-13-genericcloud-amd64-20250814-2204.qcow2,if=virtio,format=qcow2,cache=writeback -drive file=seed.iso,if=virtio,format=raw,media=cdrom -device virtio-net-pci,netdev=net0 -netdev vmnet-bridged,id=net0,ifname=en9 -display default -serial mon:stdio
+
+
+
+[ your VM ] 
+   ↕
+virtio-net emulation inside qemu-system-x86_64
+   ↕
+QEMU netdev backend: vmnet (in-process)
+   ↕
+macOS vmnet.framework
+   ↕
+vmnetd + kernel networking
+   ↕
+physical NIC en9
+
+
+0. mkdir seed
+1. create file>>> user-data
+#cloud-config_user-data
+users:
+  - name: greg
+    gecos: greg User
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    shell: /bin/bash
+    lock_passwd: false
+
+chpasswd:
+  list: |
+    greg:changeme
+  expire: false
+
+ssh_pwauth: true
+
+2. create file>>> meta-data
+instance-id: debian-test
+local-hostname: debian
+
+3. Make seed (with two files) into ISO to attach in qemu bootup
+hdiutil makehybrid -o seed.iso seed -hfs -joliet -iso -default-volume-name cidata
+
+
+
+4. Add seed iso to the qemu config
+sudo qemu-system-x86_64 -m 8192 -smp 4 -machine q35,accel=tcg -cpu qemu64 -drive file=debian-13-genericcloud-amd64-20250814-2204.qcow2,if=virtio,format=qcow2,cache=writeback -drive file=seed.iso,if=virtio,format=raw,media=cdrom -device virtio-net-pci,netdev=net0 -netdev vmnet-bridged,id=net0,ifname=en9 -display default -serial mon:stdio
+
+
+boots correctly iso defined user
+
+5. Fix users and passwords
+
+6. update boot qemu config:
+sudo qemu-system-x86_64 -m 8192 -smp 4 -machine q35,accel=tcg -cpu qemu64 -drive file=debian-13-genericcloud-amd64-20250814-2204.qcow2,if=virtio,format=qcow2,cache=writeback -device virtio-net-pci,netdev=net0 -netdev vmnet-bridged,id=net0,ifname=en9 -display default -serial mon:stdio
+
+boots correctly with updated users
+
+
+add sources
+deb http://mirrors.ocf.berkeley.edu/debian trixie main contrib non-free non-free-firmware
+deb http://mirrors.ocf.berkeley.edu/debian trixie-updates main contrib non-free non-free-firmware
+deb http://security.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
+
+7. updated for mouse on gui
+sudo qemu-system-x86_64 -m 8192 -smp 4 -machine q35,accel=tcg -cpu qemu64 -drive file=debian-13-genericcloud-amd64-20250814-2204.qcow2,if=virtio,format=qcow2,cache=writeback -device virtio-net-pci,netdev=net0 -netdev vmnet-bridged,id=net0,ifname=en9 -device virtio-gpu-pci -device qemu-xhci -device usb-tablet -device virtio-keyboard-pci -device virtio-mouse-pci -display default -serial mon:stdio
+
+Working graphic KDE debian qcow2 on macos M1 with brew qemu 20251227
+
+12:57 greg@xcf16 /Users/0-qemu/deb13-1-qcow2 ? qemu-img info debian-13-genericcloud-amd64-20250814-2204.qcow2
+image: debian-13-genericcloud-amd64-20250814-2204.qcow2
+file format: qcow2
+virtual size: 3 GiB (3221225472 bytes)
+disk size: 928 MiB
+cluster_size: 65536
+Format specific information:
+    compat: 1.1
+    compression type: zlib
+    lazy refcounts: false
+    refcount bits: 16
+    corrupt: false
+    extended l2: false
+Child node '/file':
+    filename: debian-13-genericcloud-amd64-20250814-2204.qcow2
+    protocol type: file
+    file length: 923 MiB (967704576 bytes)
+    disk size: 928 MiB
+12:58 greg@xcf16 /Users/0-qemu/deb13-1-qcow2 ? qemu-img resize debian-13-genericcloud-amd64-20250814-2204.qcow2 20G
+Image resized.
+12:58 greg@xcf16 /Users/0-qemu/deb13-1-qcow2 ? qemu-img info debian-13-genericcloud-amd64-20250814-2204.qcow2      
+image: debian-13-genericcloud-amd64-20250814-2204.qcow2
+file format: qcow2
+virtual size: 20 GiB (21474836480 bytes)
+disk size: 928 MiB
+cluster_size: 65536
+Format specific information:
+    compat: 1.1
+    compression type: zlib
+    lazy refcounts: false
+    refcount bits: 16
+    corrupt: false
+    extended l2: false
+Child node '/file':
+    filename: debian-13-genericcloud-amd64-20250814-2204.qcow2
+    protocol type: file
+    file length: 923 MiB (967704576 bytes)
+    disk size: 928 MiB
+12:58 greg@xcf16 /Users/0-qemu/deb13-1-qcow2 ? 
