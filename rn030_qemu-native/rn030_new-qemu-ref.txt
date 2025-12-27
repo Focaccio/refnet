@@ -1,0 +1,61 @@
+
+sudo qemu-system-x86_64 -m 8192 -smp 4 -machine q35,accel=tcg -cpu qemu64 -drive file=debian-13-genericcloud-amd64-20250814-2204.qcow2,if=virtio,format=qcow2,cache=writeback -device virtio-net-pci,netdev=net0 -netdev vmnet-bridged,id=net0,ifname=en9 -display default -serial mon:stdio
+
+
+sudo qemu-system-x86_64 -m 8192 -smp 4 -machine q35,accel=tcg -cpu qemu64 -drive file=debian-13-genericcloud-amd64-20250814-2204.qcow2,if=virtio,format=qcow2,cache=writeback -drive file=seed.iso,if=virtio,format=raw,media=cdrom -device virtio-net-pci,netdev=net0 -netdev vmnet-bridged,id=net0,ifname=en9 -display default -serial mon:stdio
+
+
+
+[ your VM ] 
+   ↕
+virtio-net emulation inside qemu-system-x86_64
+   ↕
+QEMU netdev backend: vmnet (in-process)
+   ↕
+macOS vmnet.framework
+   ↕
+vmnetd + kernel networking
+   ↕
+physical NIC en9
+
+
+0. mkdir seed
+1. create file>>> user-data
+#cloud-config_user-data
+users:
+  - name: greg
+    gecos: greg User
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    shell: /bin/bash
+    lock_passwd: false
+
+chpasswd:
+  list: |
+    greg:changeme
+  expire: false
+
+ssh_pwauth: true
+
+2. create file>>> meta-data
+instance-id: debian-test
+local-hostname: debian
+
+3. Make seed (with two files) into ISO to attach in qemu bootup
+hdiutil makehybrid -o seed.iso seed -hfs -joliet -iso -default-volume-name cidata
+
+
+
+4. Add seed iso to the qemu config
+sudo qemu-system-x86_64 -m 8192 -smp 4 -machine q35,accel=tcg -cpu qemu64 -drive file=debian-13-genericcloud-amd64-20250814-2204.qcow2,if=virtio,format=qcow2,cache=writeback -drive file=seed.iso,if=virtio,format=raw,media=cdrom -device virtio-net-pci,netdev=net0 -netdev vmnet-bridged,id=net0,ifname=en9 -display default -serial mon:stdio
+
+
+boots correctly
+bridges to usb3 pluggable dongle en9 
+
+
+
+
+
+
+
