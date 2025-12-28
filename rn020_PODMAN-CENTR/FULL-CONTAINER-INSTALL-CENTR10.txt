@@ -1,0 +1,363 @@
+FULL-CONTAINER-INSTALL-CENTR10
+
+
+
+
+Web console: https://qdeb131.lan:9090/ or https://192.168.86.41:9090/
+
+Last login: Sun Dec 28 08:47:09 2025
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda3       9.8G  1.5G  8.4G  15% /
+devtmpfs         12G     0   12G   0% /dev
+tmpfs            12G     0   12G   0% /dev/shm
+tmpfs           4.7G  8.7M  4.7G   1% /run
+tmpfs           1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+/dev/sda2       200M  8.6M  192M   5% /boot/efi
+tmpfs           1.0M     0  1.0M   0% /run/credentials/getty@tty1.service
+tmpfs           2.4G  4.0K  2.4G   1% /run/user/1000
+tmpfs           2.4G  4.0K  2.4G   1% /run/user/0
+tmpfs           1.0M     0  1.0M   0% /run/credentials/serial-getty@ttyS0.service
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# dnf -y install podman
+CentOS Stream 10 - BaseOS                                                                                                                                                           558 kB/s | 6.8 MB     00:12    
+CentOS Stream 10 - AppStream                                                                                                                                                        384 kB/s | 3.5 MB     00:09    
+CentOS Stream 10 - Extras packages                                                                                                                                                  6.2 kB/s | 8.1 kB     00:01    
+Dependencies resolved.
+====================================================================================================================================================================================================================
+ Package                                                   Architecture                             Version                                                       Repository                                   Size
+====================================================================================================================================================================================================================
+Installing:
+ podman                                                    x86_64                                   7:5.6.0-2.el10                                                appstream                                    15 M
+Installing dependencies:
+ aardvark-dns                                              x86_64                                   2:1.16.0-2.el10                                               appstream                                   902 k
+ catatonit                                                 x86_64                                   5:0.2.1-1.el10                                                appstream                                   305 k
+ conmon                                                    x86_64                                   3:2.1.13-1.el10                                               appstream                                    49 k
+ container-selinux                                         noarch                                   4:2.244.0-1.el10                                              appstream                                    59 k
+ containers-common                                         noarch                                   5:0.64.0-4.el10                                               appstream                                   104 k
+ containers-common-extra                                   noarch                                   5:0.64.0-4.el10                                               appstream                                   5.5 k
+ criu                                                      x86_64                                   4.2-1.el10                                                    appstream                                   574 k
+ crun                                                      x86_64                                   1.25.1-1.el10                                                 appstream                                   265 k
+ libnet                                                    x86_64                                   1.3-7.el10                                                    appstream                                    63 k
+ libnftnl                                                  x86_64                                   1.3.0-2.el10                                                  baseos                                       85 k
+ netavark                                                  x86_64                                   2:1.16.0-1.el10                                               appstream                                   3.6 M
+ nftables                                                  x86_64                                   1:1.1.5-3.el10                                                baseos                                      447 k
+ passt                                                     x86_64                                   0^20251210.gd04c480-1.el10                                    appstream                                   283 k
+ passt-selinux                                             noarch                                   0^20251210.gd04c480-1.el10                                    appstream                                    28 k
+ protobuf-c                                                x86_64                                   1.5.0-6.el10                                                  baseos                                       33 k
+ shadow-utils-subid                                        x86_64                                   2:4.15.0-9.el10                                               baseos                                       26 k
+Installing weak dependencies:
+ criu-libs                                                 x86_64                                   4.2-1.el10                                                    appstream                                    31 k
+
+Transaction Summary
+====================================================================================================================================================================================================================
+Install  18 Packages
+
+Total download size: 22 M
+Installed size: 68 M
+Downloading Packages:
+(1/18): protobuf-c-1.5.0-6.el10.x86_64.rpm                                                                                                                                          123 kB/s |  33 kB     00:00    
+(2/18): libnftnl-1.3.0-2.el10.x86_64.rpm                                                                                                                                            227 kB/s |  85 kB     00:00    
+(3/18): shadow-utils-subid-4.15.0-9.el10.x86_64.rpm                                                                                                                                 233 kB/s |  26 kB     00:00    
+(4/18): nftables-1.1.5-3.el10.x86_64.rpm                                                                                                                                            603 kB/s | 447 kB     00:00    
+(5/18): catatonit-0.2.1-1.el10.x86_64.rpm                                                                                                                                           731 kB/s | 305 kB     00:00    
+(6/18): conmon-2.1.13-1.el10.x86_64.rpm                                                                                                                                             478 kB/s |  49 kB     00:00    
+(7/18): container-selinux-2.244.0-1.el10.noarch.rpm                                                                                                                                 720 kB/s |  59 kB     00:00    
+(8/18): aardvark-dns-1.16.0-2.el10.x86_64.rpm                                                                                                                                       1.3 MB/s | 902 kB     00:00    
+(9/18): containers-common-0.64.0-4.el10.noarch.rpm                                                                                                                                  455 kB/s | 104 kB     00:00    
+(10/18): containers-common-extra-0.64.0-4.el10.noarch.rpm                                                                                                                            24 kB/s | 5.5 kB     00:00    
+(11/18): criu-libs-4.2-1.el10.x86_64.rpm                                                                                                                                            644 kB/s |  31 kB     00:00    
+(12/18): libnet-1.3-7.el10.x86_64.rpm                                                                                                                                               1.2 MB/s |  63 kB     00:00    
+(13/18): criu-4.2-1.el10.x86_64.rpm                                                                                                                                                 2.2 MB/s | 574 kB     00:00    
+(14/18): crun-1.25.1-1.el10.x86_64.rpm                                                                                                                                              991 kB/s | 265 kB     00:00    
+(15/18): passt-selinux-0^20251210.gd04c480-1.el10.noarch.rpm                                                                                                                        619 kB/s |  28 kB     00:00    
+(16/18): passt-0^20251210.gd04c480-1.el10.x86_64.rpm                                                                                                                                1.7 MB/s | 283 kB     00:00    
+(17/18): netavark-1.16.0-1.el10.x86_64.rpm                                                                                                                                          635 kB/s | 3.6 MB     00:05    
+(18/18): podman-5.6.0-2.el10.x86_64.rpm                                                                                                                                             395 kB/s |  15 MB     00:38    
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                                                                               548 kB/s |  22 MB     00:40     
+CentOS Stream 10 - BaseOS                                                                                                                                                           1.1 MB/s | 1.6 kB     00:00    
+Importing GPG key 0x8483C65D:
+ Userid     : "CentOS (CentOS Official Signing Key) <security@centos.org>"
+ Fingerprint: 99DB 70FA E1D7 CE22 7FB6 4882 05B5 55B3 8483 C65D
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+Key imported successfully
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                                                                                                            1/1 
+  Installing       : passt-0^20251210.gd04c480-1.el10.x86_64                                                                                                                                                   1/18 
+  Running scriptlet: passt-selinux-0^20251210.gd04c480-1.el10.noarch                                                                                                                                           2/18 
+  Installing       : passt-selinux-0^20251210.gd04c480-1.el10.noarch                                                                                                                                           2/18 
+  Running scriptlet: passt-selinux-0^20251210.gd04c480-1.el10.noarch                                                                                                                                           2/18 
+Failed to resolve roleattributeset statement at /var/lib/selinux/targeted/tmp/modules/200/pasta/cil:16
+Failed to resolve AST
+semodule:  Failed!
+
+  Installing       : protobuf-c-1.5.0-6.el10.x86_64                                                                                                                                                            3/18 
+  Installing       : libnet-1.3-7.el10.x86_64                                                                                                                                                                  4/18 
+  Running scriptlet: container-selinux-4:2.244.0-1.el10.noarch                                                                                                                                                 5/18 
+  Installing       : container-selinux-4:2.244.0-1.el10.noarch                                                                                                                                                 5/18 
+  Running scriptlet: container-selinux-4:2.244.0-1.el10.noarch                                                                                                                                                 5/18 
+  Installing       : conmon-3:2.1.13-1.el10.x86_64                                                                                                                                                             6/18 
+  Installing       : catatonit-5:0.2.1-1.el10.x86_64                                                                                                                                                           7/18 
+  Installing       : aardvark-dns-2:1.16.0-2.el10.x86_64                                                                                                                                                       8/18 
+  Installing       : shadow-utils-subid-2:4.15.0-9.el10.x86_64                                                                                                                                                 9/18 
+  Installing       : libnftnl-1.3.0-2.el10.x86_64                                                                                                                                                             10/18 
+  Installing       : nftables-1:1.1.5-3.el10.x86_64                                                                                                                                                           11/18 
+  Running scriptlet: nftables-1:1.1.5-3.el10.x86_64                                                                                                                                                           11/18 
+  Installing       : criu-4.2-1.el10.x86_64                                                                                                                                                                   12/18 
+  Installing       : netavark-2:1.16.0-1.el10.x86_64                                                                                                                                                          13/18 
+  Installing       : containers-common-5:0.64.0-4.el10.noarch                                                                                                                                                 14/18 
+  Installing       : criu-libs-4.2-1.el10.x86_64                                                                                                                                                              15/18 
+  Installing       : crun-1.25.1-1.el10.x86_64                                                                                                                                                                16/18 
+  Installing       : containers-common-extra-5:0.64.0-4.el10.noarch                                                                                                                                           17/18 
+  Installing       : podman-7:5.6.0-2.el10.x86_64                                                                                                                                                             18/18 
+  Running scriptlet: passt-selinux-0^20251210.gd04c480-1.el10.noarch                                                                                                                                          18/18 
+  Running scriptlet: container-selinux-4:2.244.0-1.el10.noarch                                                                                                                                                18/18 
+  Running scriptlet: podman-7:5.6.0-2.el10.x86_64                                                                                                                                                             18/18 
+
+Installed:
+  aardvark-dns-2:1.16.0-2.el10.x86_64              catatonit-5:0.2.1-1.el10.x86_64                        conmon-3:2.1.13-1.el10.x86_64                           container-selinux-4:2.244.0-1.el10.noarch        
+  containers-common-5:0.64.0-4.el10.noarch         containers-common-extra-5:0.64.0-4.el10.noarch         criu-4.2-1.el10.x86_64                                  criu-libs-4.2-1.el10.x86_64                      
+  crun-1.25.1-1.el10.x86_64                        libnet-1.3-7.el10.x86_64                               libnftnl-1.3.0-2.el10.x86_64                            netavark-2:1.16.0-1.el10.x86_64                  
+  nftables-1:1.1.5-3.el10.x86_64                   passt-0^20251210.gd04c480-1.el10.x86_64                passt-selinux-0^20251210.gd04c480-1.el10.noarch         podman-7:5.6.0-2.el10.x86_64                     
+  protobuf-c-1.5.0-6.el10.x86_64                   shadow-utils-subid-2:4.15.0-9.el10.x86_64             
+
+Complete!
+[root@centr10a ~]# podman --version
+podman version 5.6.0
+[root@centr10a ~]# podman info --format '{{.Host.NetworkBackend}}'
+netavark
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# sudo usermod -aG wheel $(whoami) && newgrp wheel
+[root@centr10a ~]# groups
+wheel root
+[root@centr10a ~]# id
+uid=0(root) gid=10(wheel) groups=10(wheel),0(root) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+[root@centr10a ~]# sudo usermod -aG wheel greg
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# podman run --rm hello-world
+Resolved "hello-world" as an alias (/etc/containers/registries.conf.d/000-shortnames.conf)
+Trying to pull quay.io/podman/hello:latest...
+Getting image source signatures
+Copying blob 81df7ff16254 done   | 
+Copying config 5dd467fce5 done   | 
+Writing manifest to image destination
+!... Hello Podman World ...!
+
+         .--"--.           
+       / -     - \         
+      / (O)   (O) \        
+   ~~~| -=(,Y,)=- |         
+    .---. /`  \   |~~      
+ ~/  o  o \~~~~.----. ~~   
+  | =(X)= |~  / (O (O) \   
+   ~~~~~~~  ~| =(Y_)=-  |   
+  ~~~~    ~~~|   U      |~~ 
+
+Project:   https://github.com/containers/podman
+Website:   https://podman.io
+Desktop:   https://podman-desktop.io
+Documents: https://docs.podman.io
+YouTube:   https://youtube.com/@Podman
+X/Twitter: @Podman_io
+Mastodon:  @Podman_io@fosstodon.org
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# podman run --rm quay.io/libpod/alpine ping -c3 8.8.8.8
+Trying to pull quay.io/libpod/alpine:latest...
+Getting image source signatures
+Copying blob 9d16cba9fb96 done   | 
+Copying config 9617696764 done   | 
+Writing manifest to image destination
+PING 8.8.8.8 (8.8.8.8): 56 data bytes
+64 bytes from 8.8.8.8: seq=0 ttl=42 time=20.185 ms
+64 bytes from 8.8.8.8: seq=1 ttl=42 time=18.435 ms
+64 bytes from 8.8.8.8: seq=2 ttl=42 time=17.899 ms
+
+--- 8.8.8.8 ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 17.899/18.839/20.185 ms
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# 
+[root@centr10a ~]# podman run -d --name web -p 80:80 nginx
+Resolved "nginx" as an alias (/etc/containers/registries.conf.d/000-shortnames.conf)
+Trying to pull docker.io/library/nginx:latest...
+Getting image source signatures
+Copying blob 114e699da838 done   | 
+Copying blob ee3a09d2248a done   | 
+Copying blob 1733a4cd5954 done   | 
+Copying blob 5b219a92f92a done   | 
+Copying blob 7382b41547b8 done   | 
+Copying blob 9ee60c6c0558 done   | 
+Copying blob 5b5fa0b64d74 done   | 
+Copying config 576306625d done   | 
+Writing manifest to image destination
+eb63ce63399b2d95e1bd961481d3f7ac01f4b15d3c0407813b64db7cb3421452
+[root@centr10a ~]# podman ps
+CONTAINER ID  IMAGE                           COMMAND               CREATED        STATUS        PORTS               NAMES
+eb63ce63399b  docker.io/library/nginx:latest  nginx -g daemon o...  6 seconds ago  Up 6 seconds  0.0.0.0:80->80/tcp  web
+[root@centr10a ~]# podman run -it --rm docker.io/nicolaka/netshoot
+Trying to pull docker.io/nicolaka/netshoot:latest...
+Getting image source signatures
+Copying blob f97746911927 done   | 
+Copying blob fe07684b16b8 done   | 
+Copying blob 6825d4104fcf done   | 
+Copying blob 4fe72e03ed63 done   | 
+Copying blob b402f437fea1 done   | 
+Copying blob 777b2eb9c233 done   | 
+Copying blob c48e6ef5a450 done   | 
+Copying blob 4f4fb700ef54 done   | 
+Copying blob 1ffbfc3fee40 done   | 
+Copying blob 9739e82eeb67 done   | 
+Copying blob 60a997354055 done   | 
+Copying blob 44718f283b64 done   | 
+Copying blob 8a84d69553b4 done   | 
+Copying blob e3d67c957395 done   | 
+Copying blob b71379f7ad56 done   | 
+Copying config 0ac86781a8 done   | 
+Writing manifest to image destination
+                    dP            dP                           dP   
+                    88            88                           88   
+88d888b. .d8888b. d8888P .d8888b. 88d888b. .d8888b. .d8888b. d8888P 
+88'  `88 88ooood8   88   Y8ooooo. 88'  `88 88'  `88 88'  `88   88   
+88    88 88.  ...   88         88 88    88 88.  .88 88.  .88   88   
+dP    dP `88888P'   dP   `88888P' dP    dP `88888P' `88888P'   dP   
+                                                                    
+Welcome to Netshoot! (github.com/nicolaka/netshoot)
+Version: 0.14
+
+                                         
+
+
+
+ 7b210256f480  ~  
+
+ 7b210256f480  ~  
+
+ 7b210256f480  ~  whoami
+root
+
+ 7b210256f480  ~  pwd
+/root
+
+ 7b210256f480  ~  ls -la
+total 136
+drwxrwx---    1 root     root           132 Dec 28 14:22 .
+dr-xr-xr-x    1 root     root            51 Dec 28 14:22 ..
+drwxr-xr-x    3 root     root           155 Dec 28 14:22 .cache
+drwxrwxr-x    1 root     root            44 Jun 23  2025 .oh-my-zsh
+-rw-r--r--    1 root     root         36825 Dec 28 14:22 .zcompdump-7b210256f480-5.9
+-r--r--r--    1 root     root         83928 Dec 28 14:22 .zcompdump-7b210256f480-5.9.zwc
+-rw-------    1 root     root            63 Dec 28 14:22 .zsh_history
+-rw-rw-r--    1 root     root          4626 Jun 23  2025 .zshrc
+-rw-rw-r--    1 root     root           592 Jun 23  2025 motd
+
+ 7b210256f480  ~  mtr 8.8.8.8
+mtr: Unexpected mtr-packet error
+
+ 7b210256f480  ~  ping 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=115 time=19.5 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=115 time=18.8 ms
+64 bytes from 8.8.8.8: icmp_seq=3 ttl=115 time=16.7 ms
+64 bytes from 8.8.8.8: icmp_seq=4 ttl=115 time=19.5 ms
+64 bytes from 8.8.8.8: icmp_seq=5 ttl=115 time=17.5 ms
+^C
+--- 8.8.8.8 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4006ms
+rtt min/avg/max/mdev = 16.748/18.411/19.518/1.104 ms
+
+ 7b210256f480  ~  mtr        
+mtr: Unexpected mtr-packet error
+
+ 7b210256f480  ~             
+
+ 7b210256f480  ~  
+
+ 7b210256f480  ~  exit
+[root@centr10a ~]# podman run -it --rm --privileged nicolaka/netshoot
+                    dP            dP                           dP   
+                    88            88                           88   
+88d888b. .d8888b. d8888P .d8888b. 88d888b. .d8888b. .d8888b. d8888P 
+88'  `88 88ooood8   88   Y8ooooo. 88'  `88 88'  `88 88'  `88   88   
+88    88 88.  ...   88         88 88    88 88.  .88 88.  .88   88   
+dP    dP `88888P'   dP   `88888P' dP    dP `88888P' `88888P'   dP   
+                                                                    
+Welcome to Netshoot! (github.com/nicolaka/netshoot)
+Version: 0.14
+
+                                         
+
+
+
+ 222a7cba7a78  ~  traceroute 8.8.8.8
+traceroute to 8.8.8.8 (8.8.8.8), 30 hops max, 46 byte packets
+ 1  host.containers.internal (10.88.0.1)  0.004 ms  0.003 ms  0.002 ms
+ 2  192.168.86.1 (192.168.86.1)  1.267 ms  0.654 ms  0.528 ms
+ 3  int-1.sndicatk01m.netops.charter.com (142.254.184.41)  11.902 ms  10.411 ms  9.529 ms
+ 4  lag-63.hcr04sndicatk.netops.charter.com (76.167.17.213)  26.877 ms  22.868 ms  22.058 ms
+ 5  lag-19.hcr02sndicatk.netops.charter.com (72.129.9.240)  12.068 ms  13.610 ms  12.726 ms
+ 6  lag-30.sndhcaax02r.netops.charter.com (72.129.9.242)  21.658 ms  24.416 ms  23.496 ms
+ 7  lag-22.rcr01tustcaft.netops.charter.com (72.129.1.2)  16.897 ms  19.898 ms  19.268 ms
+ 8  72.14.221.250 (72.14.221.250)  19.081 ms  19.230 ms  74.125.118.176 (74.125.118.176)  18.754 ms
+ 9  *  108.170.248.69 (108.170.248.69)  17.827 ms  *
+10  dns.google (8.8.8.8)  21.064 ms  18.834 ms  19.302 ms
+
+ 222a7cba7a78  ~  
