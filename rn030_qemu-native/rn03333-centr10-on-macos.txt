@@ -1,0 +1,62 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+filename: user-data
+#```start-file
+#cloud-config_user-data
+users:
+  - name: greg
+    gecos: greg User
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    shell: /bin/bash
+    lock_passwd: false
+
+chpasswd:
+  list: |
+    greg:changeme
+  expire: false
+
+ssh_pwauth: true
+#```end-file
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+filename: meta-data
+....................................
+#```start-file
+instance-id: centr10
+local-hostname: centr10
+#```end-file
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+put two files into a directory only containing the two files
+then run the command to create iso from inside the directory:
+hdiutil makehybrid -o centr_seed.iso -hfs -joliet -iso -default-volume-name CIDATA .
+
+
+03:40 greg@xcf16 /Users/0-qemu/centr-qcow ? cat gocr1.sh 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#!/bin/bash
+
+# Run CentOS Stream 10 AArch64 cloud image on macOS with bridged networking
+
+UEFI_FIRMWARE="$(brew --prefix qemu)/share/qemu/edk2-aarch64-code.fd"
+
+sudo qemu-system-aarch64 \
+  -machine virt,accel=hvf \
+  -cpu host \
+  -m 16384 \
+  -smp 1 \
+  -bios "${UEFI_FIRMWARE}" \
+  -drive if=virtio,file=CentOS-Stream-GenericCloud-10-20251223.1.aarch64.qcow2,format=qcow2 \
+  -drive file=centr_seed.iso,if=virtio,format=raw,media=cdrom \
+  -netdev vmnet-bridged,id=net0,ifname=en9 \
+  -device virtio-net-pci,netdev=net0 \
+  -device virtio-gpu-pci \
+  -device qemu-xhci \
+  -device usb-tablet \
+  -device virtio-keyboard-pci \
+  -device virtio-mouse-pci \
+  -display default \
+  -serial mon:stdio
+03:40 greg@xcf16 /Users/0-qemu/centr-qcow ? 

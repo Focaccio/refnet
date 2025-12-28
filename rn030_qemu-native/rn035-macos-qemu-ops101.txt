@@ -1,8 +1,22 @@
+qemu-img convert -p -f qcow2 -O raw centr-9-cloud-x86-64_24G.qcow2 centr-9-cloud-x86-64_24G-raw.img
+
 sudo qemu-system-x86_64 -m 8192 -smp 4 -machine q35,accel=tcg -cpu qemu64 -drive file=debian-13-genericcloud-amd64-20250814-2204.qcow2,if=virtio,format=qcow2,cache=writeback -device virtio-net-pci,netdev=net0 -netdev vmnet-bridged,id=net0,ifname=en9 -display default -serial mon:stdio
 
 
 sudo qemu-system-x86_64 -m 8192 -smp 4 -machine q35,accel=tcg -cpu qemu64 -drive file=debian-13-genericcloud-amd64-20250814-2204.qcow2,if=virtio,format=qcow2,cache=writeback -drive file=seed.iso,if=virtio,format=raw,media=cdrom -device virtio-net-pci,netdev=net0 -netdev vmnet-bridged,id=net0,ifname=en9 -display default -serial mon:stdio
 
+~~~~~~~~~
+Nutanix
+
+1.get qcow2
+2.resize to disk size
+3. convert to raw
+3. convert back to qcow
+4. uplod to image service
+5. wait for it to activate
+6. create vm 
+6-1 cd of seed.iso (below) attached
+6-2 attach disk
 
 
 [ your VM ] 
