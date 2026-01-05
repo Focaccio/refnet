@@ -88,6 +88,12 @@ nohup /usr/local/nutanix/bin/qemu-img convert -c -O qcow2 nfs://127.0.0.1/vm-sto
 
 nohup /usr/local/nutanix/bin/qemu-img convert -c -O qcow2 nfs://127.0.0.1/vm-storage-pool1/.acropolis/vmdisk/c5612f25-9ae4-4cd4-8e30-f245a1ed3596 nfs://127.0.0.1/image_pool1/exported_vm_backup.qcow2 &
 
+NO COMPRESSION:
+nohup /usr/local/nutanix/bin/qemu-img convert -O qcow2 nfs://127.0.0.1/vm-storage-pool1/.acropolis/vmdisk/c5612f25-9ae4-4cd4-8e30-f245a1ed3596 nfs://127.0.0.1/image_pool1/exported_vm_backup_no_comp.qcow2 &
+
+
+
+
 ... the backup IS GROWING:
 nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ nfs_ls -Rlai /image_pool1/ | grep exported_vm_backup.qcow2
 739 -rw------- 1 1000 1000 Jan  5 11:39   1576019330 exported_vm_backup.qcow2
@@ -96,6 +102,57 @@ nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ nfs_ls -Rlai /image_pool1/ | grep 
 nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ nfs_ls -Rlai /image_pool1/ | grep exported_vm_backup.qcow2
 739 -rw------- 1 1000 1000 Jan  5 11:39   1583025756 exported_vm_backup.qcow2
 nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+
+FINISHED!!!!
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ nfs_ls -Rlai /image_pool1/ | grep exported_vm_backup.qcow2
+739 -rw------- 1 1000 1000 Jan  5 11:45   2353323008 exported_vm_backup.qcow2
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+
+
+scp -P 2222 admin@192.168.86.181:/image_pool1/exported_vm_backup.qcow2 ~/Downloads/
+
+scp -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa nutanix@192.168.86.181:/image_pool1/exported_vm_backup.qcow2 ~/Downloads/
+
+
+
+acli vm.get <vm_name> include_vmdisk_paths=1 | grep -E 'vmdisk_uuid|vm_name'
+
+acli vm.get centr10a include_vmdisk_paths=1 | grep -E 'vmdisk_uuid|vm_name'
+
+acli vm.list | awk 'NR>1 {print $1}' | xargs -I {} sh -c 'acli vm.get {} | grep -q "c5612f25-9ae4-4cd4-8e30-f245a1ed3596" && echo "Match Found: {}"'
+
+acli vm.list | awk 'NR>1 {print $1}' | xargs -I {} sh -c 'acli vm.get {} | grep -q "2cbd2ff7-f860-4cd4-a06b-20bfd0fbbd22" && echo "Match Found: {}"'
+
+
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ acli vm.list | awk 'NR>1 {print $1}' | xargs -I {} sh -c 'acli vm.get {} | grep -q "2cbd2ff7-f860-4cd4-a06b-20bfd0fbbd22" && echo "Match Found: {}"'
+Match Found: centr10a
+
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+
+
+acli vm.list | awk 'NR>1 {print $1}' | xargs -I {} sh -c 'acli vm.get {} | grep -q "[[[UUID]]]]]]" && echo "Match Found: {}"'
+
+
+acli vm.list | awk 'NR>1 {print $1}' | xargs -I {} sh -c 'acli vm.get {} | grep -q "31039590-0858-4224-b4da-c4249552e7c1" && echo "Match Found: {}"'
+
+
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+[1]+  Done                    nohup /usr/local/nutanix/bin/qemu-img convert -c -O qcow2 nfs://127.0.0.1/vm-storage-pool1/.acropolis/vmdisk/c5612f25-9ae4-4cd4-8e30-f245a1ed3596 nfs://127.0.0.1/image_pool1/exported_vm_backup.qcow2
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ acli vm.list | awk 'NR>1 {print $1}' | xargs -I {} sh -c 'acli vm.get {} | grep -q "31039590-0858-4224-b4da-c4249552e7c1" && echo "Match Found: {}"'
+
+Match Found: vorch942B
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+
+
 
 
 nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ nfs_ls -Rlai /image_pool1/
