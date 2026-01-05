@@ -47,11 +47,271 @@ mac=50:6b:8d:82:ca:55
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+Backups
+
+acli vm.get <vm_name> include_vmdisk_paths=1 | grep -E 'vmdisk_nfs_path|vmdisk_uuid'
+```.
 
 
+acli vm.get <vm_name> include_vmdisk_paths=1 | grep -E 'vmdisk_nfs_path|vmdisk_uuid'
+```.
 
 
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ acli vm.get centr10a include_vmdisk_paths=1 | grep -E 'vmdisk_nfs_path|vmdisk_uuid'
+      source_vmdisk_uuid: "2cbd2ff7-f860-4cd4-a06b-20bfd0fbbd22"
+      vmdisk_nfs_path: "/image_pool1/.acropolis/vmdisk/1611b0c9-06e8-4390-ae5c-7152e369c2c9"
+      vmdisk_uuid: "1611b0c9-06e8-4390-ae5c-7152e369c2c9"
+      source_vmdisk_uuid: "3a9d66cc-bc46-4238-b005-c47e17a6ad9e"
+      vmdisk_nfs_path: "/vm-storage-pool1/.acropolis/vmdisk/c5612f25-9ae4-4cd4-8e30-f245a1ed3596"
+      vmdisk_uuid: "c5612f25-9ae4-4cd4-8e30-f245a1ed3596"
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
 
+nohup /usr/local/nutanix/bin/qemu-img convert -c -O qcow2 nfs://127.0.0.1/vm-storage-pool1/.acropolis/vmdisk/c5612f25-9ae4-4cd4-8e30-f245a1ed3596 /tmp/exported_vm_backup.qcow2 &
+
+
+nohup /usr/local/nutanix/bin/qemu-img convert -c -O qcow2 \
+nfs://127.0.0.1/vm-storage-pool1/.acropolis/vmdisk/c5612f25-9ae4-4cd4-8e30-f245a1ed3596 \
+nfs://127.0.0.1/vm-storage-pool1/exported_vm_backup.qcow2 &
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+nohup /usr/local/nutanix/bin/qemu-img convert -c -O qcow2 nfs://127.0.0.1/vm-storage-pool1/.acropolis/vmdisk/c5612f25-9ae4-4cd4-8e30-f245a1ed3596 nfs://127.0.0.1/image_pool1/exported_vm_backup.qcow2 &
+
+nohup /usr/local/nutanix/bin/qemu-img convert -c -O qcow2 nfs://127.0.0.1/vm-storage-pool1/.acropolis/vmdisk/c5612f25-9ae4-4cd4-8e30-f245a1ed3596 nfs://127.0.0.1/image_pool1/exported_vm_backup.qcow2 &
+
+... the backup IS GROWING:
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ nfs_ls -Rlai /image_pool1/ | grep exported_vm_backup.qcow2
+739 -rw------- 1 1000 1000 Jan  5 11:39   1576019330 exported_vm_backup.qcow2
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ nfs_ls -Rlai /image_pool1/ | grep exported_vm_backup.qcow2
+739 -rw------- 1 1000 1000 Jan  5 11:39   1577447796 exported_vm_backup.qcow2
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ nfs_ls -Rlai /image_pool1/ | grep exported_vm_backup.qcow2
+739 -rw------- 1 1000 1000 Jan  5 11:39   1583025756 exported_vm_backup.qcow2
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+
+
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ nfs_ls -Rlai /image_pool1/
+256 drwxr-xr-x 1 1000 1000 Nov 15 18:32            0 .acropolis
+257 drwxr-xr-x 1 1000 1000 Jan  3 14:41            0 .acropolis/image
+589 -rwxr-xr-x 1 1000 1000 Dec 27 14:29   1464154624 .acropolis/image/3fbeddb3-1137-4e15-a432-21f48e3b9413
+591 -rwxr-xr-x 1 1000 1000 Dec 27 21:52   2214002688 .acropolis/image/68db07fc-a329-49c3-9444-85f6b2c42a4d
+398 drwxr-xr-x 1    0    0 Dec 29 03:46            0 .acropolis/snapshot
+699 drwxr-xr-x 1    0    0 Dec 28 13:52            0 .acropolis/snapshot/26b44c0e-fcbf-45ba-89b1-ce5a62051031
+700 drwxr-xr-x 1    0    0 Dec 28 13:52            0 .acropolis/snapshot/26b44c0e-fcbf-45ba-89b1-ce5a62051031/vmdisk
+701 -rwxr-xr-x 1 1000 1000 Dec 28 13:43       923136 .acropolis/snapshot/26b44c0e-fcbf-45ba-89b1-ce5a62051031/vmdisk/1611b0c9-06e8-4390-ae5c-7152e369c2c9
+416 drwxr-xr-x 1    0    0 Nov 16 13:09            0 .acropolis/snapshot/98432f0a-1a9f-4961-a9f2-52eaf18220f4
+417 drwxr-xr-x 1    0    0 Nov 16 13:09            0 .acropolis/snapshot/98432f0a-1a9f-4961-a9f2-52eaf18220f4/vmdisk
+418 -rwxr-xr-x 1 1000 1000 Nov 16 13:09  64424509440 .acropolis/snapshot/98432f0a-1a9f-4961-a9f2-52eaf18220f4/vmdisk/4cd00276-f707-4902-951d-bd640b2168bf
+259 drwxr-xr-x 1 1000 1000 Jan  5 03:34            0 .acropolis/vmdisk
+295 -rwxr-xr-x 1 1000 1000 Dec 28 02:13  64424509440 .acropolis/vmdisk/02c9e0fd-8a0f-4fbc-92b2-3f947fccc652
+696 -rwxr-xr-x 1 1000 1000 Dec 28 13:43       923136 .acropolis/vmdisk/1611b0c9-06e8-4390-ae5c-7152e369c2c9
+605 -rwxr-xr-x 1 1000 1000 Dec 27 23:43       921600 .acropolis/vmdisk/2cbd2ff7-f860-4cd4-a06b-20bfd0fbbd22
+431 -rwxr-xr-x 1 1000 1000 Nov 22 04:35 549755813888 .acropolis/vmdisk/31039590-0858-4224-b4da-c4249552e7c1
+268 -rwxr-xr-x 1 1000 1000 Oct 26 14:47   3981279232 .acropolis/vmdisk/37055783-fe95-46a5-9894-d6d6a4a91a68
+383 -rwxr-xr-x 1 1000 1000 Nov 15 12:47 549755813888 .acropolis/vmdisk/3d2e873c-c003-4c92-8212-77b833527746
+413 -rwxr-xr-x 1 1000 1000 Nov 22 15:10  64424509440 .acropolis/vmdisk/4cd00276-f707-4902-951d-bd640b2168bf
+595 -rwxr-xr-x 1 1000 1000 Dec 27 22:44  10737418240 .acropolis/vmdisk/71ea03d2-a8fc-4f62-8334-f55405678ae8
+567 -rwxr-xr-x 1 1000 1000 Dec 18 12:43  60129542144 .acropolis/vmdisk/7f82b2c8-3e92-4ef5-8d37-6bfb6d369ac3
+261 -rwxr-xr-x 1 1000 1000 Oct 26 14:10   4245942272 .acropolis/vmdisk/a030433f-fab5-4e5c-9ccc-55bb3e649cab
+389 -rwxr-xr-x 1 1000 1000 Nov 15 13:51 549755813888 .acropolis/vmdisk/a45cc3c3-71e5-40be-9965-1ffcc51f2305
+728 -rwxr-xr-x 1 1000 1000 Dec 28 13:43       923136 .acropolis/vmdisk/b376575b-af87-4493-984f-bcfc3c1c4099
+571 -rwxr-xr-x 1 1000 1000 Dec 18 13:01  60129542144 .acropolis/vmdisk/b3c73a7f-dc48-4a8d-bb29-2977ea21636b
+731 -rwxr-xr-x 1 1000 1000 Jan  3 14:41    633339904 .acropolis/vmdisk/c9234dfb-d6e5-4bea-85ae-edece66f4dd9
+562 -rwxr-xr-x 1 1000 1000 Dec 27 13:52 549755813888 .acropolis/vmdisk/d9b811ec-8415-4b36-ab35-53b0e89bb293
+278 -rwxr-xr-x 1 1000 1000 Oct 28 11:23  64424509440 .acropolis/vmdisk/e7c82df9-fc29-4f1a-a0a1-aefb81275bc5
+262 drwxr-xr-x 1 1000 1000 Jan  3 14:41            0 .file_repo
+280 -rw------- 1 1000 1000 Oct 28 11:23  64424509440 .file_repo/26a18617-5de1-43b0-9e58-729a5efe6e44
+569 -rw------- 1 1000 1000 Dec 18 12:43  60129542144 .file_repo/5ef79995-8f2e-48a7-aff2-0aa1a0ab2794
+270 -rwxr-xr-x 1 1000 1000 Oct 26 14:47   3981279232 .file_repo/7000c2a6-16af-41f6-8e61-dab37d238ecd
+607 -rwxr-xr-x 1 1000 1000 Dec 27 23:43       921600 .file_repo/89a29564-9efa-4266-b5ff-581de48ac12e
+597 -rwxr-xr-x 1 1000 1000 Dec 27 22:44  10737418240 .file_repo/8de88894-b528-4b70-a28b-96c15ee87eb5
+385 -rw------- 1 1000 1000 Nov 15 12:47 549755813888 .file_repo/b26815d4-bb56-438b-8a31-91380381fefe
+733 -rwxr-xr-x 1 1000 1000 Jan  3 14:41    633339904 .file_repo/b70e5a6e-6f79-43f9-954b-c503152f6d5f
+391 -rw------- 1 1000 1000 Nov 15 13:51 549755813888 .file_repo/c20a0b00-2520-431c-90f0-4d2b3b07b83a
+264 -rwxr-xr-x 1 1000 1000 Oct 26 14:10   4245942272 .file_repo/d5f30ce4-bf2e-4d94-a9f6-7fa183dcd935
+433 -rw------- 1 1000 1000 Nov 22 04:35 549755813888 .file_repo/db717df3-4cb5-49b7-8e7a-9ddc2c52a6d7
+265 drwxr-xr-x 1    0    0 Jan  5 03:34            0 .nutanix_recycle_bin
+735 -rwxr-xr-x 1 1000 1000 Jan  3 14:44    633507840 .nutanix_recycle_bin/95f2c573-d016-4e1d-9190-61ca398868df
+738 -rwxr-xr-x 1 1000 1000 Jan  4 23:44   3983582208 .nutanix_recycle_bin/9e9a987f-e426-448a-a71f-938db9ae9f99
+736 -rw-r--r-- 1    0    0 Jan  4 17:40         2541 .nutanix_recycle_bin/d131_tetbtc1__6f1e63b6-587c-4f22-a110-930b9c9b07f6.config
+739 -rw------- 1 1000 1000 Jan  5 11:35    882825383 exported_vm_backup.qcow2
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+devtmpfs        9.7G     0  9.7G   0% /dev
+tmpfs           512M   80K  512M   1% /dev/shm
+tmpfs           9.7G  436K  9.7G   1% /run
+tmpfs           9.7G     0  9.7G   0% /sys/fs/cgroup
+/dev/sda1       9.8G  5.7G  4.0G  59% /
+/dev/loop0      974M  129M  819M  14% /var
+/dev/loop1      488M  740K  451M   1% /tmp
+/dev/sda3        40G   21G   18G  55% /home
+/dev/loop2       44M   29M   14M  68% /var/log/audit
+/dev/sda4       175G   38G  136G  22% /home/nutanix/data/stargate-storage/disks/UGXVK01ZRBTFA2
+/dev/nvme0n1p1  229G   54G  172G  24% /home/nutanix/data/stargate-storage/disks/S46CNX0KA05756K
+tmpfs           2.0G     0  2.0G   0% /run/user/1000
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ ncli sp ls
+
+    Id                        : 0006332b-76a1-3880-643a-a0369f1fc118::6
+    Uuid                      : 7b47254f-08e9-450d-ac34-c028e14bfb4f
+    Name                      : default-storage-pool-4132154046322
+    Disk Count                : 6
+    Disk Ids                  : 0006332b-76a1-3880-643a-a0369f1fc118::55, 0006332b-76a1-3880-643a-a0369f1fc118::48, 0006332b-76a1-3880-643a-a0369f1fc118::49, 0006332b-76a1-3880-643a-a0369f1fc118::51, 0006332b-76a1-3880-643a-a0369f1fc118::52, 0006332b-76a1-3880-643a-a0369f1fc118::54
+    Capacity (Physical)       : 668.19 GiB (717,458,410,398 bytes)
+    Used Space (Physical)     : 396.71 GiB (425,959,284,736 bytes)
+    Free Space (Physical)     : 271.48 GiB (291,499,125,662 bytes)
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ ncli container ls
+
+    Id                        : 0006332b-76a1-3880-643a-a0369f1fc118::1218
+    Uuid                      : bc442741-fdfc-4061-9e8f-c77db68a0576
+    Name                      : SelfServiceContainer
+    Storage Pool Id           : 0006332b-76a1-3880-643a-a0369f1fc118::6
+    Storage Pool Uuid         : 7b47254f-08e9-450d-ac34-c028e14bfb4f
+    Free Space (Physical)     : 271.48 GiB (291,499,125,662 bytes)
+    Used Space (Physical)     : 0 bytes
+    Max Capacity (Physical)   : 271.48 GiB (291,499,125,662 bytes)
+    Used by others (Physical) : 6.71 GiB (7,199,973,376 bytes)
+    Explicit Res. (Logical)   : 0 bytes
+    Thick Prov. (Logical)     : 0 bytes
+    Replication Factor        : 2
+    Oplog Replication Factor  : 2
+    NFS Whitelist Inherited   : true
+    Container NFS Whitelist   : 
+    VStore Name(s)            : SelfServiceContainer
+    Random I/O Pri Order      : SSD-MEM-NVMe, SSD-PCIe, SSD-SATA, SSD-LowEndurance, DAS-SATA
+    Sequential I/O Pri Order  : SSD-LowEndurance, SSD-PCIe, SSD-SATA, SSD-MEM-NVMe, DAS-SATA
+    Compression               : off
+    Fingerprint On Write      : off
+    On-Disk Dedup             : off
+    Erasure Code              : off
+    Placement Policy Name     : rf2_default
+    Software Encryption       : off
+
+    Id                        : 0006332b-76a1-3880-643a-a0369f1fc118::588670
+    Uuid                      : 8f1d9f28-af47-4d89-a4e2-9f3a1008583b
+    Name                      : image_pool1
+    Storage Pool Id           : 0006332b-76a1-3880-643a-a0369f1fc118::6
+    Storage Pool Uuid         : 7b47254f-08e9-450d-ac34-c028e14bfb4f
+    Free Space (Physical)     : 74.66 GiB (80,170,450,944 bytes)
+    Used Space (Physical)     : 165.34 GiB (177,527,586,816 bytes)
+    Max Capacity (Physical)   : 240 GiB (257,698,037,760 bytes)
+    Used by others (Physical) : 0 bytes
+    Explicit Res. (Logical)   : 120 GiB (128,849,018,880 bytes)
+    Thick Prov. (Logical)     : 0 bytes
+    Adv. Capacity (Logical)   : 120 GiB (128,849,018,880 bytes)
+    Replication Factor        : 2
+    Oplog Replication Factor  : 2
+    NFS Whitelist Inherited   : true
+    Container NFS Whitelist   : 
+    VStore Name(s)            : image_pool1
+    Random I/O Pri Order      : SSD-MEM-NVMe, SSD-PCIe, SSD-SATA, SSD-LowEndurance, DAS-SATA
+    Sequential I/O Pri Order  : SSD-LowEndurance, SSD-PCIe, SSD-SATA, SSD-MEM-NVMe, DAS-SATA
+    Compression               : off
+    Fingerprint On Write      : off
+    On-Disk Dedup             : off
+    Erasure Code              : off
+    Placement Policy Name     : rf2_default
+    Software Encryption       : off
+
+    Id                        : 0006332b-76a1-3880-643a-a0369f1fc118::594032
+    Uuid                      : 3eb93957-8e66-4433-a796-041615bedda1
+    Name                      : vm-storage-pool1
+    Storage Pool Id           : 0006332b-76a1-3880-643a-a0369f1fc118::6
+    Storage Pool Uuid         : 7b47254f-08e9-450d-ac34-c028e14bfb4f
+    Free Space (Physical)     : 100.11 GiB (107,495,576,898 bytes)
+    Used Space (Physical)     : 49.89 GiB (53,565,696,702 bytes)
+    Max Capacity (Physical)   : 150 GiB (161,061,273,600 bytes)
+    Used by others (Physical) : 0 bytes
+    Explicit Res. (Logical)   : 75 GiB (80,530,636,800 bytes)
+    Thick Prov. (Logical)     : 0 bytes
+    Adv. Capacity (Logical)   : 75 GiB (80,530,636,800 bytes)
+    Replication Factor        : 2
+    Oplog Replication Factor  : 2
+    NFS Whitelist Inherited   : true
+    Container NFS Whitelist   : 
+    VStore Name(s)            : vm-storage-pool1
+    Random I/O Pri Order      : SSD-MEM-NVMe, SSD-PCIe, SSD-SATA, SSD-LowEndurance, DAS-SATA
+    Sequential I/O Pri Order  : SSD-LowEndurance, SSD-PCIe, SSD-SATA, SSD-MEM-NVMe, DAS-SATA
+    Compression               : on
+    Compression Delay         : 0 mins
+    Fingerprint On Write      : off
+    On-Disk Dedup             : off
+    Erasure Code              : off
+    Placement Policy Name     : rf2_default
+    Software Encryption       : off
+
+    Id                        : 0006332b-76a1-3880-643a-a0369f1fc118::7
+    Uuid                      : 6bdccf82-edd0-4d9d-8dc7-56964bc5a6ef
+    Name                      : default-container-4132154046322
+    Storage Pool Id           : 0006332b-76a1-3880-643a-a0369f1fc118::6
+    Storage Pool Uuid         : 7b47254f-08e9-450d-ac34-c028e14bfb4f
+    Free Space (Physical)     : 271.48 GiB (291,499,125,662 bytes)
+    Used Space (Physical)     : 0 bytes
+    Max Capacity (Physical)   : 271.48 GiB (291,499,125,662 bytes)
+    Used by others (Physical) : 6.71 GiB (7,199,973,376 bytes)
+    Explicit Res. (Logical)   : 0 bytes
+    Thick Prov. (Logical)     : 0 bytes
+    Replication Factor        : 2
+    Oplog Replication Factor  : 2
+    NFS Whitelist Inherited   : true
+    Container NFS Whitelist   : 
+    VStore Name(s)            : default-container-4132154046322
+    Random I/O Pri Order      : SSD-MEM-NVMe, SSD-PCIe, SSD-SATA, SSD-LowEndurance, DAS-SATA
+    Sequential I/O Pri Order  : SSD-LowEndurance, SSD-PCIe, SSD-SATA, SSD-MEM-NVMe, DAS-SATA
+    Compression               : off
+    Fingerprint On Write      : off
+    On-Disk Dedup             : off
+    Erasure Code              : off
+    Placement Policy Name     : rf2_default
+    Software Encryption       : off
+
+    Id                        : 0006332b-76a1-3880-643a-a0369f1fc118::8
+    Uuid                      : 86baa440-0302-4286-ad0f-be0fffd11843
+    Name                      : NutanixManagementShare
+    Storage Pool Id           : 0006332b-76a1-3880-643a-a0369f1fc118::6
+    Storage Pool Uuid         : 7b47254f-08e9-450d-ac34-c028e14bfb4f
+    Free Space (Physical)     : 271.48 GiB (291,499,125,662 bytes)
+    Used Space (Physical)     : 6.71 GiB (7,199,973,376 bytes)
+    Max Capacity (Physical)   : 278.19 GiB (298,699,099,038 bytes)
+    Used by others (Physical) : 0 bytes
+    Explicit Res. (Logical)   : 0 bytes
+    Thick Prov. (Logical)     : 0 bytes
+    Replication Factor        : 2
+    Oplog Replication Factor  : 2
+    NFS Whitelist Inherited   : true
+    Container NFS Whitelist   : 
+    VStore Name(s)            : NutanixManagementShare
+    Random I/O Pri Order      : SSD-MEM-NVMe, SSD-PCIe, SSD-SATA, SSD-LowEndurance, DAS-SATA
+    Sequential I/O Pri Order  : SSD-LowEndurance, SSD-PCIe, SSD-SATA, SSD-MEM-NVMe, DAS-SATA
+    Compression               : on
+    Compression Delay         : 0 mins
+    Fingerprint On Write      : off
+    On-Disk Dedup             : off
+    Erasure Code              : off
+    Placement Policy Name     : rf2_default
+    Software Encryption       : off
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
 
 
 
