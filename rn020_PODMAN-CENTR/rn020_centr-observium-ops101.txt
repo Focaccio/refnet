@@ -1,0 +1,50 @@
+
+
+
+Centos running podman with:
+1. observium front end container   
+2. data base back end container   
+
+1.  How to gracefully stop the containers   
+
+
+
+2.  How to backup the cnetos vm host   
+
+
+
+3.  How to export the centos backup qcow2   
+
+
+
+4.  How to re-import the vm qcow2 back into nutanix   
+
+
+
+5.  How to restart the vm and containers so the observium works again   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

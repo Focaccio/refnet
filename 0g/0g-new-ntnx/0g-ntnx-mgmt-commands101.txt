@@ -49,6 +49,11 @@ mac=50:6b:8d:82:ca:55
 
 Backups
 
+nutanix univeristy backup qcow2
+https://youtu.be/5l4VmNwHxcs?si=E5ney-fzDm67eiGw
+
+
+
 acli vm.get <vm_name> include_vmdisk_paths=1 | grep -E 'vmdisk_nfs_path|vmdisk_uuid'
 ```.
 
@@ -109,11 +114,30 @@ nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ nfs_ls -Rlai /image_pool1/ | grep 
 nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
 
 
+
+
+
+
+
+/usr/local/nutanix/bin/nfs_scp nfs://127.0.0.1/image_pool1/exported_vm_backup.qcow2 greg@192.168.86.27:~/Downloads/
+
+/usr/local/nutanix/bin/nfs_cp nfs://127.0.0.1/image_pool1/exported_vm_backup.qcow2 /tmp/exported_vm_backup.qcow2
+
+to tmp first:
+/usr/local/nutanix/bin/nfs_cp nfs://127.0.0.1/image_pool1/exported_vm_backup.qcow2 /tmp/exported_vm_backup.qcow2
+
+
+
+
 scp -P 2222 admin@192.168.86.181:/image_pool1/exported_vm_backup.qcow2 ~/Downloads/
 
 scp -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa nutanix@192.168.86.181:/image_pool1/exported_vm_backup.qcow2 ~/Downloads/
 
 
+
+scp -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa /home/nutanix/data/containers/8f1d9f28-af47-4d89-a4e2-9f3a1008583b/exported_vm_backup.qcow2 yourmacuser@<YOUR_MAC_IP>:~/Downloads/
+
+scp -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa /home/nutanix/data/containers/8f1d9f28-af47-4d89-a4e2-9f3a1008583b/exported_vm_backup.qcow2 greg@192.168.86.27:~/Downloads/
 
 acli vm.get <vm_name> include_vmdisk_paths=1 | grep -E 'vmdisk_uuid|vm_name'
 
@@ -128,6 +152,25 @@ nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ acli vm.list | awk 'NR>1 {print $1
 Match Found: centr10a
 
 nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ 
+
+
+
+
+
+
+/usr/local/nutanix/bin/nfs_cp nfs://127.0.0.1/image_pool1/exported_vm_backup.qcow2 /tmp/exported_vm_backup.qcow2
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 acli vm.list | awk 'NR>1 {print $1}' | xargs -I {} sh -c 'acli vm.get {} | grep -q "[[[UUID]]]]]]" && echo "Match Found: {}"'
