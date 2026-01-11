@@ -5,25 +5,162 @@ Centos running podman with:
 1. observium front end container   
 2. data base back end container   
 
-1.  How to gracefully stop the containers   
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1.  !!!!!!! STOP CONTAINERS and VM !!!!!!!!!!
+APP First
+DB Second 
+podman ps >>> to get list   
+podman stop [name-of-container]
+shutdown -h now >>> of the vm host
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2. !!!!!!!! LOCATE VM DISK !!!!!!!!!!!!!
+From CVM   
+acli vm.list >>> for name 
+acli vm.get [name] >>> for vmdisk_uuid: c5612f25-9ae4-4cd4-8e30-f245a1ed3596   
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3. !!!!!!!! BACKUP/CONVERT VM DISK to QCOW2 
+qemu-img convert -p -f raw -O qcow2 nfs://127.0.0.1/vm-storage-pool1/.acropolis/vmdisk/c5612f25-9ae4-4cd4-8e30-f245a1ed3596 nfs://127.0.0.1/image_pool1/centr10a-disk.qcow2
+
+nutanix@NTNX-92877dc4-A-CVM:192.168.86.181:~$ qemu-img convert -p -f raw -O qcow2 nfs://127.0.0.1/vm-storage-pool1/.acropolis/vmdisk/c5612f25-9ae4-4cd4-8e30-f245a1ed3596 nfs://127.0.0.1/image_pool1/centr10a-disk.qcow2
+    (5.08/100%)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+4. !!!!!!!! MOVE QCOW2 OFF SYSTEM !!!!!!!!!!!!!!!!!
+....Not CVM cli user/pass INSTEAD the PRISM user/pass
+Use PRISM ADMIN to access with SFTP not nutanix at ssh for cli
+!!!!! THIS DID NOT WORK !!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ALTERNATE APPROACH DID WORK ---- NFS from a machine
+from mac   
+sudo mkdir -p /Volumes/image_pool1
+sudo mount -t nfs -o vers=3,nolock 192.168.86.181:/image_pool1 /Volumes/image_pool1 
+
+>>>>>>>>>>>>>>>>>THE MOUNT worked and the sudo cp worked:
+!!! LS -LA does not work so the name of the file is required
+06:40 greg@xcf16 ~ ? sudo cp /Volumes/image_pool1/centr10a-disk.qcow2 /Users/TRANSMIT/
+
+sudo cp /Volumes/image_pool1/exported_vm_backup.qcow2 /Users/TRANSMIT/
 
 
-
-2.  How to backup the cnetos vm host   
-
-
-
-3.  How to export the centos backup qcow2   
-
-
-
-4.  How to re-import the vm qcow2 back into nutanix   
-
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5.  How to re-import the vm qcow2 back into nutanix   
 
 5.  How to restart the vm and containers so the observium works again   
+###############################################################################################
+Logs:
+[root@centr10a ~]# 
+[root@centr10a ~]# podman ps
+CONTAINER ID  IMAGE                                     COMMAND     CREATED      STATUS      PORTS                 NAMES
+8f23ac9fe951  docker.io/library/mariadb:10.5            mysqld      12 days ago  Up 12 days  3306/tcp              nms-db
+ded03b8c7f67  docker.io/pvrmza/docker-observium:latest              12 days ago  Up 12 days  0.0.0.0:8080->80/tcp  nms-app
+[root@centr10a ~]# podman stop nms-app
+WARN[0010] StopSignal SIGTERM failed to stop container nms-app in 10 seconds, resorting to SIGKILL 
+nms-app
+[root@centr10a ~]# podman ps
+CONTAINER ID  IMAGE                           COMMAND     CREATED      STATUS      PORTS       NAMES
+8f23ac9fe951  docker.io/library/mariadb:10.5  mysqld      12 days ago  Up 12 days  3306/tcp    nms-db
+[root@centr10a ~]# podman stop nms-db
+nms-db
+[root@centr10a ~]# podman ps
+CONTAINER ID  IMAGE       COMMAND     CREATED     STATUS      PORTS       NAMES
+[root@centr10a ~]# podman ps -a
+CONTAINER ID  IMAGE                                     COMMAND               CREATED      STATUS                       PORTS                 NAMES
+eb63ce63399b  docker.io/library/nginx:latest            nginx -g daemon o...  12 days ago  Exited (0) 12 days ago       0.0.0.0:80->80/tcp    web
+47ad0c3bb8bd  docker.io/mbixtech/observium:latest                             12 days ago  Exited (0) 12 days ago       0.0.0.0:8668->80/tcp  observium
+8f23ac9fe951  docker.io/library/mariadb:10.5            mysqld                12 days ago  Exited (0) 26 seconds ago    3306/tcp              nms-db
+ded03b8c7f67  docker.io/pvrmza/docker-observium:latest                        12 days ago  Exited (137) 52 seconds ago  0.0.0.0:8080->80/tcp  nms-app
+[root@centr10a ~]# sync
+[root@centr10a ~]# sync
+[root@centr10a ~]# shutdown -h now
+[root@centr10a ~]# 
 
 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Procedure: Graceful Shutdown of Observium Podman Containers
+Purpose: Safely power off CentOS VM for backup without data corruption
+
+Environment:
+- Host OS: CentOS
+- Container runtime: Podman
+- Containers:
+  - nms-app (Observium)
+  - nms-db (MariaDB)
+
+------------------------------------------------------------
+1. Verify running containers
+------------------------------------------------------------
+podman ps
+
+Expected:
+- nms-app (running)
+- nms-db (running)
+
+------------------------------------------------------------
+2. Stop Observium application container first
+   (Prevents new database writes)
+------------------------------------------------------------
+podman stop nms-app
+
+Verify:
+podman ps
+
+------------------------------------------------------------
+3. Stop MariaDB container second
+   (Ensures clean database shutdown)
+------------------------------------------------------------
+podman stop nms-db
+
+Verify:
+podman ps
+
+------------------------------------------------------------
+4. (Optional) Verify containers are stopped
+------------------------------------------------------------
+podman ps -a
+
+Expected state:
+- nms-app: Exited
+- nms-db: Exited
+
+------------------------------------------------------------
+5. Flush filesystem buffers to disk
+------------------------------------------------------------
+sync
+
+------------------------------------------------------------
+6. Power off the CentOS VM safely
+------------------------------------------------------------
+shutdown -h now
+
+------------------------------------------------------------
+Startup Procedure (after VM power-on)
+------------------------------------------------------------
+1. Start database container first:
+   podman start nms-db
+
+2. Start Observium application container:
+   podman start nms-app
+
+------------------------------------------------------------
+Notes:
+- Always stop the application container before the database.
+- Always start the database container before the application.
+- This procedure ensures no data corruption during VM backups.
+------------------------------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
