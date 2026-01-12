@@ -44,6 +44,10 @@ sudo mount -t nfs -o vers=3,nolock 192.168.86.181:/image_pool1 /Volumes/image_po
 
 sudo cp /Volumes/image_pool1/exported_vm_backup.qcow2 /Users/TRANSMIT/
 
+03:01 greg@xcf16 ~ ? sudo cp /Volumes/image_pool1/exported_vm_backup.qcow2 /Users/TRANSMIT/
+
+Password:
+03:06 greg@xcf16 ~ ? 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -51,6 +55,55 @@ sudo cp /Volumes/image_pool1/exported_vm_backup.qcow2 /Users/TRANSMIT/
 
 5.  How to restart the vm and containers so the observium works again   
 ###############################################################################################
+
+
+
+
+The video was helpful, btu I was not able to use WinSCP type process.
+
+I needed to create an NFS share from my mac then coppy the qcow2 off that way.
+
+Create LOCAL-mount:
+sudo mkdir -p /Volumes/image_pool1
+
+NFS mount:
+sudo mount -t nfs -o vers=3,nolock 192.168.86.181:/image_pool1 /Volumes/image_pool1
+
+Copy:
+cp /Volumes/image_pool1/centr10a-disk.qcow2 /Users/TRANSMIT/
+
+
+
+General ( use <content> as variable for given environment)
+
+On local machine:
+
+sudo mkdir -p </LOCAL-NFS/mount-point>
+sudo mount -t nfs -o vers=3,nolock <IPADDRESS-of-CVM>:/<CONTAINER-NAME>  </LOCAL-NFS/mount-point>
+cp </LOCAL-NFS/mount-point>/<exported-disk-name.qcow2> <local-destination/path>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Logs:
 [root@centr10a ~]# 
 [root@centr10a ~]# podman ps
