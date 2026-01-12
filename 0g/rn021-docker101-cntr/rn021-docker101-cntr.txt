@@ -1,0 +1,165 @@
+
+
+
+
+
+========================================================
+OBSERVIUM + MARIADB ON DOCKER (CENTOS)
+Complete Step-by-Step Installation Guide
+========================================================
+
+ASSUMPTIONS
+-----------
+- CentOS host with Docker already installed and running
+- Persistent data stored under /cdata
+- Observium web UI exposed on host port 8080
+- Container names:
+    - nms-db  (MariaDB)
+    - nms-app (Observium)
+- Docker network name: nms-net
+
+
+1) VERIFY DOCKER IS RUNNING
+---------------------------
+sudo docker --version
+sudo systemctl status docker --no-pager
+
+
+2) CREATE PERSISTENT DATA DIRECTORIES
+-------------------------------------
+sudo mkdir -p /cdata/mariadb /cdata/observium
+sudo chmod 700 /cdata/mariadb
+sudo chmod 755 /cdata/observium
+
+
+3) HANDLE SELINUX (REQUIRED IF ENFORCING)
+-----------------------------------------
+Check SELinux mode:
+getenforce
+
+If output is "Enforcing", run:
+sudo chcon -Rt svirt_sandbox_file_t /cdata
+
+
+4) CREATE DOCKER NETWORK
+------------------------
+sudo docker network create nms-net
+
+Verify:
+sudo docker network ls | grep nms-net
+
+
+5) START MARIADB CONTAINER (nms-db)
+-----------------------------------
+NOTE: Choose strong passwords and KEEP THEM.
+The MYSQL_PASSWORD must match DB_PASS in Observium.
+
+sudo docker run -d \
+  --name nms-db \
+  --network nms-net \
+  -e MYSQL_ROOT_PASSWORD='ChangeThisRootPW!' \
+  -e MYSQL_DATABASE='observium' \
+  -e MYSQL_USER='observium' \
+  -e MYSQL_PASSWORD='ChangeThisObsPW!' \
+  -v /cdata/mariadb:/var/lib/mysql \
+  --restart unless-stopped \
+  mariadb:10.5
+
+Check status:
+sudo docker ps
+
+Optional: confirm DB is ready:
+sudo docker logs nms-db --tail 50
+
+
+6) START OBSERVIUM CONTAINER (nms-app)
+--------------------------------------
+Publishes Observium UI on host port 8080.
+
+sudo docker run -d \
+  --name nms-app \
+  --network nms-net \
+  -p 8080:80 \
+  -e DB_HOST='nms-db' \
+  -e DB_NAME='observium' \
+  -e DB_USER='observium' \
+  -e DB_PASS='ChangeThisObsPW!' \
+  -v /cdata/observium:/opt/observium \
+  --restart unless-stopped \
+  pvrmza/docker-observium:latest
+
+
+7) VERIFY CONTAINERS ARE RUNNING
+--------------------------------
+sudo docker ps
+
+Expected:
+- nms-db   (mariadb:10.5)      Up
+- nms-app  (observium image)   Up   0.0.0.0:8080->80/tcp
+
+
+8) ACCESS OBSERVIUM WEB UI
+--------------------------
+Open browser to:
+http://<DOCKER_HOST_IP>:8080
+
+
+9) TROUBLESHOOTING CHECKS
+-------------------------
+
+View logs:
+sudo docker logs nms-db --tail 200
+sudo docker logs nms-app --tail 200
+
+Verify container DNS:
+sudo docker exec -it nms-app sh -lc "getent hosts nms-db || ping -c1 nms-db"
+
+Verify port listening:
+sudo ss -tulpn | grep 8080
+
+If you see permission errors in logs (SELinux):
+sudo chcon -Rt svirt_sandbox_file_t /cdata
+sudo docker restart nms-db nms-app
+
+
+10) NORMAL OPERATIONS (DAY-2)
+-----------------------------
+
+Stop containers (safe order):
+sudo docker stop nms-app
+sudo docker stop nms-db
+
+Start containers (safe order):
+sudo docker start nms-db
+sleep 10
+sudo docker start nms-app
+
+Follow logs:
+sudo docker logs -f nms-app
+
+
+11) CLEAN RESET (OPTIONAL)
+--------------------------
+WARNING: This removes containers but DOES NOT delete /cdata.
+
+sudo docker rm -f nms-app nms-db
+sudo docker network rm nms-net
+
+
+NOTES
+-----
+- Do NOT expose port 3306 unless external DB access is required
+- Observium may take ~10–30 seconds before UI responds
+- Polling and graphs may take a few minutes after startup
+- If Observium cannot connect to DB, logs will clearly indicate it
+
+========================================================
+END OF PROCEDURE
+========================================================
+
+
+
+
+
+
+
