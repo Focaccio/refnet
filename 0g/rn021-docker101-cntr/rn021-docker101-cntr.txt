@@ -51,6 +51,10 @@ sudo docker network ls | grep nms-net
 
 5) START MARIADB CONTAINER (nms-db)
 -----------------------------------
+
+sudo docker run -d --name nms-db --network nms-net -e MYSQL_ROOT_PASSWORD='ChangeThisRootPW!' -e MYSQL_DATABASE='observium' -e MYSQL_USER='observium' -e MYSQL_PASSWORD='ChangeThisObsPW!' -v /cdata/mariadb:/var/lib/mysql --restart unless-stopped mariadb:10.5
+
+
 NOTE: Choose strong passwords and KEEP THEM.
 The MYSQL_PASSWORD must match DB_PASS in Observium.
 
@@ -74,6 +78,13 @@ sudo docker logs nms-db --tail 50
 
 6) START OBSERVIUM CONTAINER (nms-app)
 --------------------------------------
+
+
+
+sudo docker run -d --name nms-app --network nms-net -p 8080:80 -e DB_HOST='nms-db' -e DB_NAME='observium' -e DB_USER='observium' -e DB_PASS='ChangeThisObsPW!' -v /cdata/observium:/opt/observium --restart unless-stopped pvrmza/docker-observium:latest
+
+
+
 Publishes Observium UI on host port 8080.
 
 sudo docker run -d \
