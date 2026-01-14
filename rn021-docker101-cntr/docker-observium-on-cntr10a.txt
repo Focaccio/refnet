@@ -1,0 +1,528 @@
+/dev/sda5       2.1G  873M  1.1G  45% /var
+/dev/sda8        13G   50M   12G   1% /home
+Last login: Sun Jan 11 03:02:35 2026 from ::1
+
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? res
+Script started, output file is /Users/f16/16sessions/260111-063006-term-session.session
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? 
+06:30 greg@xcf16 ~ ? ssh 192.168.86.36 -lgreg
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the ED25519 key sent by the remote host is
+SHA256:VeJ1SPRhRXmwOSqcBqPRS7pNGt8qZZzJ7Lnr42QK88A.
+Please contact your system administrator.
+Add correct host key in /Users/greg/.ssh/known_hosts to get rid of this message.
+Offending ECDSA key in /Users/greg/.ssh/known_hosts:7
+Host key for 192.168.86.36 has changed and you have requested strict checking.
+Host key verification failed.
+06:30 greg@xcf16 ~ ? sudo vi /Users/greg/.ssh/known_hosts
+Password:
+Sorry, try again.
+Password:
+06:31 greg@xcf16 ~ ? sudo vi /Users/greg/.ssh/known_hosts
+06:31 greg@xcf16 ~ ? ssh 192.168.86.36 -lgreg            
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the ED25519 key sent by the remote host is
+SHA256:VeJ1SPRhRXmwOSqcBqPRS7pNGt8qZZzJ7Lnr42QK88A.
+Please contact your system administrator.
+Add correct host key in /Users/greg/.ssh/known_hosts to get rid of this message.
+Offending RSA key in /Users/greg/.ssh/known_hosts:6
+Host key for 192.168.86.36 has changed and you have requested strict checking.
+Host key verification failed.
+06:31 greg@xcf16 ~ ? sudo vi /Users/greg/.ssh/known_hosts
+06:32 greg@xcf16 ~ ? ssh 192.168.86.36 -lgreg            
+The authenticity of host '192.168.86.36 (192.168.86.36)' can't be established.
+ED25519 key fingerprint is SHA256:VeJ1SPRhRXmwOSqcBqPRS7pNGt8qZZzJ7Lnr42QK88A.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '192.168.86.36' (ED25519) to the list of known hosts.
+greg@192.168.86.36's password: 
+Last login: Sun Jan 11 09:29:37 2026
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ system hostnamectl set-hostname centrd1
+-bash: system: command not found
+[greg@centr10a ~]$ hostnamectl set-hostname centrd1
+==== AUTHENTICATING FOR org.freedesktop.hostname1.set-static-hostname ====
+Authentication is required to set the statically configured local hostname, as well as the pretty hostname.
+Authenticating as: Super User (root)
+Password: 
+==== AUTHENTICATION COMPLETE ====
+[greg@centr10a ~]$ ip -4 r
+default via 192.168.86.1 dev ens3 proto dhcp src 192.168.86.36 metric 100 
+192.168.86.0/24 dev ens3 proto kernel scope link src 192.168.86.36 metric 100 
+[greg@centr10a ~]$ ping google.com
+PING google.com (142.250.72.238) 56(84) bytes of data.
+64 bytes from lax31s14-in-f14.1e100.net (142.250.72.238): icmp_seq=1 ttl=115 time=20.3 ms
+64 bytes from lax31s14-in-f14.1e100.net (142.250.72.238): icmp_seq=2 ttl=115 time=16.3 ms
+^C
+--- google.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 16.308/18.282/20.256/1.974 ms
+[greg@centr10a ~]$ docker --version
+-bash: docker: command not found
+[greg@centr10a ~]$ podman --version
+-bash: podman: command not found
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ sudo dnf -y remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine || true
+No match for argument: docker
+No match for argument: docker-client
+No match for argument: docker-client-latest
+No match for argument: docker-common
+No match for argument: docker-latest
+No match for argument: docker-latest-logrotate
+No match for argument: docker-logrotate
+No match for argument: docker-engine
+No packages marked for removal.
+Dependencies resolved.
+Nothing to do.
+Complete!
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ sudo dnf -y install dnf-plugins-core
+CentOS Stream 10 - BaseOS                                                                                      1.3 MB/s | 6.8 MB     00:05    
+CentOS Stream 10 - AppStream                                                                                   1.1 MB/s | 3.5 MB     00:03    
+CentOS Stream 10 - Extras packages                                                                              16 kB/s | 8.3 kB     00:00    
+Package dnf-plugins-core-4.7.0-10.el10.noarch is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
+[greg@centr10a ~]$ sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+Adding repo from: https://download.docker.com/linux/centos/docker-ce.repo
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+Docker CE Stable - x86_64                                                                                       72 kB/s |  16 kB     00:00    
+Dependencies resolved.
+===============================================================================================================================================
+ Package                                 Architecture         Version                                     Repository                      Size
+===============================================================================================================================================
+Installing:
+ containerd.io                           x86_64               2.2.1-1.el10                                docker-ce-stable                35 M
+ docker-buildx-plugin                    x86_64               0.30.1-1.el10                               docker-ce-stable                17 M
+ docker-ce                               x86_64               3:29.1.4-1.el10                             docker-ce-stable                22 M
+ docker-ce-cli                           x86_64               1:29.1.4-1.el10                             docker-ce-stable               8.3 M
+ docker-compose-plugin                   x86_64               5.0.1-1.el10                                docker-ce-stable               8.1 M
+Installing dependencies:
+ container-selinux                       noarch               4:2.244.0-1.el10                            appstream                       59 k
+ fuse-common                             x86_64               3.16.2-5.el10                               baseos                         9.7 k
+ fuse-overlayfs                          x86_64               1.16-1.el10                                 appstream                       67 k
+ fuse3                                   x86_64               3.16.2-5.el10                               baseos                          59 k
+ iptables-nft                            x86_64               1.8.11-12.el10                              appstream                      200 k
+ libnftnl                                x86_64               1.3.0-2.el10                                baseos                          85 k
+ nftables                                x86_64               1:1.1.5-3.el10                              baseos                         447 k
+ passt                                   x86_64               0^20251210.gd04c480-2.el10                  appstream                      283 k
+ passt-selinux                           noarch               0^20251210.gd04c480-2.el10                  appstream                       26 k
+Installing weak dependencies:
+ docker-ce-rootless-extras               x86_64               29.1.4-1.el10                               docker-ce-stable               3.4 M
+
+Transaction Summary
+===============================================================================================================================================
+Install  15 Packages
+
+Total download size: 96 M
+Installed size: 370 M
+Downloading Packages:
+(1/15): fuse-common-3.16.2-5.el10.x86_64.rpm                                                                    48 kB/s | 9.7 kB     00:00    
+(2/15): fuse3-3.16.2-5.el10.x86_64.rpm                                                                         166 kB/s |  59 kB     00:00    
+(3/15): libnftnl-1.3.0-2.el10.x86_64.rpm                                                                       208 kB/s |  85 kB     00:00    
+(4/15): container-selinux-2.244.0-1.el10.noarch.rpm                                                            405 kB/s |  59 kB     00:00    
+(5/15): fuse-overlayfs-1.16-1.el10.x86_64.rpm                                                                  499 kB/s |  67 kB     00:00    
+(6/15): nftables-1.1.5-3.el10.x86_64.rpm                                                                       956 kB/s | 447 kB     00:00    
+(7/15): iptables-nft-1.8.11-12.el10.x86_64.rpm                                                                 892 kB/s | 200 kB     00:00    
+(8/15): passt-selinux-0^20251210.gd04c480-2.el10.noarch.rpm                                                    321 kB/s |  26 kB     00:00    
+(9/15): passt-0^20251210.gd04c480-2.el10.x86_64.rpm                                                            1.0 MB/s | 283 kB     00:00    
+(10/15): docker-buildx-plugin-0.30.1-1.el10.x86_64.rpm                                                         3.3 MB/s |  17 MB     00:05    
+(11/15): docker-ce-29.1.4-1.el10.x86_64.rpm                                                                    2.1 MB/s |  22 MB     00:10    
+(12/15): docker-ce-cli-29.1.4-1.el10.x86_64.rpm                                                                1.4 MB/s | 8.3 MB     00:06    
+(13/15): containerd.io-2.2.1-1.el10.x86_64.rpm                                                                 2.4 MB/s |  35 MB     00:14    
+(14/15): docker-ce-rootless-extras-29.1.4-1.el10.x86_64.rpm                                                    720 kB/s | 3.4 MB     00:04    
+(15/15): docker-compose-plugin-5.0.1-1.el10.x86_64.rpm                                                         1.5 MB/s | 8.1 MB     00:05    
+-----------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                          5.3 MB/s |  96 MB     00:17     
+CentOS Stream 10 - BaseOS                                                                                      150 kB/s | 1.6 kB     00:00    
+Importing GPG key 0x8483C65D:
+ Userid     : "CentOS (CentOS Official Signing Key) <security@centos.org>"
+ Fingerprint: 99DB 70FA E1D7 CE22 7FB6 4882 05B5 55B3 8483 C65D
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial-SHA256
+Key imported successfully
+Docker CE Stable - x86_64                                                                                       20 kB/s | 1.6 kB     00:00    
+Importing GPG key 0x621E9F35:
+ Userid     : "Docker Release (CE rpm) <docker@docker.com>"
+ Fingerprint: 060A 61C5 1B55 8A7F 742B 77AA C52F EB6B 621E 9F35
+ From       : https://download.docker.com/linux/centos/gpg
+Key imported successfully
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                                       1/1 
+  Running scriptlet: container-selinux-4:2.244.0-1.el10.noarch                                                                            1/15 
+  Installing       : container-selinux-4:2.244.0-1.el10.noarch                                                                            1/15 
+  Running scriptlet: container-selinux-4:2.244.0-1.el10.noarch                                                                            1/15 
+  Installing       : docker-buildx-plugin-0.30.1-1.el10.x86_64                                                                            2/15 
+  Running scriptlet: docker-buildx-plugin-0.30.1-1.el10.x86_64                                                                            2/15 
+  Installing       : docker-compose-plugin-5.0.1-1.el10.x86_64                                                                            3/15 
+  Running scriptlet: docker-compose-plugin-5.0.1-1.el10.x86_64                                                                            3/15 
+  Installing       : libnftnl-1.3.0-2.el10.x86_64                                                                                         4/15 
+  Installing       : nftables-1:1.1.5-3.el10.x86_64                                                                                       5/15 
+  Running scriptlet: nftables-1:1.1.5-3.el10.x86_64                                                                                       5/15 
+  Installing       : iptables-nft-1.8.11-12.el10.x86_64                                                                                   6/15 
+  Running scriptlet: iptables-nft-1.8.11-12.el10.x86_64                                                                                   6/15 
+  Installing       : docker-ce-cli-1:29.1.4-1.el10.x86_64                                                                                 7/15 
+  Running scriptlet: docker-ce-cli-1:29.1.4-1.el10.x86_64                                                                                 7/15 
+  Running scriptlet: passt-selinux-0^20251210.gd04c480-2.el10.noarch                                                                      8/15 
+  Installing       : passt-selinux-0^20251210.gd04c480-2.el10.noarch                                                                      8/15 
+  Running scriptlet: passt-selinux-0^20251210.gd04c480-2.el10.noarch                                                                      8/15 
+  Installing       : passt-0^20251210.gd04c480-2.el10.x86_64                                                                              9/15 
+  Installing       : containerd.io-2.2.1-1.el10.x86_64                                                                                   10/15 
+  Running scriptlet: containerd.io-2.2.1-1.el10.x86_64                                                                                   10/15 
+  Installing       : fuse-common-3.16.2-5.el10.x86_64                                                                                    11/15 
+  Installing       : fuse3-3.16.2-5.el10.x86_64                                                                                          12/15 
+  Installing       : fuse-overlayfs-1.16-1.el10.x86_64                                                                                   13/15 
+  Running scriptlet: fuse-overlayfs-1.16-1.el10.x86_64                                                                                   13/15 
+  Installing       : docker-ce-3:29.1.4-1.el10.x86_64                                                                                    14/15 
+  Running scriptlet: docker-ce-3:29.1.4-1.el10.x86_64                                                                                    14/15 
+  Installing       : docker-ce-rootless-extras-29.1.4-1.el10.x86_64                                                                      15/15 
+  Running scriptlet: docker-ce-rootless-extras-29.1.4-1.el10.x86_64                                                                      15/15 
+  Running scriptlet: container-selinux-4:2.244.0-1.el10.noarch                                                                           15/15 
+  Running scriptlet: passt-selinux-0^20251210.gd04c480-2.el10.noarch                                                                     15/15 
+  Running scriptlet: docker-ce-rootless-extras-29.1.4-1.el10.x86_64                                                                      15/15 
+
+Installed:
+  container-selinux-4:2.244.0-1.el10.noarch     containerd.io-2.2.1-1.el10.x86_64           docker-buildx-plugin-0.30.1-1.el10.x86_64          
+  docker-ce-3:29.1.4-1.el10.x86_64              docker-ce-cli-1:29.1.4-1.el10.x86_64        docker-ce-rootless-extras-29.1.4-1.el10.x86_64     
+  docker-compose-plugin-5.0.1-1.el10.x86_64     fuse-common-3.16.2-5.el10.x86_64            fuse-overlayfs-1.16-1.el10.x86_64                  
+  fuse3-3.16.2-5.el10.x86_64                    iptables-nft-1.8.11-12.el10.x86_64          libnftnl-1.3.0-2.el10.x86_64                       
+  nftables-1:1.1.5-3.el10.x86_64                passt-0^20251210.gd04c480-2.el10.x86_64     passt-selinux-0^20251210.gd04c480-2.el10.noarch    
+
+Complete!
+[greg@centr10a ~]$ sudo systemctl enable --now docker
+Created symlink '/etc/systemd/system/multi-user.target.wants/docker.service' → '/usr/lib/systemd/system/docker.service'.
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ systemctl status docker --no-pager
+● docker.service - Docker Application Container Engine
+     Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; preset: 5:185mdisabled)
+     Active: active (running) since Sun 2026-01-11 09:49:26 EST; 10s ago
+ Invocation: efc4d31939ad4a05a48bdd6baebaf0a4
+TriggeredBy: ● docker.socket
+       Docs: https://docs.docker.com
+   Main PID: 35234 (dockerd)
+      Tasks: 9
+     Memory: 27.1M (peak: 27.6M)
+        CPU: 156ms
+     CGroup: /system.slice/docker.service
+             └─35234 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ 
+[greg@centr10a ~]$ sudo docker run --rm hello-world
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+17eec7bbc9d7: Pull complete 
+ea52d2000f90: Download complete 
+Digest: sha256:d4aaab6242e0cace87e2ec17a2ed3d779d18fbfd03042ea58f2995626396a274
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+[greg@centr10a ~]$ sudo usermod -aG docker $USER
+[greg@centr10a ~]$ exit
+logout
+Connection to 192.168.86.36 closed.
+06:50 greg@xcf16 ~ ? ssh 192.168.86.36 -lgreg
+greg@192.168.86.36's password: 
+Last login: Sun Jan 11 09:32:13 2026 from 192.168.86.27
+[greg@centrd1 ~]$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ ip -4 a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: ens3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    altname enp0s3
+    altname enx506b8db76bb4
+    inet 192.168.86.36/24 brd 192.168.86.255 scope global dynamic noprefixroute ens3
+       valid_lft 84397sec preferred_lft 84397sec
+3: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default 
+    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
+       valid_lft forever preferred_lft forever
+[greg@centrd1 ~]$ 
+Last login: Sun Jan 11 06:31:46 2026
+
+03:06 greg@xcf16 ~ ? 
+03:06 greg@xcf16 ~ ? res
+Script started, output file is /Users/f16/16sessions/260112-030631-term-session.session
+03:06 greg@xcf16 ~ ? 
+03:06 greg@xcf16 ~ ? 
+03:06 greg@xcf16 ~ ? 
+03:06 greg@xcf16 ~ ? 
+03:06 greg@xcf16 ~ ? 
+03:06 greg@xcf16 ~ ? 
+03:06 greg@xcf16 ~ ? ssh 192.168.86.36 -lgreg
+greg@192.168.86.36's password: 
+Last login: Sun Jan 11 09:50:44 2026 from 192.168.86.27
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ systemctl docker status
+Unknown command verb 'docker', did you mean 'cancel'?
+[greg@centrd1 ~]$ systemctl status docker
+● docker.service - Docker Application Container Engine
+     Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; preset: 5:185mdisabled)
+     Active: active (running) since Sun 2026-01-11 09:49:26 EST; 20h ago
+ Invocation: efc4d31939ad4a05a48bdd6baebaf0a4
+TriggeredBy: ● docker.socket
+       Docs: https://docs.docker.com
+   Main PID: 35234 (dockerd)
+      Tasks: 11
+     Memory: 37.4M (peak: 39.4M)
+        CPU: 3.982s
+     CGroup: /system.slice/docker.service
+             └─35234 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ sudo docker --version && sudo systemctl status docker --no-pager
+Docker version 29.1.4, build 0e6fee6
+● docker.service - Docker Application Container Engine
+     Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; preset: 5:185mdisabled)
+     Active: active (running) since Sun 2026-01-11 09:49:26 EST; 20h ago
+ Invocation: efc4d31939ad4a05a48bdd6baebaf0a4
+TriggeredBy: ● docker.socket
+       Docs: https://docs.docker.com
+   Main PID: 35234 (dockerd)
+      Tasks: 11
+     Memory: 37.4M (peak: 39.4M)
+        CPU: 4.048s
+     CGroup: /system.slice/docker.service
+             └─35234 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+
+Jan 11 09:49:26 centrd1 dockerd[35234]: time="2026-01-11T09:49:26.742827184-05:00" level=info msg="Docker daemon" commit=08440b6 con…ion=29.1.4
+Jan 11 09:49:26 centrd1 dockerd[35234]: time="2026-01-11T09:49:26.743006374-05:00" level=info msg="Initializing buildkit"
+Jan 11 09:49:26 centrd1 dockerd[35234]: time="2026-01-11T09:49:26.769828925-05:00" level=warning msg="git source cannot be enabled: … in $PATH"
+Jan 11 09:49:26 centrd1 dockerd[35234]: time="2026-01-11T09:49:26.777428565-05:00" level=info msg="Completed buildkit initialization"
+Jan 11 09:49:26 centrd1 dockerd[35234]: time="2026-01-11T09:49:26.781569904-05:00" level=info msg="Daemon has completed initialization"
+Jan 11 09:49:26 centrd1 dockerd[35234]: time="2026-01-11T09:49:26.781791318-05:00" level=info msg="API listen on /run/docker.sock"
+Jan 11 09:49:26 centrd1 systemd[1]: Started docker.service - Docker Application Container Engine.
+Jan 11 09:49:56 centrd1 dockerd[35234]: time="2026-01-11T09:49:56.370897413-05:00" level=info msg="image pulled" digest="sha256:d4aa…ld:latest"
+Jan 11 09:49:56 centrd1 dockerd[35234]: time="2026-01-11T09:49:56.668863676-05:00" level=info msg="sbJoin: gwep4 ''->'0c73f42eacfa',…017ff5857c
+Jan 11 09:49:56 centrd1 dockerd[35234]: time="2026-01-11T09:49:56.724802492-05:00" level=info msg="ignoring event" container=8a78570…askDelete"
+Hint: Some lines were ellipsized, use -l to show in full.
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ sudo mkdir -p /cdata/mariadb /cdata/observium
+[greg@centrd1 ~]$ sudo chmod 700 /cdata/mariadb
+[greg@centrd1 ~]$ sudo chmod 755 /cdata/observium
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ getenforce
+Enforcing
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ sudo chcon -Rt svirt_sandbox_file_t /cdata
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ sudo docker network create nms-net
+cad9c3a5491e714d23c9b522dc7689c620b849bd9a4775a7d0f1d156c32f1b73
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ sudo docker network ls | grep nms-net
+cad9c3a5491e   nms-net   bridge    local
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ sudo docker run -d --name nms-db --network nms-net -e MYSQL_ROOT_PASSWORD='ChangeThisRootPW!' -e MYSQL_DATABASE='observium' -e MYSQL_USER='observium' -e MYSQL_PASSWORD='ChangeThisObsPW!' -v /cdata/mariadb:/var/lib/mysql --restart unless-stopped mariadb:10.5
+Unable to find image 'mariadb:10.5' locally
+10.5: Pulling from library/mariadb
+25cb3cc8cdf5: Pull complete 
+27866cd1d4de: Pull complete 
+13b7e930469f: Pull complete 
+89597121fd7d: Pull complete 
+7cc5d0769ced: Pull complete 
+a0dca9ad4602: Pull complete 
+8400cc70c12c: Pull complete 
+42d16e8a68bf: Pull complete 
+8ef943f09733: Download complete 
+fe144b64570e: Download complete 
+Digest: sha256:a530aeeefd82f4fa5150f391b6c75462140904780338766f6b03acecb1cca3ce
+Status: Downloaded newer image for mariadb:10.5
+591e0bd20477a755f79cb12a6e99cabcfab9bcb2fe8e5ebbf323b836b05244eb
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ sudo docker run -d --name nms-app --network nms-net -p 8080:80 -e DB_HOST='nms-db' -e DB_NAME='observium' -e DB_USER='observium' -e DB_PASS='ChangeThisObsPW!' -v /cdata/observium:/opt/observium --restart unless-stopped pvrmza/docker-observium:latest
+Unable to find image 'pvrmza/docker-observium:latest' locally
+latest: Pulling from pvrmza/docker-observium
+3153aa388d02: Pull complete 
+3adc77c7161f: Pull complete 
+e31cebeae467: Pull complete 
+d6d2512663d6: Pull complete 
+3e561e1b4319: Pull complete 
+17ad2412ba25: Pull complete 
+ac2779a11028: Pull complete 
+47e4085c8f69: Pull complete 
+Digest: sha256:7270b080730588727860b5aa56150464f4faf2f9f7ab7903ad9e380811571555
+Status: Downloaded newer image for pvrmza/docker-observium:latest
+e99562ae72e1aff1ea1462c90bee8492bea92a83e06367e921456b075fd4633c
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ docker ps
+CONTAINER ID   IMAGE                            COMMAND                  CREATED              STATUS          PORTS                                     NAMES
+e99562ae72e1   pvrmza/docker-observium:latest   "/usr/local/bin/dock…"   About a minute ago   Up 54 seconds   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   nms-app
+591e0bd20477   mariadb:10.5                     "docker-entrypoint.s…"   4 minutes ago        Up 4 minutes    3306/tcp                                  nms-db
+[greg@centrd1 ~]$ ip -4 a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: ens3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    altname enp0s3
+    altname enx506b8db76bb4
+    inet 192.168.86.36/24 brd 192.168.86.255 scope global dynamic noprefixroute ens3
+       valid_lft 52468sec preferred_lft 52468sec
+3: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default 
+    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
+       valid_lft forever preferred_lft forever
+6: br-cad9c3a5491e: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
+    inet 172.18.0.1/16 brd 172.18.255.255 scope global br-cad9c3a5491e
+       valid_lft forever preferred_lft forever
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ 
+[greg@centrd1 ~]$ sudo docker stop nms-app
+nms-app
+[greg@centrd1 ~]$ sudo docker rm nms-app
+nms-app
+[greg@centrd1 ~]$ sudo mkdir -p /cdata/observium-config
+[greg@centrd1 ~]$ sudo chcon -Rt svirt_sandbox_file_t /cdata
+[greg@centrd1 ~]$ sudo docker run -d --name nms-app --network nms-net -p 8080:80 -v /cdata/observium-config:/config -e OBSERVIUM_ADMIN_USER=admin -e OBSERVIUM_ADMIN_PASS=admin -e OBSERVIUM_db_host=nms-db -e OBSERVIUM_db_user=observium -e OBSERVIUM_db_pass=ChangeThisObsPW! -e OBSERVIUM_db_name=observium --restart unless-stopped pvrmza/docker-observium:latest
+37ce65da233ca17bd59a6c8262436674b2b300282242ec5781ce253b8e46d2ce
+[greg@centrd1 ~]$ 
