@@ -1,0 +1,17 @@
+Layer 3 Switch Routing Test
+
+1. Node A, VLAN 172 Network 172 on Switch V = 172.16.0.0/24
+2. Network 16 Gateway 172.16.0.1
+3. Node A address 172.16.0.99 
+4. Node B, VLAN 10 Network 10 on Switch V = 10.0.1.0/24
+5. Network 10 Gateway to Network 172 on Switch V 10.0.1.130
+6. Node B address 10.0.1.99
+
+
+###############################################################################################
+*** TEST 1 - Default Gateway ***
+Node A using DG to 172.16.0.1
+###############################################################################################
+
+
+
