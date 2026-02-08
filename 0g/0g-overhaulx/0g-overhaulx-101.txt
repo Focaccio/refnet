@@ -1,0 +1,16 @@
+
+
+
+
+
+root@d133b:~# ssh -o KexAlgorithms=+diffie-hellman-group1-sha1 -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa -o Ciphers=+aes128-cbc lab@10.0.41.5
+
+
+
+
+
+
+
+
+
+
