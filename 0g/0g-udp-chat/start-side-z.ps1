@@ -47,6 +47,20 @@ $txtLocalIP.Font = $fontSmall
 $txtLocalIP.Text = $LocalIP
 $form.Controls.Add($txtLocalIP)
 
+$lblRemoteIP = New-Object System.Windows.Forms.Label
+$lblRemoteIP.Location = New-Object System.Drawing.Point(204, 68)
+$lblRemoteIP.Size = New-Object System.Drawing.Size(64, 20)
+$lblRemoteIP.Font = $fontSmall
+$lblRemoteIP.Text = 'Remote IP'
+$form.Controls.Add($lblRemoteIP)
+
+$txtRemoteIP = New-Object System.Windows.Forms.TextBox
+$txtRemoteIP.Location = New-Object System.Drawing.Point(272, 66)
+$txtRemoteIP.Size = New-Object System.Drawing.Size(120, 24)
+$txtRemoteIP.Font = $fontSmall
+$txtRemoteIP.Text = $RemoteIP
+$form.Controls.Add($txtRemoteIP)
+
 $lblAtoZSource = New-Object System.Windows.Forms.Label
 $lblAtoZSource.Location = New-Object System.Drawing.Point(204, 42)
 $lblAtoZSource.Size = New-Object System.Drawing.Size(78, 20)
@@ -97,7 +111,7 @@ $lblZtoADest.Text = 'Z->A Dest'
 $form.Controls.Add($lblZtoADest)
 
 $txtZtoADestPort = New-Object System.Windows.Forms.TextBox
-$txtZtoADestPort.Location = New-Object System.Drawing.Point(244, 66)
+$txtZtoADestPort.Location = New-Object System.Drawing.Point(90, 66)
 $txtZtoADestPort.Size = New-Object System.Drawing.Size(64, 24)
 $txtZtoADestPort.Font = $fontSmall
 $txtZtoADestPort.Text = $ZtoADestPort
@@ -216,8 +230,8 @@ $txtMessage.Add_TextChanged({
     }
 })
 
-$script:remoteAddress = [System.Net.IPAddress]::Parse($RemoteIP)
 $script:currentLocalIP = $LocalIP
+$script:currentRemoteIP = $RemoteIP
 $script:currentAtoZSourcePort = $AtoZSourcePort
 $script:currentAtoZDestPort = $AtoZDestPort
 $script:currentZtoASourcePort = $ZtoASourcePort
@@ -227,9 +241,9 @@ $script:sendUdp = $null
 $script:recvUdp = $null
 
 function Update-NetworkLabels {
-    $lblChannel1.Text = "Channel Z -> A : local $($script:currentLocalIP)`:$($script:currentZtoASourcePort) -> remote $RemoteIP`:$($script:currentZtoADestPort)"
-    $lblChannel2.Text = "Channel A -> Z : remote $RemoteIP`:$($script:currentAtoZSourcePort) -> local $($script:currentLocalIP)`:$($script:currentAtoZDestPort)"
-    $statusLabel.Text = "Send(Z->A): $($script:currentLocalIP)`:$($script:currentZtoASourcePort) -> $RemoteIP`:$($script:currentZtoADestPort) | Recv(A->Z): $($script:currentLocalIP)`:$($script:currentAtoZDestPort)"
+    $lblChannel1.Text = "Channel Z -> A : local $($script:currentLocalIP)`:$($script:currentZtoASourcePort) -> remote $($script:currentRemoteIP)`:$($script:currentZtoADestPort)"
+    $lblChannel2.Text = "Channel A -> Z : remote $($script:currentRemoteIP)`:$($script:currentAtoZSourcePort) -> local $($script:currentLocalIP)`:$($script:currentAtoZDestPort)"
+    $statusLabel.Text = "Send(Z->A): $($script:currentLocalIP)`:$($script:currentZtoASourcePort) -> $($script:currentRemoteIP)`:$($script:currentZtoADestPort) | Recv(A->Z): $($script:currentLocalIP)`:$($script:currentAtoZDestPort)"
 }
 
 function Close-UdpClients {
@@ -247,6 +261,7 @@ function Close-UdpClients {
 function Initialize-Network {
     param(
         [string]$NextLocalIP,
+        [string]$NextRemoteIP,
         [int]$NextAtoZSourcePort,
         [int]$NextAtoZDestPort,
         [int]$NextZtoASourcePort,
@@ -254,6 +269,7 @@ function Initialize-Network {
     )
 
     $localAddress = [System.Net.IPAddress]::Parse($NextLocalIP)
+    $nextRemoteAddress = [System.Net.IPAddress]::Parse($NextRemoteIP)
 
     $nextSendUdp = New-Object System.Net.Sockets.UdpClient
     $nextSendUdp.Client.SetSocketOption([System.Net.Sockets.SocketOptionLevel]::Socket, [System.Net.Sockets.SocketOptionName]::ReuseAddress, $true)
@@ -268,13 +284,14 @@ function Initialize-Network {
     Close-UdpClients
 
     $script:currentLocalIP = $NextLocalIP
+    $script:currentRemoteIP = $NextRemoteIP
     $script:currentAtoZSourcePort = $NextAtoZSourcePort
     $script:currentAtoZDestPort = $NextAtoZDestPort
     $script:currentZtoASourcePort = $NextZtoASourcePort
     $script:currentZtoADestPort = $NextZtoADestPort
     $script:sendUdp = $nextSendUdp
     $script:recvUdp = $nextRecvUdp
-    $script:sendEndpoint = New-Object System.Net.IPEndPoint($script:remoteAddress, $script:currentZtoADestPort)
+    $script:sendEndpoint = New-Object System.Net.IPEndPoint($nextRemoteAddress, $script:currentZtoADestPort)
 
     Update-NetworkLabels
 }
@@ -298,8 +315,12 @@ function Parse-PortOrThrow {
 function Apply-NetworkSettings {
     try {
         $nextLocalIP = $txtLocalIP.Text.Trim()
+        $nextRemoteIP = $txtRemoteIP.Text.Trim()
         if ([string]::IsNullOrWhiteSpace($nextLocalIP)) {
             throw 'Local IP is required.'
+        }
+        if ([string]::IsNullOrWhiteSpace($nextRemoteIP)) {
+            throw 'Remote IP is required.'
         }
 
         $nextAtoZSourcePort = Parse-PortOrThrow -Text $txtAtoZSourcePort.Text.Trim() -FieldName 'A->Z Source Port'
@@ -307,14 +328,14 @@ function Apply-NetworkSettings {
         $nextZtoASourcePort = Parse-PortOrThrow -Text $txtZtoASourcePort.Text.Trim() -FieldName 'Z->A Source Port'
         $nextZtoADestPort = Parse-PortOrThrow -Text $txtZtoADestPort.Text.Trim() -FieldName 'Z->A Destination Port'
 
-        Initialize-Network -NextLocalIP $nextLocalIP -NextAtoZSourcePort $nextAtoZSourcePort -NextAtoZDestPort $nextAtoZDestPort -NextZtoASourcePort $nextZtoASourcePort -NextZtoADestPort $nextZtoADestPort
+        Initialize-Network -NextLocalIP $nextLocalIP -NextRemoteIP $nextRemoteIP -NextAtoZSourcePort $nextAtoZSourcePort -NextAtoZDestPort $nextAtoZDestPort -NextZtoASourcePort $nextZtoASourcePort -NextZtoADestPort $nextZtoADestPort
         Add-ChatLine -Prefix '[System]' -Message "Network settings applied."
     } catch {
         Add-ChatLine -Prefix '[Error]' -Message ("Apply failed: " + $_.Exception.Message)
     }
 }
 
-Initialize-Network -NextLocalIP $LocalIP -NextAtoZSourcePort $AtoZSourcePort -NextAtoZDestPort $AtoZDestPort -NextZtoASourcePort $ZtoASourcePort -NextZtoADestPort $ZtoADestPort
+Initialize-Network -NextLocalIP $LocalIP -NextRemoteIP $RemoteIP -NextAtoZSourcePort $AtoZSourcePort -NextAtoZDestPort $AtoZDestPort -NextZtoASourcePort $ZtoASourcePort -NextZtoADestPort $ZtoADestPort
 Add-ChatLine -Prefix '[System]' -Message "Initialized as $DisplayName."
 
 $receiveWorker = New-Object System.ComponentModel.BackgroundWorker
@@ -331,7 +352,7 @@ $receiveWorker.add_DoWork({
                 $bytes = $script:recvUdp.Receive([ref]$anyEndpoint)
                 $msg = [System.Text.Encoding]::UTF8.GetString($bytes)
 
-                if (($anyEndpoint.Port -eq $script:currentAtoZSourcePort) -and ($anyEndpoint.Address.Equals($script:remoteAddress))) {
+                if (($anyEndpoint.Port -eq $script:currentAtoZSourcePort) -and ($anyEndpoint.Address.ToString() -eq $script:currentRemoteIP)) {
                     $form.BeginInvoke([Action]{
                         Add-ChatLine -Prefix "[$($anyEndpoint.ToString()) A->Z]" -Message $msg
                     }) | Out-Null
