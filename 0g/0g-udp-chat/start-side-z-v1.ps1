@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$SideAIP = '127.0.0.1',
     [string]$SideZIP = '0.0.0.0',
 
@@ -188,7 +188,7 @@ $statusLabel.Text = 'Starting...'
 $form.Controls.Add($status)
 
 $probeTimer = New-Object System.Windows.Forms.Timer
-$probeTimer.Interval = 5000
+$probeTimer.Interval = 30000
 
 function Add-ChatLine {
     param(
@@ -361,7 +361,7 @@ $receiveWorker.add_DoWork({
 
                 if (($anyEndpoint.Port -eq $script:currentAToZSourcePort) -and ($anyEndpoint.Address.ToString() -eq $script:currentSideAIP)) {
                     $form.BeginInvoke([Action]{
-                        Add-ChatLine -Prefix "[$($anyEndpoint.ToString()) A->Z]" -Message $msg
+                        if ($msg -eq $probePayloadText) { Add-ChatLine -Prefix "[Probe RX $($anyEndpoint.ToString()) A->Z]" -Message $msg } else { Add-ChatLine -Prefix "[$($anyEndpoint.ToString()) A->Z]" -Message $msg }
                     }) | Out-Null
                 }
             } else {
@@ -404,7 +404,7 @@ function Send-ProbePacket {
             return
         }
         [void]$script:sendUdp.Send($probePayloadBytes, $probePayloadBytes.Length, $script:sendEndpoint)
-        Add-ChatLine -Prefix '[Probe]' -Message $probePayloadText
+        Add-ChatLine -Prefix '[Probe TX]' -Message $probePayloadText
     } catch {
         Add-ChatLine -Prefix '[Error]' -Message ("Probe send failed: " + $_.Exception.Message)
     }
@@ -447,3 +447,4 @@ $form.Add_FormClosing({
 })
 
 [void]$form.ShowDialog()
+
