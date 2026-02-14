@@ -15,6 +15,8 @@ Add-Type -AssemblyName System.Drawing
 
 $ErrorActionPreference = 'Stop'
 $maxInputLines = 3
+$probePayloadText = '5555544444333332222211111'
+$probePayloadBytes = [System.Text.Encoding]::UTF8.GetBytes($probePayloadText)
 
 $fontMain = New-Object System.Drawing.Font('Segoe UI', 12)
 $fontSmall = New-Object System.Drawing.Font('Segoe UI', 10)
@@ -184,6 +186,9 @@ $statusLabel.TextAlign = 'MiddleLeft'
 $statusLabel.Text = 'Starting...'
 [void]$status.Items.Add($statusLabel)
 $form.Controls.Add($status)
+
+$probeTimer = New-Object System.Windows.Forms.Timer
+$probeTimer.Interval = 5000
 
 function Add-ChatLine {
     param(
@@ -393,8 +398,21 @@ function Send-Message {
     }
 }
 
+function Send-ProbePacket {
+    try {
+        if (($null -eq $script:sendUdp) -or ($null -eq $script:sendEndpoint)) {
+            return
+        }
+        [void]$script:sendUdp.Send($probePayloadBytes, $probePayloadBytes.Length, $script:sendEndpoint)
+        Add-ChatLine -Prefix '[Probe]' -Message $probePayloadText
+    } catch {
+        Add-ChatLine -Prefix '[Error]' -Message ("Probe send failed: " + $_.Exception.Message)
+    }
+}
+
 $btnSend.Add_Click({ Send-Message })
 $btnApply.Add_Click({ Apply-NetworkSettings })
+$probeTimer.Add_Tick({ Send-ProbePacket })
 $txtMessage.Add_KeyDown({
     param($sender, $e)
 
@@ -413,12 +431,14 @@ $txtMessage.Add_KeyDown({
 
 $form.Add_Shown({
     $txtMessage.Focus()
+    $probeTimer.Start()
     if (-not $receiveWorker.IsBusy) {
         $receiveWorker.RunWorkerAsync()
     }
 })
 
 $form.Add_FormClosing({
+    $probeTimer.Stop()
     if ($receiveWorker.IsBusy) {
         $receiveWorker.CancelAsync()
     }
