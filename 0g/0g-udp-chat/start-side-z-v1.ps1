@@ -364,47 +364,37 @@ function Apply-NetworkSettings {
 Initialize-Network -NextSideAIP $SideAIP -NextSideZIP $SideZIP -NextAToZSourcePort $SideAToSideZSourcePort -NextAToZDestPort $SideAToSideZDestPort -NextZToASourcePort $SideZToSideASourcePort -NextZToADestPort $SideZToSideADestPort
 Add-ChatLine -Prefix '[System]' -Message "Initialized as $DisplayName."
 
-$receiveWorker = New-Object System.ComponentModel.BackgroundWorker
-$receiveWorker.WorkerSupportsCancellation = $true
+$receiveTimer = New-Object System.Windows.Forms.Timer
+$receiveTimer.Interval = 70
+$receiveTimer.Add_Tick({
+    try {
+        if ($null -eq $script:recvUdp) {
+            return
+        }
 
-$receiveWorker.add_DoWork({
-    param($sender, $e)
+        while ($script:recvUdp.Available -gt 0) {
+            $rxEndpoint = New-Object System.Net.IPEndPoint([System.Net.IPAddress]::Any, 0)
+            $bytes = $script:recvUdp.Receive([ref]$rxEndpoint)
+            $msg = [System.Text.Encoding]::UTF8.GetString($bytes)
+            $endpointText = $rxEndpoint.ToString()
 
-    $anyEndpoint = New-Object System.Net.IPEndPoint([System.Net.IPAddress]::Any, 0)
-
-    while (-not $sender.CancellationPending) {
-        try {
-            if (($null -ne $script:recvUdp) -and ($script:recvUdp.Available -gt 0)) {
-                $bytes = $script:recvUdp.Receive([ref]$anyEndpoint)
-                $msg = [System.Text.Encoding]::UTF8.GetString($bytes)
-
-                $isExpectedPeer = Test-ExpectedPeer -Endpoint $anyEndpoint -ExpectedPort $script:currentAToZSourcePort -ExpectedIP $script:currentSideAIP
-                $form.BeginInvoke([Action]{
-                    if ($msg -eq $remoteProbePayloadText) {
-                        if ($isExpectedPeer) {
-                            Add-ChatLine -Prefix "[Probe RX $($anyEndpoint.ToString()) A->Z]" -Message $msg
-                        } else {
-                            Add-ChatLine -Prefix "[Probe RX Unverified $($anyEndpoint.ToString()) A->Z]" -Message $msg
-                        }
-                    } else {
-                        if ($isExpectedPeer) {
-                            Add-ChatLine -Prefix "[$($anyEndpoint.ToString()) A->Z]" -Message $msg
-                        } else {
-                            Add-ChatLine -Prefix "[Unverified $($anyEndpoint.ToString()) A->Z]" -Message $msg
-                        }
-                    }
-                }) | Out-Null
+            $isExpectedPeer = Test-ExpectedPeer -Endpoint $rxEndpoint -ExpectedPort $script:currentAToZSourcePort -ExpectedIP $script:currentSideAIP
+            if ($msg -eq $remoteProbePayloadText) {
+                if ($isExpectedPeer) {
+                    Add-ChatLine -Prefix "[Probe RX $endpointText A->Z]" -Message $msg
+                } else {
+                    Add-ChatLine -Prefix "[Probe RX Unverified $endpointText A->Z]" -Message $msg
+                }
             } else {
-                Start-Sleep -Milliseconds 70
-            }
-        } catch {
-            if (-not $sender.CancellationPending) {
-                $err = $_.Exception.Message
-                $form.BeginInvoke([Action]{
-                    Add-ChatLine -Prefix '[Error]' -Message "Receive failed: $err"
-                }) | Out-Null
+                if ($isExpectedPeer) {
+                    Add-ChatLine -Prefix "[$endpointText A->Z]" -Message $msg
+                } else {
+                    Add-ChatLine -Prefix "[Unverified $endpointText A->Z]" -Message $msg
+                }
             }
         }
+    } catch {
+        Add-ChatLine -Prefix '[Error]' -Message ("Receive failed: " + $_.Exception.Message)
     }
 })
 
@@ -462,16 +452,12 @@ $txtMessage.Add_KeyDown({
 $form.Add_Shown({
     $txtMessage.Focus()
     $probeTimer.Start()
-    if (-not $receiveWorker.IsBusy) {
-        $receiveWorker.RunWorkerAsync()
-    }
+    $receiveTimer.Start()
 })
 
 $form.Add_FormClosing({
     $probeTimer.Stop()
-    if ($receiveWorker.IsBusy) {
-        $receiveWorker.CancelAsync()
-    }
+    $receiveTimer.Stop()
 
     Close-UdpClients
 })
