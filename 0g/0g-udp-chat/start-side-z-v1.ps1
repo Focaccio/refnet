@@ -15,7 +15,8 @@ Add-Type -AssemblyName System.Drawing
 
 $ErrorActionPreference = 'Stop'
 $maxInputLines = 3
-$probePayloadText = '5555544444333332222211111'
+$probePayloadText = 'ZZZZZ-ZZZZZ-ZZZZZ-ZZZZZ-ZZZZZ'
+$remoteProbePayloadText = 'AAAAA-AAAAA-AAAAA-AAAAA-AAAAA'
 $probePayloadBytes = [System.Text.Encoding]::UTF8.GetBytes($probePayloadText)
 
 $fontMain = New-Object System.Drawing.Font('Segoe UI', 12)
@@ -377,11 +378,22 @@ $receiveWorker.add_DoWork({
                 $bytes = $script:recvUdp.Receive([ref]$anyEndpoint)
                 $msg = [System.Text.Encoding]::UTF8.GetString($bytes)
 
-                if (Test-ExpectedPeer -Endpoint $anyEndpoint -ExpectedPort $script:currentAToZSourcePort -ExpectedIP $script:currentSideAIP) {
-                    $form.BeginInvoke([Action]{
-                        if ($msg -eq $probePayloadText) { Add-ChatLine -Prefix "[Probe RX $($anyEndpoint.ToString()) A->Z]" -Message $msg } else { Add-ChatLine -Prefix "[$($anyEndpoint.ToString()) A->Z]" -Message $msg }
-                    }) | Out-Null
-                }
+                $isExpectedPeer = Test-ExpectedPeer -Endpoint $anyEndpoint -ExpectedPort $script:currentAToZSourcePort -ExpectedIP $script:currentSideAIP
+                $form.BeginInvoke([Action]{
+                    if ($msg -eq $remoteProbePayloadText) {
+                        if ($isExpectedPeer) {
+                            Add-ChatLine -Prefix "[Probe RX $($anyEndpoint.ToString()) A->Z]" -Message $msg
+                        } else {
+                            Add-ChatLine -Prefix "[Probe RX Unverified $($anyEndpoint.ToString()) A->Z]" -Message $msg
+                        }
+                    } else {
+                        if ($isExpectedPeer) {
+                            Add-ChatLine -Prefix "[$($anyEndpoint.ToString()) A->Z]" -Message $msg
+                        } else {
+                            Add-ChatLine -Prefix "[Unverified $($anyEndpoint.ToString()) A->Z]" -Message $msg
+                        }
+                    }
+                }) | Out-Null
             } else {
                 Start-Sleep -Milliseconds 70
             }
