@@ -189,7 +189,7 @@ $statusLabel.Text = 'Starting...'
 $form.Controls.Add($status)
 
 $probeTimer = New-Object System.Windows.Forms.Timer
-$probeTimer.Interval = 30000
+$probeTimer.Interval = 10000
 
 function Add-ChatLine {
     param(
@@ -247,6 +247,8 @@ $script:currentZToADestPort = $SideZToSideADestPort
 $script:sendEndpoint = $null
 $script:sendUdp = $null
 $script:recvUdp = $null
+$script:lastRxUtc = [DateTime]::UtcNow
+$script:lastAutoRecoverUtc = [DateTime]::MinValue
 
 function Update-NetworkLabels {
     $lblChannel1.Text = "Channel Z -> A : side-z $($script:currentSideZIP)`:$($script:currentZToASourcePort) -> side-a $($script:currentSideAIP)`:$($script:currentZToADestPort)"
@@ -266,6 +268,21 @@ function Close-UdpClients {
     }
 }
 
+function Disable-UdpConnReset {
+    param([System.Net.Sockets.UdpClient]$UdpClient)
+
+    try {
+        if ($null -eq $UdpClient) {
+            return
+        }
+
+        $udpConnReset = -1744830452
+        $disableConnReset = [byte[]](0, 0, 0, 0)
+        $outputBuffer = [byte[]](0, 0, 0, 0)
+        [void]$UdpClient.Client.IOControl($udpConnReset, $disableConnReset, $outputBuffer)
+    } catch {}
+}
+
 function Initialize-Network {
     param(
         [string]$NextSideAIP,
@@ -280,11 +297,13 @@ function Initialize-Network {
     $sideZAddress = [System.Net.IPAddress]::Parse($NextSideZIP)
 
     $nextSendUdp = New-Object System.Net.Sockets.UdpClient
+    Disable-UdpConnReset -UdpClient $nextSendUdp
     $nextSendUdp.Client.SetSocketOption([System.Net.Sockets.SocketOptionLevel]::Socket, [System.Net.Sockets.SocketOptionName]::ReuseAddress, $true)
     $nextSendUdp.ExclusiveAddressUse = $false
     $nextSendUdp.Client.Bind((New-Object System.Net.IPEndPoint($sideZAddress, $NextZToASourcePort)))
 
     $nextRecvUdp = New-Object System.Net.Sockets.UdpClient
+    Disable-UdpConnReset -UdpClient $nextRecvUdp
     $nextRecvUdp.Client.SetSocketOption([System.Net.Sockets.SocketOptionLevel]::Socket, [System.Net.Sockets.SocketOptionName]::ReuseAddress, $true)
     $nextRecvUdp.ExclusiveAddressUse = $false
     $nextRecvUdp.Client.Bind((New-Object System.Net.IPEndPoint($sideZAddress, $NextAToZDestPort)))
@@ -377,6 +396,7 @@ $receiveTimer.Add_Tick({
             $bytes = $script:recvUdp.Receive([ref]$rxEndpoint)
             $msg = [System.Text.Encoding]::UTF8.GetString($bytes)
             $endpointText = $rxEndpoint.ToString()
+            $script:lastRxUtc = [DateTime]::UtcNow
 
             $isExpectedPeer = Test-ExpectedPeer -Endpoint $rxEndpoint -ExpectedPort $script:currentAToZSourcePort -ExpectedIP $script:currentSideAIP
             if ($msg -eq $remoteProbePayloadText) {
@@ -395,6 +415,28 @@ $receiveTimer.Add_Tick({
         }
     } catch {
         Add-ChatLine -Prefix '[Error]' -Message ("Receive failed: " + $_.Exception.Message)
+    }
+})
+$watchdogTimer = New-Object System.Windows.Forms.Timer
+$watchdogTimer.Interval = 15000
+$watchdogTimer.Add_Tick({
+    try {
+        if (($null -eq $script:sendUdp) -or ($null -eq $script:recvUdp)) {
+            return
+        }
+
+        $nowUtc = [DateTime]::UtcNow
+        $secondsSinceRx = ($nowUtc - $script:lastRxUtc).TotalSeconds
+        $secondsSinceRecover = ($nowUtc - $script:lastAutoRecoverUtc).TotalSeconds
+
+        if (($secondsSinceRx -ge 45) -and ($secondsSinceRecover -ge 45)) {
+            $script:lastAutoRecoverUtc = $nowUtc
+            Add-ChatLine -Prefix '[System]' -Message "No inbound traffic for $([int]$secondsSinceRx)s; auto-reinitializing UDP sockets."
+            Initialize-Network -NextSideAIP $script:currentSideAIP -NextSideZIP $script:currentSideZIP -NextAToZSourcePort $script:currentAToZSourcePort -NextAToZDestPort $script:currentAToZDestPort -NextZToASourcePort $script:currentZToASourcePort -NextZToADestPort $script:currentZToADestPort
+            Send-ProbePacket
+        }
+    } catch {
+        Add-ChatLine -Prefix '[Error]' -Message ("Auto-recover failed: " + $_.Exception.Message)
     }
 })
 
@@ -453,11 +495,14 @@ $form.Add_Shown({
     $txtMessage.Focus()
     $probeTimer.Start()
     $receiveTimer.Start()
+    $watchdogTimer.Start()
+    Send-ProbePacket
 })
 
 $form.Add_FormClosing({
     $probeTimer.Stop()
     $receiveTimer.Stop()
+    $watchdogTimer.Stop()
 
     Close-UdpClients
 })
