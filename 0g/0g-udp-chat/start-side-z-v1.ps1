@@ -319,6 +319,24 @@ function Parse-PortOrThrow {
     return $parsed
 }
 
+function Test-ExpectedPeer {
+    param(
+        [System.Net.IPEndPoint]$Endpoint,
+        [int]$ExpectedPort,
+        [string]$ExpectedIP
+    )
+
+    if ($Endpoint.Port -ne $ExpectedPort) {
+        return $false
+    }
+
+    if (($ExpectedIP -eq '0.0.0.0') -or ($ExpectedIP -eq '::')) {
+        return $true
+    }
+
+    return ($Endpoint.Address.ToString() -eq $ExpectedIP)
+}
+
 function Apply-NetworkSettings {
     try {
         $nextSideAIP = $txtSideAIP.Text.Trim()
@@ -359,7 +377,7 @@ $receiveWorker.add_DoWork({
                 $bytes = $script:recvUdp.Receive([ref]$anyEndpoint)
                 $msg = [System.Text.Encoding]::UTF8.GetString($bytes)
 
-                if (($anyEndpoint.Port -eq $script:currentAToZSourcePort) -and ($anyEndpoint.Address.ToString() -eq $script:currentSideAIP)) {
+                if (Test-ExpectedPeer -Endpoint $anyEndpoint -ExpectedPort $script:currentAToZSourcePort -ExpectedIP $script:currentSideAIP) {
                     $form.BeginInvoke([Action]{
                         if ($msg -eq $probePayloadText) { Add-ChatLine -Prefix "[Probe RX $($anyEndpoint.ToString()) A->Z]" -Message $msg } else { Add-ChatLine -Prefix "[$($anyEndpoint.ToString()) A->Z]" -Message $msg }
                     }) | Out-Null
