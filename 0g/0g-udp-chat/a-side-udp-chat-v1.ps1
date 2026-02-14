@@ -1,4 +1,6 @@
-﻿param(
+﻿# Startup parameters define local/remote IPs, ports, and role label for this node.
+# These values seed UI fields and become the initial transport configuration at launch.
+param(
     [string]$SideAIP = '0.0.0.0',
     [string]$SideZIP = '127.0.0.1',
 
@@ -13,6 +15,8 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
+# Core runtime constants for validation, probe protocol, and strict error behavior.
+# Probe text/bytes are reused by send and receive paths to classify heartbeat traffic.
 $ErrorActionPreference = 'Stop'
 $maxInputLines = 3
 $probePayloadText = 'AAAAA-AAAAA-AAAAA-AAAAA-AAAAA'
@@ -23,6 +27,8 @@ $fontMain = New-Object System.Drawing.Font('Segoe UI', 12)
 $fontSmall = New-Object System.Drawing.Font('Segoe UI', 10)
 $fontTitle = New-Object System.Drawing.Font('Segoe UI Semibold', 13)
 
+# Build the main window shell before creating all interactive controls.
+# Every later handler writes to or reads from controls created in this section.
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "UDP P2P Chat - $DisplayName"
 $form.Size = New-Object System.Drawing.Size(1080, 780)
@@ -180,6 +186,8 @@ $btnSend.Text = 'Send'
 $btnSend.Anchor = 'Bottom,Right'
 $form.Controls.Add($btnSend)
 
+# Status strip gives a compact live summary of effective send/receive bindings.
+# Timers declared near here drive periodic probes and network health checks.
 $status = New-Object System.Windows.Forms.StatusStrip
 $statusLabel = New-Object System.Windows.Forms.ToolStripStatusLabel
 $statusLabel.Spring = $true
@@ -191,6 +199,8 @@ $form.Controls.Add($status)
 $probeTimer = New-Object System.Windows.Forms.Timer
 $probeTimer.Interval = 10000
 
+# Centralized chat writer appends timestamped lines and keeps auto-scroll pinned.
+# All system, TX, RX, and error events call this for consistent UI output.
 function Add-ChatLine {
     param(
         [string]$Prefix,
@@ -210,6 +220,8 @@ function Add-ChatLine {
     $txtHistory.ScrollToCaret()
 }
 
+# Helper used by input guard to enforce a max number of compose lines.
+# Keeps user-entered text bounded so send behavior stays predictable.
 function Get-LineCount {
     param([string]$Text)
 
@@ -220,6 +232,8 @@ function Get-LineCount {
     return ([regex]::Split($Text, "`r?`n")).Count
 }
 
+# TextChanged guard avoids recursive edits while enforcing the line limit.
+# If input grows past max lines, it trims content and preserves caret position.
 $script:isTrimmingInput = $false
 $txtMessage.Add_TextChanged({
     if ($script:isTrimmingInput) {
@@ -238,6 +252,8 @@ $txtMessage.Add_TextChanged({
     }
 })
 
+# Shared mutable session state accessed by apply/send/receive/watchdog handlers.
+# These values represent the currently active socket plan, not just UI text.
 $script:currentSideAIP = $SideAIP
 $script:currentSideZIP = $SideZIP
 $script:currentAToZSourcePort = $SideAToSideZSourcePort
@@ -250,12 +266,16 @@ $script:recvUdp = $null
 $script:lastRxUtc = [DateTime]::UtcNow
 $script:lastAutoRecoverUtc = [DateTime]::MinValue
 
+# Reflect active transport state into labels and status text for quick diagnostics.
+# This lets operators verify channel direction/ports after applies or recoveries.
 function Update-NetworkLabels {
     $lblChannel1.Text = "Channel A -> Z : side-a $($script:currentSideAIP)`:$($script:currentAToZSourcePort) -> side-z $($script:currentSideZIP)`:$($script:currentAToZDestPort)"
     $lblChannel2.Text = "Channel Z -> A : side-z $($script:currentSideZIP)`:$($script:currentZToASourcePort) -> side-a $($script:currentSideAIP)`:$($script:currentZToADestPort)"
     $statusLabel.Text = "Send(A->Z): $($script:currentSideAIP)`:$($script:currentAToZSourcePort) -> $($script:currentSideZIP)`:$($script:currentAToZDestPort) | Recv(Z->A): $($script:currentSideAIP)`:$($script:currentZToADestPort)"
 }
 
+# Idempotent socket teardown used before rebind and during shutdown.
+# Nulling references prevents stale sockets from being reused accidentally.
 function Close-UdpClients {
     if ($null -ne $script:sendUdp) {
         try { $script:sendUdp.Close() } catch {}
@@ -268,6 +288,8 @@ function Close-UdpClients {
     }
 }
 
+# Windows UDP hardening: disables connection-reset behavior on ICMP unreachable events.
+# Prevents silent long-run disruption caused by socket state resets.
 function Disable-UdpConnReset {
     param([System.Net.Sockets.UdpClient]$UdpClient)
 
@@ -283,6 +305,8 @@ function Disable-UdpConnReset {
     } catch {}
 }
 
+# Constructs/binds fresh send+receive sockets and computes remote endpoint target.
+# Called at startup, on Apply, and by watchdog recovery to re-establish flow.
 function Initialize-Network {
     param(
         [string]$NextSideAIP,
@@ -293,23 +317,33 @@ function Initialize-Network {
         [int]$NextZToADestPort
     )
 
+    # Parse UI/config strings into concrete IPAddress values for endpoint construction.
+    # Fails early here if addresses are invalid, before any socket bind attempt.
     $sideAAddress = [System.Net.IPAddress]::Parse($NextSideAIP)
     $sideZAddress = [System.Net.IPAddress]::Parse($NextSideZIP)
 
+    # Outbound socket: bind source IP/port so remote peer sees a stable sender tuple.
+    # Reuse options support quick restart/rebind cycles without long port wait.
     $nextSendUdp = New-Object System.Net.Sockets.UdpClient
     Disable-UdpConnReset -UdpClient $nextSendUdp
     $nextSendUdp.Client.SetSocketOption([System.Net.Sockets.SocketOptionLevel]::Socket, [System.Net.Sockets.SocketOptionName]::ReuseAddress, $true)
     $nextSendUdp.ExclusiveAddressUse = $false
     $nextSendUdp.Client.Bind((New-Object System.Net.IPEndPoint($sideAAddress, $NextAToZSourcePort)))
 
+    # Inbound socket: bind expected destination channel for remote datagrams.
+    # This is the socket polled by the receive timer for chat/probe ingress.
     $nextRecvUdp = New-Object System.Net.Sockets.UdpClient
     Disable-UdpConnReset -UdpClient $nextRecvUdp
     $nextRecvUdp.Client.SetSocketOption([System.Net.Sockets.SocketOptionLevel]::Socket, [System.Net.Sockets.SocketOptionName]::ReuseAddress, $true)
     $nextRecvUdp.ExclusiveAddressUse = $false
     $nextRecvUdp.Client.Bind((New-Object System.Net.IPEndPoint($sideAAddress, $NextZToADestPort)))
 
+    # Swap-in phase: close previous sockets only after new sockets are created.
+    # Reduces downtime during apply/recover and avoids inconsistent half-state.
     Close-UdpClients
 
+    # Commit newly active network configuration into shared runtime state.
+    # Downstream send, receive, labels, and watchdog use these values immediately.
     $script:currentSideAIP = $NextSideAIP
     $script:currentSideZIP = $NextSideZIP
     $script:currentAToZSourcePort = $NextAToZSourcePort
@@ -323,6 +357,8 @@ function Initialize-Network {
     Update-NetworkLabels
 }
 
+# Validates each port field as integer in range 1..65535.
+# Throws clear user-facing errors so invalid values never reach socket binds.
 function Parse-PortOrThrow {
     param(
         [string]$Text,
@@ -339,6 +375,8 @@ function Parse-PortOrThrow {
     return $parsed
 }
 
+# Peer gate checks endpoint against expected source tuple for trust labeling.
+# Non-matching packets still display, but are marked Unverified for visibility.
 function Test-ExpectedPeer {
     param(
         [System.Net.IPEndPoint]$Endpoint,
@@ -357,6 +395,8 @@ function Test-ExpectedPeer {
     return ($Endpoint.Address.ToString() -eq $ExpectedIP)
 }
 
+# Reads UI edits, validates values, then reinitializes sockets with new settings.
+# Success/error messages are written to chat so config transitions are auditable.
 function Apply-NetworkSettings {
     try {
         $nextSideAIP = $txtSideAIP.Text.Trim()
@@ -380,9 +420,13 @@ function Apply-NetworkSettings {
     }
 }
 
+# Bootstraps the default transport immediately so the app is live on startup.
+# This provides first-bind behavior before any manual Apply action.
 Initialize-Network -NextSideAIP $SideAIP -NextSideZIP $SideZIP -NextAToZSourcePort $SideAToSideZSourcePort -NextAToZDestPort $SideAToSideZDestPort -NextZToASourcePort $SideZToSideASourcePort -NextZToADestPort $SideZToSideADestPort
 Add-ChatLine -Prefix '[System]' -Message "Initialized as $DisplayName."
 
+# Fast UI-thread poller drains inbound UDP datagrams without cross-thread marshaling.
+# Converts packets into chat lines and updates last-RX timestamp for watchdog use.
 $receiveTimer = New-Object System.Windows.Forms.Timer
 $receiveTimer.Interval = 70
 $receiveTimer.Add_Tick({
@@ -391,6 +435,8 @@ $receiveTimer.Add_Tick({
             return
         }
 
+        # Drain all queued packets each tick to prevent backlog during bursts.
+        # This keeps UI history close to real-time even under high packet rate.
         while ($script:recvUdp.Available -gt 0) {
             $rxEndpoint = New-Object System.Net.IPEndPoint([System.Net.IPAddress]::Any, 0)
             $bytes = $script:recvUdp.Receive([ref]$rxEndpoint)
@@ -398,6 +444,8 @@ $receiveTimer.Add_Tick({
             $endpointText = $rxEndpoint.ToString()
             $script:lastRxUtc = [DateTime]::UtcNow
 
+            # Classify this packet source against expected peer identity.
+            # Result controls whether line is tagged verified or unverified.
             $isExpectedPeer = Test-ExpectedPeer -Endpoint $rxEndpoint -ExpectedPort $script:currentZToASourcePort -ExpectedIP $script:currentSideZIP
             if ($msg -eq $remoteProbePayloadText) {
                 if ($isExpectedPeer) {
@@ -417,6 +465,8 @@ $receiveTimer.Add_Tick({
         Add-ChatLine -Prefix '[Error]' -Message ("Receive failed: " + $_.Exception.Message)
     }
 })
+# Health watchdog detects silent stalls where no exception is raised but RX stops.
+# It periodically evaluates idle duration and triggers controlled recovery when needed.
 $watchdogTimer = New-Object System.Windows.Forms.Timer
 $watchdogTimer.Interval = 15000
 $watchdogTimer.Add_Tick({
@@ -429,6 +479,8 @@ $watchdogTimer.Add_Tick({
         $secondsSinceRx = ($nowUtc - $script:lastRxUtc).TotalSeconds
         $secondsSinceRecover = ($nowUtc - $script:lastAutoRecoverUtc).TotalSeconds
 
+        # Recovery threshold: require sustained RX silence plus cooldown since last reset.
+        # Rebind sockets and send a probe to quickly re-open the active path.
         if (($secondsSinceRx -ge 45) -and ($secondsSinceRecover -ge 45)) {
             $script:lastAutoRecoverUtc = $nowUtc
             Add-ChatLine -Prefix '[System]' -Message "No inbound traffic for $([int]$secondsSinceRx)s; auto-reinitializing UDP sockets."
@@ -440,6 +492,8 @@ $watchdogTimer.Add_Tick({
     }
 })
 
+# User-message egress path: encode text, send UDP payload, then echo locally.
+# Failures are surfaced as chat errors to keep operator feedback immediate.
 function Send-Message {
     $text = $txtMessage.Text.Trim()
     if ([string]::IsNullOrWhiteSpace($text)) {
@@ -460,6 +514,8 @@ function Send-Message {
     }
 }
 
+# Heartbeat sender transmits probe payload on timer and startup.
+# Keeps path warm and gives a visible liveness signal in both windows.
 function Send-ProbePacket {
     try {
         if (($null -eq $script:sendUdp) -or ($null -eq $script:sendEndpoint)) {
@@ -472,6 +528,8 @@ function Send-ProbePacket {
     }
 }
 
+# Event wiring connects controls/timers to transport handlers.
+# This is the orchestration layer that turns UI actions into network operations.
 $btnSend.Add_Click({ Send-Message })
 $btnApply.Add_Click({ Apply-NetworkSettings })
 $probeTimer.Add_Tick({ Send-ProbePacket })
@@ -491,6 +549,8 @@ $txtMessage.Add_KeyDown({
     }
 })
 
+# Runtime activation point: start timers and emit initial probe once UI is visible.
+# Ensures both RX polling and liveness maintenance begin immediately.
 $form.Add_Shown({
     $txtMessage.Focus()
     $probeTimer.Start()
@@ -499,13 +559,20 @@ $form.Add_Shown({
     Send-ProbePacket
 })
 
+# Graceful shutdown path: stop timers first, then close UDP sockets.
+# Prevents orphan timers/sockets and supports clean relaunch behavior.
 $form.Add_FormClosing({
     $probeTimer.Stop()
     $receiveTimer.Stop()
     $watchdogTimer.Stop()
 
+    # Swap-in phase: close previous sockets only after new sockets are created.
+    # Reduces downtime during apply/recover and avoids inconsistent half-state.
     Close-UdpClients
 })
 
+# Enter the WinForms message loop; from here execution is fully event-driven.
+# All blocks above are setup dependencies for this long-running phase.
 [void]$form.ShowDialog()
+
 
