@@ -1,0 +1,26 @@
+<#
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+NAME: peer-2-peer-udp-chat
+VERSION: 20260215.0.1
+DIRECTION: Greg Focaccio
+CODE: OpenAI GPT-5.3-Codex 
+FEATURES:
+1. A and Z side peer to peer udp chat with user specified ip address and ports
+2. Implemented in Powershell with separate A side and Z side executables
+3. 2 unidirectional UDP datagram paths (1. A > Z; 2. Z > A) for full duplex messaging
+4. A and Z both transmit messsage probes every 10 seconds with receive reporting
+
+
+SYSTEM-REQUIRMENTS:
+1.
+2.
+
+CHANGE-LOG:
+20260215.0.1 Created and Tested
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#>
