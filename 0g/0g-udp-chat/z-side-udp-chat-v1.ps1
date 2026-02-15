@@ -1,4 +1,43 @@
-﻿# Startup parameters define local/remote IPs, ports, and role label for this node.
+<#
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//SOURCE-INFORMATION//
+NAME: peer-2-peer-udp-chat
+VERSION: 20260215.0.1 aka v1
+DIRECTION: Greg Focaccio
+CODE: OpenAI GPT-5.3-Codex
+TESTING: Greg Focaccio
+...............................................................................................
+//FEATURES//
+1. A and Z side peer to peer udp chat with user specified ip address and ports
+2. Implemented in Powershell with separate A side and Z side executables
+3. 2 unidirectional UDP datagram paths (1. A > Z; 2. Z > A) for full duplex messaging
+4. A and Z both transmit messsage probes every 10 seconds with receive reporting
+...............................................................................................
+//SYSTEM-REQUIRMENTS//
+1. Operating System: 
+Microsoft Windows 10/11 (64-bit) or 
+Windows Server 2019/2022 with Desktop Experience.
+2. PowerShell: 
+Windows PowerShell 5.1 (recommended) 
+or PowerShell 7.x on 
+Windows with 
+System.Windows.Forms 
+System.Drawing
+...............................................................................................
+//OPERATION//
+1. Run a-side-udp-chat-v1.ps1 on A side then enter A, Z IP addresses and ports then Apply
+2. Run z-side-udp-chat-v1.ps1 on Z side then enter A, Z IP addresses and ports then Apply
+...............................................................................................
+//CHANGE-LOG//
+20260215.0.1 first direction creation and testing
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#>
+
+# Startup parameters define local/remote IPs, ports, and role label for this node.
 # These values seed UI fields and become the initial transport configuration at launch.
 param(
     [string]$SideAIP = '127.0.0.1',
