@@ -8,6 +8,8 @@ STAGE_A_DIR="$BUILD_DIR/stage-a"
 STAGE_Z_DIR="$BUILD_DIR/stage-z"
 CACHE_DIR="${SWIFT_MODULE_CACHE:-$ROOT_DIR/.swift-module-cache}"
 VERSION="${1:-v2}"
+DEPLOYMENT_TARGET="${DEPLOYMENT_TARGET:-12.0}"
+ARCHS="${ARCHS:-arm64 x86_64}"
 
 A_SRC="$ROOT_DIR/a-side-udp-chat-${VERSION}.swift"
 Z_SRC="$ROOT_DIR/z-side-udp-chat-${VERSION}.swift"
@@ -45,11 +47,29 @@ build_app() {
   local app_dir="$stage_dir/${app_name}.app"
   local macos_dir="$app_dir/Contents/MacOS"
   local resources_dir="$app_dir/Contents/Resources"
+  local tmp_build_dir="$BUILD_DIR/tmp-${app_name// /-}"
   local exe_name="$app_name"
 
-  mkdir -p "$macos_dir" "$resources_dir"
+  mkdir -p "$macos_dir" "$resources_dir" "$tmp_build_dir"
+  rm -f "$tmp_build_dir/$exe_name"-*
 
-  swiftc -module-cache-path "$CACHE_DIR" -framework Cocoa "$src_file" -o "$macos_dir/$exe_name"
+  local built_arches=()
+  for arch in $ARCHS; do
+    local out_bin="$tmp_build_dir/$exe_name-$arch"
+    swiftc \
+      -module-cache-path "$CACHE_DIR" \
+      -target "$arch-apple-macos$DEPLOYMENT_TARGET" \
+      -framework Cocoa \
+      "$src_file" \
+      -o "$out_bin"
+    built_arches+=("$out_bin")
+  done
+
+  if [[ "${#built_arches[@]}" -gt 1 ]]; then
+    lipo -create "${built_arches[@]}" -output "$macos_dir/$exe_name"
+  else
+    cp "${built_arches[0]}" "$macos_dir/$exe_name"
+  fi
   chmod +x "$macos_dir/$exe_name"
 
   cat > "$app_dir/Contents/Info.plist" <<PLIST
@@ -74,7 +94,7 @@ build_app() {
   <key>CFBundleVersion</key>
   <string>${VERSION}</string>
   <key>LSMinimumSystemVersion</key>
-  <string>12.0</string>
+  <string>${DEPLOYMENT_TARGET}</string>
   <key>NSHighResolutionCapable</key>
   <true/>
 </dict>
