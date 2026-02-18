@@ -1,0 +1,69 @@
+! ----------------------------
+! SITE A CE - ASN 65522
+! ----------------------------
+
+ip prefix-list PL-LO0-A seq 5 permit 1.1.1.1/32
+ip prefix-list PL-LO0-Z seq 5 permit 2.2.2.2/32
+
+route-map RM-TO-PE-A permit 10
+ match ip address prefix-list PL-LO0-A
+
+route-map RM-FROM-PE-A permit 10
+ match ip address prefix-list PL-LO0-Z
+
+router bgp 65522
+ bgp log-neighbor-changes
+
+ ! --- eBGP to Provider PE-A (ASN 65512) ---
+ neighbor 10.0.12.1 remote-as 65512
+ neighbor 10.0.12.1 description PE-A (Provider) ASN 65512
+
+ ! Advertise ONLY our loopback to PE
+ network 1.1.1.1 mask 255.255.255.255
+
+ ! Filter what we send/receive to keep it "loopbacks only"
+ neighbor 10.0.12.1 route-map RM-TO-PE-A out
+ neighbor 10.0.12.1 route-map RM-FROM-PE-A in
+
+ ! --- CE-to-CE eBGP over loopbacks (to Site Z) ---
+ neighbor 2.2.2.2 remote-as 65533
+ neighbor 2.2.2.2 description eBGP to Site Z CE via loopbacks
+ neighbor 2.2.2.2 update-source Loopback0
+ neighbor 2.2.2.2 ebgp-multihop 5
+
+ ! (Optional but common) if you want to send LAN routes to the other CE later:
+ ! neighbor 2.2.2.2 send-community both
+
+
+ ! ----------------------------
+! SITE Z CE - ASN 65533
+! ----------------------------
+
+ip prefix-list PL-LO0-Z seq 5 permit 2.2.2.2/32
+ip prefix-list PL-LO0-A seq 5 permit 1.1.1.1/32
+
+route-map RM-TO-PE-Z permit 10
+ match ip address prefix-list PL-LO0-Z
+
+route-map RM-FROM-PE-Z permit 10
+ match ip address prefix-list PL-LO0-A
+
+router bgp 65533
+ bgp log-neighbor-changes
+
+ ! --- eBGP to Provider PE-Z (ASN 65513) ---
+ neighbor 10.0.13.1 remote-as 65513
+ neighbor 10.0.13.1 description PE-Z (Provider) ASN 65513
+
+ ! Advertise ONLY our loopback to PE
+ network 2.2.2.2 mask 255.255.255.255
+
+ ! Filter what we send/receive to keep it "loopbacks only"
+ neighbor 10.0.13.1 route-map RM-TO-PE-Z out
+ neighbor 10.0.13.1 route-map RM-FROM-PE-Z in
+
+ ! --- CE-to-CE eBGP over loopbacks (to Site A) ---
+ neighbor 1.1.1.1 remote-as 65522
+ neighbor 1.1.1.1 description eBGP to Site A CE via loopbacks
+ neighbor 1.1.1.1 update-source Loopback0
+ neighbor 1.1.1.1 ebgp-multihop 5
