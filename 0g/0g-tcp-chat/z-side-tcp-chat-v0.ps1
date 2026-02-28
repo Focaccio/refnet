@@ -37,6 +37,7 @@ System.Drawing
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #>
 
+#region Startup Parameters
 param(
     [string]$SideAIP = '127.0.0.1',
     [string]$SideZIP = '0.0.0.0',
@@ -48,7 +49,9 @@ param(
 
     [string]$DisplayName = 'Side Z'
 )
+#endregion
 
+#region Runtime Dependencies And Constants
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
@@ -63,7 +66,9 @@ $connectTimeoutMs = 5000
 $fontMain = New-Object System.Drawing.Font('Segoe UI', 12)
 $fontSmall = New-Object System.Drawing.Font('Segoe UI', 10)
 $fontTitle = New-Object System.Drawing.Font('Segoe UI Semibold', 13)
+#endregion
 
+#region Window Layout
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "TCP P2P Chat - $DisplayName"
 $form.Size = New-Object System.Drawing.Size(1080, 780)
@@ -231,7 +236,9 @@ $form.Controls.Add($status)
 
 $probeTimer = New-Object System.Windows.Forms.Timer
 $probeTimer.Interval = 10000
+#endregion
 
+#region UI Helpers
 function Add-ChatLine {
     param(
         [string]$Prefix,
@@ -278,7 +285,9 @@ $txtMessage.Add_TextChanged({
         }
     }
 })
+#endregion
 
+#region Session State
 $script:currentSideAIP = $SideAIP
 $script:currentSideZIP = $SideZIP
 $script:currentAToZSourcePort = $SideAToSideZSourcePort
@@ -295,9 +304,13 @@ $script:recvListener = $null
 $script:recvClient = $null
 $script:recvStream = $null
 $script:recvBuffer = New-Object System.Collections.Generic.List[byte]
+$script:recvClosePending = $false
+$script:recvCloseMessage = ''
 $script:lastRxUtc = [DateTime]::UtcNow
 $script:lastAutoRecoverUtc = [DateTime]::MinValue
+#endregion
 
+#region Transport Status And Cleanup
 function Update-NetworkLabels {
     $lblChannel1.Text = "Channel Z -> A : side-z $($script:currentSideZIP)`:$($script:currentZToASourcePort) -> side-a $($script:currentSideAIP)`:$($script:currentZToADestPort)"
     $lblChannel2.Text = "Channel A -> Z : side-a $($script:currentSideAIP)`:$($script:currentAToZSourcePort) -> side-z $($script:currentSideZIP)`:$($script:currentAToZDestPort)"
@@ -351,6 +364,8 @@ function Close-RecvClient {
     }
 
     $script:recvBuffer = New-Object System.Collections.Generic.List[byte]
+    $script:recvClosePending = $false
+    $script:recvCloseMessage = ''
 }
 
 function Close-TcpObjects {
@@ -363,7 +378,9 @@ function Close-TcpObjects {
         $script:recvListener = $null
     }
 }
+#endregion
 
+#region TCP Channel Management
 function New-BoundTcpClient {
     param(
         [System.Net.IPAddress]$LocalAddress,
@@ -424,6 +441,8 @@ function Complete-SendConnectIfReady {
     try {
         $script:sendConnectClient.Client.EndConnect($script:sendConnectAsync)
         $script:sendClient = $script:sendConnectClient
+        $script:sendClient.NoDelay = $true
+        $script:sendClient.Client.SetSocketOption([System.Net.Sockets.SocketOptionLevel]::Socket, [System.Net.Sockets.SocketOptionName]::KeepAlive, $true)
         $script:sendStream = $script:sendClient.GetStream()
         $script:sendStream.ReadTimeout = 1
         $script:sendStream.WriteTimeout = 5000
@@ -497,12 +516,12 @@ function Read-AvailableBytes {
         }
 
         if (($null -ne $script:recvClient) -and $script:recvClient.Client.Poll(1, [System.Net.Sockets.SelectMode]::SelectRead) -and ($script:recvClient.Client.Available -eq 0)) {
-            throw 'Remote peer closed the receive channel.'
+            $script:recvClosePending = $true
+            $script:recvCloseMessage = 'Receive channel closed by remote peer.'
         }
     } catch {
-        Close-RecvClient
-        Add-ChatLine -Prefix '[System]' -Message ("Receive channel closed: " + $_.Exception.Message)
-        Update-NetworkLabels
+        $script:recvClosePending = $true
+        $script:recvCloseMessage = "Receive channel closed: $($_.Exception.Message)"
     }
 }
 
@@ -548,6 +567,25 @@ function Process-ReceiveFrames {
     }
 }
 
+function Finalize-RecvClosureIfNeeded {
+    if (-not $script:recvClosePending) {
+        return
+    }
+
+    $closeMessage = $script:recvCloseMessage
+    if ([string]::IsNullOrWhiteSpace($closeMessage)) {
+        $closeMessage = 'Receive channel closed.'
+    }
+
+    if ($script:recvBuffer.Count -gt 0) {
+        $closeMessage = "$closeMessage Partial frame data was discarded."
+    }
+
+    Close-RecvClient
+    Add-ChatLine -Prefix '[System]' -Message $closeMessage
+    Update-NetworkLabels
+}
+
 function Initialize-Network {
     param(
         [string]$NextSideAIP,
@@ -561,12 +599,14 @@ function Initialize-Network {
     [void][System.Net.IPAddress]::Parse($NextSideAIP)
     $sideZAddress = [System.Net.IPAddress]::Parse($NextSideZIP)
 
+    # TCP listeners must release the old bind before a replacement can start.
+    # Closing here avoids Apply/auto-recover collisions on the same local port.
+    Close-TcpObjects
+
     $nextRecvListener = New-Object System.Net.Sockets.TcpListener($sideZAddress, $NextAToZDestPort)
     $nextRecvListener.Server.SetSocketOption([System.Net.Sockets.SocketOptionLevel]::Socket, [System.Net.Sockets.SocketOptionName]::ReuseAddress, $true)
     $nextRecvListener.Server.ExclusiveAddressUse = $false
     $nextRecvListener.Start()
-
-    Close-TcpObjects
 
     $script:currentSideAIP = $NextSideAIP
     $script:currentSideZIP = $NextSideZIP
@@ -583,7 +623,9 @@ function Initialize-Network {
     Start-SendConnect
     Update-NetworkLabels
 }
+#endregion
 
+#region Validation And Network Apply
 function Parse-PortOrThrow {
     param(
         [string]$Text,
@@ -644,7 +686,9 @@ function Apply-NetworkSettings {
         Add-ChatLine -Prefix '[Error]' -Message ("Apply failed: " + $_.Exception.Message)
     }
 }
+#endregion
 
+#region Startup And Background Pollers
 Initialize-Network -NextSideAIP $SideAIP -NextSideZIP $SideZIP -NextAToZSourcePort $SideAToSideZSourcePort -NextAToZDestPort $SideAToSideZDestPort -NextZToASourcePort $SideZToSideASourcePort -NextZToADestPort $SideZToSideADestPort
 Add-ChatLine -Prefix '[System]' -Message "Initialized as $DisplayName."
 
@@ -657,6 +701,7 @@ $receiveTimer.Add_Tick({
         Accept-RecvClientIfPending
         Read-AvailableBytes
         Process-ReceiveFrames
+        Finalize-RecvClosureIfNeeded
     } catch {
         Add-ChatLine -Prefix '[Error]' -Message ("Receive loop failed: " + $_.Exception.Message)
     }
@@ -684,7 +729,9 @@ $watchdogTimer.Add_Tick({
         Add-ChatLine -Prefix '[Error]' -Message ("Auto-recover failed: " + $_.Exception.Message)
     }
 })
+#endregion
 
+#region Message Send And App Lifecycle
 function Send-Message {
     $text = $txtMessage.Text.Trim()
     if ([string]::IsNullOrWhiteSpace($text)) {
@@ -758,3 +805,4 @@ $form.Add_FormClosing({
 })
 
 [void]$form.ShowDialog()
+#endregion
