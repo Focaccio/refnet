@@ -15,14 +15,14 @@ TESTING: not yet executed in this environment
 3. 2 unidirectional TCP channels (1. A > Z; 2. Z > A) for full duplex messaging
 4. A and Z both transmit message probes every 10 seconds with receive reporting
 ...............................................................................................
-//SYSTEM-REQUIRMENTS//
+//SYSTEM-REQUIREMENTS//
 1. Operating System:
 Microsoft Windows 10/11 (64-bit) or
 Windows Server 2019/2022 with Desktop Experience.
 2. PowerShell:
-Windows PowerShell 5.1 (recommended)
-or PowerShell 7.x on
-Windows with
+Windows PowerShell 5.1 (recommended) or
+PowerShell 7.x on Windows.
+3. .NET assemblies required at runtime:
 System.Windows.Forms
 System.Drawing
 ...............................................................................................
