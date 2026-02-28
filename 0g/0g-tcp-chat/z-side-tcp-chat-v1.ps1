@@ -4,7 +4,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //SOURCE-INFORMATION//
 NAME: peer-2-peer-tcp-chat
-VERSION: 20260228.0.0 aka v0
+VERSION: 20260228.0.1 aka v1
 DIRECTION: Greg Focaccio
 CODE: OpenAI GPT-5 Codex
 TESTING: not yet executed in this environment
@@ -27,10 +27,11 @@ System.Windows.Forms
 System.Drawing
 ...............................................................................................
 //OPERATION//
-1. Run a-side-tcp-chat-v0.ps1 on A side then enter A, Z IP addresses and ports then Apply
-2. Run z-side-tcp-chat-v0.ps1 on Z side then enter A, Z IP addresses and ports then Apply
+1. Run a-side-tcp-chat-v1.ps1 on A side then enter A, Z IP addresses and ports then Apply
+2. Run z-side-tcp-chat-v1.ps1 on Z side then enter A, Z IP addresses and ports then Apply
 ...............................................................................................
 //CHANGE-LOG//
+20260228.0.1 renamed TCP scripts from v0 to v1
 20260228.0.0 refactored transport from UDP to TCP
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -39,15 +40,15 @@ System.Drawing
 
 #region Startup Parameters
 param(
-    [string]$SideAIP = '0.0.0.0',
-    [string]$SideZIP = '127.0.0.1',
+    [string]$SideAIP = '127.0.0.1',
+    [string]$SideZIP = '0.0.0.0',
 
     [int]$SideAToSideZSourcePort = 7000,
     [int]$SideAToSideZDestPort = 7000,
-    [int]$SideZToSideASourcePort = 7001,
-    [int]$SideZToSideADestPort = 7001,
+    [int]$SideZToSideASourcePort = 6226,
+    [int]$SideZToSideADestPort = 6226,
 
-    [string]$DisplayName = 'Side A'
+    [string]$DisplayName = 'Side Z'
 )
 #endregion
 
@@ -57,8 +58,8 @@ Add-Type -AssemblyName System.Drawing
 
 $ErrorActionPreference = 'Stop'
 $maxInputLines = 3
-$probePayloadText = 'AAAAA-AAAAA-AAAAA-AAAAA-AAAAA'
-$remoteProbePayloadText = 'ZZZZZ-ZZZZZ-ZZZZZ-ZZZZZ-ZZZZZ'
+$probePayloadText = 'ZZZZZ-ZZZZZ-ZZZZZ-ZZZZZ-ZZZZZ'
+$remoteProbePayloadText = 'AAAAA-AAAAA-AAAAA-AAAAA-AAAAA'
 $probePayloadBytes = [System.Text.Encoding]::UTF8.GetBytes($probePayloadText)
 $connectRetryIntervalMs = 3000
 $connectTimeoutMs = 5000
@@ -312,8 +313,8 @@ $script:lastAutoRecoverUtc = [DateTime]::MinValue
 
 #region Transport Status And Cleanup
 function Update-NetworkLabels {
-    $lblChannel1.Text = "Channel A -> Z : side-a $($script:currentSideAIP)`:$($script:currentAToZSourcePort) -> side-z $($script:currentSideZIP)`:$($script:currentAToZDestPort)"
-    $lblChannel2.Text = "Channel Z -> A : side-z $($script:currentSideZIP)`:$($script:currentZToASourcePort) -> side-a $($script:currentSideAIP)`:$($script:currentZToADestPort)"
+    $lblChannel1.Text = "Channel Z -> A : side-z $($script:currentSideZIP)`:$($script:currentZToASourcePort) -> side-a $($script:currentSideAIP)`:$($script:currentZToADestPort)"
+    $lblChannel2.Text = "Channel A -> Z : side-a $($script:currentSideAIP)`:$($script:currentAToZSourcePort) -> side-z $($script:currentSideZIP)`:$($script:currentAToZDestPort)"
 
     $sendState = 'Disconnected'
     if (($null -ne $script:sendClient) -and $script:sendClient.Connected) {
@@ -327,7 +328,7 @@ function Update-NetworkLabels {
         $recvState = 'Connected'
     }
 
-    $statusLabel.Text = "Send(A->Z): $sendState $($script:currentSideAIP)`:$($script:currentAToZSourcePort) -> $($script:currentSideZIP)`:$($script:currentAToZDestPort) | Recv(Z->A): $recvState $($script:currentSideAIP)`:$($script:currentZToADestPort)"
+    $statusLabel.Text = "Send(Z->A): $sendState $($script:currentSideZIP)`:$($script:currentZToASourcePort) -> $($script:currentSideAIP)`:$($script:currentZToADestPort) | Recv(A->Z): $recvState $($script:currentSideZIP)`:$($script:currentAToZDestPort)"
 }
 
 function Close-SendClient {
@@ -408,8 +409,8 @@ function Start-SendConnect {
     try {
         $sideAAddress = [System.Net.IPAddress]::Parse($script:currentSideAIP)
         $sideZAddress = [System.Net.IPAddress]::Parse($script:currentSideZIP)
-        $script:sendConnectClient = New-BoundTcpClient -LocalAddress $sideAAddress -LocalPort $script:currentAToZSourcePort
-        $script:sendConnectAsync = $script:sendConnectClient.Client.BeginConnect($sideZAddress, $script:currentAToZDestPort, $null, $null)
+        $script:sendConnectClient = New-BoundTcpClient -LocalAddress $sideZAddress -LocalPort $script:currentZToASourcePort
+        $script:sendConnectAsync = $script:sendConnectClient.Client.BeginConnect($sideAAddress, $script:currentZToADestPort, $null, $null)
         $script:sendConnectStartedUtc = [DateTime]::UtcNow
         Update-NetworkLabels
     } catch {
@@ -549,19 +550,19 @@ function Process-ReceiveFrames {
         $script:lastRxUtc = [DateTime]::UtcNow
         $endpoint = $script:recvClient.Client.RemoteEndPoint
         $endpointText = $endpoint.ToString()
-        $isExpectedPeer = Test-ExpectedPeer -Endpoint $endpoint -ExpectedPort $script:currentZToASourcePort -ExpectedIP $script:currentSideZIP
+        $isExpectedPeer = Test-ExpectedPeer -Endpoint $endpoint -ExpectedPort $script:currentAToZSourcePort -ExpectedIP $script:currentSideAIP
 
         if ($msg -eq $remoteProbePayloadText) {
             if ($isExpectedPeer) {
-                Add-ChatLine -Prefix "[Probe RX $endpointText Z->A]" -Message $msg
+                Add-ChatLine -Prefix "[Probe RX $endpointText A->Z]" -Message $msg
             } else {
-                Add-ChatLine -Prefix "[Probe RX Unverified $endpointText Z->A]" -Message $msg
+                Add-ChatLine -Prefix "[Probe RX Unverified $endpointText A->Z]" -Message $msg
             }
         } else {
             if ($isExpectedPeer) {
-                Add-ChatLine -Prefix "[$endpointText Z->A]" -Message $msg
+                Add-ChatLine -Prefix "[$endpointText A->Z]" -Message $msg
             } else {
-                Add-ChatLine -Prefix "[Unverified $endpointText Z->A]" -Message $msg
+                Add-ChatLine -Prefix "[Unverified $endpointText A->Z]" -Message $msg
             }
         }
     }
@@ -596,14 +597,14 @@ function Initialize-Network {
         [int]$NextZToADestPort
     )
 
-    $sideAAddress = [System.Net.IPAddress]::Parse($NextSideAIP)
-    [void][System.Net.IPAddress]::Parse($NextSideZIP)
+    [void][System.Net.IPAddress]::Parse($NextSideAIP)
+    $sideZAddress = [System.Net.IPAddress]::Parse($NextSideZIP)
 
     # TCP listeners must release the old bind before a replacement can start.
     # Closing here avoids Apply/auto-recover collisions on the same local port.
     Close-TcpObjects
 
-    $nextRecvListener = New-Object System.Net.Sockets.TcpListener($sideAAddress, $NextZToADestPort)
+    $nextRecvListener = New-Object System.Net.Sockets.TcpListener($sideZAddress, $NextAToZDestPort)
     $nextRecvListener.Server.SetSocketOption([System.Net.Sockets.SocketOptionLevel]::Socket, [System.Net.Sockets.SocketOptionName]::ReuseAddress, $true)
     $nextRecvListener.Server.ExclusiveAddressUse = $false
     $nextRecvListener.Start()
@@ -744,7 +745,7 @@ function Send-Message {
         }
         $payload = [System.Text.Encoding]::UTF8.GetBytes($text)
         Write-FramedMessage -Stream $script:sendStream -Payload $payload
-        Add-ChatLine -Prefix "[$DisplayName A->Z]" -Message $text
+        Add-ChatLine -Prefix "[$DisplayName Z->A]" -Message $text
         $txtMessage.Clear()
         $txtMessage.Focus()
     } catch {
