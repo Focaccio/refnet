@@ -9,6 +9,8 @@
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !1 - authentication
 !
+!aaa new-model
+!aaa authentication login default local
 aaa authorization network default local
 !
 !_______________________________________________________________________________________________
@@ -69,12 +71,12 @@ crypto ikev2 keyring UNTRUSTED-WAN-KEYRING-1
  peer PEER-A-WAN-1
     description PEER-A-WAN-1
     address 1.1.1.2
-    pre-shared-key FVRF-IKEV2-PSK-KEYNAME
+    pre-shared-key FVRF-IKEV2-PSK_KEYNAME
 !
  peer PEER-Z-WAN-1
     description PEER-Z-WAN-1
     address 2.2.2.2
-    pre-shared-key FVRF-IKEV2-PSK_PSK-KEYNAME
+    pre-shared-key FVRF-IKEV2-PSK_KEYNAME
 !
 crypto ikev2 profile FVRF-IKEV2-PROFILE-1
    description FVRF-IKEV2-PROFILE-1
@@ -167,12 +169,14 @@ ip access-list extended WAN-1-INGRESS-COMBINED
    permit udp any eq bootps any eq bootpc
 !
    remark A-SIDE
+   permit icmp host 1.1.1.1 any
    permit icmp host 1.1.1.2 any
    permit udp host 1.1.1.2 any eq isakmp
    permit udp host 1.1.1.2 any eq non500-isakmp
    permit esp host 1.1.1.2 any
 !
    remark Z-SIDE
+   permit icmp host 2.2.2.1 any
    permit icmp host 2.2.2.2 any
    permit udp host 2.2.2.2 any eq isakmp
    permit udp host 2.2.2.2 any eq non500-isakmp
@@ -193,6 +197,20 @@ no ip access-list extended WAN-1-EGRESS-COMBINED
 ip access-list extended WAN-1-EGRESS-COMBINED
    permit ip 1.1.1.0 0.0.0.252 2.2.2.0 0.0.0.252
    permit ip 2.2.2.0 0.0.0.252 1.1.1.0 0.0.0.252
+   permit icmp 1.1.1.0 0.0.0.252 2.2.2.0 0.0.0.252
+   permit icmp 2.2.2.0 0.0.0.252 1.1.1.0 0.0.0.252
+!
+   remark A-SIDE
+   permit icmp host 1.1.1.2 any log-input
+   permit udp host 1.1.1.2 any eq isakmp log-input
+   permit udp host 1.1.1.2 any eq non500-isakmp log-input
+   permit esp host 1.1.1.2 any log-input
+!
+   remark Z-SIDE
+   permit icmp host 2.2.2.2 any log-input
+   permit udp host 2.2.2.2 any eq isakmp log-input
+   permit udp host 2.2.2.2 any eq non500-isakmp log-input
+   permit esp host 2.2.2.2 any log-input
 !
 !_______________________________________________________________________________________________
 !_______________________________________________________________________________________________

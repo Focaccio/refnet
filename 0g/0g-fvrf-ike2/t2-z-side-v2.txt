@@ -136,7 +136,7 @@ interface tu999
    no ip unreachables
    no ip proxy-arp
    load-interval 30
-   tunnel source <interface Z>
+   tunnel source <interfaceZ>
    tunnel mode ipsec ipv4
    tunnel destination 1.1.1.2
    tunnel vrf fvrf-untrusted-wan-isp-1

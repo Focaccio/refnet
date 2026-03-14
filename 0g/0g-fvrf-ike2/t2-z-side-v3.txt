@@ -1,7 +1,7 @@
 !..............................................................................................
 !..............................................................................................
-!CORE
-!T1 a-side
+!REMOTE
+!T2 z-side
 !..............................................................................................
 !..............................................................................................
 !
@@ -9,6 +9,8 @@
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !1 - authentication
 !
+!aaa new-model
+!aaa authentication login default local
 aaa authorization network default local
 !
 !_______________________________________________________________________________________________
@@ -76,10 +78,10 @@ crypto ikev2 keyring UNTRUSTED-WAN-KEYRING-1
     address 2.2.2.2
     pre-shared-key FVRF-IKEV2-PSK_PSK-KEYNAME
 !
-crypto ikev2 profile FVRF-IKEV2-PROFILE-1
+crypto ikev2 profile FVRF-IKEV2-PROFILE-1-Z
    description FVRF-IKEV2-PROFILE-1
    match fvrf fvrf-untrusted-wan-isp-1
-   match identity remote address 2.2.2.2
+   match identity remote address 1.1.1.2
    authentication remote pre-share
    authentication local pre-share
    keyring local UNTRUSTED-WAN-KEYRING-1
@@ -99,8 +101,8 @@ crypto ipsec profile INSIDE-IKEV2-PROFILE-TU999
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !6 - loopbacks
 interface lo999
-   description V-lo999-TU999-SOURCE-172-30-99-1
-   ip address 172.30.99.1 255.255.255.255
+   description V-lo999-TU999-Z-SOURCE-172-30-99-2
+   ip address 172.30.99.2 255.255.255.255
 !
 !_______________________________________________________________________________________________
 !_______________________________________________________________________________________________
@@ -108,10 +110,10 @@ interface lo999
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !7 - WAN PHYS interface
-interface A
+interface Z
    description PHYSICAL-UNTRUSTED-WAN-ISP-1-CONNECTION
    vrf forwarding fvrf-untrusted-wan-isp-1
-   ip address 1.1.1.2 255.255.255.252
+   ip address 2.2.2.2 255.255.255.252
    ip access-group WAN-1-INGRESS-COMBINED in
    ip access-group WAN-1-EGRESS-COMBINED out
    no ip redirects
@@ -130,15 +132,15 @@ interface A
 interface tu999
    description V-GRE-TU999-VIA-untrusted-wan-isp1
    ip unnumbered lo999
-   ip access-group to_A-SIDE_TU999_IN in
-   ip access-group from_A-SIDE_TU999_OUT out
+   ip access-group to_Z-SIDE_TU999_IN in
+   ip access-group from_Z-SIDE_TU999_OUT out
    no ip redirects
    no ip unreachables
    no ip proxy-arp
    load-interval 30
-   tunnel source <interfaceA>
+   tunnel source <interfaceZ>
    tunnel mode ipsec ipv4
-   tunnel destination 2.2.2.2
+   tunnel destination 1.1.1.2
    tunnel vrf fvrf-untrusted-wan-isp-1
    tunnel protection ipsec profile INSIDE-IKEV2-PROFILE-TU999
 !
@@ -150,7 +152,8 @@ interface tu999
 !9 - Routing
 !
 ip route 172.30.99.0 255.255.255.0 tu999 name TU999-172-30-99-0
-ip route 51.0.0.0 255.255.255.0 tu999 name Z-51-NET
+ip route 41.0.0.0 255.255.255.0 tu999 name A-41-NET
+
 !
 !
 !_______________________________________________________________________________________________
@@ -167,12 +170,14 @@ ip access-list extended WAN-1-INGRESS-COMBINED
    permit udp any eq bootps any eq bootpc
 !
    remark A-SIDE
+   permit icmp host 1.1.1.1 any
    permit icmp host 1.1.1.2 any
    permit udp host 1.1.1.2 any eq isakmp
    permit udp host 1.1.1.2 any eq non500-isakmp
    permit esp host 1.1.1.2 any
 !
    remark Z-SIDE
+   permit icmp host 2.2.2.1 any
    permit icmp host 2.2.2.2 any
    permit udp host 2.2.2.2 any eq isakmp
    permit udp host 2.2.2.2 any eq non500-isakmp
@@ -193,15 +198,17 @@ no ip access-list extended WAN-1-EGRESS-COMBINED
 ip access-list extended WAN-1-EGRESS-COMBINED
    permit ip 1.1.1.0 0.0.0.252 2.2.2.0 0.0.0.252
    permit ip 2.2.2.0 0.0.0.252 1.1.1.0 0.0.0.252
+   permit icmp 1.1.1.0 0.0.0.252 2.2.2.0 0.0.0.252
+   permit icmp 2.2.2.0 0.0.0.252 1.1.1.0 0.0.0.252
 !
 !_______________________________________________________________________________________________
 !_______________________________________________________________________________________________
 !_______________________________________________________________________________________________
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-!11 - INSIDE TUNNEL ACL IN   >>>  to-A_IN
-no ip access-list extended to_A-SIDE_TU999_IN
-ip access-list extended to_A-SIDE_TU999_IN
+!11 - INSIDE TUNNEL ACL IN   >>>  to-Z_IN
+no ip access-list extended to_Z-SIDE_TU999_IN
+ip access-list extended to_Z-SIDE_TU999_IN
 permit ip any any
 !
 !_______________________________________________________________________________________________
@@ -209,9 +216,9 @@ permit ip any any
 !_______________________________________________________________________________________________
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-!12 - INSIDE TUNNEL ACL OUT   >>>   from-A_OUT
-no ip access-list extended from_A-SIDE_TU999_OUT
-ip access-list extended from_A-SIDE_TU999_OUT
+!12 - INSIDE TUNNEL ACL OUT   >>>   from-Z_OUT
+no ip access-list extended from_Z-SIDE_TU999_OUT
+ip access-list extended from_Z-SIDE_TU999_OUT
 permit ip any any
 !
 !_______________________________________________________________________________________________
@@ -243,5 +250,40 @@ alias exec scn show cdp nei
 alias exec sln show lldp nei 
 alias exec slndi show lldp nei det | i 
 alias exec scndi show cdp nei det | i 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

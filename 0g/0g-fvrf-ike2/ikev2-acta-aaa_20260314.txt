@@ -1,0 +1,461 @@
+lab_A-rtr#v2sa
+ IPv4 Crypto IKEv2  SA 
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status 
+1         1.1.1.2/500           2.2.2.2/500           fvrf-untrusted-wan   READY  
+      Encr: AES-CBC, keysize: 256, PRF: SHA512, Hash: SHA512, DH Grp:21, Auth sign: PSK, Auth verify: PSK
+      Life/Active Time: 86400/363 sec
+
+ IPv6 Crypto IKEv2  SA 
+
+lab_A-rtr#secsa
+
+interface: Tunnel999
+    Crypto map tag: Tunnel999-head-0, local addr 1.1.1.2
+
+   protected vrf: (none)
+   local  ident (addr/mask/prot/port): (0.0.0.0/0.0.0.0/0/0)
+   remote ident (addr/mask/prot/port): (0.0.0.0/0.0.0.0/0/0)
+   current_peer 2.2.2.2 port 500
+     PERMIT, flags={origin_is_acl,}
+    #pkts encaps: 100, #pkts encrypt: 100, #pkts digest: 100
+    #pkts decaps: 89, #pkts decrypt: 89, #pkts verify: 89
+    #pkts compressed: 0, #pkts decompressed: 0
+    #pkts not compressed: 0, #pkts compr. failed: 0
+    #pkts not decompressed: 0, #pkts decompress failed: 0
+    #send errors 0, #recv errors 0
+
+     local crypto endpt.: 1.1.1.2, remote crypto endpt.: 2.2.2.2
+     plaintext mtu 1422, path mtu 1500, ip mtu 1500, ip mtu idb GigabitEthernet0/0/0
+     current outbound spi: 0xADFF142(182448450)
+     PFS (Y/N): N, DH group: none
+
+     inbound esp sas:
+      spi: 0x3532C0B1(892518577)
+        transform: esp-256-aes esp-sha384-hmac ,
+        in use settings ={Tunnel, }
+        conn id: 2007, flow_id: ESG:7, sibling_flags FFFFFFFF80000048, crypto map: Tunnel999-head-0
+        sa timing: remaining key lifetime (k/sec): (4607990/3234)
+        IV size: 16 bytes
+        replay detection support: Y
+        Status: ACTIVE(ACTIVE)
+
+     inbound ah sas:
+
+     inbound pcp sas:
+
+     outbound esp sas:
+      spi: 0xADFF142(182448450)
+        transform: esp-256-aes esp-sha384-hmac ,
+        in use settings ={Tunnel, }
+        conn id: 2008, flow_id: ESG:8, sibling_flags FFFFFFFF80000048, crypto map: Tunnel999-head-0
+        sa timing: remaining key lifetime (k/sec): (4607991/3234)
+        IV size: 16 bytes
+        replay detection support: Y
+        Status: ACTIVE(ACTIVE)
+
+     outbound ah sas:
+
+     outbound pcp sas:
+lab_A-rtr#ping 41.0.0.1
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 41.0.0.1, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
+lab_A-rtr#
+Mar 14 19:20:47.741: ICMP: echo reply sent, src 41.0.0.1, dst 41.0.0.1, topology BASE, dscp 0 topoid 0
+Mar 14 19:20:47.741: ICMP: echo reply rcvd, src 41.0.0.1, dst 41.0.0.1, topology BASE, dscp 0 topoid 0
+Mar 14 19:20:47.742: ICMP: echo reply sent, src 41.0.0.1, dst 41.0.0.1, topology BASE, dscp 0 topoid 0
+Mar 14 19:20:47.743: ICMP: echo reply rcvd, src 41.0.0.1, dst 41.0.0.1, topology BASE, dscp 0 topoid 0
+Mar 14 19:20:47.743: ICMP: echo reply sent, src 41.0.0.1, dst 41.0.0.1, topology BASE, dscp 0 topoid 0
+Mar 14 19:20:47.744: ICMP: echo reply rcvd, src 41.0.0.1, dst 41.0.0.1, topology BASE, dscp 0 topoid 0
+lab_A-rtr#
+Mar 14 19:20:47.745: ICMP: echo reply sent, src 41.0.0.1, dst 41.0.0.1, topology BASE, dscp 0 topoid 0
+Mar 14 19:20:47.745: ICMP: echo reply rcvd, src 41.0.0.1, dst 41.0.0.1, topology BASE, dscp 0 topoid 0
+Mar 14 19:20:47.746: ICMP: echo reply sent, src 41.0.0.1, dst 41.0.0.1, topology BASE, dscp 0 topoid 0
+Mar 14 19:20:47.747: ICMP: echo reply rcvd, src 41.0.0.1, dst 41.0.0.1, topology BASE, dscp 0 topoid 0
+lab_A-rtr#
+lab_A-rtr#
+lab_A-rtr#ping 51.0.0.1
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 51.0.0.1, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 2/2/2 ms
+lab_A-rtr#
+lab_A-rtr#
+lab_A-rtr#
+Mar 14 19:20:52.997: ICMP: echo reply rcvd, src 51.0.0.1, dst 172.30.99.1, topology BASE, dscp 0 topoid 0
+Mar 14 19:20:52.999: ICMP: echo reply rcvd, src 51.0.0.1, dst 172.30.99.1, topology BASE, dscp 0 topoid 0
+Mar 14 19:20:53.001: ICMP: echo reply rcvd, src 51.0.0.1, dst 172.30.99.1, topology BASE, dscp 0 topoid 0
+Mar 14 19:20:53.003: ICMP: echo reply rcvd, src 51.0.0.1, dst 172.30.99.1, topology BASE, dscp 0 topoid 0
+Mar 14 19:20:53.005: ICMP: echo reply rcvd, src 51.0.0.1, dst 172.30.99.1, topology BASE, dscp 0 topoid 0
+lab_A-rtr#
+lab_A-rtr#
+lab_A-rtr#
+lab_A-rtr#sh run
+Building configuration...
+
+
+Current configuration : 9716 bytes
+!
+! Last configuration change at 19:13:58 UTC Sat Mar 14 2026 by lab
+! NVRAM config last updated at 19:15:07 UTC Sat Mar 14 2026 by lab
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+!
+hostname lab_A-rtr
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition FD
+ rd 99:1
+ !
+ address-family ipv4
+ exit-address-family
+!         
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+vrf definition fvrf-untrusted-wan-isp-1
+ description FVRF-UNTRUSTED-WAN-ISP-1
+ rd 999:1
+ !
+ address-family ipv4
+ exit-address-family
+!
+enable secret
+!
+aaa new-model
+!
+!
+aaa authentication login default local
+aaa authorization network default local 
+!         
+!
+!
+!
+!
+!
+aaa session-id common
+!
+!
+!
+!
+!
+!
+!
+ip domain name tst.areaf.net
+!
+!
+!
+no login on-success log
+!
+!
+!
+!
+!         
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid ISR4331/K9 sn
+license boot suite FoundationSuiteK9
+license boot suite AdvUCSuiteK9
+license boot level uck9
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username
+!
+redundancy
+ mode none
+crypto ikev2 authorization policy default
+ route set interface
+!
+crypto ikev2 proposal IKEV2-PROPOSAL-1 
+ encryption aes-cbc-256
+ integrity sha512
+ group 21
+no crypto ikev2 proposal default
+!
+crypto ikev2 policy IKEV2-POLICY-1 
+ match fvrf fvrf-untrusted-wan-isp-1
+ proposal IKEV2-PROPOSAL-1
+no crypto ikev2 policy default
+!
+crypto ikev2 keyring UNTRUSTED-WAN-KEYRING-1
+ peer PEER-A-WAN-1
+  description PEER-A-WAN-1
+  address 1.1.1.2
+  pre-shared-key FVRF-IKEV2-PSK_KEYNAME
+ !
+ peer PEER-Z-WAN-1
+  description PEER-Z-WAN-1
+  address 2.2.2.2
+  pre-shared-key FVRF-IKEV2-PSK_KEYNAME
+ !
+!
+!
+crypto ikev2 profile FVRF-IKEV2-PROFILE-1-A
+ description FVRF-IKEV2-PROFILE-1
+ match fvrf fvrf-untrusted-wan-isp-1
+ match identity remote address 2.2.2.2 255.255.255.255 
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local UNTRUSTED-WAN-KEYRING-1
+ dpd 30 3 on-demand
+ aaa authorization group psk list default default
+!
+!
+!         
+vlan internal allocation policy ascending
+!
+lldp run
+!
+! 
+crypto logging session
+!
+!
+!
+!
+!
+!
+!
+crypto ipsec transform-set SHA384 esp-aes 256 esp-sha384-hmac 
+ mode tunnel
+!
+crypto ipsec profile INSIDE-IKEV2-PROFILE-TU999
+ description INSIDE-IKEV2-PROFILE-TU999
+ set transform-set SHA384 
+ set pfs group21
+ set ikev2-profile FVRF-IKEV2-PROFILE-1-A
+!
+!         
+!
+!
+!
+!
+! 
+! 
+!
+!
+interface Loopback41
+ description sim 41net
+ ip address 41.0.0.1 255.255.255.0
+!
+interface Loopback999
+ description V-lo999-TU999-A-SOURCE-172-30-99-1
+ ip address 172.30.99.1 255.255.255.255
+!
+interface Tunnel999
+ description V-GRE-TU999-VIA-untrusted-wan-isp1
+ ip unnumbered Loopback999
+ no ip redirects
+ no ip unreachables
+ no ip proxy-arp
+ ip access-group to_A-SIDE_TU999_IN in
+ ip access-group from_A-SIDE_TU999_OUT out
+ load-interval 30
+ tunnel source GigabitEthernet0/0/0
+ tunnel mode ipsec ipv4
+ tunnel destination 2.2.2.2
+ tunnel vrf fvrf-untrusted-wan-isp-1
+ tunnel protection ipsec profile INSIDE-IKEV2-PROFILE-TU999
+!
+interface GigabitEthernet0/0/0
+ description PHYSICAL-UNTRUSTED-WAN-ISP-1-CONNECTION
+ vrf forwarding fvrf-untrusted-wan-isp-1
+ ip address 1.1.1.2 255.255.255.252
+ no ip redirects
+ no ip unreachables
+ no ip proxy-arp
+ ip access-group WAN-1-INGRESS-COMBINED in
+ ip access-group WAN-1-EGRESS-COMBINED out
+ load-interval 30
+ negotiation auto
+!
+interface GigabitEthernet0/0/1
+ no ip address
+ shutdown 
+ negotiation auto
+!
+interface GigabitEthernet0/0/2
+ no ip address
+ negotiation auto
+!
+interface GigabitEthernet0/1/0
+!
+interface GigabitEthernet0/1/1
+!
+interface GigabitEthernet0/1/2
+!
+interface GigabitEthernet0/1/3
+!
+interface GigabitEthernet0
+ vrf forwarding Mgmt-intf
+ ip address dhcp
+ negotiation auto
+!
+interface Vlan1
+ no ip address
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+ip http client source-interface GigabitEthernet0
+ip route 51.0.0.0 255.255.255.0 Tunnel999 name Z-51-NET
+ip route 172.30.99.0 255.255.255.0 Tunnel999 name TU999-172-30-99-0
+ip route vrf fvrf-untrusted-wan-isp-1 2.2.2.0 255.255.255.0 1.1.1.1
+!
+!
+!
+ip access-list extended WAN-1-EGRESS-COMBINED
+ permit ip 1.1.1.0 0.0.0.252 2.2.2.0 0.0.0.252
+ permit ip 2.2.2.0 0.0.0.252 1.1.1.0 0.0.0.252
+ permit icmp 1.1.1.0 0.0.0.252 2.2.2.0 0.0.0.252
+ permit icmp 2.2.2.0 0.0.0.252 1.1.1.0 0.0.0.252
+ remark A-SIDE
+ permit icmp host 1.1.1.2 any log-input
+ permit udp host 1.1.1.2 any eq isakmp log-input
+ permit udp host 1.1.1.2 any eq non500-isakmp log-input
+ permit esp host 1.1.1.2 any log-input
+ remark Z-SIDE
+ permit icmp host 2.2.2.2 any log-input
+ permit udp host 2.2.2.2 any eq isakmp log-input
+ permit udp host 2.2.2.2 any eq non500-isakmp log-input
+ permit esp host 2.2.2.2 any log-input
+ip access-list extended WAN-1-INGRESS-COMBINED
+ deny   ip any any option any-options log-input
+ permit tcp any any established
+ permit udp any eq bootps any eq bootpc
+ remark A-SIDE
+ permit icmp host 1.1.1.1 any
+ permit icmp host 1.1.1.2 any
+ permit udp host 1.1.1.2 any eq isakmp
+ permit udp host 1.1.1.2 any eq non500-isakmp
+ permit esp host 1.1.1.2 any
+ remark Z-SIDE
+ permit icmp host 2.2.2.1 any
+ permit icmp host 2.2.2.2 any
+ permit udp host 2.2.2.2 any eq isakmp
+ permit udp host 2.2.2.2 any eq non500-isakmp
+ permit esp host 2.2.2.2 any
+ deny   udp any any eq isakmp log-input
+ deny   udp any any eq non500-isakmp log-input
+ deny   esp any any log-input
+ remark block bogons
+ remark explicit deny
+ deny   ip any any log-input
+ip access-list extended from_A-SIDE_TU999_OUT
+ permit ip any any
+ip access-list extended to_A-SIDE_TU999_IN
+ permit ip any any
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+mgcp behavior rsip-range tgcp-only
+mgcp behavior comedia-role none
+mgcp behavior comedia-check-media-src disable
+mgcp behavior comedia-sdp-force disable
+!
+mgcp profile default
+!
+!
+!         
+!
+!
+alias exec wha sh run | i alias
+alias exec siib show ip int brie
+alias exec srint show run int
+alias exec sir show ip route
+alias exec sri sho run | i 
+alias exec srs sho run | sec
+alias exec sid show int des
+alias exec sis show int status
+alias exec sit show int tru
+alias exec sirs show ip route static
+alias exec sidiu show int des | i up
+alias exec caps sh crypto ipsec sa | i caps
+alias exec sidp show int des | i P-
+alias exec sidv show int des | i V-
+alias exec ses show etherchannel sum
+alias exec srin show run int
+alias exec srsc show run | sec crypto
+alias exec crs copy ru st
+alias exec crf copy run bootflash:cfg-manual-backup
+alias exec scn show cdp nei
+alias exec sln show lldp nei 
+alias exec slndi show lldp nei det | i 
+alias exec scndi show cdp nei det | i 
+alias exec pfvrf ping vrf fvrf-untrusted-wan-isp-1
+alias exec safvrf show arp vrf fvrf-untrusted-wan-isp-1
+alias exec sirfvrf show ip route vrf fvrf-untrusted-wan-isp-1
+alias exec v2sa show crypto ikev2 sa
+alias exec secsa show crypto ipsec sa
+alias exec clearv2 clear crypto ikev2 sa
+alias exec clearsec clear crypto ipsec sa
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+ transport input none
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ exec-timeout 120 0
+ logging synchronous
+line vty 5 15
+ exec-timeout 120 0
+ logging synchronous
+!
+ntp server vrf Mgmt-intf pool.ntp.org
+ntp server vrf Mgmt-intf 34.208.249.133
+!
+!
+!
+!
+!
+end
+
+lab_A-rtr#
