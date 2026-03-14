@@ -1,0 +1,247 @@
+!..............................................................................................
+!..............................................................................................
+!CORE
+!T1 a-side
+!..............................................................................................
+!..............................................................................................
+!
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!1 - authentication
+!
+aaa authorization network default local
+!
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!2 - front-door-vrf
+!
+vrf definition fvrf-untrusted-wan-isp-1
+description FVRF-UNTRUSTED-WAN-ISP-1
+rd 999:1
+address-family ipv4
+exit-address-family
+!
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!3 - IKE2 policies
+!
+crypto logging session
+!
+no crypto ikev2 policy default
+no crypto ikev2 proposal default
+!
+crypto ikev2 authorization policy default
+   route set interface
+!
+crypto ikev2 proposal IKEV2-PROPOSAL-1
+   encryption aes-cbc-256
+   integrity sha512
+   group 21
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!4 - IPSEC policies
+!
+crypto ipsec transform-set SHA384 esp-aes 256 esp-sha384-hmac
+   mode tunnel
+!
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!5 - TUNNELS // IKE2
+!
+crypto ikev2 policy IKEV2-POLICY-1
+   match fvrf fvrf-untrusted-wan-isp-1
+   proposal IKEV2-PROPOSAL-1
+!
+crypto ikev2 keyring UNTRUSTED-WAN-KEYRING-1
+!
+ peer PEER-A-WAN-1
+    description PEER-A-WAN-1
+    address 1.1.1.2
+    pre-shared-key FVRF-IKEV2-PSK-KEYNAME
+!
+ peer PEER-Z-WAN-1
+    description PEER-Z-WAN-1
+    address 2.2.2.2
+    pre-shared-key FVRF-IKEV2-PSK_PSK-KEYNAME
+!
+crypto ikev2 profile FVRF-IKEV2-PROFILE-1-A
+   description FVRF-IKEV2-PROFILE-1
+   match fvrf fvrf-untrusted-wan-isp-1
+   match identity remote address 2.2.2.2
+   authentication remote pre-share
+   authentication local pre-share
+   keyring local UNTRUSTED-WAN-KEYRING-1
+   dpd 30 3 on-demand
+   aaa authorization group psk list default default
+!
+crypto ipsec profile INSIDE-IKEV2-PROFILE-TU999
+   description INSIDE-IKEV2-PROFILE-TU999
+   set transform-set SHA384
+   set pfs group21
+   set ikev2-profile FVRF-IKEV2-PROFILE-1-A
+!
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!6 - loopbacks
+interface lo999
+   description V-lo999-TU999-A-SOURCE-172-30-99-1
+   ip address 172.30.99.1 255.255.255.255
+!
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!7 - WAN PHYS interface
+interface A
+   description PHYSICAL-UNTRUSTED-WAN-ISP-1-CONNECTION
+   vrf forwarding fvrf-untrusted-wan-isp-1
+   ip address 1.1.1.2 255.255.255.252
+   ip access-group WAN-1-INGRESS-COMBINED in
+   ip access-group WAN-1-EGRESS-COMBINED out
+   no ip redirects
+   no ip unreachables
+   no ip mask-reply
+   no ip proxy-arp
+   cdp enable
+   no shut
+!
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!8 - INSIDE TUNNEL // GRE protection
+interface tu999
+   description V-GRE-TU999-VIA-untrusted-wan-isp1
+   ip unnumbered lo999
+   ip access-group to_A-SIDE_TU999_IN in
+   ip access-group from_A-SIDE_TU999_OUT out
+   no ip redirects
+   no ip unreachables
+   no ip proxy-arp
+   load-interval 30
+   tunnel source <interface A>
+   tunnel mode ipsec ipv4
+   tunnel destination 2.2.2.2
+   tunnel vrf fvrf-untrusted-wan-isp-1
+   tunnel protection ipsec profile INSIDE-IKEV2-PROFILE-TU999
+!
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!9 - Routing
+!
+ip route 172.30.99.0 255.255.255.0 tu999 name TU999-172-30-99-0
+ip route 51.0.0.0 255.255.255.0 tu999 name Z-51-NET
+!
+!
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!10 - PHYS WAN combined-ACL INGRESS (L3 PROTECTION) / WAN ACL EGRESS (VIEWING)
+!
+no ip access-list extended WAN-1-INGRESS-COMBINED
+ip access-list extended WAN-1-INGRESS-COMBINED
+   deny ip any any option any-options log-input
+   permit tcp any any established
+   permit udp any eq bootps any eq bootpc
+!
+   remark A-SIDE
+   permit icmp host 1.1.1.2 any
+   permit udp host 1.1.1.2 any eq isakmp
+   permit udp host 1.1.1.2 any eq non500-isakmp
+   permit esp host 1.1.1.2 any
+!
+   remark Z-SIDE
+   permit icmp host 2.2.2.2 any
+   permit udp host 2.2.2.2 any eq isakmp
+   permit udp host 2.2.2.2 any eq non500-isakmp
+   permit esp host 2.2.2.2 any
+!
+   deny udp any any eq isakmp log-input
+   deny udp any any eq non500-isakmp log-input
+   deny esp any any log-input
+!
+   remark block bogons
+!  
+   remark explicit deny
+   deny ip any any log-input
+!
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!
+no ip access-list extended WAN-1-EGRESS-COMBINED
+ip access-list extended WAN-1-EGRESS-COMBINED
+   permit ip 1.1.1.0 0.0.0.252 2.2.2.0 0.0.0.252
+   permit ip 2.2.2.0 0.0.0.252 1.1.1.0 0.0.0.252
+!
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!11 - INSIDE TUNNEL ACL IN   >>>  to-A_IN
+no ip access-list extended to_A-SIDE_TU999_IN
+ip access-list extended to_A-SIDE_TU999_IN
+permit ip any any
+!
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!12 - INSIDE TUNNEL ACL OUT   >>>   from-A_OUT
+no ip access-list extended from_A-SIDE_TU999_OUT
+ip access-list extended from_A-SIDE_TU999_OUT
+permit ip any any
+!
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!_______________________________________________________________________________________________
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!
+alias exec wha sh run | i alias
+alias exec siib show ip int brie
+alias exec srint show run int
+alias exec sir show ip route
+alias exec sri sho run | i 
+alias exec srs sho run | sec
+alias exec sid show int des
+alias exec sis show int status
+alias exec sit show int tru
+alias exec sirs show ip route static
+alias exec sidiu show int des | i up
+alias exec caps sh crypto ipsec sa | i caps
+alias exec sidp show int des | i P-
+alias exec sidv show int des | i V-
+alias exec ses show etherchannel sum
+alias exec srin show run int
+alias exec srsc show run | sec crypto
+alias exec crs copy ru st
+alias exec crf copy run bootflash:cfg-manual-backup
+alias exec scn show cdp nei
+alias exec sln show lldp nei 
+alias exec slndi show lldp nei det | i 
+alias exec scndi show cdp nei det | i 
+
+! 20260314
