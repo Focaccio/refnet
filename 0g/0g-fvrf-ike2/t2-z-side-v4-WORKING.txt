@@ -20,6 +20,10 @@ aaa authorization network default local
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !2 - front-door-vrf
 !
+! protections
+no ip http server
+no ip http secure-server
+!
 vrf definition fvrf-untrusted-wan-isp-1
 description FVRF-UNTRUSTED-WAN-ISP-1
 rd 999:1

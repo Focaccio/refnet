@@ -113,6 +113,10 @@ boot-start-marker
 boot-end-marker
 !
 !
+! protections
+no ip http server
+no ip http secure-server
+!
 vrf definition FD
  rd 99:1
  !

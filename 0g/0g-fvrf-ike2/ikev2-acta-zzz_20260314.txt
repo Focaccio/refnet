@@ -92,6 +92,10 @@ boot system bootflash:isr4300-universalk9.16.07.02.SPA.bin
 boot-end-marker
 !
 !
+! protections
+no ip http server
+no ip http secure-server
+!
 vrf definition FD
  description isolate-exposed-wan
  rd 99:1
