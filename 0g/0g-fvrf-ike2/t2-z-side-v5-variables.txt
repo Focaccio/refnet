@@ -155,7 +155,7 @@ interface lo999
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !7 - WAN-ISP-1 L3 interface
-<<<<L3-fd1-interface-z>>>>
+interface <<<<L3-fd1-interface-z>>>>
    description PHYSICAL-UNTRUSTED-WAN-ISP-1-CONNECTION
    vrf forwarding <<<<fd1-name>>>>
    ip address <<<<z.z.z.#>>>> <<<<z.z.z.#_CIDRmask>>>>

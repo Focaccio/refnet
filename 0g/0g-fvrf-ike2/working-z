@@ -1,10 +1,4 @@
-!..............................................................................................
-!..............................................................................................
-!CORE
-!T1 a-side
-!..............................................................................................
-!..............................................................................................
-!
+working-z
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !0 - variables
@@ -14,10 +8,10 @@
 <<<<fd1-name>>>> fvrf-untrusted-wan-isp-1
 !
 !layer3-interface_phys-or-subint for fd1 on a side
-<<<<L3-fd1-interface-a>>>>
+<<<<L3-fd1-interface-a>>>> GigabitEthernet0/0/0
 !
 !layer3-interface_phys-or-subint for fd1 on z side
-<<<<L3-fd1-interface-z>>>>
+<<<<L3-fd1-interface-z>>>> GigabitEthernet0/0/0
 !
 !gateways
 !a-side
@@ -65,7 +59,7 @@ aaa authorization network default local
 no ip http server
 no ip http secure-server
 !
-vrf definition <<<<fd1-name>>>>
+vrf definition fvrf-untrusted-wan-isp-1 
 description FVRF1-UNTRUSTED
 rd 65000:1
 address-family ipv4
@@ -108,25 +102,25 @@ crypto ipsec transform-set SHA384 esp-aes 256 esp-sha384-hmac
 !5 - TUNNELS // IKE2
 !
 crypto ikev2 policy IKEV2-POLICY-1
-   match fvrf <<<<fd1-name>>>>
+   match fvrf fvrf-untrusted-wan-isp-1
    proposal IKEV2-PROPOSAL-1
 !
 crypto ikev2 keyring UNTRUSTED-WAN-KEYRING-1
 !
  peer PEER-A-WAN-1
     description PEER-A-WAN-1
-    address <<<<a.a.a.#>>>>
+    address 1.1.1.2
     pre-shared-key FVRF-IKEV2-PSK_KEYNAME
 !
  peer PEER-Z-WAN-1
     description PEER-Z-WAN-1
-    address <<<<z.z.z.#>>>>
+    address 2.2.2.2
     pre-shared-key FVRF-IKEV2-PSK_KEYNAME
 !
-crypto ikev2 profile FVRF-IKEV2-PROFILE-1-A
+crypto ikev2 profile FVRF-IKEV2-PROFILE-1-Z
    description FVRF-IKEV2-PROFILE-1
-   match fvrf <<<<fd1-name>>>>
-   match identity remote address <<<<z.z.z.#>>>>
+   match fvrf fvrf-untrusted-wan-isp-1
+   match identity remote address 1.1.1.2
    authentication remote pre-share
    authentication local pre-share
    keyring local UNTRUSTED-WAN-KEYRING-1
@@ -146,8 +140,8 @@ crypto ipsec profile INSIDE-IKEV2-PROFILE-TU999
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !6 - loopbacks
 interface lo999
-   description V-lo999-TU999-SOURCE-172-30-99-1
-   ip address 172.30.99.1 255.255.255.255
+   description V-lo999-TU999-Z-SOURCE-172-30-99-2
+   ip address 172.30.99.2 255.255.255.255
 !
 !_______________________________________________________________________________________________
 !_______________________________________________________________________________________________
@@ -155,10 +149,10 @@ interface lo999
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !7 - WAN-ISP-1 L3 interface
-interface <<<<L3-fd1-interface-a>>>>
+interface GigabitEthernet0/0/0
    description PHYSICAL-UNTRUSTED-WAN-ISP-1-CONNECTION
-   vrf forwarding <<<<fd1-name>>>>
-   ip address <<<<a.a.a.#>>>> <<<<a.a.a.#_CIDRmask>>>>
+   vrf forwarding fvrf-untrusted-wan-isp-1
+   ip address 2.2.2.2 255.255.255.0
    ip access-group WAN-1-INGRESS-COMBINED in
    ip access-group WAN-1-EGRESS-COMBINED out
    no ip redirects
@@ -177,16 +171,16 @@ interface <<<<L3-fd1-interface-a>>>>
 interface tu999
    description V-GRE-TU999-VIA-untrusted-wan-isp1
    ip unnumbered lo999
-   ip access-group to_A-SIDE_TU999_IN in
-   ip access-group from_A-SIDE_TU999_OUT out
+   ip access-group to_Z-SIDE_TU999_IN in
+   ip access-group from_Z-SIDE_TU999_OUT out
    no ip redirects
    no ip unreachables
    no ip proxy-arp
    load-interval 30
-   tunnel source <<<<L3-fd1-interface-a>>>>
+   tunnel source GigabitEthernet0/0/0
    tunnel mode ipsec ipv4
-   tunnel destination <<<<z.z.z.#>>>>
-   tunnel vrf <<<<fd1-name>>>>
+   tunnel destination 1.1.1.2
+   tunnel vrf fvrf-untrusted-wan-isp-1
    tunnel protection ipsec profile INSIDE-IKEV2-PROFILE-TU999
 !
 !_______________________________________________________________________________________________
@@ -197,7 +191,8 @@ interface tu999
 !9 - Routing
 !
 ip route 172.30.99.0 255.255.255.0 tu999 name TU999-172-30-99-0
-ip route 51.0.0.0 255.255.255.0 tu999 name Z-51-NET
+ip route 41.0.0.0 255.255.255.0 tu999 name A-41-NET
+
 !
 !
 !_______________________________________________________________________________________________
@@ -214,18 +209,18 @@ ip access-list extended WAN-1-INGRESS-COMBINED
    permit udp any eq bootps any eq bootpc
 !
    remark A-SIDE
-   permit icmp host <<<<a.a.a.gw>>>> any
-   permit icmp host <<<<a.a.a.#>>>> any
-   permit udp host <<<<a.a.a.#>>>> any eq isakmp
-   permit udp host <<<<a.a.a.#>>>> any eq non500-isakmp
-   permit esp host <<<<a.a.a.#>>>> any
+   permit icmp host 1.1.1.1 any
+   permit icmp host 1.1.1.2 any
+   permit udp host 1.1.1.2 any eq isakmp
+   permit udp host 1.1.1.2 any eq non500-isakmp
+   permit esp host 1.1.1.2 any
 !
    remark Z-SIDE
-   permit icmp host <<<<z.z.z.gw>>>> any
-   permit icmp host <<<<z.z.z.#>>>> any
-   permit udp host <<<<z.z.z.#>>>> any eq isakmp
-   permit udp host <<<<z.z.z.#>>>> any eq non500-isakmp
-   permit esp host <<<<z.z.z.#>>>> any
+   permit icmp host 2.2.2.1 any
+   permit icmp host 2.2.2.2 any
+   permit udp host 2.2.2.2 any eq isakmp
+   permit udp host 2.2.2.2 any eq non500-isakmp
+   permit esp host 2.2.2.2 any
 !
    deny udp any any eq isakmp log-input
    deny udp any any eq non500-isakmp log-input
@@ -240,31 +235,31 @@ ip access-list extended WAN-1-INGRESS-COMBINED
 !
 no ip access-list extended WAN-1-EGRESS-COMBINED
 ip access-list extended WAN-1-EGRESS-COMBINED
-   permit ip <<<<a.a.a.a_SUBNET>>>> <<<<a.a.a.#_WCmask>>>> <<<<z.z.z.z_SUBNET>>>> <<<<z.z.z.#_WCmask>>>>
-   permit ip <<<<z.z.z.z_SUBNET>>>> <<<<z.z.z.#_WCmask>>>> <<<<a.a.a.a_SUBNET>>>> <<<<a.a.a.#_WCmask>>>>
-   permit icmp <<<<a.a.a.a_SUBNET>>>> <<<<a.a.a.#_WCmask>>>> <<<<z.z.z.z_SUBNET>>>> <<<<z.z.z.#_WCmask>>>>
-   permit icmp <<<<z.z.z.z_SUBNET>>>> <<<<z.z.z.#_WCmask>>>> <<<<a.a.a.a_SUBNET>>>> <<<<a.a.a.#_WCmask>>>>
+   permit ip 1.1.1.0 0.0.0.255 2.2.2.0 0.0.0.255
+   permit ip 2.2.2.0 0.0.0.255 1.1.1.0 0.0.0.255
+   permit icmp 1.1.1.0 0.0.0.255 2.2.2.0 0.0.0.255
+   permit icmp 2.2.2.0 0.0.0.255 1.1.1.0 0.0.0.255
 !
    remark A-SIDE
-   permit icmp host <<<<a.a.a.#>>>> any log-input
-   permit udp host <<<<a.a.a.#>>>> any eq isakmp log-input
-   permit udp host <<<<a.a.a.#>>>> any eq non500-isakmp log-input
-   permit esp host <<<<a.a.a.#>>>> any log-input
+   permit icmp host 1.1.1.2 any log-input
+   permit udp host 1.1.1.2 any eq isakmp log-input
+   permit udp host 1.1.1.2 any eq non500-isakmp log-input
+   permit esp host 1.1.1.2 any log-input
 !
    remark Z-SIDE
-   permit icmp host <<<<z.z.z.#>>>> any log-input
-   permit udp host <<<<z.z.z.#>>>> any eq isakmp log-input
-   permit udp host <<<<z.z.z.#>>>> any eq non500-isakmp log-input
-   permit esp host <<<<z.z.z.#>>>> any log-input
+   permit icmp host 2.2.2.2 any log-input
+   permit udp host 2.2.2.2 any eq isakmp log-input
+   permit udp host 2.2.2.2 any eq non500-isakmp log-input
+   permit esp host 2.2.2.2 any log-input
 !
 !_______________________________________________________________________________________________
 !_______________________________________________________________________________________________
 !_______________________________________________________________________________________________
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-!11 - INSIDE TUNNEL ACL IN   >>>  to-A_IN
-no ip access-list extended to_A-SIDE_TU999_IN
-ip access-list extended to_A-SIDE_TU999_IN
+!11 - INSIDE TUNNEL ACL IN   >>>  to-Z_IN
+no ip access-list extended to_Z-SIDE_TU999_IN
+ip access-list extended to_Z-SIDE_TU999_IN
 permit ip any any
 !
 !_______________________________________________________________________________________________
@@ -272,9 +267,9 @@ permit ip any any
 !_______________________________________________________________________________________________
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-!12 - INSIDE TUNNEL ACL OUT   >>>   from-A_OUT
-no ip access-list extended from_A-SIDE_TU999_OUT
-ip access-list extended from_A-SIDE_TU999_OUT
+!12 - INSIDE TUNNEL ACL OUT   >>>   from-Z_OUT
+no ip access-list extended from_Z-SIDE_TU999_OUT
+ip access-list extended from_Z-SIDE_TU999_OUT
 permit ip any any
 !
 !_______________________________________________________________________________________________
@@ -288,9 +283,9 @@ permit ip any any
 alias exec svb show vrf brief
 alias exec sivi show ip vrf interfaces
 !
-alias exec pfvrf ping vrf <<<<fd1-name>>>>
-alias exec safvrf show arp vrf <<<<fd1-name>>>>
-alias exec sirfvrf show ip route vrf <<<<fd1-name>>>>
+alias exec pfvrf ping vrf fvrf-untrusted-wan-isp-1
+alias exec safvrf show arp vrf fvrf-untrusted-wan-isp-1
+alias exec sirfvrf show ip route vrf fvrf-untrusted-wan-isp-1
 
 !
 ! special crypto ***SHOW-CLEAR*** aliases
