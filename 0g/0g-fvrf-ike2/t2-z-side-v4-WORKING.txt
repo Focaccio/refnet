@@ -243,6 +243,27 @@ permit ip any any
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !
+! special vrf aliases
+!
+alias exec pfvrf ping vrf fvrf-untrusted-wan-isp-1
+alias exec safvrf show arp vrf fvrf-untrusted-wan-isp-1
+alias exec sirfvrf show ip route vrf fvrf-untrusted-wan-isp-1
+
+!
+! special crypto ***SHOW-CLEAR*** aliases
+!
+alias exec v2sa show crypto ikev2 sa
+alias exec secsa show crypto ipsec sa
+alias exec clearv2 clear crypto ikev2 sa
+alias exec clearsec clear crypto ipsec sa
+!
+! special crypto ***DEBUG*** aliases
+!
+alias exec debv2all debug crypto ikev2 internal
+alias exec debsecerror debug crypto ipsec error
+alias exec debsecstate debug crypto ipsec states
+!
+
 alias exec wha sh run | i alias
 alias exec siib show ip int brie
 alias exec srint show run int

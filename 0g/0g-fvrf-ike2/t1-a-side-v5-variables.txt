@@ -7,6 +7,47 @@
 !
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!0 - variables
+!
+!FRONT DOOR a and z
+!frontdoor-1-vrf-name
+<<<<fd1-name>>>> fvrf-untrusted-wan-isp-1
+!
+!layer3-interface_phys-or-subint for fd1 on a side
+<<<<L3-fd1-interface-a>>>>
+!
+!layer3-interface_phys-or-subint for fd1 on z side
+<<<<L3-fd1-interface-z>>>>
+!
+!gateways
+!a-side
+!  <<<<a.a.a.gw>>>> 1.1.1.1
+!z-side
+!  <<<<z.z.z.gw>>>> 2.2.2.1
+!
+!
+!ADDRESSES a and z
+!a-side public outside interface ip address (in fd1 on a-side)
+<<<<a.a.a.#>>>> 1.1.1.2
+!a-side public outside interface ip address SUBNET
+<<<<a.a.a.a_SUBNET>>>> 1.1.1.0
+!a-side subnet mask for public outside interface ip address
+<<<<a.a.a.#_CIDRmask>>>> 255.255.255.0
+!a-side subnet mask for public outside interface ip address
+<<<<a.a.a.#_WCmask>>>> 0.0.0.255
+!
+!z-side public outside interface ip address (in fd1 on z-side)
+<<<<z.z.z.#>>>> 2.2.2.2
+!z-side public outside interface ip address SUBNET
+<<<<z.z.z.z_SUBNET>>>> 2.2.2.0
+!z-side subnet mask for public outside interface ip address
+<<<<z.z.z.#_CIDRmask>>>> 255.255.255.0
+!z-side subnet mask for public outside interface ip address
+<<<<z.z.z.#_WCmask>>>> 0.0.0.255
+!
+!
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !1 - authentication
 !
 !aaa new-model
@@ -24,9 +65,9 @@ aaa authorization network default local
 no ip http server
 no ip http secure-server
 !
-vrf definition fvrf-untrusted-wan-isp-1
-description FVRF-UNTRUSTED-WAN-ISP-1
-rd 999:1
+vrf definition <<<<fd1-name>>>>
+description FVRF1-UNTRUSTED
+rd 65000:1
 address-family ipv4
 exit-address-family
 !
@@ -67,25 +108,25 @@ crypto ipsec transform-set SHA384 esp-aes 256 esp-sha384-hmac
 !5 - TUNNELS // IKE2
 !
 crypto ikev2 policy IKEV2-POLICY-1
-   match fvrf fvrf-untrusted-wan-isp-1
+   match fvrf <<<<fd1-name>>>>
    proposal IKEV2-PROPOSAL-1
 !
 crypto ikev2 keyring UNTRUSTED-WAN-KEYRING-1
 !
  peer PEER-A-WAN-1
     description PEER-A-WAN-1
-    address 1.1.1.2
+    address <<<<a.a.a.#>>>>
     pre-shared-key FVRF-IKEV2-PSK_KEYNAME
 !
  peer PEER-Z-WAN-1
     description PEER-Z-WAN-1
-    address 2.2.2.2
+    address <<<<z.z.z.#>>>>
     pre-shared-key FVRF-IKEV2-PSK_KEYNAME
 !
-crypto ikev2 profile FVRF-IKEV2-PROFILE-1
+crypto ikev2 profile FVRF-IKEV2-PROFILE-1-A
    description FVRF-IKEV2-PROFILE-1
-   match fvrf fvrf-untrusted-wan-isp-1
-   match identity remote address 2.2.2.2
+   match fvrf <<<<fd1-name>>>>
+   match identity remote address <<<<z.z.z.#>>>>
    authentication remote pre-share
    authentication local pre-share
    keyring local UNTRUSTED-WAN-KEYRING-1
@@ -113,11 +154,11 @@ interface lo999
 !_______________________________________________________________________________________________
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-!7 - WAN PHYS interface
-interface A
+!7 - WAN-ISP-1 L3 interface
+<<<<L3-fd1-interface-a>>>>
    description PHYSICAL-UNTRUSTED-WAN-ISP-1-CONNECTION
-   vrf forwarding fvrf-untrusted-wan-isp-1
-   ip address 1.1.1.2 255.255.255.252
+   vrf forwarding <<<<fd1-name>>>>
+   ip address <<<<a.a.a.#>>>> <<<<a.a.a.#_CIDRmask>>>>
    ip access-group WAN-1-INGRESS-COMBINED in
    ip access-group WAN-1-EGRESS-COMBINED out
    no ip redirects
@@ -142,10 +183,10 @@ interface tu999
    no ip unreachables
    no ip proxy-arp
    load-interval 30
-   tunnel source <interfaceA>
+   tunnel source <<<<L3-fd1-interface-a>>>>
    tunnel mode ipsec ipv4
-   tunnel destination 2.2.2.2
-   tunnel vrf fvrf-untrusted-wan-isp-1
+   tunnel destination <<<<z.z.z.#>>>>
+   tunnel vrf <<<<fd1-name>>>>
    tunnel protection ipsec profile INSIDE-IKEV2-PROFILE-TU999
 !
 !_______________________________________________________________________________________________
@@ -173,18 +214,18 @@ ip access-list extended WAN-1-INGRESS-COMBINED
    permit udp any eq bootps any eq bootpc
 !
    remark A-SIDE
-   permit icmp host 1.1.1.1 any
-   permit icmp host 1.1.1.2 any
-   permit udp host 1.1.1.2 any eq isakmp
-   permit udp host 1.1.1.2 any eq non500-isakmp
-   permit esp host 1.1.1.2 any
+   permit icmp host <<<<a.a.a.gw>>>> any
+   permit icmp host <<<<a.a.a.#>>>> any
+   permit udp host <<<<a.a.a.#>>>> any eq isakmp
+   permit udp host <<<<a.a.a.#>>>> any eq non500-isakmp
+   permit esp host <<<<a.a.a.#>>>> any
 !
    remark Z-SIDE
-   permit icmp host 2.2.2.1 any
-   permit icmp host 2.2.2.2 any
-   permit udp host 2.2.2.2 any eq isakmp
-   permit udp host 2.2.2.2 any eq non500-isakmp
-   permit esp host 2.2.2.2 any
+   permit icmp host <<<<z.z.z.gw>>>> any
+   permit icmp host <<<<z.z.z.#>>>> any
+   permit udp host <<<<z.z.z.#>>>> any eq isakmp
+   permit udp host <<<<z.z.z.#>>>> any eq non500-isakmp
+   permit esp host <<<<z.z.z.#>>>> any
 !
    deny udp any any eq isakmp log-input
    deny udp any any eq non500-isakmp log-input
@@ -199,22 +240,22 @@ ip access-list extended WAN-1-INGRESS-COMBINED
 !
 no ip access-list extended WAN-1-EGRESS-COMBINED
 ip access-list extended WAN-1-EGRESS-COMBINED
-   permit ip 1.1.1.0 0.0.0.252 2.2.2.0 0.0.0.252
-   permit ip 2.2.2.0 0.0.0.252 1.1.1.0 0.0.0.252
-   permit icmp 1.1.1.0 0.0.0.252 2.2.2.0 0.0.0.252
-   permit icmp 2.2.2.0 0.0.0.252 1.1.1.0 0.0.0.252
+   permit ip <<<<a.a.a.a_SUBNET>>>> <<<<a.a.a.#_WCmask>>>> <<<<z.z.z.z_SUBNET>>>> <<<<z.z.z.#_WCmask>>>>
+   permit ip <<<<z.z.z.z_SUBNET>>>> <<<<z.z.z.#_WCmask>>>> <<<<a.a.a.a_SUBNET>>>> <<<<a.a.a.#_WCmask>>>>
+   permit icmp <<<<a.a.a.a_SUBNET>>>> <<<<a.a.a.#_WCmask>>>> <<<<z.z.z.z_SUBNET>>>> <<<<z.z.z.#_WCmask>>>>
+   permit icmp <<<<z.z.z.z_SUBNET>>>> <<<<z.z.z.#_WCmask>>>> <<<<a.a.a.a_SUBNET>>>> <<<<a.a.a.#_WCmask>>>>
 !
    remark A-SIDE
-   permit icmp host 1.1.1.2 any log-input
-   permit udp host 1.1.1.2 any eq isakmp log-input
-   permit udp host 1.1.1.2 any eq non500-isakmp log-input
-   permit esp host 1.1.1.2 any log-input
+   permit icmp host <<<<a.a.a.#>>>> any log-input
+   permit udp host <<<<a.a.a.#>>>> any eq isakmp log-input
+   permit udp host <<<<a.a.a.#>>>> any eq non500-isakmp log-input
+   permit esp host <<<<a.a.a.#>>>> any log-input
 !
    remark Z-SIDE
-   permit icmp host 2.2.2.2 any log-input
-   permit udp host 2.2.2.2 any eq isakmp log-input
-   permit udp host 2.2.2.2 any eq non500-isakmp log-input
-   permit esp host 2.2.2.2 any log-input
+   permit icmp host <<<<z.z.z.#>>>> any log-input
+   permit udp host <<<<z.z.z.#>>>> any eq isakmp log-input
+   permit udp host <<<<z.z.z.#>>>> any eq non500-isakmp log-input
+   permit esp host <<<<z.z.z.#>>>> any log-input
 !
 !_______________________________________________________________________________________________
 !_______________________________________________________________________________________________
@@ -244,9 +285,12 @@ permit ip any any
 !
 ! special vrf aliases
 !
-alias exec pfvrf ping vrf fvrf-untrusted-wan-isp-1
-alias exec safvrf show arp vrf fvrf-untrusted-wan-isp-1
-alias exec sirfvrf show ip route vrf fvrf-untrusted-wan-isp-1
+alias exec svb show vrf brief
+alias exec sivi show ip vrf interfaces
+!
+alias exec pfvrf ping vrf <<<<fd1-name>>>>
+alias exec safvrf show arp vrf <<<<fd1-name>>>>
+alias exec sirfvrf show ip route vrf <<<<fd1-name>>>>
 
 !
 ! special crypto ***SHOW-CLEAR*** aliases
@@ -262,7 +306,7 @@ alias exec debv2 debug crypto ikev2 packet
 alias exec debv2all debug crypto ikev2 internal
 alias exec debsecerror debug crypto ipsec error
 alias exec debsecstate debug crypto ipsec states
-
+!
 alias exec wha sh run | i alias
 alias exec siib show ip int brie
 alias exec srint show run int
@@ -286,5 +330,3 @@ alias exec scn show cdp nei
 alias exec sln show lldp nei 
 alias exec slndi show lldp nei det | i 
 alias exec scndi show cdp nei det | i 
-
-
