@@ -1,0 +1,109 @@
+Last login: Wed Mar 11 06:23:45 EDT 2026 from 192.168.86.27 on pts/0
+[root@centr10a ~]# history
+    1  groups
+    2  id
+    3  sudo usermod -aG wheel greg
+    4  podman run --rm hello-world
+    5  podman run --rm quay.io/libpod/alpine ping -c3 8.8.8.8
+    6  podman run -d --name web -p 80:80 nginx
+    7  podman ps
+    8  podman run -it --rm docker.io/nicolaka/netshoot
+    9  podman run -it --rm --privileged nicolaka/netshoot
+   10  podman run -d --name netdata -p 19999:19999 --cap-add=SYS_PTRACE --security-opt label=disable netdata/netdata
+   11  podman ps
+   12  podman stop netdata
+   13  podman ps
+   14  podman stop web
+   15  podman ps
+   16  podman run -ti --name checkmk -p 8080:5000 checkmk/check-mk-raw:latest
+   17  podman ps
+   18  podman run -d --name observium -p 8668:80 observium/observium-ce
+   19  podman login docker.io
+   20  podman run -d --name observium -p 8668:80 observium/observium-ce
+   21  podman run -d --name observium -p 8668:80 jonashackt/observium
+   22  podman run -d --name zabbix-appliance -p 8081:80 docker.io/zabbix/zabbix-appliance:alpine-6.4-latest
+   23  podman docker pull mbixtech/observium
+   24  podman pull docker.io/mbixtech/observium
+   25  podman ps
+   26  podman run -d --name observium -p 8668:80 mbixtech/observium
+   27  podman ps
+   28  podman stop observium
+   29  podman ps
+   30  cd /
+   31  ls -la
+   32  mkdir cdata
+   33  chmod -R 777 cdata/
+   34  ls -la
+   35  podman version
+   36  podman network create nms-net
+   37  podman network inspect nms-net
+   38  podman network ls
+   39  podman network inspect nms-net | grep Name
+   40  ls -la
+   41  cd cdata/
+   42  ls -l
+   43  mkdir db
+   44  mkdir config
+   45  ls -la
+   46  chmod -R 777 config/
+   47  chmod -R 777 db/
+   48  ls -la
+   49  vi gomaria1
+   50  vi gonms1
+   51  chmod 777 gomaria1 
+   52  chmod 777 gonms1 
+   53  ls -la
+   54  ./gomaria1 
+   55  podman ps
+   56  ./gonms1 
+   57  df -h
+   58  podman system df
+   59  podman images
+   60  podman rmi faa665cb727a
+   61  podman rmi -f faa665cb727a
+   62  podman rmi -f af60a3ef7315
+   63  podman images
+   64  df -h
+   65  ./gonms1 
+   66  podman ps
+   67  ls -la
+   68  cat gomaria1 
+   69  cat gonms1 
+   70  podman exec -it nms-app /opt/observium/adduser.php <<<username>>> <<<password>>> 10
+   71  podman exec -it nms-app ping -c 4 192.168.86.7
+   72  podman exec -it nms-app snmpwalk -v1 -c public 192.168.86.7 sysName
+   73  podman network inspect nms-net
+   74  ip addr
+   75  sysctl -w net.ipv4.ip_forward=1
+   76  echo "net.ipv4.ip_forward = 1" > /etc/sysctl.d/99-ipforward.conf && sysctl -p /etc/sysctl.d/99-ipforward.conf && firewall-cmd --add-masquerade --permanent && firewall-cmd --zone=public --add-interface=podman1 --permanent && firewall-cmd --reload
+   77  df -h
+   78  dnf -y install podman
+   79  podman --version
+   80  podman info --format '{{.Host.NetworkBackend}}'
+   81  sudo usermod -aG wheel $(whoami) && newgrp wheel
+   82  ip -4 a
+   83  podman ps
+   84  podman stop nms-app
+   85  podman ps
+   86  podman stop nms-db
+   87  podman ps
+   88  podman ps -a
+   89  sync
+   90  shutdown -h now
+   91  podman ps -a
+   92  podman start nms-db
+   93  podman ps -a
+   94  podman logs nms-db --tail 20
+   95  podman start nms-app
+   96  podman ps
+   97  history
+   98  podman start nms-db
+   99  podman start nms-app
+  100  history
+[root@centr10a ~]# !98
+podman start nms-db
+nms-db
+[root@centr10a ~]# !99
+podman start nms-app
+nms-app
+[root@centr10a ~]# 

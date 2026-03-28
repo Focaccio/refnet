@@ -1,0 +1,74 @@
+Here’s the updated copy-paste version with Steps 7 and 9 converted to single-line commands 👇
+
+⸻
+
+
+# Nutanix SNMP Setup (CVM - Single Procedure)
+
+# 1. SSH into any CVM
+ssh nutanix@<cvm-ip>
+
+# 2. Configure SNMP v2c (replace values as needed)
+ncli cluster add-snmp-server community=public allowed-ips=<monitoring-server-ip>
+
+# Example:
+# ncli cluster add-snmp-server community=public allowed-ips=192.168.10.50
+
+# 3. Verify SNMP configuration
+ncli cluster get-snmp-servers
+
+# Expected output:
+# SNMP Servers:
+#     Community: public
+#     Allowed IP Addresses: 192.168.10.50
+
+# 4. Test SNMP locally on CVM
+snmpwalk -v2c -c public localhost
+
+# Expected:
+# Large list of OIDs returned (system info, etc.)
+
+# 5. Test SNMP from monitoring server
+snmpwalk -v2c -c public <cvm-ip>
+
+# Example:
+# snmpwalk -v2c -c public 192.168.10.11
+
+# Expected:
+# Returns SNMP data (CPU, memory, etc.)
+
+# 6. (Optional) Test additional CVMs
+snmpwalk -v2c -c public <cvm2-ip>
+snmpwalk -v2c -c public <cvm3-ip>
+
+# -------------------------------
+# OPTIONAL: SNMPv3 CONFIGURATION
+# -------------------------------
+
+# 7. Add SNMPv3 user (single line)
+ncli cluster add-snmp-user username=snmpuser auth-password=AuthPass123 auth-type=SHA privacy-password=PrivPass123 privacy-type=AES
+
+# 8. Verify SNMPv3 user
+ncli cluster get-snmp-users
+
+# Expected output:
+# SNMP Users:
+#     Username: snmpuser
+#     Auth Type: SHA
+#     Privacy Type: AES
+
+# 9. Test SNMPv3 (single line)
+snmpwalk -v3 -u snmpuser -l authPriv -a SHA -A AuthPass123 -x AES -X PrivPass123 <cvm-ip>
+
+# -------------------------------
+# TROUBLESHOOTING
+# -------------------------------
+
+# Re-check SNMP config
+ncli cluster get-snmp-servers
+
+# Common issues:
+# - Wrong community string
+# - Monitoring server IP not allowed
+# - Firewall blocking UDP 161
+# - Polling AHV instead of CVM
