@@ -1,0 +1,208 @@
+what if i want to leak only a loopback in the default vrf on peer A PE and do the same with peer B PE in another location so A and B can become eBGP peers in the default vrf but reachability is provided in the front door vrf - is that possible?  if so can you please provide some ios-xe compatible configuration for what peer a and peer b would look like?
+Yes — that design is possible.
+
+The usual pattern is:
+	1.	keep the CE–PE transport peering in the front-door VRF (FVRF),
+	2.	leak only the local /32 loopback from the global/default VRF into the FVRF,
+	3.	advertise that /32 to the PE in the FVRF,
+	4.	learn the remote site’s /32 loopback from the PE in the FVRF,
+	5.	leak only that remote /32 back into the global/default VRF, and
+	6.	form the A↔B eBGP session in the global VRF using the loopbacks, with update-source and ebgp-multihop.
+
+That works because IOS XE supports VRF route leaking with import ipv4 unicast map / export ipv4 unicast map, and BGP still needs next-hop reachability for the peer address before the session can come up. Cisco’s IOS XE VRF leak examples show selective import/export maps, and Cisco’s BGP docs/troubleshooting docs call out that loopback-based peering needs update-source and valid reachability to the peer.  ￼
+
+A couple of important caveats:
+	•	This is a careful route-leak design, not a “native shared table” design.
+	•	You generally want to leak only the two /32 loopbacks, not broader prefixes.
+	•	Exact behavior can vary a bit by platform/release, so this should be lab-tested on your specific IOS XE image. Cisco’s route-leak examples are based on IOS XE 16.12.x and 17.x.  ￼
+
+Sample topology
+
+Router A:
+	•	Global loopback: 10.255.255.1/32
+	•	FVRF name: FDOOR
+	•	CE–PE link: 192.0.2.2/30 to PE-A 192.0.2.1
+	•	Router A ASN: 65001
+
+Router B:
+	•	Global loopback: 10.255.255.2/32
+	•	FVRF name: FDOOR
+	•	CE–PE link: 198.51.100.2/30 to PE-B 198.51.100.1
+	•	Router B ASN: 65002
+
+Provider ASN at both sites in examples: 64500
+
+How it works
+
+On each CE:
+	•	the global loopback /32 is selectively imported into the FVRF
+	•	the FVRF BGP session to the local PE advertises that /32
+	•	the remote loopback /32 is learned in the FVRF from the provider
+	•	that remote /32 is selectively exported into the global VRF
+	•	global BGP then peers to the remote loopback using update-source Loopback0 and ebgp-multihop
+
+Router A example
+
+hostname CE-A
+
+!
+vrf definition FDOOR
+ rd 65001:100
+ address-family ipv4
+  import ipv4 unicast map GRT-TO-FDOOR
+  export ipv4 unicast map FDOOR-TO-GRT
+ exit-address-family
+!
+
+interface Loopback0
+ ip address 10.255.255.1 255.255.255.255
+!
+
+interface GigabitEthernet0/0/0
+ description TO-PE-A
+ vrf forwarding FDOOR
+ ip address 192.0.2.2 255.255.255.252
+ no shutdown
+!
+
+!
+! Leak only the local global loopback into the FVRF
+ip prefix-list PL-GRT-TO-FDOOR seq 5 permit 10.255.255.1/32
+route-map GRT-TO-FDOOR permit 10
+ match ip address prefix-list PL-GRT-TO-FDOOR
+!
+
+!
+! Leak only the remote site loopback from FVRF back to global
+ip prefix-list PL-FDOOR-TO-GRT seq 5 permit 10.255.255.2/32
+route-map FDOOR-TO-GRT permit 10
+ match ip address prefix-list PL-FDOOR-TO-GRT
+!
+
+router bgp 65001
+ bgp log-neighbor-changes
+
+ !
+ ! Global/default VRF BGP — peer to CE-B loopback
+ neighbor 10.255.255.2 remote-as 65002
+ neighbor 10.255.255.2 update-source Loopback0
+ neighbor 10.255.255.2 ebgp-multihop 10
+
+ address-family ipv4
+  network 10.255.255.1 mask 255.255.255.255
+  neighbor 10.255.255.2 activate
+ exit-address-family
+
+ !
+ ! FVRF BGP — peer to local PE
+ address-family ipv4 vrf FDOOR
+  neighbor 192.0.2.1 remote-as 64500
+  neighbor 192.0.2.1 activate
+
+  !
+  ! Advertise the imported local loopback into the provider-facing VRF
+  network 10.255.255.1 mask 255.255.255.255
+ exit-address-family
+
+Router B example
+
+hostname CE-B
+
+!
+vrf definition FDOOR
+ rd 65002:100
+ address-family ipv4
+  import ipv4 unicast map GRT-TO-FDOOR
+  export ipv4 unicast map FDOOR-TO-GRT
+ exit-address-family
+!
+
+interface Loopback0
+ ip address 10.255.255.2 255.255.255.255
+!
+
+interface GigabitEthernet0/0/0
+ description TO-PE-B
+ vrf forwarding FDOOR
+ ip address 198.51.100.2 255.255.255.252
+ no shutdown
+!
+
+!
+! Leak only the local global loopback into the FVRF
+ip prefix-list PL-GRT-TO-FDOOR seq 5 permit 10.255.255.2/32
+route-map GRT-TO-FDOOR permit 10
+ match ip address prefix-list PL-GRT-TO-FDOOR
+!
+
+!
+! Leak only the remote site loopback from FVRF back to global
+ip prefix-list PL-FDOOR-TO-GRT seq 5 permit 10.255.255.1/32
+route-map FDOOR-TO-GRT permit 10
+ match ip address prefix-list PL-FDOOR-TO-GRT
+!
+
+router bgp 65002
+ bgp log-neighbor-changes
+
+ !
+ ! Global/default VRF BGP — peer to CE-A loopback
+ neighbor 10.255.255.1 remote-as 65001
+ neighbor 10.255.255.1 update-source Loopback0
+ neighbor 10.255.255.1 ebgp-multihop 10
+
+ address-family ipv4
+  network 10.255.255.2 mask 255.255.255.255
+  neighbor 10.255.255.1 activate
+ exit-address-family
+
+ !
+ ! FVRF BGP — peer to local PE
+ address-family ipv4 vrf FDOOR
+  neighbor 198.51.100.1 remote-as 64500
+  neighbor 198.51.100.1 activate
+
+  !
+  ! Advertise the imported local loopback into the provider-facing VRF
+  network 10.255.255.2 mask 255.255.255.255
+ exit-address-family
+
+What must be true for this to work
+
+The provider/FVRF side must carry the loopbacks end to end:
+	•	PE-A must learn 10.255.255.1/32 from CE-A in FDOOR
+	•	PE-B must learn 10.255.255.2/32 from CE-B in FDOOR
+	•	the provider must transport those /32s between the two sites inside the relevant service/transport context
+	•	each CE’s FVRF must therefore learn the other CE’s /32
+	•	each CE then exports only that remote /32 into global, giving the global BGP session reachability
+
+That “BGP session needs next-hop/peer reachability first” piece is fundamental.  ￼
+
+Verification
+
+On CE-A:
+
+show ip route vrf FDOOR 10.255.255.1
+show ip route vrf FDOOR 10.255.255.2
+show ip route 10.255.255.2
+show ip bgp summary
+show ip bgp neighbors 10.255.255.2
+
+On CE-B:
+
+show ip route vrf FDOOR 10.255.255.2
+show ip route vrf FDOOR 10.255.255.1
+show ip route 10.255.255.1
+show ip bgp summary
+show ip bgp neighbors 10.255.255.1
+
+Design note
+
+If your platform/release behaves oddly with import/export leaking for this exact pattern, the fallback is to do the same design with selective static route leaking instead. Cisco also documents static-route-based leaking between the global routing table and a VRF, and IOS XE has explicit support for recursive static routes when the next hop is resolved through another route.  ￼
+
+The cleanest operational model here is:
+	•	FVRF = transport reachability
+	•	global VRF = A↔B BGP control plane
+	•	only loopback /32s are leaked
+
+If you want, I can turn this into a version tailored to your exact interface names, ASNs, and whether your PE-facing side is directly connected or multihop.
