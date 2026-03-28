@@ -259,6 +259,7 @@ alias exec clearsec clear crypto ipsec sa
 !
 ! special crypto ***DEBUG*** aliases
 !
+alias exec debv2 debug crypto ikev2 packet
 alias exec debv2all debug crypto ikev2 internal
 alias exec debsecerror debug crypto ipsec error
 alias exec debsecstate debug crypto ipsec states
