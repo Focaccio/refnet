@@ -1,0 +1,35 @@
+Troubleshoot no graphing:
+# Observium Poller Fix (Working Solution)
+
+# 1. Fix RRD ownership
+chown -R www-data:www-data /opt/observium/rrd
+
+# 2. Verify poller works as www-data
+su -s /bin/sh -c '/opt/observium/poller-wrapper.py 2' www-data
+
+# 3. Start persistent poller loop (every 5 minutes)
+nohup su -s /bin/sh -c 'while true; do /opt/observium/poller-wrapper.py 2; sleep 300; done' www-data >/tmp/observium-loop.log 2>&1 &
+
+# 4. Verify poller process is running
+ps aux | grep poller-wrapper
+
+# 5. Verify RRD updates (run twice ~5 minutes apart)
+date && ls -l /config/rrd/192.168.86.61 | tail
+
+# 6. Check poller activity/logs
+tail -50 /tmp/observium-loop.log
+
+
+# Expected Results:
+# - poller-wrapper.py running as www-data
+# - RRD timestamps update every 5 minutes
+# - No errors in /tmp/observium-loop.log
+# - Graphs begin populating in UI
+
+
+# Optional: Faster test mode (runs every 60 seconds)
+pkill -f poller-wrapper && nohup su -s /bin/sh -c 'while true; do /opt/observium/poller-wrapper.py 2; sleep 60; done' www-data >/tmp/observium-loop.log 2>&1 &
+
+
+# One-line full fix (quick recovery)
+chown -R www-data:www-data /opt/observium/rrd && pkill -f poller-wrapper && nohup su -s /bin/sh -c 'while true; do /opt/observium/poller-wrapper.py 2; sleep 300; done' www-data >/tmp/observium-loop.log 2>&1 &
