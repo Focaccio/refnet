@@ -1,0 +1,23 @@
+
+
+
+set up account for codex on linux for full control
+
+useradd -o -u 0 codexadmin
+
+echo 'codexadmin ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+
+passwd codexadmin
+
+
+usermod -aG wheel codex
+
+
+
+
+
+
+
+
+
+
