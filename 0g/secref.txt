@@ -1,0 +1,90 @@
+[1] EDGE ROUTER (ACLs / Anti-Spoofing)
+- SC-7: Boundary Protection
+- SC-7(3): Access Points
+- SC-7(4): External Telecommunications Services
+- SC-7(5): Deny by Default / Allow by Exception
+- SC-7(12): Host-Based Protection (if applicable)
+- AC-4: Information Flow Enforcement
+- SI-4: System Monitoring
+- CM-7: Least Functionality
+
+--------------------------------------------------
+
+[2] EXTERNAL FIREWALL (Stateful / NGFW / Inline)
+- SC-7: Boundary Protection
+- SC-7(8): Route Traffic to Authenticated Proxy
+- SC-7(9): Restrict Threatening Communications Traffic
+- SC-7(18): Fail Secure
+- SC-7(21): Isolation of Security Tools
+- AC-4: Information Flow Enforcement
+- SI-3: Malicious Code Protection
+- SI-4: System Monitoring
+- AU-2 / AU-6: Audit Events / Review
+
+--------------------------------------------------
+
+[3] IDS / IPS (Inline or Integrated)
+- SI-4: System Monitoring
+- SI-4(4): Inbound/Outbound Monitoring
+- SI-4(7): Automated Response
+- SI-4(11): Analyze Communications Traffic
+- IR-4: Incident Handling
+- IR-5: Incident Monitoring
+- AU-6: Audit Review
+
+--------------------------------------------------
+
+[4] PROXY / CONTENT FILTER (Web / DNS / App Layer)
+- SC-7(8): Route Through Proxy
+- SC-7(10): Prevent Exfiltration
+- AC-4: Information Flow Enforcement
+- SI-3: Malicious Code Protection
+- SI-4: Monitoring
+- IA-2: Identification and Authentication (if user-aware proxy)
+- AU-2 / AU-12: Logging
+
+--------------------------------------------------
+
+[5] ENCRYPTOR (Type 1 / VPN / CSfC Layer)
+- SC-12: Cryptographic Key Establishment and Management
+- SC-13: Cryptographic Protection
+- SC-16: Transmission of Security Attributes
+- SC-28: Protection of Information at Rest (if applicable)
+- IA-7: Cryptographic Module Authentication
+- KM-3: Key Management
+- KM-6: Key Distribution
+- IA-3: Device Identification and Authentication
+
+--------------------------------------------------
+
+[6] INTERNAL BOUNDARY (Post-Decryption Firewall / Segmentation)
+- SC-7: Boundary Protection (internal segmentation)
+- SC-7(13): Isolation of Security Domains
+- SC-7(20): Dynamic Isolation
+- AC-4: Information Flow Enforcement
+- AC-6: Least Privilege
+- CM-7: Least Functionality
+- SI-4: Monitoring (east-west traffic)
+
+--------------------------------------------------
+
+[7] ENCLAVE / LAN (Protected Network)
+- AC-2: Account Management
+- AC-6: Least Privilege
+- IA-2: Identification and Authentication
+- SI-7: Software Integrity
+- SI-2: Flaw Remediation
+- SI-3: Malware Protection
+- SC-5: Denial of Service Protection
+- SC-32: System Partitioning
+- AU-2 / AU-6: Logging and Review
+
+--------------------------------------------------
+
+[8] CROSS-CUTTING (Applies Everywhere)
+- RA-5: Vulnerability Scanning
+- CA-7: Continuous Monitoring
+- PL-8: Security Architecture
+- IR-4: Incident Response
+- CP-9: Backup
+- PE-3: Physical Access Control
