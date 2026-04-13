@@ -1,0 +1,34 @@
+
+
+
+
+
+cli alias name sbs  show ip bgp summary
+cli alias name sib   show ip bgp
+cli alias name sibn  show ip bgp neighbors
+cli alias name sibnr  show ip bgp neighbors routes
+cli alias name sibnar  show ip bgp neighbors advertised-routes
+cli alias name sibf  show ip bgp flap-statistics
+cli alias name sibx  show ip bgp regexp 
+cli alias name sibi  show ip bgp | i
+cli alias name sibnrr show ip bgp neighbors received-routes
+cli alias name sibpl show ip bgp prefix-list
+
+
+alias exec sbs  show ip bgp summary
+ alias exec sib   show ip bgp
+ alias exec sibn  show ip bgp neighbors
+ alias exec sibnr  show ip bgp neighbors routes
+ alias exec sibnar  show ip bgp neighbors advertised-routes
+ alias exec sibf  show ip bgp flap-statistics
+ alias exec sibx  show ip bgp regexp 
+ alias exec sibi  show ip bgp | i
+ alias exec sibnrr show ip bgp neighbors received-routes
+ alias exec sibpl show ip bgp prefix-list
+
+alias exec wha show run | i alias
+
+
+
+
+
