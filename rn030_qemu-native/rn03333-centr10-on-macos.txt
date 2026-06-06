@@ -1,3 +1,8 @@
+qemu-img convert -p -f qcow2 -O raw CentOS-Stream-GenericCloud-10-20251223.1.aarch64.qcow2 centr10.raw
+
+qemu-img convert -p -f qcow2 -O raw CentOS-Stream-GenericCloud-x86_64-10-latest.x86_64.qcow2 centr10-x86_64.raw
+
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 filename: user-data
 #```start-file
